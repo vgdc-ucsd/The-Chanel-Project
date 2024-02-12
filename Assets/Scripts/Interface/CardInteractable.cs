@@ -142,7 +142,7 @@ public class CardInteractable : MonoBehaviour,
                 }
             }
 
-            if(tile.location.x >= 1) { // can't place in the row closest to enemy
+            if(tile != null && tile.location.x >= 1) { // can't place in the row closest to enemy
                 PlaceCard(tile);
             }
 
