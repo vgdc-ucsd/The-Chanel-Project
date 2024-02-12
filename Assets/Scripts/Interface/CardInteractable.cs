@@ -13,6 +13,8 @@ public class CardInteractable : MonoBehaviour,
     IEndDragHandler,
     IDragHandler
 {
+
+
     // Data for the card it contains
     [HideInInspector] public Card card;
 
@@ -36,6 +38,11 @@ public class CardInteractable : MonoBehaviour,
     // Determines if a card is able to be played
     // Not hidden for debugging purposes
     public bool inHand = true;
+
+    public void Awake()
+    {
+        DuelEvents.instance.onUpdateUI += UpdateCardInfo;
+    }
 
     public void DrawArrows() {
         foreach(Vector2Int v in card.AttackDirections) {
@@ -66,9 +73,15 @@ public class CardInteractable : MonoBehaviour,
             return;
         }
         CardName.text = card.Name;
+
+        card.CardInteractableRef = this;
+        UpdateCardInfo();
+    }
+
+    public void UpdateCardInfo() 
+    {
         CardAttack.text = "Attack: " + card.Attack;
         CardHealth.text = "Health: " + card.Health;
-        card.CardInteractableRef = this;
     }
 
     // Updates UI to show card being played

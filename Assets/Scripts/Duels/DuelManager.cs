@@ -36,21 +36,30 @@ public class DuelManager : MonoBehaviour
     private Board board;
     private List<Card> modifiedCards = new List<Card>();
 
+    private void Awake()
+    {
+        DuelEvents.instance.onUpdateUI += UpdateHealth;
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
         board = new Board(BoardRows, BoardCols);
         CheckProperInitialization();
-        UpdateHealth();
+        DuelEvents.instance.UpdateUI();
         InitializeBoard();
         InitializeHand();
     }
 
     // Diplays health values in the UI
+
+
     private void UpdateHealth() {
         PlayerHealthDisplay.text = "" + PlayerHealth;
         EnemyHealthDisplay.text = "" + EnemyHealth;
     }
+    
 
     // Create new board
     private void InitializeBoard() {
@@ -138,13 +147,13 @@ public class DuelManager : MonoBehaviour
                 board.CardSlots[cardRow, cardCol] = null;
                 Destroy(c.CardInteractableRef.gameObject);
             }
-            else {
-                c.CardInteractableRef.SetCardInfo();
-            }
+            //else {
+            //    c.CardInteractableRef.SetCardInfo();
+            //}
         }
         modifiedCards.Clear();
 
-        UpdateHealth();
+        DuelEvents.instance.UpdateUI();
     }
 
     private void ProcessCard(bool playerAttack, Card card, int r, int c) {
