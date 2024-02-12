@@ -188,8 +188,10 @@ public class DuelManager : MonoBehaviour
         
         // Deal damage
         Card target = board.CardSlots[atkDest.x, atkDest.y];
-        target.Health -= card.Attack;
-        modifiedCards.Add(target);
+        if(card.BelongsToPlayer != target.BelongsToPlayer) {
+            target.Health -= card.Attack;
+            modifiedCards.Add(target);
+        }
     }
 
     private void CheckProperInitialization() {
