@@ -332,8 +332,8 @@ MonoBehaviour:
   TemplateCard: {fileID: 833097294}
   BoardContainer: {fileID: 1938627641}
   Hand: {fileID: 1419523775}
-  playerStatus: {fileID: 0}
-  enemyStatus: {fileID: 0}
+  playerStatus: {fileID: 1455160712}
+  enemyStatus: {fileID: 2060407186}
 --- !u!114 &37294270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2441,8 +2441,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 0
   mana: 0
-  healthDisplay: {fileID: 0}
-  manaDisplay: {fileID: 0}
+  healthDisplay: {fileID: 1215859887}
+  manaDisplay: {fileID: 400314458}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

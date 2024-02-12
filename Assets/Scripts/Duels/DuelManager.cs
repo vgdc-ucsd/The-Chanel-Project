@@ -198,10 +198,7 @@ public class DuelManager : MonoBehaviour
     {
         return (pos.y < 0);
     }
-    bool IsOutOfBounds(BoardCoords atkDest)
-    {
-        return atkDest.x < 0 || atkDest.x >= board.Cols || atkDest.y < 0 || atkDest.y >= board.Rows;
-    }
+
 
 
     private void ProcessAttack(Card card, Vector2Int atk, BoardCoords pos) {
@@ -218,12 +215,12 @@ public class DuelManager : MonoBehaviour
             return;
         }
         // Check for out of bounds 
-        if(IsOutOfBounds(atkDest)) return;
+        if(board.IsOutOfBounds(atkDest)) return;
         // Check for empty tile
-        if(board.CardSlots[atkDest.ToRowCol().x, atkDest.ToRowCol().y] == null) return;
+        if(board.GetCardAtPos(atkDest) == null) return;
         
         // Deal damage
-        Card target = board.CardSlots[atkDest.ToRowCol().x, atkDest.ToRowCol().y];
+        Card target = board.GetCardAtPos(atkDest);
         if(card.BelongsToPlayer != target.BelongsToPlayer) {
             target.Health -= card.Attack;
             modifiedCards.Add(target);
