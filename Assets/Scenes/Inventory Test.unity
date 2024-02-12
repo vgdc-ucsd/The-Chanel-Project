@@ -564,28 +564,14 @@ GameObject:
   m_Component:
   - component: {fileID: 898474643}
   - component: {fileID: 898474642}
-  - component: {fileID: 898474641}
+  - component: {fileID: 898474644}
   m_Layer: 0
-  m_Name: BoardContainer
+  m_Name: InventoryContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &898474641
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 898474640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8f2af6985996db46914b2e78f7135bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CellSize: {x: 100, y: 100}
-  GridSize: {x: 0, y: 0}
 --- !u!114 &898474642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -629,6 +615,20 @@ RectTransform:
   m_AnchoredPosition: {x: 434.66672, y: 345.8667}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &898474644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 898474640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66e16474f2211cc40a970344d0e3140a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CellSize: {x: 100, y: 100}
+  GridSize: {x: 0, y: 0}
 --- !u!1 &900324161
 GameObject:
   m_ObjectHideFlags: 0
