@@ -36,15 +36,10 @@ public class DuelManager : MonoBehaviour
     private Board board;
     private List<Card> modifiedCards = new List<Card>();
 
-    private void Awake()
-    {
-        DuelEvents.instance.onUpdateUI += UpdateHealth;
-    }
-
-
     // Start is called before the first frame update
     void Start()
     {
+        DuelEvents.instance.onUpdateUI += UpdateHealth;
         board = new Board(BoardRows, BoardCols);
         CheckProperInitialization();
         DuelEvents.instance.UpdateUI();
@@ -93,22 +88,23 @@ public class DuelManager : MonoBehaviour
 
     public void EnemyTurn() {
         GameObject[,] tileObjects = BoardContainer.GetComponent<BoardInterface>().Tiles;
-        List<TileInteractable> emptyTiles = new List<TileInteractable>();
+        List<TileInteractable> legalTiles = new List<TileInteractable>();
 
         foreach(GameObject g in tileObjects) {
-            if(g.GetComponent<TileInteractable>().occupied == false) {
-                emptyTiles.Add(g.GetComponent<TileInteractable>());
+            TileInteractable t = g.GetComponent<TileInteractable>();
+            if(t.occupied == false && t.location.x < board.Rows-1) { // can't place in row closest to player
+                legalTiles.Add(g.GetComponent<TileInteractable>());
             }
         }
 
-        if(emptyTiles.Count >= 1) {
+        if(legalTiles.Count >= 1) {
             int index = UnityEngine.Random.Range(0, PlayerDeck.CardList.Count);
             Card c = PlayerDeck.CardList[index];
             c = ScriptableObject.Instantiate(c);
             c.BelongsToPlayer = false;
             List<Vector2Int> mirroredAttacks = new List<Vector2Int>();
             foreach(Vector2Int v in c.AttackDirections) {
-                mirroredAttacks.Add(new Vector2Int(- v.x, v.y));
+                mirroredAttacks.Add(new Vector2Int(v.x, -v.y));
             }
             c.AttackDirections = mirroredAttacks;
             GameObject cardObject = Instantiate(TemplateCard);
@@ -117,7 +113,7 @@ public class DuelManager : MonoBehaviour
             ci.card = c;
             ci.SetCardInfo();
 
-            TileInteractable randomTile = emptyTiles[Random.Range(0, emptyTiles.Count)];
+            TileInteractable randomTile = legalTiles[Random.Range(0, legalTiles.Count)];
             c.TileInteractableRef = randomTile;
             ci.PlaceCard(randomTile);
             cardObject.transform.SetParent(randomTile.transform);
@@ -192,8 +188,10 @@ public class DuelManager : MonoBehaviour
         
         // Deal damage
         Card target = board.CardSlots[atkDest.x, atkDest.y];
-        target.Health -= card.Attack;
-        modifiedCards.Add(target);
+        if(card.BelongsToPlayer != target.BelongsToPlayer) {
+            target.Health -= card.Attack;
+            modifiedCards.Add(target);
+        }
     }
 
     private void CheckProperInitialization() {
