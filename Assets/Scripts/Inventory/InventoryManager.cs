@@ -36,4 +36,44 @@ public class InventoryManager : MonoBehaviour
     {
         InventoryContainer.GetComponent<InventoryInterface>().CreateInventory(inventory, TemplateTile);
     }
+
+    private void CheckProperInitialization()
+    {
+        if (inventory == null)
+        {
+            Debug.Log("Cannot create board, board is uninitialized");
+            return;
+        }
+        if (TemplateTile == null)
+        {
+            Debug.Log("Cannot create board, TemplateTile is uninitialized");
+            return;
+        }
+        if (InventoryContainer == null)
+        {
+            Debug.Log("Cannot create board, BoardContainer is uninitialized");
+            return;
+        }
+
+        if (InventoryContainer.GetComponent<BoardInterface>() == null)
+        {
+            Debug.Log("No BoardInterface found on BoardContainer, creating new BoardInterface");
+            InventoryContainer.AddComponent<BoardInterface>();
+        }
+        if (InventoryContainer.GetComponent<GridLayoutGroup>() == null)
+        {
+            Debug.Log("No GridLayoutGroup found on BoardContainer, creating new GridLayoutGroup");
+            InventoryContainer.AddComponent<GridLayoutGroup>();
+        }
+        if (InventoryContainer.GetComponent<RectTransform>() == null)
+        {
+            Debug.Log("No RectTransform found on BoardContainer, creating new RectTransform");
+            InventoryContainer.AddComponent<RectTransform>();
+        }
+        if (TemplateTile.GetComponent<TileInteractable>() == null)
+        {
+            Debug.Log("No TileInteractable found on TemplateTile, creating new TileInteractable");
+            TemplateTile.AddComponent<TileInteractable>();
+        }
+    }
 }
