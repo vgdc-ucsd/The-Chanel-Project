@@ -1,4 +1,10 @@
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 // The main manager for duels/combat, handles all things related to duels
 public class InventoryManager : MonoBehaviour
@@ -7,6 +13,14 @@ public class InventoryManager : MonoBehaviour
     public int InventoryRows;
     public int InventoryCols;
 
+    // "Blank" objects that are intantiated many times
+    public GameObject TemplateTile;
+    public GameObject TemplateCard;
+
+    // Interface GameObjects
+    public GameObject InventoryContainer;
+
+
     // Stores information on the current game state
     private Inventory inventory;
 
@@ -14,5 +28,12 @@ public class InventoryManager : MonoBehaviour
     void Start()
     {
         inventory = new Inventory(InventoryRows, InventoryCols);
+        InitializeInventory();
+    }
+
+    // Create new Inventory
+    private void InitializeInventory()
+    {
+        InventoryContainer.GetComponent<InventoryInterface>().CreateInventory(inventory, TemplateTile);
     }
 }
