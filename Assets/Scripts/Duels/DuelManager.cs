@@ -36,15 +36,10 @@ public class DuelManager : MonoBehaviour
     private Board board;
     private List<Card> modifiedCards = new List<Card>();
 
-    private void Awake()
-    {
-        DuelEvents.instance.onUpdateUI += UpdateHealth;
-    }
-
-
     // Start is called before the first frame update
     void Start()
     {
+        DuelEvents.instance.onUpdateUI += UpdateHealth;
         board = new Board(BoardRows, BoardCols);
         CheckProperInitialization();
         DuelEvents.instance.UpdateUI();
@@ -108,7 +103,7 @@ public class DuelManager : MonoBehaviour
             c.BelongsToPlayer = false;
             List<Vector2Int> mirroredAttacks = new List<Vector2Int>();
             foreach(Vector2Int v in c.AttackDirections) {
-                mirroredAttacks.Add(new Vector2Int(- v.x, v.y));
+                mirroredAttacks.Add(new Vector2Int(v.x, -v.y));
             }
             c.AttackDirections = mirroredAttacks;
             GameObject cardObject = Instantiate(TemplateCard);
