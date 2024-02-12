@@ -13,7 +13,13 @@ MonoBehaviour:
   m_Name: Deer
   m_EditorClassIdentifier: 
   Name: Deer
+  Health: 0
+  Attack: 0
+  Cost: 2
   Artwork: {fileID: 0}
+  BelongsToPlayer: 1
+  CardInteractableRef: {fileID: 0}
+  TileInteractableRef: {fileID: 0}
   AttackDirections:
-  - {x: 1, y: 0}
-  - {x: -1, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: -1}

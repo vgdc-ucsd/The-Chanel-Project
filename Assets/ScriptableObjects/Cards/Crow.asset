@@ -15,6 +15,10 @@ MonoBehaviour:
   Name: Crow
   Health: 1
   Attack: 1
+  Cost: 1
   Artwork: {fileID: 0}
+  BelongsToPlayer: 1
+  CardInteractableRef: {fileID: 0}
+  TileInteractableRef: {fileID: 0}
   AttackDirections:
-  - {x: 1, y: 1}
+  - {x: -1, y: 1}
