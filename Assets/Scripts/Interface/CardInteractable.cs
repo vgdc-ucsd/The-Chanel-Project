@@ -142,7 +142,9 @@ public class CardInteractable : MonoBehaviour,
                 }
             }
 
-            PlaceCard(tile);
+            if(tile.location.x >= 1) { // can't place in the row closest to enemy
+                PlaceCard(tile);
+            }
 
             // Reorganize the player's hand
             if(handInterface == null) {

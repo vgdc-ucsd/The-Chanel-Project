@@ -88,15 +88,16 @@ public class DuelManager : MonoBehaviour
 
     public void EnemyTurn() {
         GameObject[,] tileObjects = BoardContainer.GetComponent<BoardInterface>().Tiles;
-        List<TileInteractable> emptyTiles = new List<TileInteractable>();
+        List<TileInteractable> legalTiles = new List<TileInteractable>();
 
         foreach(GameObject g in tileObjects) {
-            if(g.GetComponent<TileInteractable>().occupied == false) {
-                emptyTiles.Add(g.GetComponent<TileInteractable>());
+            TileInteractable t = g.GetComponent<TileInteractable>();
+            if(t.occupied == false && t.location.x < board.Rows-1) { // can't place in row closest to player
+                legalTiles.Add(g.GetComponent<TileInteractable>());
             }
         }
 
-        if(emptyTiles.Count >= 1) {
+        if(legalTiles.Count >= 1) {
             int index = UnityEngine.Random.Range(0, PlayerDeck.CardList.Count);
             Card c = PlayerDeck.CardList[index];
             c = ScriptableObject.Instantiate(c);
@@ -112,7 +113,7 @@ public class DuelManager : MonoBehaviour
             ci.card = c;
             ci.SetCardInfo();
 
-            TileInteractable randomTile = emptyTiles[Random.Range(0, emptyTiles.Count)];
+            TileInteractable randomTile = legalTiles[Random.Range(0, legalTiles.Count)];
             c.TileInteractableRef = randomTile;
             ci.PlaceCard(randomTile);
             cardObject.transform.SetParent(randomTile.transform);
