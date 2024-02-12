@@ -1,3 +1,5 @@
+// CODE ENTIRELY RIPPED FROM ETHAN S COMMITS
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine; 

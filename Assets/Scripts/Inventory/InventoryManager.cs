@@ -1,3 +1,5 @@
+// CODE ENTIRELY RIPPED FROM ETHAN S COMMITS
+
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -29,6 +31,7 @@ public class InventoryManager : MonoBehaviour
     {
         inventory = new Inventory(InventoryRows, InventoryCols);
         InitializeInventory();
+        CheckProperInitialization();
     }
 
     // Create new Inventory
