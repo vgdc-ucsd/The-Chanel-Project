@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 
 // Allows a card to be created fropm the menu when right clicking in the inspector
-[CreateAssetMenu(menuName = "Cards/Card")]
+[CreateAssetMenu(fileName = "New Card", menuName = "Cards/Card")]
 
 // Stores data on any given card in the game
 public class Card : ScriptableObject

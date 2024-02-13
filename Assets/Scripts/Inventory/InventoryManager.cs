@@ -11,24 +11,29 @@ using UnityEngine.UI;
 // The main manager for duels/combat, handles all things related to duels
 public class InventoryManager : MonoBehaviour
 {
-    // Sets the size of the board
-    public int InventoryRows;
+    // Sets the size of the board, *rows are infinite/based on deck size*
+    private int InventoryRows;
     public int InventoryCols;
 
-    // "Blank" objects that are intantiated many times
-    public GameObject TemplateTile;
-    public GameObject TemplateCard;
+    // Stores the card slots 
+    public GameObject cardSlots;
+
+    //PlayerDeck ScriptableObject 
+    public Deck PlayerDeck;
 
     // Interface GameObjects
     public GameObject InventoryContainer;
 
 
-    // Stores information on the current game state
+    // Reference to BaseInventory ScriptableObject
     private Inventory inventory;
 
     // Start is called before the first frame update
     void Start()
     {
+        // round up the division to find # of rows needed
+        InventoryRows = (PlayerDeck.CardList.Count + InventoryCols - 1) / InventoryCols;
+
         inventory = new Inventory(InventoryRows, InventoryCols);
         InitializeInventory();
         CheckProperInitialization();
@@ -37,7 +42,8 @@ public class InventoryManager : MonoBehaviour
     // Create new Inventory
     private void InitializeInventory()
     {
-        InventoryContainer.GetComponent<InventoryInterface>().CreateInventory(inventory, TemplateTile);
+        InventoryContainer.GetComponent<InventoryInterface>().CreateInventory(inventory, PlayerDeck);
+        //InventoryContainer.GetComponent<InventoryInterface>().CreateInventory(inventory, cardSlots);
     }
 
     private void CheckProperInitialization()
@@ -47,7 +53,7 @@ public class InventoryManager : MonoBehaviour
             Debug.Log("Cannot create board, board is uninitialized");
             return;
         }
-        if (TemplateTile == null)
+        if (cardSlots == null)
         {
             Debug.Log("Cannot create board, TemplateTile is uninitialized");
             return;
@@ -73,10 +79,10 @@ public class InventoryManager : MonoBehaviour
             Debug.Log("No RectTransform found on BoardContainer, creating new RectTransform");
             InventoryContainer.AddComponent<RectTransform>();
         }
-        if (TemplateTile.GetComponent<TileInteractable>() == null)
+        if (cardSlots.GetComponent<TileInteractable>() == null)
         {
             Debug.Log("No TileInteractable found on TemplateTile, creating new TileInteractable");
-            TemplateTile.AddComponent<TileInteractable>();
+            cardSlots.AddComponent<TileInteractable>();
         }
     }
 }
