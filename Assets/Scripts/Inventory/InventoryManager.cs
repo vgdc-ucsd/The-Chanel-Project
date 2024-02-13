@@ -1,5 +1,4 @@
-// CODE ENTIRELY RIPPED FROM ETHAN S COMMITS
-
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,75 +7,82 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-// The main manager for duels/combat, handles all things related to duels
 public class InventoryManager : MonoBehaviour
 {
-    // Sets the size of the board
-    public int InventoryRows;
-    public int InventoryCols;
+    public int maxItems = 10;
+    public List<InventoryItemData> items;
+    public InventoryUI inventoryUI;
 
-    // "Blank" objects that are intantiated many times
-    public GameObject TemplateTile;
-    public GameObject TemplateCard;
-
-    // Interface GameObjects
-    public GameObject InventoryContainer;
-
-
-    // Stores information on the current game state
-    private Inventory inventory;
-
-    // Start is called before the first frame update
     void Start()
     {
-        inventory = new Inventory(InventoryRows, InventoryCols);
+        // Create a new list at the start
         InitializeInventory();
-        CheckProperInitialization();
+
+        inventoryUI = FindObjectOfType<InventoryUI>();
     }
 
-    // Create new Inventory
     private void InitializeInventory()
     {
-        InventoryContainer.GetComponent<InventoryInterface>().CreateInventory(inventory, TemplateTile);
+        items = new List<InventoryItemData>(maxItems);
     }
 
-    private void CheckProperInitialization()
+    public void AddItem(InventoryItemData inventoryItem)
     {
-        if (inventory == null)
+        if (items.Count < maxItems)
         {
-            Debug.Log("Cannot create board, board is uninitialized");
-            return;
+            items.Add(inventoryItem);
         }
-        if (TemplateTile == null)
+        else
         {
-            Debug.Log("Cannot create board, TemplateTile is uninitialized");
-            return;
-        }
-        if (InventoryContainer == null)
-        {
-            Debug.Log("Cannot create board, BoardContainer is uninitialized");
-            return;
+            Debug.Log("No space in inventory");
         }
 
-        if (InventoryContainer.GetComponent<BoardInterface>() == null)
+        inventoryUI.RefreshInventoryItems();
+    }
+
+    public void RemoveItem(InventoryItemData itemToRemove)
+    {
+        items.Remove(itemToRemove);
+
+        inventoryUI.RefreshInventoryItems();
+    }
+
+    // Quicksort to sort 'items' list by name (in ascending order)
+    public List<InventoryItemData> SortItemsByName(List<InventoryItemData> inventoryItemDatas, int leftIndex, int rightIndex)
+    {
+        var i = leftIndex;
+        var j = rightIndex;
+        var pivot = inventoryItemDatas[leftIndex];
+
+        while (i <= j)
         {
-            Debug.Log("No BoardInterface found on BoardContainer, creating new BoardInterface");
-            InventoryContainer.AddComponent<BoardInterface>();
+            while (String.Compare(inventoryItemDatas[i].name, pivot.name) < 0)
+            // inventoryItemDatas[i].name < pivot.name)
+            {
+                i++;
+            }
+
+            while (String.Compare(inventoryItemDatas[j].name, pivot.name) > 0)
+            {
+                j--;
+            }
+
+            if (i <= j)
+            {
+                InventoryItemData temp = inventoryItemDatas[i];
+                inventoryItemDatas[i] = inventoryItemDatas[j];
+                inventoryItemDatas[j] = temp;
+                i++;
+                j--;
+            }
         }
-        if (InventoryContainer.GetComponent<GridLayoutGroup>() == null)
-        {
-            Debug.Log("No GridLayoutGroup found on BoardContainer, creating new GridLayoutGroup");
-            InventoryContainer.AddComponent<GridLayoutGroup>();
-        }
-        if (InventoryContainer.GetComponent<RectTransform>() == null)
-        {
-            Debug.Log("No RectTransform found on BoardContainer, creating new RectTransform");
-            InventoryContainer.AddComponent<RectTransform>();
-        }
-        if (TemplateTile.GetComponent<TileInteractable>() == null)
-        {
-            Debug.Log("No TileInteractable found on TemplateTile, creating new TileInteractable");
-            TemplateTile.AddComponent<TileInteractable>();
-        }
+
+        if (leftIndex < j)
+            SortItemsByName(inventoryItemDatas, leftIndex, j);
+
+        if (i < rightIndex)
+            SortItemsByName(inventoryItemDatas, i, rightIndex);
+
+        return inventoryItemDatas;
     }
 }
