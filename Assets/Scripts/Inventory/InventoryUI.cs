@@ -12,7 +12,7 @@ public class InventoryUI : MonoBehaviour
     // This method assigns inventorySlotContainer & inventorySlotTemplate
     private void Awake()
     {
-        inventorySlotContainer = transform.Find("InventorySlotContainer");
+        inventorySlotContainer = transform.Find("Scroll View/Viewport/InventorySlotContainer");
         inventorySlotTemplate = inventorySlotContainer.Find("InventorySlotTemplate");
     }
 
