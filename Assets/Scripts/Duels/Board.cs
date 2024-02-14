@@ -14,4 +14,15 @@ public class Board
         Rows = rows;
         Cols = cols;
     }
+
+    public Card GetCardAtPos(BoardCoords pos)
+    {
+        if (IsOutOfBounds(pos)) return null;
+        return CardSlots[pos.ToRowColV2().x,pos.ToRowColV2().y];
+    }
+
+    public bool IsOutOfBounds(BoardCoords atkDest)
+    {
+        return atkDest.x < 0 || atkDest.x >= Cols || atkDest.y < 0 || atkDest.y >= Rows;
+    }
 }

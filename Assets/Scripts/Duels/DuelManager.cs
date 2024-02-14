@@ -9,6 +9,10 @@ using UnityEngine.UI;
 // The main manager for duels/combat, handles all things related to duels
 public class DuelManager : MonoBehaviour
 {
+    public static DuelManager instance;
+    //GAME SETTINGS
+    public static bool restrictPlacement = false;
+
     // Sets the size of the board
     public int BoardRows;
     public int BoardCols;
@@ -26,20 +30,25 @@ public class DuelManager : MonoBehaviour
     public GameObject Hand;
     private HandInterface handInterface;
 
+    [SerializeField]
+    CharStatus playerStatus, enemyStatus;
+
     // Health
-    public TextMeshProUGUI PlayerHealthDisplay;
-    public TextMeshProUGUI EnemyHealthDisplay;
-    public int PlayerHealth = 10;
-    public int EnemyHealth = 10;
 
     // Stores information on the current game state
     private Board board;
     private List<Card> modifiedCards = new List<Card>();
 
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
-        DuelEvents.instance.onUpdateUI += UpdateHealth;
         board = new Board(BoardRows, BoardCols);
         CheckProperInitialization();
         DuelEvents.instance.UpdateUI();
@@ -50,10 +59,7 @@ public class DuelManager : MonoBehaviour
     // Diplays health values in the UI
 
 
-    private void UpdateHealth() {
-        PlayerHealthDisplay.text = "" + PlayerHealth;
-        EnemyHealthDisplay.text = "" + EnemyHealth;
-    }
+
     
 
     // Create new board
@@ -92,9 +98,16 @@ public class DuelManager : MonoBehaviour
 
         foreach(GameObject g in tileObjects) {
             TileInteractable t = g.GetComponent<TileInteractable>();
+            if (t.occupied == false)
+            { // can't place in row closest to player
+                legalTiles.Add(g.GetComponent<TileInteractable>());
+            }
+
+            /*
             if(t.occupied == false && t.location.x < board.Rows-1) { // can't place in row closest to player
                 legalTiles.Add(g.GetComponent<TileInteractable>());
             }
+            */
         }
 
         if(legalTiles.Count >= 1) {
@@ -129,7 +142,7 @@ public class DuelManager : MonoBehaviour
         for(int i = 0; i < board.Rows; i++) {
             for(int j = 0; j < board.Cols; j++) {
                 if(board.CardSlots[i, j] != null) {
-                    ProcessCard(playerAttack, board.CardSlots[i, j], i, j);
+                    ProcessCard(playerAttack, board.CardSlots[i, j], BoardCoords.FromRowCol(i, j));
                 }
             }
         }
@@ -152,42 +165,62 @@ public class DuelManager : MonoBehaviour
         DuelEvents.instance.UpdateUI();
     }
 
-    private void ProcessCard(bool playerAttack, Card card, int r, int c) {
+    private void ProcessCard(bool playerAttack, Card card, BoardCoords pos) {
         // Player cards only attack on player's turn
         if(card.BelongsToPlayer && playerAttack) {
             foreach(Vector2Int atk in card.AttackDirections) {
-                ProcessAttack(card, atk, r, c);
+                ProcessAttack(card, atk, pos);
             }
         }
         // Enemy cards only attack on enemy's turn
         else if(!card.BelongsToPlayer && !playerAttack) {
             foreach(Vector2Int atk in card.AttackDirections) {
-                ProcessAttack(card, atk, r, c);
+                ProcessAttack(card, atk, pos);
             }
         }
         
     }
 
-    private void ProcessAttack(Card card, Vector2Int atk, int r, int c) {
-        Vector2Int atkDest = new Vector2Int(r-atk.y, c+atk.x); // x is row, y is col, atk.y is flipped
+    bool OnEnemyEdge(BoardCoords pos)
+    {
+        return (pos.y == BoardRows - 1);
+    }
+    bool BeyondEnemyEdge(BoardCoords pos)
+    {
+        return (pos.y > BoardRows - 1);
+    }
+
+    bool OnPlayerEdge(BoardCoords pos)
+    {
+        return (pos.y == 0);
+    }
+    bool BeyondPlayerEdge(BoardCoords pos)
+    {
+        return (pos.y < 0);
+    }
+
+
+
+    private void ProcessAttack(Card card, Vector2Int atk, BoardCoords pos) {
+        BoardCoords atkDest = pos + new BoardCoords(atk);
 
         // Attack targeting enemy
-        if(atkDest.x < 0 && card.BelongsToPlayer) {
-            EnemyHealth -= card.Attack;
+        if(BeyondEnemyEdge(atkDest) && card.BelongsToPlayer) {
+            enemyStatus.DealDamage(card.Attack);
             return;
         }
         // Attack targeting player
-        if(atkDest.x >= board.Rows && !card.BelongsToPlayer) {
-            PlayerHealth -= card.Attack;
+        if(BeyondPlayerEdge(atkDest) && !card.BelongsToPlayer) {
+            playerStatus.DealDamage(card.Attack);
             return;
         }
         // Check for out of bounds 
-        if(atkDest.x < 0 || atkDest.x >= board.Rows || atkDest.y < 0 || atkDest.y >= board.Cols) return;
+        if(board.IsOutOfBounds(atkDest)) return;
         // Check for empty tile
-        if(board.CardSlots[atkDest.x, atkDest.y] == null) return;
+        if(board.GetCardAtPos(atkDest) == null) return;
         
         // Deal damage
-        Card target = board.CardSlots[atkDest.x, atkDest.y];
+        Card target = board.GetCardAtPos(atkDest);
         if(card.BelongsToPlayer != target.BelongsToPlayer) {
             target.Health -= card.Attack;
             modifiedCards.Add(target);
@@ -199,10 +232,12 @@ public class DuelManager : MonoBehaviour
             Debug.Log("Could not start duel, decks are uninitalized");
             return;
         }
+        /*
         if(PlayerHealthDisplay == null || EnemyHealthDisplay == null) {
             Debug.Log("Could not start duel, health displays are uninitalized");
             return;
         }
+        */
         if(board == null) {
             Debug.Log("Cannot create board, board is uninitialized");
             return;

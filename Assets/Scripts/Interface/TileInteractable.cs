@@ -7,5 +7,6 @@ using UnityEngine.EventSystems;
 public class TileInteractable : MonoBehaviour
 {
     [HideInInspector] public bool occupied = false;
-    [HideInInspector] public Vector2Int location;
+    [HideInInspector] public Vector2Int location; //DEPRECATED 
+    [HideInInspector] public BoardCoords locationNew;
 }

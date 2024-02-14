@@ -9,6 +9,7 @@ public class DuelEvents : MonoBehaviour
     public static DuelEvents instance;
     [SerializeField]
 
+    
     private void Awake()
     {
         instance = this;

@@ -13,7 +13,7 @@ public class Card : ScriptableObject
     public string Name;
     public int Health;
     public int Attack;
-    public int Cost; // Should range from 0 to 4
+    public int ManaCost;
 
     // The image that is displayed on the card
     public Texture2D Artwork;
