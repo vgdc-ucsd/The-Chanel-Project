@@ -7,8 +7,7 @@ using UnityEngine;
 // Manages the player's and interactions with their hand
 public class HandInterface : MonoBehaviour
 {
-    public Deck PlayerDeck;
-    public GameObject TemplateCard;
+    public CardInteractable TemplateCard;
     [HideInInspector] public List<GameObject> cards = new List<GameObject>();
 
     // Determines how much the cards rotate in the player's hand
@@ -19,27 +18,24 @@ public class HandInterface : MonoBehaviour
     private float arcIntensity = 15f;
 
     // Adds a number of cards to the player's hand
-    public void Draw(int count) {
-        if(PlayerDeck == null) {
-            Debug.Log("Could not draw cards, deck is uninitialized");
-            return;
-        }
+
+    void Awake() {
+        DuelEvents.instance.OnDrawCardPlayer += Draw;
+    }
+
+    public void Draw(Card c) {
         if(TemplateCard == null) {
             Debug.Log("Could not draw cards, TemplateCard is uninitialized");
             return;
         }
 
         // Draw a random card from the deck (doesn't remove from deck)
-        for(int i = 0; i < count; i++) {
-            int index = UnityEngine.Random.Range(0, PlayerDeck.CardList.Count);
-            Card c = PlayerDeck.CardList[index];
-            c = ScriptableObject.Instantiate(c);
-            c.BelongsToPlayer = true; // only player cards
-            GameObject cardObject = Instantiate(TemplateCard);
-            SetCard(c, cardObject);
-            cardObject.transform.SetParent(this.transform);
-            cards.Add(cardObject);
-        }
+        c = ScriptableObject.Instantiate(c);
+        c.BelongsToPlayer = true; // only player cards
+        GameObject cardObject = Instantiate(TemplateCard.gameObject);
+        SetCard(c, cardObject);
+        cardObject.transform.SetParent(this.transform);
+        cards.Add(cardObject);
 
         OrganizeCards();
     }

@@ -305,6 +305,7 @@ GameObject:
   - component: {fileID: 37294271}
   - component: {fileID: 37294270}
   - component: {fileID: 37294269}
+  - component: {fileID: 37294274}
   m_Layer: 0
   m_Name: DuelManager(Canvas)
   m_TagString: Untagged
@@ -324,16 +325,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a2ff4bab6d28c640975ea9cc37965d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoardRows: 3
-  BoardCols: 4
+  Settings:
+    SameSettingsForBothPlayers: 1
+    Player:
+      StartingHealth: 10
+      MaxHealth: 10
+      MaxHealthEnabled: 0
+      StartingMana: 0
+      MaxMana: 4
+      MaxManaEnabled: 1
+      StartingCards: 4
+    Enemy:
+      StartingHealth: 10
+      MaxHealth: 10
+      MaxHealthEnabled: 0
+      StartingMana: 0
+      MaxMana: 4
+      MaxManaEnabled: 1
+      StartingCards: 4
+    BoardRows: 3
+    BoardCols: 4
+    EnemyGoesFirst: 0
+    EnablePVPMode: 0
+    RestrictPlacement: 0
+    UnlimitedMana: 0
   PlayerDeck: {fileID: 11400000, guid: 1b62fd89b8fe4734eb4697de89df34b7, type: 2}
   EnemyDeck: {fileID: 11400000, guid: 3fee81777dd337d44af028e8dc03f5ee, type: 2}
-  TemplateTile: {fileID: 603799361}
-  TemplateCard: {fileID: 833097294}
-  BoardContainer: {fileID: 1938627641}
-  Hand: {fileID: 1419523775}
-  playerStatus: {fileID: 1455160712}
-  enemyStatus: {fileID: 2060407186}
+  UI: {fileID: 37294274}
 --- !u!114 &37294270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -423,6 +441,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &37294274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37294268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80ecf4e2b0aa99a4a8a8726d8e736d6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TemplateTile: {fileID: 603799365}
+  TemplateCard: {fileID: 833097295}
+  BoardContainer: {fileID: 1938627644}
+  Hand: {fileID: 1419523776}
+  Player: {fileID: 1455160712}
+  Enemy: {fileID: 2060407186}
 --- !u!1 &161343925
 GameObject:
   m_ObjectHideFlags: 0
@@ -846,7 +882,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   card: {fileID: 0}
   handInterface: {fileID: 0}
-  duelManager: {fileID: 37294269}
   raycaster: {fileID: 37294270}
   TemplateArrowPlayer: {fileID: 348994193}
   TemplateArrowEnemy: {fileID: 989436759}
@@ -1761,7 +1796,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bbc942fe63ff1b4b8684a088de4f5c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerDeck: {fileID: 0}
   TemplateCard: {fileID: 0}
   cards: []
 --- !u!224 &1419523777
@@ -1830,13 +1864,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1455160710}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d88e92a2d504af40bfebf41ccb7fa36, type: 3}
+  m_Script: {fileID: 11500000, guid: dce0fb294e3aa4145be8c9a48bdc0d25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
-  mana: 0
-  healthDisplay: {fileID: 914697323}
-  manaDisplay: {fileID: 1594936779}
+  HealthText: {fileID: 914697323}
+  ManaText: {fileID: 1594936779}
 --- !u!1 &1469199772
 GameObject:
   m_ObjectHideFlags: 0
@@ -2436,13 +2468,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2060407184}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d88e92a2d504af40bfebf41ccb7fa36, type: 3}
+  m_Script: {fileID: 11500000, guid: dce0fb294e3aa4145be8c9a48bdc0d25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
-  mana: 0
-  healthDisplay: {fileID: 1215859887}
-  manaDisplay: {fileID: 400314458}
+  HealthText: {fileID: 1215859887}
+  ManaText: {fileID: 400314458}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

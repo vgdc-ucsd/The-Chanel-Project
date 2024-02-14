@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 // Creates and manages UI components related to the board
 public class BoardInterface : MonoBehaviour
@@ -14,7 +15,10 @@ public class BoardInterface : MonoBehaviour
     // Holds all board tile GameObjects
     public GameObject[,] Tiles;
 
-    public void CreateBoard(Board board, GameObject templateTile) {
+    public void CreateBoard(DuelSettings settings, TileInteractable templateTile) {
+        int rows = settings.BoardRows;
+        int cols = settings.BoardCols;
+
         // Destroy all old tiles
         if(Tiles != null) {
             foreach(GameObject t in Tiles) {
@@ -22,12 +26,12 @@ public class BoardInterface : MonoBehaviour
             }
         }
 
-        Tiles = new GameObject[board.Rows, board.Cols];
+        Tiles = new GameObject[rows, cols];
 
         // Initialze new tiles
-        for(int i = 0; i < board.Rows; i++) {
-            for(int j = 0; j < board.Cols; j++) {
-                GameObject tile = Instantiate(templateTile);
+        for(int i = 0; i < rows; i++) {
+            for(int j = 0; j < cols; j++) {
+                GameObject tile = Instantiate(templateTile.gameObject);
                 tile.GetComponent<TileInteractable>().location = new Vector2Int(i, j);
                 tile.transform.SetParent(this.transform);
                 tile.transform.localScale = Vector3.one;
@@ -37,8 +41,19 @@ public class BoardInterface : MonoBehaviour
         }
 
         // Set sizes
-        GridSize = new Vector2(CellSize.x * board.Cols, CellSize.y * board.Rows);
+        GridSize = new Vector2(CellSize.x * cols, CellSize.y * rows);
         RectTransform rt = GetComponent<RectTransform>();
         rt.sizeDelta = GridSize;
+    }
+
+    public void CheckProperInitialization() {
+        if(GetComponent<GridLayoutGroup>() == null) {
+            Debug.LogWarning("No GridLayoutGroup found on BoardContainer, creating new GridLayoutGroup");
+            gameObject.AddComponent<GridLayoutGroup>();
+        }
+        if(GetComponent<RectTransform>() == null) {
+            Debug.LogWarning("No RectTransform found on BoardContainer, creating new RectTransform");
+            gameObject.AddComponent<RectTransform>();
+        }
     }
 }

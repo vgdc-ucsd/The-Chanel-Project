@@ -24,12 +24,12 @@ public struct BoardCoords
 
 	public BoardCoords ToRowCol()
 	{
-		return new BoardCoords(DuelManager.instance.BoardRows - y - 1, x);
+		return new BoardCoords(DuelManager.instance.Settings.BoardRows - y - 1, x);
 	}
 
 	public Vector2Int ToRowColV2()
 	{
-		return new Vector2Int(DuelManager.instance.BoardRows - y - 1, x);
+		return new Vector2Int(DuelManager.instance.Settings.BoardRows - y - 1, x);
 	}
 
 	public static BoardCoords FromRowCol(Vector2Int boardPos)
@@ -38,7 +38,7 @@ public struct BoardCoords
 	}
     public static BoardCoords FromRowCol(int r, int c)
     {
-		return new BoardCoords(c, DuelManager.instance.BoardRows - r - 1);
+		return new BoardCoords(c, DuelManager.instance.Settings.BoardRows - r - 1);
 
     }
 

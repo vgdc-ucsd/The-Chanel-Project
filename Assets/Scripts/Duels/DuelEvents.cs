@@ -33,5 +33,21 @@ public class DuelEvents : MonoBehaviour
     {
         if (onUpdateUI != null) onUpdateUI();
     }
-    
+
+    public void DrawCardPlayer(Card c)
+    {
+        if (OnDrawCardPlayer != null) OnDrawCardPlayer(c);
+        if (OnDrawCardAny != null) OnDrawCardAny(c);
+
+    }
+    public event Action<Card> OnDrawCardPlayer;
+
+    public void DrawCardEnemy(Card c)
+    {
+        if (OnDrawCardEnemy != null) OnDrawCardEnemy(c);
+        if (OnDrawCardAny != null) OnDrawCardAny(c);
+    }
+
+    public event Action<Card> OnDrawCardEnemy;
+    public event Action<Card> OnDrawCardAny;
 }
