@@ -12,7 +12,7 @@ public class PlayerUI : MonoBehaviour
     public CharStatus Status;
 
     void Awake() {
-        DuelEvents.instance.onUpdateUI += UpdateUI;
+        DuelEvents.Instance.onUpdateUI += UpdateUI;
     }
 
     private void UpdateUI() {

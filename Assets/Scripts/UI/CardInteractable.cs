@@ -13,8 +13,6 @@ public class CardInteractable : MonoBehaviour,
     IEndDragHandler,
     IDragHandler
 {
-
-
     // Data for the card it contains
     [HideInInspector] public Card card;
 
@@ -22,7 +20,6 @@ public class CardInteractable : MonoBehaviour,
     [HideInInspector] public HandInterface handInterface;
 
     // fields set through inspector
-    public DuelController DC; 
     public GraphicRaycaster raycaster; 
     public GameObject TemplateArrowPlayer;
     public GameObject TemplateArrowEnemy;
@@ -41,7 +38,7 @@ public class CardInteractable : MonoBehaviour,
 
     public void Awake()
     {
-        DuelEvents.instance.onUpdateUI += UpdateCardInfo;
+        DuelEvents.Instance.onUpdateUI += UpdateCardInfo;
     }
 
     public void DrawArrows() {
@@ -54,14 +51,14 @@ public class CardInteractable : MonoBehaviour,
                 arrow = Instantiate(TemplateArrowEnemy);
             }
             
+            arrow.transform.eulerAngles = new Vector3(0, 0, Vector2.SignedAngle(Vector2.up, v));
+            arrow.transform.SetParent(this.transform);
+            arrow.transform.localPosition = Vector3.zero;
             arrow.transform.localScale = new Vector3(
                 arrow.transform.localScale.x,
                 v.magnitude/2,
                 1
             );
-            arrow.transform.eulerAngles = new Vector3(0, 0, Vector2.SignedAngle(Vector2.up, v));
-            arrow.transform.SetParent(this.transform);
-            arrow.transform.localPosition = Vector3.zero;
             arrow.SetActive(true);
         }
     }
@@ -95,7 +92,7 @@ public class CardInteractable : MonoBehaviour,
             transform.SetParent(tile.transform);
             transform.localScale = Vector3.one;
             DrawArrows();
-            DuelManager.instance.DC.PlayCard(card, tile.location.x, tile.location.y); // x is row y is col 
+            DuelManager.Instance.DC.PlayCard(card, tile.location.x, tile.location.y); // x is row y is col 
         }
     }
 
@@ -142,7 +139,7 @@ public class CardInteractable : MonoBehaviour,
                 }
             }
 
-            if (!DuelManager.instance.DC.Settings.RestrictPlacement) PlaceCard(tile);
+            if (!DuelManager.Instance.Settings.RestrictPlacement) PlaceCard(tile);
             else if (tile.location.x >= 1) { // can't place in the row closest to enemy
                 PlaceCard(tile);
             }
@@ -163,10 +160,6 @@ public class CardInteractable : MonoBehaviour,
         }
         if(TemplateArrowEnemy == null) {
             Debug.LogError("Could not create hand, TemplateCard is has no TemplateArrowEnemy");
-            return;
-        }
-        if(DC == null) {
-            Debug.LogError("Could not create hand, no DuelController on this card");
             return;
         }
     }

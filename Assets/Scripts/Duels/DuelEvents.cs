@@ -6,13 +6,12 @@ using UnityEngine;
 
 public class DuelEvents : MonoBehaviour
 {
-    public static DuelEvents instance;
-    [SerializeField]
+    public static DuelEvents Instance;
 
-    
     private void Awake()
     {
-        instance = this;
+        if (Instance != null && Instance != this) Destroy(this);
+        else Instance = this;
     }
 
     public event Action onDebug;

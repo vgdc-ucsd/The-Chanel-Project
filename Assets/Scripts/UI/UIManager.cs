@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    //[SerializeField]
-    //TextMeshProUGUI healthDisplay, manaDisplay;
-
     // "Blank" objects that are intantiated many times
     public TileInteractable TemplateTile;
     public CardInteractable TemplateCard;
@@ -20,16 +17,12 @@ public class UIManager : MonoBehaviour
     public PlayerUI Player;
     public PlayerUI Enemy;
 
-    public void SetupBoard(DuelSettings settings) {
-        BoardContainer.CreateBoard(settings, TemplateTile);
+    public void SetupBoard() {
+        BoardContainer.CreateBoard();
     }
 
     public void SetupHand() {
         Hand.TemplateCard = TemplateCard;
-    }
-
-    public void SetDuelController(DuelController duelController) {
-        TemplateCard.DC = duelController;
     }
 
     public void CheckProperInitialization() {

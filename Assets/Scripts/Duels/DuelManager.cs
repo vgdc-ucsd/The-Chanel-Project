@@ -9,6 +9,9 @@ using UnityEngine.UI;
 // The main manager for duels/combat, handles all things related to duels
 public class DuelManager : MonoBehaviour
 {
+    // Singleton
+    public static DuelManager Instance;
+
     // Game Settings
     public DuelSettings Settings;
 
@@ -22,24 +25,21 @@ public class DuelManager : MonoBehaviour
     // Script that handles logic for the duels
     public DuelController DC;
 
-    public static DuelManager instance;
-
-    // Start is called before the first frame update
-
     void Awake() {
-        instance = this;
+        if (Instance != null && Instance != this) Destroy(this);
+        else Instance = this;
     }
 
+    // Start is called before the first frame update
     void Start()
     {
-        DC = new DuelController(Settings, UI, PlayerDeck, EnemyDeck);
-        UI.SetDuelController(DC); // move?
-
         CheckProperInitialization();
-        UI.SetupBoard(Settings);
+        DC = new DuelController();
+        UI.SetupBoard();
         UI.SetupHand();
+        DuelEvents.Instance.UpdateUI();
 
-        DuelEvents.instance.UpdateUI();
+        DC.StartDuel();
     }
 
     private void CheckProperInitialization() {

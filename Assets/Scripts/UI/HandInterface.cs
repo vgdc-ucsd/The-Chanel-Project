@@ -20,7 +20,7 @@ public class HandInterface : MonoBehaviour
     // Adds a number of cards to the player's hand
 
     void Awake() {
-        DuelEvents.instance.OnDrawCardPlayer += Draw;
+        DuelEvents.Instance.OnDrawCardPlayer += Draw;
     }
 
     public void Draw(Card c) {
@@ -35,6 +35,7 @@ public class HandInterface : MonoBehaviour
         GameObject cardObject = Instantiate(TemplateCard.gameObject);
         SetCard(c, cardObject);
         cardObject.transform.SetParent(this.transform);
+        cardObject.transform.localScale = Vector3.one;
         cards.Add(cardObject);
 
         OrganizeCards();

@@ -5,22 +5,24 @@ using UnityEngine;
 public class DuelController
 {
     private bool isEnemyTurn;
-    public DuelSettings Settings;
+    private DuelSettings settings;
     private Board board;
     private PlayerSettings playerSettings, enemySettings;
     private CharStatus playerStatus, enemyStatus;
-    private UIManager UI;
+    private UIManager ui;
     private List<Card> modifiedCards = new List<Card>();
     private Deck playerDeck;
     private Deck enemyDeck;
+    private BasicDuelAI ai;
 
-    public DuelController(DuelSettings settings, UIManager UI, Deck playerDeck, Deck enemyDeck) {
-        Settings = settings;
+    public DuelController() {
+        settings = DuelManager.Instance.Settings;
+        ui = DuelManager.Instance.UI;
+        playerDeck = DuelManager.Instance.PlayerDeck;
+        enemyDeck = DuelManager.Instance.PlayerDeck;
 
         isEnemyTurn = settings.EnemyGoesFirst;
         board = new Board(settings.BoardRows, settings.BoardCols);
-        this.playerDeck = playerDeck;
-        this.enemyDeck = enemyDeck;
         playerSettings = settings.Player;
         enemySettings = settings.Enemy;
 
@@ -30,8 +32,15 @@ public class DuelController
         playerStatus = new CharStatus(playerSettings);
         enemyStatus = new CharStatus(enemySettings);
 
-        UI.Player.Status = playerStatus;
-        UI.Enemy.Status = enemyStatus;
+        ui.Player.Status = playerStatus;
+        ui.Enemy.Status = enemyStatus;
+
+        ai = new BasicDuelAI();
+    }
+
+    public void StartDuel() {
+        DrawCardPlayer(playerSettings.StartingCards);
+        DrawCardEnemy(enemySettings.StartingCards);
     }
 
     // Updates the board with the card played at the desired index
@@ -71,7 +80,7 @@ public class DuelController
         }
         modifiedCards.Clear();
 
-        DuelEvents.instance.UpdateUI();
+        DuelEvents.Instance.UpdateUI();
     }
 
     private void ProcessCard(Card card, BoardCoords pos) {
@@ -92,11 +101,11 @@ public class DuelController
 
     bool OnEnemyEdge(BoardCoords pos)
     {
-        return (pos.y == Settings.BoardRows - 1);
+        return (pos.y == settings.BoardRows - 1);
     }
     bool BeyondEnemyEdge(BoardCoords pos)
     {
-        return (pos.y > Settings.BoardRows - 1);
+        return (pos.y > settings.BoardRows - 1);
     }
 
     bool OnPlayerEdge(BoardCoords pos)
@@ -139,13 +148,78 @@ public class DuelController
     public void EndTurn() {
         ProcessBoard(); 
         EnemyTurn();
-        int index = UnityEngine.Random.Range(0, playerDeck.CardList.Count);
-        Card c = playerDeck.CardList[index];
-        DuelEvents.instance.DrawCardPlayer(c);
-        DuelEvents.instance.UpdateUI();
+        DrawCardPlayer(1);
     }
 
     private void EnemyTurn() {
-        return;
+        isEnemyTurn = true;
+        DrawCardEnemy(1);
+
+        //TODO AI
+        //ai.
+
+        List<BoardCoords> legalTiles = new List<BoardCoords>();
+
+        for(int i = 0; i < board.Rows; i++) {
+            for(int j = 0; j < board.Cols; j++) {
+                if (board.CardSlots[i, j] == null) { 
+                    if(settings.RestrictPlacement && i < board.Rows-1) { // can't place in row closest to player
+                        legalTiles.Add(BoardCoords.FromRowCol(i, j));
+                    }
+                    else {
+                        legalTiles.Add(BoardCoords.FromRowCol(i, j));
+                    }
+                }
+            }
+        }
+
+        if(legalTiles.Count >= 1) {
+            // TODO make it pick a card from the enemy's hand and remove the card from their hand after
+            int index = Random.Range(0, playerDeck.CardList.Count);
+            Card c = playerDeck.CardList[index];
+            c = ScriptableObject.Instantiate(c);
+            c.BelongsToPlayer = false;
+            List<Vector2Int> mirroredAttacks = new List<Vector2Int>();
+            foreach(Vector2Int v in c.AttackDirections) {
+                mirroredAttacks.Add(new Vector2Int(v.x, -v.y));
+            }
+            c.AttackDirections = mirroredAttacks;
+            GameObject cardObject = MonoBehaviour.Instantiate(ui.TemplateCard.gameObject);
+
+            CardInteractable ci = cardObject.GetComponent<CardInteractable>();
+            ci.card = c;
+            ci.SetCardInfo();
+
+            BoardCoords randomTile = legalTiles[Random.Range(0, legalTiles.Count)];
+            TileInteractable tile = ui.BoardContainer.Tiles[randomTile.ToRowColV2().x, randomTile.ToRowColV2().y];
+            c.TileInteractableRef = tile;
+            ci.PlaceCard(tile);
+            cardObject.transform.SetParent(tile.transform);
+
+            PlayCard(c, tile.location.x, tile.location.y);
+        }
+
+        ProcessBoard();
+        isEnemyTurn = false;
+    }
+
+    private void DrawCardPlayer(int count) {
+        for(int i = 0; i < count; i++) {
+            int index = Random.Range(0, playerDeck.CardList.Count);
+            Card c = playerDeck.CardList[index];
+            DuelEvents.Instance.DrawCardPlayer(c);
+        }
+
+        DuelEvents.Instance.UpdateUI();
+    }
+
+    private void DrawCardEnemy(int count) {
+        for(int i = 0; i < count; i++) {
+            int index = Random.Range(0, enemyDeck.CardList.Count);
+            Card c = enemyDeck.CardList[index];
+            DuelEvents.Instance.DrawCardEnemy(c);
+        }
+
+        DuelEvents.Instance.UpdateUI();
     }
 }

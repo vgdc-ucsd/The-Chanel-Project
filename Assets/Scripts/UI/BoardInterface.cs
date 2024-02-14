@@ -13,20 +13,23 @@ public class BoardInterface : MonoBehaviour
     public Vector2 GridSize;
 
     // Holds all board tile GameObjects
-    public GameObject[,] Tiles;
+    public TileInteractable[,] Tiles;
 
-    public void CreateBoard(DuelSettings settings, TileInteractable templateTile) {
+    public void CreateBoard() {
+        DuelSettings settings = DuelManager.Instance.Settings;
+        TileInteractable templateTile = DuelManager.Instance.UI.TemplateTile;
+
         int rows = settings.BoardRows;
         int cols = settings.BoardCols;
 
         // Destroy all old tiles
         if(Tiles != null) {
-            foreach(GameObject t in Tiles) {
-                Destroy(t);
+            foreach(TileInteractable t in Tiles) {
+                Destroy(t.gameObject);
             }
         }
 
-        Tiles = new GameObject[rows, cols];
+        Tiles = new TileInteractable[rows, cols];
 
         // Initialze new tiles
         for(int i = 0; i < rows; i++) {
@@ -36,7 +39,7 @@ public class BoardInterface : MonoBehaviour
                 tile.transform.SetParent(this.transform);
                 tile.transform.localScale = Vector3.one;
                 tile.SetActive(true);
-                Tiles[i, j] = tile;
+                Tiles[i, j] = tile.GetComponent<TileInteractable>();
             }
         }
 
