@@ -1,5 +1,4 @@
-// CODE ENTIRELY RIPPED FROM ETHAN S COMMITS
-
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,81 +7,86 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-// The main manager for duels/combat, handles all things related to duels
 public class InventoryManager : MonoBehaviour
 {
-    // Sets the size of the board, *rows are infinite/based on deck size*
-    private int InventoryRows;
-    public int InventoryCols;
+    // IGNORE THIS maxItems. IT IS FOR TESTING PURPOSES
+    public int maxItems = 10;
+    // IDK IF THIS IS SUPPOSED TO BE A LIST OF CARDS OR A DECK
+    public List<Card> cards;
+    public InventoryUI inventoryUI;
 
-    // Stores the card slots 
-    public GameObject cardSlots;
-
-    //PlayerDeck ScriptableObject 
-    public Deck PlayerDeck;
-
-    // Interface GameObjects
-    public GameObject InventoryContainer;
-
-
-    // Reference to BaseInventory ScriptableObject
-    private Inventory inventory;
-
-    // Start is called before the first frame update
     void Start()
     {
-        // round up the division to find # of rows needed
-        InventoryRows = (PlayerDeck.CardList.Count + InventoryCols - 1) / InventoryCols;
-
-        inventory = new Inventory(InventoryRows, InventoryCols);
+        // Create a new list at the start
         InitializeInventory();
-        CheckProperInitialization();
+
+        // NOTE: There should only be one object with InventoryUI scripts. If not
+        // this line does not work properly.
+        inventoryUI = FindObjectOfType<InventoryUI>();
     }
 
-    // Create new Inventory
     private void InitializeInventory()
     {
-        InventoryContainer.GetComponent<InventoryInterface>().CreateInventory(inventory, PlayerDeck);
-        //InventoryContainer.GetComponent<InventoryInterface>().CreateInventory(inventory, cardSlots);
+        cards = new List<Card>(maxItems);
     }
 
-    private void CheckProperInitialization()
+    public void AddItem(Card card)
     {
-        if (inventory == null)
+        if (cards.Count < maxItems)
         {
-            Debug.Log("Cannot create board, board is uninitialized");
-            return;
+            cards.Add(card);
         }
-        if (cardSlots == null)
+        else
         {
-            Debug.Log("Cannot create board, TemplateTile is uninitialized");
-            return;
-        }
-        if (InventoryContainer == null)
-        {
-            Debug.Log("Cannot create board, BoardContainer is uninitialized");
-            return;
+            Debug.Log("No space in inventory");
         }
 
-        if (InventoryContainer.GetComponent<BoardInterface>() == null)
+        inventoryUI.RefreshInventoryItems();
+    }
+
+    public void RemoveItem(Card card)
+    {
+        cards.Remove(card);
+
+        inventoryUI.RefreshInventoryItems();
+    }
+
+    // Quicksort to sort 'items' list by name (in ascending order)
+    public List<Card> SortItemsByName(List<Card> cards, int leftIndex, int rightIndex)
+    {
+        var i = leftIndex;
+        var j = rightIndex;
+        var pivot = cards[leftIndex];
+
+        while (i <= j)
         {
-            Debug.Log("No BoardInterface found on BoardContainer, creating new BoardInterface");
-            InventoryContainer.AddComponent<BoardInterface>();
+            while (String.Compare(cards[i].name, pivot.name) < 0)
+            // inventoryItemDatas[i].name < pivot.name)
+            {
+                i++;
+            }
+
+            while (String.Compare(cards[j].name, pivot.name) > 0)
+            {
+                j--;
+            }
+
+            if (i <= j)
+            {
+                Card temp = cards[i];
+                cards[i] = cards[j];
+                cards[j] = temp;
+                i++;
+                j--;
+            }
         }
-        if (InventoryContainer.GetComponent<GridLayoutGroup>() == null)
-        {
-            Debug.Log("No GridLayoutGroup found on BoardContainer, creating new GridLayoutGroup");
-            InventoryContainer.AddComponent<GridLayoutGroup>();
-        }
-        if (InventoryContainer.GetComponent<RectTransform>() == null)
-        {
-            Debug.Log("No RectTransform found on BoardContainer, creating new RectTransform");
-            InventoryContainer.AddComponent<RectTransform>();
-        }
-        if (cardSlots.GetComponent<TileInteractable>() == null)
-        {
-            Debug.Log("No TileInteractable found on TemplateTile, creating new TileInteractable");
-            cardSlots.AddComponent<TileInteractable>();
-        }
+
+        if (leftIndex < j)
+            SortItemsByName(cards, leftIndex, j);
+
+        if (i < rightIndex)
+            SortItemsByName(cards, i, rightIndex);
+
+        return cards;
     }
 }
