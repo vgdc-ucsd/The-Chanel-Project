@@ -19,7 +19,6 @@ public class CharStatus
         MaxMana = settings.MaxMana;
     }
 
-    // Start is called before the first frame update
     public void DealDamage(int damage)
     {
         Health -= damage;

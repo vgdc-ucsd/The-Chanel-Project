@@ -32,14 +32,17 @@ public class BoardInterface : MonoBehaviour
         Tiles = new TileInteractable[rows, cols];
 
         // Initialze new tiles
-        for(int i = 0; i < rows; i++) {
-            for(int j = 0; j < cols; j++) {
+        for(int r = 0; r < rows; r++) {
+            for(int c = 0; c < cols; c++) { //idk what black magic is going on here but it wouldn't let me use x,y coords
+                BoardCoords pos = BoardCoords.FromRowCol(r,c);
                 GameObject tile = Instantiate(templateTile.gameObject);
-                tile.GetComponent<TileInteractable>().location = new Vector2Int(i, j);
+                TileInteractable tileInteractable = tile.GetComponent<TileInteractable>();
+                tileInteractable.locationRC = new Vector2Int(r,c);
+                tileInteractable.location = pos;
                 tile.transform.SetParent(this.transform);
                 tile.transform.localScale = Vector3.one;
                 tile.SetActive(true);
-                Tiles[i, j] = tile.GetComponent<TileInteractable>();
+                Tiles[r,c] = tileInteractable;
             }
         }
 

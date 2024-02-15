@@ -46,21 +46,22 @@ public class DuelController
     // Updates the board with the card played at the desired index
     // This only does the data, for UI see PlaceCard in CardInteractable
     // TODO convert coordinates
-    public void PlayCard(Card card, int r, int c) {
+    public void PlayCard(Card card, BoardCoords pos) {
         // Check out of bounds
-        if(r < 0 || r >= board.Rows || c < 0 || c >= board.Cols) {
-            Debug.Log("row " + r + ", col " + c + " out of bounds");
+        if (board.IsOutOfBounds(pos)) { 
+            Debug.Log(pos + " out of bounds");
             return;
         }
-        board.CardSlots[r, c] = card;
+        board.PlaceCard(card, pos);
     }
 
     private void ProcessBoard() {
         // Process all cards
-        for(int i = 0; i < board.Rows; i++) {
-            for(int j = 0; j < board.Cols; j++) {
-                if(board.CardSlots[i, j] != null) {
-                    ProcessCard(board.CardSlots[i, j], BoardCoords.FromRowCol(i, j));
+        for(int i = 0; i < board.Cols; i++) {
+            for(int j = 0; j < board.Rows; j++) {
+                BoardCoords pos = new BoardCoords(i,j);
+                if (board.IsOccupied(pos)) {
+                    ProcessCard(board.GetCard(pos), pos);
                 }
             }
         }
@@ -68,10 +69,8 @@ public class DuelController
         // Update cards that were modified
         foreach(Card c in modifiedCards) {
             if(c.Health <= 0) {
-                int cardRow = c.TileInteractableRef.location.x;
-                int cardCol = c.TileInteractableRef.location.y;
                 c.TileInteractableRef.occupied = false;
-                board.CardSlots[cardRow, cardCol] = null;
+                board.RemoveCard(c.TileInteractableRef.location);
                 MonoBehaviour.Destroy(c.CardInteractableRef.gameObject);
             }
             //else {
@@ -84,8 +83,13 @@ public class DuelController
     }
 
     private void ProcessCard(Card card, BoardCoords pos) {
+        if (card == null)
+        {
+            Debug.Log("Tried to process null card!");
+            return;
+        }
         // Player cards only attack on player's turn
-        if(card.BelongsToPlayer && !isEnemyTurn) {
+        if (card.BelongsToPlayer && !isEnemyTurn) {
             foreach(Vector2Int atk in card.AttackDirections) {
                 ProcessAttack(card, atk, pos);
             }
@@ -99,46 +103,28 @@ public class DuelController
         
     }
 
-    bool OnEnemyEdge(BoardCoords pos)
-    {
-        return (pos.y == settings.BoardRows - 1);
-    }
-    bool BeyondEnemyEdge(BoardCoords pos)
-    {
-        return (pos.y > settings.BoardRows - 1);
-    }
-
-    bool OnPlayerEdge(BoardCoords pos)
-    {
-        return (pos.y == 0);
-    }
-    bool BeyondPlayerEdge(BoardCoords pos)
-    {
-        return (pos.y < 0);
-    }
 
 
 
     private void ProcessAttack(Card card, Vector2Int atk, BoardCoords pos) {
         BoardCoords atkDest = pos + new BoardCoords(atk);
-
         // Attack targeting enemy
-        if(BeyondEnemyEdge(atkDest) && card.BelongsToPlayer) {
+        if(board.BeyondEnemyEdge(atkDest) && card.BelongsToPlayer) {
             enemyStatus.DealDamage(card.Attack);
             return;
         }
         // Attack targeting player
-        if(BeyondPlayerEdge(atkDest) && !card.BelongsToPlayer) {
+        if(board.BeyondPlayerEdge(atkDest) && !card.BelongsToPlayer) {
             playerStatus.DealDamage(card.Attack);
             return;
         }
         // Check for out of bounds 
         if(board.IsOutOfBounds(atkDest)) return;
         // Check for empty tile
-        if(board.GetCardAtPos(atkDest) == null) return;
+        if(board.GetCard(atkDest) == null) return;
         
         // Deal damage
-        Card target = board.GetCardAtPos(atkDest);
+        Card target = board.GetCard(atkDest);
         if(card.BelongsToPlayer != target.BelongsToPlayer) {
             target.Health -= card.Attack;
             modifiedCards.Add(target);
@@ -160,14 +146,16 @@ public class DuelController
 
         List<BoardCoords> legalTiles = new List<BoardCoords>();
 
-        for(int i = 0; i < board.Rows; i++) {
-            for(int j = 0; j < board.Cols; j++) {
-                if (board.CardSlots[i, j] == null) { 
-                    if(settings.RestrictPlacement && i < board.Rows-1) { // can't place in row closest to player
-                        legalTiles.Add(BoardCoords.FromRowCol(i, j));
+        for(int i = 0; i < board.Cols; i++) {
+            for(int j = 0; j < board.Rows; j++) {
+                BoardCoords pos = new BoardCoords(i, j);
+                if (!board.IsOccupied(pos) )
+                { 
+                    if (settings.RestrictPlacement && j > 0) { // can't place in row closest to player
+                        legalTiles.Add(pos);
                     }
                     else {
-                        legalTiles.Add(BoardCoords.FromRowCol(i, j));
+                        legalTiles.Add(pos);
                     }
                 }
             }
@@ -196,7 +184,7 @@ public class DuelController
             ci.PlaceCard(tile);
             cardObject.transform.SetParent(tile.transform);
 
-            PlayCard(c, tile.location.x, tile.location.y);
+            PlayCard(c, randomTile);
         }
 
         ProcessBoard();

@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEditor.PlayerSettings;
 
 // The MonoBehavior counterpart for a Card, this is what the user actually interacts with
 public class CardInteractable : MonoBehaviour, 
@@ -92,7 +93,7 @@ public class CardInteractable : MonoBehaviour,
             transform.SetParent(tile.transform);
             transform.localScale = Vector3.one;
             DrawArrows();
-            DuelManager.Instance.DC.PlayCard(card, tile.location.x, tile.location.y); // x is row y is col 
+            DuelManager.Instance.DC.PlayCard(card, tile.location); 
         }
     }
 
@@ -140,10 +141,9 @@ public class CardInteractable : MonoBehaviour,
             }
 
             if (!DuelManager.Instance.Settings.RestrictPlacement) PlaceCard(tile);
-            else if (tile.location.x >= 1) { // can't place in the row closest to enemy
+            else if (tile.location.y <= 1) { // can't place in the row closest to enemy
                 PlaceCard(tile);
             }
-
             // Reorganize the player's hand
             if(handInterface == null) {
                 Debug.Log("Could not organize hand, handInterface is uninitialized");
