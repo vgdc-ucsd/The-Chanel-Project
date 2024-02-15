@@ -6,17 +6,19 @@ using UnityEngine;
 
 public class CharStatus
 {
-    public int Health;
-    public int Mana;
+    public int Health { get; private set; }
+    public int Mana { get; private set; }
 
     public int MaxHealth;
     public int MaxMana;
+    public int ManaRegen;
 
     public CharStatus(PlayerSettings settings) {
         Health = settings.StartingHealth;
         Mana = settings.StartingMana;
         MaxHealth = settings.MaxHealth;
         MaxMana = settings.MaxMana;
+        ManaRegen = settings.ManaRegen;
     }
 
     public void DealDamage(int damage)
@@ -43,7 +45,12 @@ public class CharStatus
         }
     }
 
-    public bool canUseMana(int manaUsed)
+    public void RegenMana()
+    {
+        AddMana(ManaRegen);
+    }
+
+    public bool CanUseMana(int manaUsed)
     {
         if (manaUsed > Mana) return false;
         return true;

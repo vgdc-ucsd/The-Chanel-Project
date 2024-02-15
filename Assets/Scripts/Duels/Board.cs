@@ -6,6 +6,7 @@ using UnityEngine;
 public class Board
 {
     [HideInInspector] public Card[,] CardSlots = null;
+
     public int Rows;
     public int Cols;
 

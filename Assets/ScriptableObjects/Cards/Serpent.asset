@@ -15,9 +15,10 @@ MonoBehaviour:
   Name: Serpent
   Health: 2
   Attack: 3
-  Cost: 3
+  ManaCost: 3
   Artwork: {fileID: 0}
   BelongsToPlayer: 1
+  team: 0
   CardInteractableRef: {fileID: 0}
   TileInteractableRef: {fileID: 0}
   AttackDirections:

@@ -7,6 +7,8 @@ using UnityEngine.UI;
 // Creates and manages UI components related to the board
 public class BoardInterface : MonoBehaviour
 {
+    public static BoardInterface Instance;
+
     // The size of each tile on the canvas
     public Vector2 CellSize = new Vector2Int(100, 100);
     // The size of the grid on the canvas
@@ -14,6 +16,13 @@ public class BoardInterface : MonoBehaviour
 
     // Holds all board tile GameObjects
     public TileInteractable[,] Tiles;
+
+    private void Awake()
+    {
+        Instance = this; 
+    }
+
+
 
     public void CreateBoard() {
         DuelSettings settings = DuelManager.Instance.Settings;
@@ -50,6 +59,11 @@ public class BoardInterface : MonoBehaviour
         GridSize = new Vector2(CellSize.x * cols, CellSize.y * rows);
         RectTransform rt = GetComponent<RectTransform>();
         rt.sizeDelta = GridSize;
+    }
+
+    public TileInteractable GetTile(BoardCoords pos) 
+    {
+        return Tiles[pos.ToRowColV2().x, pos.ToRowColV2().y];
     }
 
     public void CheckProperInitialization() {

@@ -15,9 +15,10 @@ MonoBehaviour:
   Name: Crow
   Health: 1
   Attack: 1
-  Cost: 1
+  ManaCost: 1
   Artwork: {fileID: 0}
   BelongsToPlayer: 1
+  team: 0
   CardInteractableRef: {fileID: 0}
   TileInteractableRef: {fileID: 0}
   AttackDirections:

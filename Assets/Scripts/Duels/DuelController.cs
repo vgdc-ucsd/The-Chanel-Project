@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Team
+{
+    Player, Enemy
+}
+
 public class DuelController
 {
     private bool isEnemyTurn;
@@ -14,6 +19,7 @@ public class DuelController
     private Deck playerDeck;
     private Deck enemyDeck;
     private BasicDuelAI ai;
+    private Team currentTeam;
 
     public DuelController() {
         settings = DuelManager.Instance.Settings;
@@ -22,6 +28,8 @@ public class DuelController
         enemyDeck = DuelManager.Instance.PlayerDeck;
 
         isEnemyTurn = settings.EnemyGoesFirst;
+        if (settings.EnemyGoesFirst) currentTeam = Team.Enemy;
+        else currentTeam = Team.Player;
         board = new Board(settings.BoardRows, settings.BoardCols);
         playerSettings = settings.Player;
         enemySettings = settings.Enemy;
@@ -44,15 +52,26 @@ public class DuelController
     }
 
     // Updates the board with the card played at the desired index
-    // This only does the data, for UI see PlaceCard in CardInteractable
-    // TODO convert coordinates
+    // ATTEMPTS to place a card at the specified pos
+    // if successful, places a card on UI.
+
+    // ALL attempts to play a card should go through this method, it will update everything needed.
     public void PlayCard(Card card, BoardCoords pos) {
         // Check out of bounds
         if (board.IsOutOfBounds(pos)) { 
             Debug.Log(pos + " out of bounds");
             return;
         }
+        CharStatus charStatus = CurrentCharStatus();
+        if (!charStatus.CanUseMana(card.ManaCost))
+        {
+            Debug.Log("Not enough Mana"); //TODO: UI feedback
+            return;
+        }
+        charStatus.UseMana(card.ManaCost);
+        card.CardInteractableRef.PlaceCard(pos);
         board.PlaceCard(card, pos);
+        DuelEvents.Instance.UpdateUI();
     }
 
     private void ProcessBoard() {
@@ -89,13 +108,7 @@ public class DuelController
             return;
         }
         // Player cards only attack on player's turn
-        if (card.BelongsToPlayer && !isEnemyTurn) {
-            foreach(Vector2Int atk in card.AttackDirections) {
-                ProcessAttack(card, atk, pos);
-            }
-        }
-        // Enemy cards only attack on enemy's turn
-        else if(!card.BelongsToPlayer && isEnemyTurn) {
+        if (card.team == currentTeam) {
             foreach(Vector2Int atk in card.AttackDirections) {
                 ProcessAttack(card, atk, pos);
             }
@@ -103,18 +116,18 @@ public class DuelController
         
     }
 
-
+    
 
 
     private void ProcessAttack(Card card, Vector2Int atk, BoardCoords pos) {
         BoardCoords atkDest = pos + new BoardCoords(atk);
         // Attack targeting enemy
-        if(board.BeyondEnemyEdge(atkDest) && card.BelongsToPlayer) {
+        if(board.BeyondEnemyEdge(atkDest) && card.team == Team.Player) {
             enemyStatus.DealDamage(card.Attack);
             return;
         }
         // Attack targeting player
-        if(board.BeyondPlayerEdge(atkDest) && !card.BelongsToPlayer) {
+        if(board.BeyondPlayerEdge(atkDest) && card.team == Team.Enemy) {
             playerStatus.DealDamage(card.Attack);
             return;
         }
@@ -125,20 +138,34 @@ public class DuelController
         
         // Deal damage
         Card target = board.GetCard(atkDest);
-        if(card.BelongsToPlayer != target.BelongsToPlayer) {
+        if(card.team != target.team) {
             target.Health -= card.Attack;
             modifiedCards.Add(target);
         }
     }
 
+    //Use EndTurn() for ending both player and enemy turn, for control and AI purposes
     public void EndTurn() {
         ProcessBoard(); 
-        EnemyTurn();
-        DrawCardPlayer(1);
+        if (currentTeam == Team.Player)
+        {
+            isEnemyTurn = true;
+            currentTeam = Team.Enemy;
+            DrawCardEnemy(1);
+            enemyStatus.RegenMana();
+            EnemyTurn();
+        }
+        else
+        {
+            isEnemyTurn = false;
+            currentTeam = Team.Player;
+            DrawCardPlayer(1);
+            playerStatus.RegenMana();
+        }
+        DuelEvents.Instance.UpdateUI();
     }
 
     private void EnemyTurn() {
-        isEnemyTurn = true;
         DrawCardEnemy(1);
 
         //TODO AI
@@ -167,6 +194,7 @@ public class DuelController
             Card c = playerDeck.CardList[index];
             c = ScriptableObject.Instantiate(c);
             c.BelongsToPlayer = false;
+            c.team = Team.Enemy;
             List<Vector2Int> mirroredAttacks = new List<Vector2Int>();
             foreach(Vector2Int v in c.AttackDirections) {
                 mirroredAttacks.Add(new Vector2Int(v.x, -v.y));
@@ -181,14 +209,21 @@ public class DuelController
             BoardCoords randomTile = legalTiles[Random.Range(0, legalTiles.Count)];
             TileInteractable tile = ui.BoardContainer.Tiles[randomTile.ToRowColV2().x, randomTile.ToRowColV2().y];
             c.TileInteractableRef = tile;
-            ci.PlaceCard(tile);
-            cardObject.transform.SetParent(tile.transform);
 
+            cardObject.transform.SetParent(tile.transform);
             PlayCard(c, randomTile);
         }
 
-        ProcessBoard();
-        isEnemyTurn = false;
+        EndTurn();
+    }
+
+    public CharStatus CurrentCharStatus()
+    {
+        if (currentTeam == Team.Enemy)
+        {
+            return enemyStatus;
+        }
+        else return playerStatus;
     }
 
     private void DrawCardPlayer(int count) {

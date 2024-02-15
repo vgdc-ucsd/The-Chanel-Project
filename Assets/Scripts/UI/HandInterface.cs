@@ -32,6 +32,7 @@ public class HandInterface : MonoBehaviour
         // Draw a random card from the deck (doesn't remove from deck)
         c = ScriptableObject.Instantiate(c);
         c.BelongsToPlayer = true; // only player cards
+        c.team = Team.Player;
         GameObject cardObject = Instantiate(TemplateCard.gameObject);
         SetCard(c, cardObject);
         cardObject.transform.SetParent(this.transform);

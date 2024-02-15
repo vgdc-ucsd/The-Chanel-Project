@@ -12,8 +12,9 @@ public class PlayerSettings
     public bool MaxHealthEnabled = false;
 
     // Mana
-    public int StartingMana = 0;
+    public int StartingMana = 4;
     public int MaxMana = 4;
+    public int ManaRegen = 1;
     public bool MaxManaEnabled = true;
 
     // Cards

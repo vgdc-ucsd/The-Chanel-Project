@@ -15,9 +15,10 @@ MonoBehaviour:
   Name: Deer
   Health: 0
   Attack: 0
-  Cost: 2
+  ManaCost: 1
   Artwork: {fileID: 0}
   BelongsToPlayer: 1
+  team: 0
   CardInteractableRef: {fileID: 0}
   TileInteractableRef: {fileID: 0}
   AttackDirections:

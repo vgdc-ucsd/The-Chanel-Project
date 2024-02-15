@@ -29,6 +29,7 @@ public class CardInteractable : MonoBehaviour,
     public TextMeshProUGUI CardName;
     public TextMeshProUGUI CardHealth;
     public TextMeshProUGUI CardAttack;
+    public TextMeshProUGUI CardCost;
 
     // How much the card scales on hover
     private float scaleFactor = 1.1f;
@@ -40,6 +41,7 @@ public class CardInteractable : MonoBehaviour,
     public void Awake()
     {
         DuelEvents.Instance.onUpdateUI += UpdateCardInfo;
+        raycaster = DuelManager.Instance.GetComponent<GraphicRaycaster>();
     }
 
     public void DrawArrows() {
@@ -80,6 +82,7 @@ public class CardInteractable : MonoBehaviour,
     {
         CardAttack.text = "Attack: " + card.Attack;
         CardHealth.text = "Health: " + card.Health;
+        if (inHand) CardCost.text = "Mana Cost: " + card.ManaCost;
     }
 
     // Updates UI to show card being played
@@ -92,9 +95,14 @@ public class CardInteractable : MonoBehaviour,
             if(handInterface != null) handInterface.cards.Remove(this.gameObject);
             transform.SetParent(tile.transform);
             transform.localScale = Vector3.one;
-            DrawArrows();
-            DuelManager.Instance.DC.PlayCard(card, tile.location); 
+            DrawArrows(); 
+            CardCost.enabled = false;
         }
+    }
+
+    public void PlaceCard(BoardCoords pos)
+    {
+        PlaceCard(BoardInterface.Instance.GetTile(pos));
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -140,9 +148,13 @@ public class CardInteractable : MonoBehaviour,
                 }
             }
 
-            if (!DuelManager.Instance.Settings.RestrictPlacement) PlaceCard(tile);
-            else if (tile.location.y <= 1) { // can't place in the row closest to enemy
-                PlaceCard(tile);
+            if (tile != null)
+            {
+                if (!DuelManager.Instance.Settings.RestrictPlacement) DuelManager.Instance.DC.PlayCard(card, tile.location);
+                else if (tile.location.y <= 1)
+                { // can't place in the row closest to enemy
+                    DuelManager.Instance.DC.PlayCard(card, tile.location);
+                }
             }
             // Reorganize the player's hand
             if(handInterface == null) {

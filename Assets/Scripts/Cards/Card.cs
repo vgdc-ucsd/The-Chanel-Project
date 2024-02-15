@@ -20,6 +20,7 @@ public class Card : ScriptableObject
 
     // True if it's the player's card, false if it's the enemy's
     [HideInInspector] public bool BelongsToPlayer = true;
+    public Team team = Team.Player;
 
     // References to card and tile interactables
     [HideInInspector] public CardInteractable CardInteractableRef;
