@@ -19,6 +19,8 @@ public class DuelManager : MonoBehaviour
     public Deck PlayerDeck;
     public Deck EnemyDeck;
 
+    public CharStatus PlayerStatus, EnemyStatus;
+
     // Script for managing UI
     public UIManager UI;
 
@@ -36,7 +38,7 @@ public class DuelManager : MonoBehaviour
     void Start()
     {
         CheckProperInitialization();
-        DC = new DuelController();
+        DC = new DuelController(PlayerStatus,EnemyStatus);
         UI.SetupBoard();
         UI.SetupHand();
         DuelEvents.Instance.UpdateUI();

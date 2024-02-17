@@ -11,7 +11,7 @@ public class DuelController
 {
     private bool isEnemyTurn;
     private DuelSettings settings;
-    private Board board;
+    public Board board;
     private PlayerSettings playerSettings, enemySettings;
     private CharStatus playerStatus, enemyStatus;
     private UIManager ui;
@@ -21,24 +21,31 @@ public class DuelController
     private BasicDuelAI ai;
     private Team currentTeam;
 
-    public DuelController() {
+    public DuelController(CharStatus player, CharStatus enemy) {
         settings = DuelManager.Instance.Settings;
         ui = DuelManager.Instance.UI;
         playerDeck = DuelManager.Instance.PlayerDeck;
         enemyDeck = DuelManager.Instance.PlayerDeck;
 
         isEnemyTurn = settings.EnemyGoesFirst;
+
+        playerStatus = player;
+        enemyStatus = enemy;
+        playerStatus.Init(Team.Player);
+        enemyStatus.Init(Team.Enemy);
+
         if (settings.EnemyGoesFirst) currentTeam = Team.Enemy;
         else currentTeam = Team.Player;
         board = new Board(settings.BoardRows, settings.BoardCols);
+
+        
         playerSettings = settings.Player;
         enemySettings = settings.Enemy;
-
+        /* moved to CharStatus awake
         if(settings.SameSettingsForBothPlayers) {
             enemySettings = playerSettings;
         }
-        playerStatus = new CharStatus(playerSettings);
-        enemyStatus = new CharStatus(enemySettings);
+        */
 
         ui.Player.Status = playerStatus;
         ui.Enemy.Status = enemyStatus;
@@ -69,8 +76,8 @@ public class DuelController
             return;
         }
         charStatus.UseMana(card.ManaCost);
-        card.CardInteractableRef.PlaceCard(pos);
-        board.PlaceCard(card, pos);
+        card.CardInteractableRef.PlaceCard(pos); // these should not
+        board.PlaceCard(card, pos);              // be two different methods
         DuelEvents.Instance.UpdateUI();
     }
 
@@ -86,6 +93,9 @@ public class DuelController
         }
 
         // Update cards that were modified
+
+        // Moved implementation to Card.DealDamage
+        /*
         foreach(Card c in modifiedCards) {
             if(c.Health <= 0) {
                 c.TileInteractableRef.occupied = false;
@@ -96,6 +106,8 @@ public class DuelController
             //    c.CardInteractableRef.SetCardInfo();
             //}
         }
+        */
+
         modifiedCards.Clear();
 
         DuelEvents.Instance.UpdateUI();
@@ -109,26 +121,32 @@ public class DuelController
         }
         // Player cards only attack on player's turn
         if (card.team == currentTeam) {
-            foreach(Vector2Int atk in card.AttackDirections) {
-                ProcessAttack(card, atk, pos);
+            foreach(Attack atk in card.Attacks) {
+                ProcessAttack(atk);
             }
         }
         
     }
 
-    
 
 
-    private void ProcessAttack(Card card, Vector2Int atk, BoardCoords pos) {
-        BoardCoords atkDest = pos + new BoardCoords(atk);
+
+    private void ProcessAttack(Attack atk) {
+        if (atk == null)
+        {
+            Debug.Log("Tried to process null attack");
+            return;
+        }
+        Card card = atk.card;
+        BoardCoords atkDest = card.pos + new BoardCoords(atk.direction);
         // Attack targeting enemy
         if(board.BeyondEnemyEdge(atkDest) && card.team == Team.Player) {
-            enemyStatus.DealDamage(card.Attack);
+            enemyStatus.DealDamage(atk.damage);
             return;
         }
         // Attack targeting player
         if(board.BeyondPlayerEdge(atkDest) && card.team == Team.Enemy) {
-            playerStatus.DealDamage(card.Attack);
+            playerStatus.DealDamage(atk.damage);
             return;
         }
         // Check for out of bounds 
@@ -139,12 +157,13 @@ public class DuelController
         // Deal damage
         Card target = board.GetCard(atkDest);
         if(card.team != target.team) {
-            target.Health -= card.Attack;
-            modifiedCards.Add(target);
+            atk.Hit(target);
+            // Remove this?
+            modifiedCards.Add(target); 
         }
     }
 
-    //Use EndTurn() for ending both player and enemy turn, for control and AI purposes
+    // Use EndTurn() for ending both player and enemy turn, for control and AI purposes
     public void EndTurn() {
         ProcessBoard(); 
         if (currentTeam == Team.Player)

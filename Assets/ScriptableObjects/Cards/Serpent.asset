@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Serpent
   Health: 2
-  Attack: 3
+  AttackDamage: 0
   ManaCost: 3
+  AttackDamages: ffffffffffffffffffffffff01000000ffffffff0100000001000000ffffffff
   Artwork: {fileID: 0}
   BelongsToPlayer: 1
   team: 0

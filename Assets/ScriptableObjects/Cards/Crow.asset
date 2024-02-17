@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Crow
   Health: 1
-  Attack: 1
+  AttackDamage: 0
   ManaCost: 1
+  AttackDamages: 01000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff
   Artwork: {fileID: 0}
   BelongsToPlayer: 1
   team: 0

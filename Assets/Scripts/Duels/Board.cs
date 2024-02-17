@@ -36,6 +36,7 @@ public class Board
             if (GetCard(pos) != null) return false; //cannot place card at occupied tile unless forced
         }
         CardSlots[pos.ToRowColV2().x, pos.ToRowColV2().y] = card;
+        card.pos = pos;
         return true;
     }
 

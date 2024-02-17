@@ -8,16 +8,23 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Cards/Card")]
 
 // Stores data on any given card in the game
-
 public class Card : ScriptableObject
 {
     // The name and stats of the card 
     public string Name;
     public int Health;
-    public int Attack;
+    public int AttackDamage; // OLD
     public int ManaCost;
 
-    public int[] AttackDamages = new int[8] {-1,-1,-1,-1,-1,-1,-1,-1};
+    public BoardCoords pos;
+
+    // Directions: upleft, up, upright, left, right, downleft, down, downright
+    // Someone please replace this soon, this is disgusting
+    public int[] AttackDamages = new int[8] 
+        {-1,-1,-1,
+         -1,   -1,
+         -1,-1,-1};
+
     public List<Attack> Attacks = new List<Attack>();
     private void Awake()
     {
@@ -25,8 +32,28 @@ public class Card : ScriptableObject
         {
             if (AttackDamages[i] != -1)
             {
-                Attacks.Add(new Attack(global::AttackDirections.AllAttackDirections[i], AttackDamages[i]));
+                Attacks.Add(new Attack(global::AttackDirections.AllAttackDirections[i], AttackDamages[i], this));
             }
+        }
+    }
+
+    public Attack GetAttack(Vector2Int dir)
+    {
+        foreach (Attack attack in Attacks)
+        {
+            if (attack.direction == dir) return attack;
+        }
+        return null;
+    }
+
+    public void DealDamage(int damage)
+    {
+        Health -= damage;
+        if (Health <= 0)
+        {
+            TileInteractableRef.occupied = false;
+            DuelManager.Instance.DC.board.RemoveCard(TileInteractableRef.location);
+            MonoBehaviour.Destroy(CardInteractableRef.gameObject);
         }
     }
 
@@ -44,5 +71,6 @@ public class Card : ScriptableObject
     // The directions that the card attacks when facing right.
     // Hidden because values here are set through the custom editor
     [HideInInspector] public List<Vector2Int> AttackDirections = new List<Vector2Int>();
+    // TODO: Rename this to solve name conflict
 
 }

@@ -45,24 +45,29 @@ public class CardInteractable : MonoBehaviour,
     }
 
     public void DrawArrows() {
-        foreach(Vector2Int v in card.AttackDirections) {
-            GameObject arrow;
-            if(card.BelongsToPlayer) {
-                arrow = Instantiate(TemplateArrowPlayer);
+        foreach(Vector2Int v in AttackDirections.AllAttackDirections) {
+            if (card.GetAttack(v) != null)
+            {
+                GameObject arrow;
+                if (card.BelongsToPlayer)
+                {
+                    arrow = Instantiate(TemplateArrowPlayer);
+                }
+                else
+                {
+                    arrow = Instantiate(TemplateArrowEnemy);
+                }
+
+                arrow.transform.eulerAngles = new Vector3(0, 0, Vector2.SignedAngle(Vector2.up, v));
+                arrow.transform.SetParent(this.transform);
+                arrow.transform.localPosition = Vector3.zero;
+                arrow.transform.localScale = new Vector3(
+                    arrow.transform.localScale.x,
+                    v.magnitude / 2,
+                    1
+                );
+                arrow.SetActive(true);
             }
-            else {
-                arrow = Instantiate(TemplateArrowEnemy);
-            }
-            
-            arrow.transform.eulerAngles = new Vector3(0, 0, Vector2.SignedAngle(Vector2.up, v));
-            arrow.transform.SetParent(this.transform);
-            arrow.transform.localPosition = Vector3.zero;
-            arrow.transform.localScale = new Vector3(
-                arrow.transform.localScale.x,
-                v.magnitude/2,
-                1
-            );
-            arrow.SetActive(true);
         }
     }
 
@@ -80,7 +85,7 @@ public class CardInteractable : MonoBehaviour,
 
     public void UpdateCardInfo() 
     {
-        CardAttack.text = "Attack: " + card.Attack;
+        CardAttack.text = "Attack: " + card.AttackDamage;
         CardHealth.text = "Health: " + card.Health;
         if (inHand) CardCost.text = "Mana Cost: " + card.ManaCost;
     }
@@ -88,6 +93,7 @@ public class CardInteractable : MonoBehaviour,
     // Updates UI to show card being played
     public void PlaceCard(TileInteractable tile) {
         if (tile != null && tile.occupied == false) {
+            // TODO: move some actions here to PlaceCard in Board
             inHand = false;
             tile.occupied = true;
             card.TileInteractableRef = tile;
