@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class UIManager : MonoBehaviour
 {
@@ -23,6 +25,25 @@ public class UIManager : MonoBehaviour
 
     public void SetupHand() {
         Hand.TemplateCard = TemplateCard;
+    }
+
+    public CardInteractable GenerateCardInteractable(Card c) {
+        CardInteractable ci = Instantiate(TemplateCard);
+        ci.card = c;
+        ci.SetCardInfo();
+        return ci;
+    }
+
+    public TileInteractable FindTileInteractable(BoardCoords bc) {
+        if(bc.ToRowColV2().x >= 0 && bc.ToRowColV2().x < BoardContainer.Tiles.GetLength(0)
+        && bc.ToRowColV2().y >= 0 && bc.ToRowColV2().y < BoardContainer.Tiles.GetLength(1)) {
+            TileInteractable tile = BoardContainer.Tiles[bc.ToRowColV2().x, bc.ToRowColV2().y];
+            return tile;
+        }
+        else {
+            Debug.LogWarning("No tile exists at x=" + bc.x + ", y=" + bc.y);
+            return null;
+        }
     }
 
     public void CheckProperInitialization() {

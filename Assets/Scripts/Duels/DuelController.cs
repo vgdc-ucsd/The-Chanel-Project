@@ -72,6 +72,7 @@ public class DuelController
             Debug.Log("Not enough Mana"); //TODO: UI feedback
             return;
         }
+        if(card.team == Team.Enemy) MirrorAttacks(card); // this should only be called once per enemy card
         charStatus.UseMana(card.ManaCost);
         card.CardInteractableRef.PlaceCard(pos); // these should not
         board.PlaceCard(card, pos);              // be two different methods
@@ -210,5 +211,18 @@ public class DuelController
         }
 
         DuelEvents.Instance.UpdateUI();
+    }
+
+    // Flips attacks vertically, is used on cards the enemy plays
+    private void MirrorAttacks(Card c) {
+        List<Attack> mirroredAttacks = new List<Attack>();
+        foreach(Attack a in c.Attacks) {
+            mirroredAttacks.Add(new Attack(
+                new Vector2Int(a.direction.x, -a.direction.y),
+                a.damage,
+                c
+            ));
+        }
+        c.Attacks = mirroredAttacks;
     }
 }
