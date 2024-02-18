@@ -1,8 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
+using UnityEngine.UI;
+using Vector3 = UnityEngine.Vector3;
 
 public class MapNode : MonoBehaviour,
 IPointerClickHandler,
@@ -11,10 +16,7 @@ IPointerExitHandler
 {
     // This is 0-indexed
     public int layer;
-    /*
-    I DON'T KNOW IF I NEED THIS YET
-    public int y;
-    */
+    public int indexInLayer;
     public bool visited;
     public bool locked;
     public MapNodeType mapNodeType;
@@ -22,6 +24,7 @@ IPointerExitHandler
     public List<MapNode> prevNodes;
     [SerializeField] LineRenderer lineRendererPrefab;
     [HideInInspector] public List<LineRenderer> lineRenderers;
+    [SerializeField] MapController mapController;
 
     private void Awake()
     {
@@ -92,9 +95,6 @@ IPointerExitHandler
                 }
             }
         }
-
-        // mapController reference may or may not be temporary
-        MapController mapController = FindObjectOfType<MapController>();
 
         // This ensures nodes on the same layer cannot be accessed/are locked
         mapController.LockSiblingNodes(this);
