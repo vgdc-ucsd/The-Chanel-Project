@@ -49,7 +49,7 @@ public class CardInteractable : MonoBehaviour,
             if (card.GetAttack(v) != null)
             {
                 GameObject arrow;
-                if (card.BelongsToPlayer)
+                if (card.team == Team.Player)
                 {
                     arrow = Instantiate(TemplateArrowPlayer);
                 }

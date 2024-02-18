@@ -27,8 +27,6 @@ public class DuelManager : MonoBehaviour
     // Script that handles logic for the duels
     public DuelController DC;
 
-
-
     void Awake() {
         if (Instance != null && Instance != this) Destroy(this);
         else Instance = this;
