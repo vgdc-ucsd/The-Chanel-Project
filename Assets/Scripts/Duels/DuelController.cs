@@ -19,7 +19,10 @@ public class DuelController
     private Team currentTeam;
     public int turnNumber = 1;
 
-    public DuelController(CharStatus player, CharStatus enemy) {
+    private Card selectedCard;
+
+    public DuelController(CharStatus player, CharStatus enemy)
+    {
         settings = DuelManager.Instance.Settings;
         ui = DuelManager.Instance.UI;
         playerStatus = player;
@@ -33,7 +36,7 @@ public class DuelController
         else currentTeam = Team.Player;
         board = new Board(settings.BoardRows, settings.BoardCols);
 
-        
+
         playerSettings = settings.Player;
         enemySettings = settings.Enemy;
         /* moved to CharStatus awake
@@ -55,7 +58,7 @@ public class DuelController
     public void StartDuel() {
         DrawCardPlayer(playerSettings.StartingCards);
         DrawCardEnemy(enemySettings.StartingCards);
-        DuelEvents.Instance.AdvanceGameTurn();
+        
     }
 
     // Updates the board with the card played at the desired index
@@ -79,6 +82,21 @@ public class DuelController
         charStatus.UseMana(card.ManaCost);
         DuelEvents.Instance.PlaceCard(card, pos, currentTeam);
         DuelEvents.Instance.UpdateUI();
+    }
+
+    public void SelectCard(Card card)
+    {
+        if (selectedCard != null) selectedCard.SetSelected(false);
+
+        // for now, unselect a card by clicking it again
+        // will have better control later
+        if (card == selectedCard)
+        {
+            selectedCard = null;
+            return;
+        }
+        selectedCard = card;
+        card.SetSelected(true);
     }
 
     private void ProcessBoard() {

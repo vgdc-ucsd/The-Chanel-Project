@@ -12,7 +12,8 @@ public class CardInteractable : MonoBehaviour,
     IPointerExitHandler, 
     IBeginDragHandler, 
     IEndDragHandler,
-    IDragHandler
+    IDragHandler,
+    IPointerDownHandler
 {
     // Data for the card it contains
     [HideInInspector] public Card card;
@@ -30,6 +31,10 @@ public class CardInteractable : MonoBehaviour,
     public TextMeshProUGUI CardHealth;
     public TextMeshProUGUI CardAttack;
     public TextMeshProUGUI CardCost;
+
+    //Image object of the card
+    [SerializeField] private Image image;
+    [SerializeField] private Color defaultColor, selectedColor;
 
     // How much the card scales on hover
     private float scaleFactor = 1.1f;
@@ -168,6 +173,26 @@ public class CardInteractable : MonoBehaviour,
                 return;
             }
             handInterface.OrganizeCards();
+        }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (!inHand) 
+        {
+            DuelManager.Instance.DC.SelectCard(card);
+        }
+    }
+
+    public void SetSelected(bool selected)
+    {
+        if (selected)
+        {
+            image.color = selectedColor;
+        }
+        else
+        {
+            image.color = defaultColor;
         }
     }
 

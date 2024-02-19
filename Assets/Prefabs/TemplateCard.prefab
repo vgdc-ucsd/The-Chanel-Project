@@ -720,6 +720,9 @@ MonoBehaviour:
   CardHealth: {fileID: 6426648206735701756}
   CardAttack: {fileID: 8856066283348533103}
   CardCost: {fileID: 1935634880742371814}
+  image: {fileID: 7934217333704476081}
+  defaultColor: {r: 0.5882353, g: 0.5568628, b: 0.49803922, a: 1}
+  selectedColor: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
   inHand: 1
 --- !u!222 &3382568235958084768
 CanvasRenderer:

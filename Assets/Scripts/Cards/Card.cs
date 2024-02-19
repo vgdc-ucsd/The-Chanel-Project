@@ -16,6 +16,7 @@ public class Card : ScriptableObject
     public int Health;
     public int AttackDamage; // OLD
     public int ManaCost;
+    public bool isSelected = false;
 
     public BoardCoords pos;
     [HideInInspector] public bool isActive = false;
@@ -63,6 +64,12 @@ public class Card : ScriptableObject
     {
         isActive = true;
         CardInteractableRef.PlaceCard(pos);
+    }
+
+    public void SetSelected(bool selected)
+    {
+        isSelected = selected;
+        CardInteractableRef.SetSelected(selected);
     }
 
     // The image that is displayed on the card
