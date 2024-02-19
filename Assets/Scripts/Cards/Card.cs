@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -17,6 +18,7 @@ public class Card : ScriptableObject
     public int ManaCost;
 
     public BoardCoords pos;
+    [HideInInspector] public bool isActive = false;
 
     // Directions: upleft, up, upright, left, right, downleft, down, downright
     // Someone please replace this soon, this is disgusting
@@ -52,9 +54,15 @@ public class Card : ScriptableObject
         if (Health <= 0)
         {
             TileInteractableRef.occupied = false;
-            DuelManager.Instance.DC.board.RemoveCard(TileInteractableRef.location);
+            DuelManager.Instance.DC.GetCurrentBoard().RemoveCard(TileInteractableRef.location);
             MonoBehaviour.Destroy(CardInteractableRef.gameObject);
         }
+    }
+
+    public void Place(BoardCoords pos)
+    {
+        isActive = true;
+        CardInteractableRef.PlaceCard(pos);
     }
 
     // The image that is displayed on the card

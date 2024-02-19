@@ -14,6 +14,7 @@ public class Board
         CardSlots = new Card[rows, cols];
         Rows = rows;
         Cols = cols;
+        DuelEvents.Instance.OnPlaceCard += PlaceCard;
     }
 
     public Card GetCard(BoardCoords pos)
@@ -28,16 +29,14 @@ public class Board
         return !(GetCard(pos) == null);
     }
 
-    public bool PlaceCard(Card card,BoardCoords pos, bool force = false) //force for some weird effects
+    public void PlaceCard(Card card, BoardCoords pos, Team team) //force for some weird effects
     {
-        if (IsOutOfBounds(pos)) return false;
-        if (!force)
-        {
-            if (GetCard(pos) != null) return false; //cannot place card at occupied tile unless forced
-        }
+        if (IsOutOfBounds(pos)) return;
+        if (GetCard(pos) != null) return; //cannot place card at occupied tile
         CardSlots[pos.ToRowColV2().x, pos.ToRowColV2().y] = card;
         card.pos = pos;
-        return true;
+        card.Place(pos);
+        return;
     }
 
     public void RemoveCard(BoardCoords pos)

@@ -33,20 +33,28 @@ public class DuelEvents : MonoBehaviour
         if (onUpdateUI != null) onUpdateUI();
     }
 
-    public void DrawCardPlayer(Card c)
+    public event Action<Card, Team> OnDrawCard;
+    public void DrawCard(Card c, Team team)
     {
-        if (OnDrawCardPlayer != null) OnDrawCardPlayer(c);
-        if (OnDrawCardAny != null) OnDrawCardAny(c);
-
-    }
-    public event Action<Card> OnDrawCardPlayer;
-
-    public void DrawCardEnemy(Card c)
-    {
-        if (OnDrawCardEnemy != null) OnDrawCardEnemy(c);
-        if (OnDrawCardAny != null) OnDrawCardAny(c);
+        if (OnDrawCard != null) OnDrawCard(c, team);
     }
 
-    public event Action<Card> OnDrawCardEnemy;
-    public event Action<Card> OnDrawCardAny;
+    public event Action<Card, BoardCoords, Team> OnPlaceCard;
+    public event Action<Card> OnRemoveFromHand;
+    public void PlaceCard(Card c, BoardCoords pos, Team team)
+    {
+        if (OnPlaceCard != null)
+        {
+            OnPlaceCard(c, pos, team);
+            OnRemoveFromHand(c);
+        }
+    }
+
+    public event Action OnAdvanceGameTurn;
+    public void AdvanceGameTurn()
+    {
+        if (OnAdvanceGameTurn != null) OnAdvanceGameTurn();
+    }
+
+
 }

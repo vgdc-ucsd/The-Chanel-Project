@@ -19,6 +19,9 @@ public class UIManager : MonoBehaviour
     public PlayerUI Player;
     public PlayerUI Enemy;
 
+
+
+
     public void SetupBoard() {
         BoardContainer.CreateBoard();
     }

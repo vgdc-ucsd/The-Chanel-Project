@@ -12,8 +12,10 @@ public class CharStatus : MonoBehaviour
     public bool isAlive = true;
     [HideInInspector] public int MaxHealth;
     [HideInInspector] public int MaxMana;
-    [HideInInspector] public int ManaRegen;
+    [HideInInspector] public int ManaCapacity;
     private Team team;
+    public Deck Deck;
+    private List<Card> cards = new List<Card>();
 
 
     //[SerializeField] 
@@ -30,6 +32,9 @@ public class CharStatus : MonoBehaviour
         ManaRegen = settings.ManaRegen;
         */
         duelSettings = DuelManager.Instance.Settings;
+        DuelEvents.Instance.OnDrawCard += AddCard;
+        DuelEvents.Instance.OnRemoveFromHand += RemoveFromHand;
+        DuelEvents.Instance.OnAdvanceGameTurn += GiveMana;
     }
 
     public void Init(Team team)
@@ -47,7 +52,23 @@ public class CharStatus : MonoBehaviour
         Mana = playerSettings.StartingMana;
         MaxHealth = playerSettings.MaxHealth;
         MaxMana = playerSettings.MaxMana;
-        ManaRegen = playerSettings.ManaRegen;
+        ManaCapacity = 1;
+    }
+
+    public void AddCard(Card card, Team team)
+    {
+        if (team == this.team) { }
+        cards.Add(card);
+    }
+
+    public void RemoveFromHand(Card card)
+    {
+        if (!cards.Contains(card)) 
+        {
+            //Debug.Log($"Tried to remove {card.Name} but was not in hand");
+            return;
+        }
+        cards.Remove(card);
     }
 
     public void DealDamage(int damage)
@@ -68,6 +89,10 @@ public class CharStatus : MonoBehaviour
         }
     }
 
+    public void SetDeck(Deck deck)
+    {
+        Deck = deck;
+    }
     public void UseMana(int manaUsed)
     {
         Mana -= manaUsed;
@@ -82,9 +107,13 @@ public class CharStatus : MonoBehaviour
         }
     }
 
-    public void RegenMana()
+    public void GiveMana()
     {
-        AddMana(ManaRegen);
+        if (ManaCapacity < MaxMana)
+        {
+            ManaCapacity++;
+        }
+        Mana = ManaCapacity;
     }
 
     public bool CanUseMana(int manaUsed)

@@ -14,7 +14,6 @@ public class PlayerSettings
     // Mana
     public int StartingMana = 4;
     public int MaxMana = 4;
-    public int ManaRegen = 1;
     public bool MaxManaEnabled = true;
 
     // Cards

@@ -8,7 +8,7 @@ using UnityEngine;
 public class HandInterface : MonoBehaviour
 {
     public CardInteractable TemplateCard;
-    [HideInInspector] public List<GameObject> cards = new List<GameObject>();
+    [HideInInspector] public List<GameObject> cardObjects = new List<GameObject>();
 
     // Determines how much the cards rotate in the player's hand
     private float maxRotationDegrees = 15;
@@ -20,14 +20,16 @@ public class HandInterface : MonoBehaviour
     // Adds a number of cards to the player's hand
 
     void Awake() {
-        DuelEvents.Instance.OnDrawCardPlayer += Draw;
+        DuelEvents.Instance.OnDrawCard += Draw;
+        DuelEvents.Instance.OnRemoveFromHand += RemoveFromHand;
     }
 
-    public void Draw(Card c) {
+    public void Draw(Card c, Team team) {
         if(TemplateCard == null) {
             Debug.Log("Could not draw cards, TemplateCard is uninitialized");
             return;
         }
+        if (team == Team.Enemy) return;
 
         // Draw a random card from the deck (doesn't remove from deck)
         c = ScriptableObject.Instantiate(c);
@@ -36,9 +38,14 @@ public class HandInterface : MonoBehaviour
         SetCard(c, cardObject);
         cardObject.transform.SetParent(this.transform);
         cardObject.transform.localScale = Vector3.one;
-        cards.Add(cardObject);
+        cardObjects.Add(cardObject);
 
         OrganizeCards();
+    }
+
+    public void RemoveFromHand(Card card)
+    {
+
     }
 
     // Maps a Card to a CardInteractable
@@ -56,10 +63,10 @@ public class HandInterface : MonoBehaviour
 
     // Displays cards neatly in the UI
     public void OrganizeCards() {
-        for(int i = 0; i < cards.Count; i++) {
-            GameObject card = cards[i];
-            float normalizedIndex = -1 + (2 * (float)i/(cards.Count-1)); // Ranges between -1 and 1
-            if(cards.Count == 1) normalizedIndex = 0;
+        for(int i = 0; i < cardObjects.Count; i++) {
+            GameObject card = cardObjects[i];
+            float normalizedIndex = -1 + (2 * (float)i/(cardObjects.Count-1)); // Ranges between -1 and 1
+            if(cardObjects.Count == 1) normalizedIndex = 0;
             card.transform.localEulerAngles = new Vector3(0, 0, normalizedIndex * maxRotationDegrees);
             float arcValue = arcIntensity * (1-Mathf.Abs(normalizedIndex)); // Ranges between 0 and arcIntensity
             card.transform.localPosition = new Vector3(-normalizedIndex * cardDistance, arcValue, 0);

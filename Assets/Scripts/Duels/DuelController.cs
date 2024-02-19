@@ -10,26 +10,24 @@ public enum Team
 public class DuelController
 {
     private DuelSettings settings;
-    public Board board;
+    private Board board;
     private PlayerSettings playerSettings, enemySettings;
     private CharStatus playerStatus, enemyStatus;
     private UIManager ui;
     private List<Card> modifiedCards = new List<Card>();
-    private Deck playerDeck;
-    private Deck enemyDeck;
     private BasicDuelAI ai;
     private Team currentTeam;
+    public int turnNumber = 1;
 
     public DuelController(CharStatus player, CharStatus enemy) {
         settings = DuelManager.Instance.Settings;
         ui = DuelManager.Instance.UI;
-        playerDeck = DuelManager.Instance.PlayerDeck;
-        enemyDeck = DuelManager.Instance.PlayerDeck;
-
         playerStatus = player;
         enemyStatus = enemy;
         playerStatus.Init(Team.Player);
         enemyStatus.Init(Team.Enemy);
+        playerStatus.SetDeck(DuelManager.Instance.PlayerDeck);
+        enemyStatus.SetDeck(DuelManager.Instance.EnemyDeck);
 
         if (settings.EnemyGoesFirst) currentTeam = Team.Enemy;
         else currentTeam = Team.Player;
@@ -48,8 +46,13 @@ public class DuelController
         ui.Enemy.Status = enemyStatus;
 
         ai = new BasicDuelAI(enemyStatus, this);
+        DuelEvents.Instance.OnAdvanceGameTurn += AdvanceGameTurn;
     }
 
+    public Board GetCurrentBoard()
+    {
+        return board;
+    }
     public void StartDuel() {
         DrawCardPlayer(playerSettings.StartingCards);
         DrawCardEnemy(enemySettings.StartingCards);
@@ -74,8 +77,7 @@ public class DuelController
         }
         if(card.team == Team.Enemy) MirrorAttacks(card); // this should only be called once per enemy card
         charStatus.UseMana(card.ManaCost);
-        card.CardInteractableRef.PlaceCard(pos); // these should not
-        board.PlaceCard(card, pos);              // be two different methods
+        DuelEvents.Instance.PlaceCard(card, pos, currentTeam);
         DuelEvents.Instance.UpdateUI();
     }
 
@@ -165,17 +167,23 @@ public class DuelController
         {
             currentTeam = Team.Enemy;
             DrawCardEnemy(1);
-            enemyStatus.RegenMana();
+            //enemyStatus.GiveMana();
             EnemyTurn();
         }
         else
         {
             currentTeam = Team.Player;
             DrawCardPlayer(1);
-            playerStatus.RegenMana();
+            //playerStatus.GiveMana();
+            DuelEvents.Instance.AdvanceGameTurn(); // if player starts first, then game turn increase by one when enemy ends turn
         }
 
         DuelEvents.Instance.UpdateUI();
+    }
+
+    private void AdvanceGameTurn()
+    {
+        turnNumber++;
     }
 
     private void EnemyTurn() {
@@ -194,20 +202,22 @@ public class DuelController
     }
 
     private void DrawCardPlayer(int count) {
+        Deck playerDeck = playerStatus.Deck;
         for(int i = 0; i < count; i++) {
             int index = Random.Range(0, playerDeck.CardList.Count);
             Card c = playerDeck.CardList[index];
-            DuelEvents.Instance.DrawCardPlayer(c);
+            DuelEvents.Instance.DrawCard(c, Team.Player);
         }
 
         DuelEvents.Instance.UpdateUI();
     }
 
     private void DrawCardEnemy(int count) {
+        Deck enemyDeck = enemyStatus.Deck;
         for(int i = 0; i < count; i++) {
             int index = Random.Range(0, enemyDeck.CardList.Count);
             Card c = enemyDeck.CardList[index];
-            DuelEvents.Instance.DrawCardEnemy(c);
+            DuelEvents.Instance.DrawCard(c,Team.Enemy);
         }
 
         DuelEvents.Instance.UpdateUI();

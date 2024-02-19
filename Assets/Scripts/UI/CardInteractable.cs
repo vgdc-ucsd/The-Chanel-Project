@@ -98,7 +98,7 @@ public class CardInteractable : MonoBehaviour,
             tile.occupied = true;
             card.TileInteractableRef = tile;
             transform.position = tile.transform.position;
-            if(handInterface != null) handInterface.cards.Remove(this.gameObject);
+            if(handInterface != null) handInterface.cardObjects.Remove(this.gameObject);
             transform.SetParent(tile.transform);
             transform.localScale = Vector3.one;
             DrawArrows(); 
