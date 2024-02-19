@@ -46,7 +46,6 @@ public class DuelController
         ui.Enemy.Status = enemyStatus;
 
         ai = new BasicDuelAI(enemyStatus, this);
-        DuelEvents.Instance.OnAdvanceGameTurn += AdvanceGameTurn;
     }
 
     public Board GetCurrentBoard()
@@ -56,6 +55,7 @@ public class DuelController
     public void StartDuel() {
         DrawCardPlayer(playerSettings.StartingCards);
         DrawCardEnemy(enemySettings.StartingCards);
+        DuelEvents.Instance.AdvanceGameTurn();
     }
 
     // Updates the board with the card played at the desired index
@@ -175,16 +175,14 @@ public class DuelController
             currentTeam = Team.Player;
             DrawCardPlayer(1);
             //playerStatus.GiveMana();
+            turnNumber++;
             DuelEvents.Instance.AdvanceGameTurn(); // if player starts first, then game turn increase by one when enemy ends turn
         }
 
         DuelEvents.Instance.UpdateUI();
     }
 
-    private void AdvanceGameTurn()
-    {
-        turnNumber++;
-    }
+
 
     private void EnemyTurn() {
         DrawCardEnemy(1);
