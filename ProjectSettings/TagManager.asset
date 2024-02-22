@@ -4,7 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Floor1
+  - Room0
+  - Room1
+  - Room2
+  - Room3
+  - Room4
   layers:
   - Default
   - TransparentFX
