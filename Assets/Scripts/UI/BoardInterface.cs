@@ -55,6 +55,7 @@ public class BoardInterface : MonoBehaviour
             }
         }
 
+
         // Set sizes
         GridSize = new Vector2(CellSize.x * cols, CellSize.y * rows);
         RectTransform rt = GetComponent<RectTransform>();

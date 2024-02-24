@@ -8,8 +8,6 @@ using UnityEngine.UI;
 public class TileInteractable : MonoBehaviour, IPointerDownHandler
 {
 
-
-    [HideInInspector] public bool occupied = false;
     [HideInInspector] public Vector2Int locationRC; //DEPRECATED - DO NOT USE
     [HideInInspector] public BoardCoords location;
     [HideInInspector] public bool isHighlighted = false;
@@ -23,8 +21,7 @@ public class TileInteractable : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log(location);
-        SetHighlight(true);
+        PlayerInputController.Instance.InteractTile(location);
     }
 
     public void SetHighlight(bool highlight)
@@ -33,5 +30,14 @@ public class TileInteractable : MonoBehaviour, IPointerDownHandler
         if (isHighlighted) {
             image.color = highlightColor;
         }
+        else
+        {
+            image.color = defaultColor;
+        }
+    }
+
+    public bool IsOccupied()
+    {
+        return DuelManager.Instance.DC.GetCurrentBoard().IsOccupied(location);
     }
 }

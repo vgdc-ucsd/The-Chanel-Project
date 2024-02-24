@@ -21,6 +21,24 @@ public class Card : ScriptableObject
     public BoardCoords pos;
     [HideInInspector] public bool isActive = false;
 
+    // The image that is displayed on the card
+    public Texture2D Artwork;
+
+    // True if it's the player's card, false if it's the enemy's
+    [HideInInspector] public Team team = Team.Player;
+
+    // References to card and tile interactables
+    [HideInInspector] public CardInteractable CardInteractableRef;
+
+
+    //[HideInInspector] public TileInteractable TileInteractableRef;
+    // Removed - too annoying to keep updating the tile interactable ref when card moves
+    // use BoardInterface.Instance.GetTile(card.pos)
+
+    // The directions that the card attacks when facing right.
+    // Hidden because values here are set through the custom editor
+    [HideInInspector] public List<Vector2Int> AttackDirections = new List<Vector2Int>();
+
     // Directions: upleft, up, upright, left, right, downleft, down, downright
     // Someone please replace this soon, this is disgusting
     public int[] AttackDamages = new int[8] 
@@ -40,6 +58,11 @@ public class Card : ScriptableObject
         }
     }
 
+    public TileInteractable GetTile()
+    {
+        return BoardInterface.Instance.Tiles[pos.ToRowColV2().x, pos.ToRowColV2().y];
+    }
+
     public Attack GetAttack(Vector2Int dir)
     {
         foreach (Attack attack in Attacks)
@@ -54,8 +77,7 @@ public class Card : ScriptableObject
         Health -= damage;
         if (Health <= 0)
         {
-            TileInteractableRef.occupied = false;
-            DuelManager.Instance.DC.GetCurrentBoard().RemoveCard(TileInteractableRef.location);
+            DuelManager.Instance.DC.GetCurrentBoard().RemoveCard(pos);
             MonoBehaviour.Destroy(CardInteractableRef.gameObject);
         }
     }
@@ -72,19 +94,8 @@ public class Card : ScriptableObject
         CardInteractableRef.SetSelected(selected);
     }
 
-    // The image that is displayed on the card
-    public Texture2D Artwork;
 
-    // True if it's the player's card, false if it's the enemy's
-    [HideInInspector] public Team team = Team.Player;
 
-    // References to card and tile interactables
-    [HideInInspector] public CardInteractable CardInteractableRef;
-    [HideInInspector] public TileInteractable TileInteractableRef;
 
-    // The directions that the card attacks when facing right.
-    // Hidden because values here are set through the custom editor
-    [HideInInspector] public List<Vector2Int> AttackDirections = new List<Vector2Int>();
-    // TODO: Rename this to solve name conflict
 
 }

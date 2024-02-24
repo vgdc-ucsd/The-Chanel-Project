@@ -720,6 +720,7 @@ GameObject:
   - component: {fileID: 840890671}
   - component: {fileID: 840890670}
   - component: {fileID: 840890673}
+  - component: {fileID: 840890674}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -789,6 +790,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7e553d8823b3804fbe4821f72031e2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &840890674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 840890669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9828aaea49d20640a8d719291d732ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedCard: {fileID: 0}
 --- !u!1 &914697321
 GameObject:
   m_ObjectHideFlags: 0
