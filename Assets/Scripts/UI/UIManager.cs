@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     // Interface GameObjects
     public BoardInterface BoardContainer;
     public HandInterface Hand;
+    public HandInterface EnemyHand;
 
     // Player UIs
     public PlayerUI Player;
@@ -28,6 +29,7 @@ public class UIManager : MonoBehaviour
 
     public void SetupHand() {
         Hand.TemplateCard = TemplateCard;
+        EnemyHand.TemplateCard = TemplateCard;
     }
 
     public CardInteractable GenerateCardInteractable(Card c) {
@@ -68,6 +70,11 @@ public class UIManager : MonoBehaviour
 
         if(Hand == null) {
             Debug.LogError("Could not create hand, Hand is uninitialized");
+            return;
+        }
+
+        if (EnemyHand == null) {
+            Debug.LogError("Could not create hand, EnemyHand is uninitialized");
             return;
         }
     }

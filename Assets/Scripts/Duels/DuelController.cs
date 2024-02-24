@@ -75,6 +75,10 @@ public class DuelController
         {
             return;
         }
+        if (currentTeam != card.team) {
+            Debug.Log("Playing from wrong hand");
+            return;
+        }
         CharStatus charStatus = CurrentCharStatus();
         if (!charStatus.CanUseMana(card.ManaCost))
         {
@@ -209,9 +213,11 @@ public class DuelController
 
 
     private void EnemyTurn() {
-        DrawCardEnemy(1);
-        ai.MakeMove(board);
-        EndTurn();
+        if (!settings.EnablePVPMode) {
+            DrawCardEnemy(1);
+            ai.MakeMove(board);
+            EndTurn();
+        }
     }
 
     public CharStatus CurrentCharStatus()

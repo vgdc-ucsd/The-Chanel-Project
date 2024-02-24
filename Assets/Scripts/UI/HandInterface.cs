@@ -9,6 +9,7 @@ public class HandInterface : MonoBehaviour
 {
     public CardInteractable TemplateCard;
     [HideInInspector] public List<GameObject> cardObjects = new List<GameObject>();
+    public Team myTeam;
 
     // Determines how much the cards rotate in the player's hand
     private float maxRotationDegrees = 15;
@@ -29,18 +30,19 @@ public class HandInterface : MonoBehaviour
             Debug.Log("Could not draw cards, TemplateCard is uninitialized");
             return;
         }
-        if (team == Team.Enemy) return;
 
-        // Draw a random card from the deck (doesn't remove from deck)
-        c = ScriptableObject.Instantiate(c);
-        c.team = Team.Player; // only player cards
-        GameObject cardObject = Instantiate(TemplateCard.gameObject);
-        SetCard(c, cardObject);
-        cardObject.transform.SetParent(this.transform);
-        cardObject.transform.localScale = Vector3.one;
-        cardObjects.Add(cardObject);
+        if (team == myTeam) {
+            // Draw a random card from the deck (doesn't remove from deck)
+            c = ScriptableObject.Instantiate(c);
+            c.team = team;
+            GameObject cardObject = Instantiate(TemplateCard.gameObject);
+            SetCard(c, cardObject);
+            cardObject.transform.SetParent(this.transform);
+            cardObject.transform.localScale = Vector3.one;
+            cardObjects.Add(cardObject);
 
-        OrganizeCards();
+            OrganizeCards();
+        }
     }
 
     public void RemoveFromHand(Card card)
