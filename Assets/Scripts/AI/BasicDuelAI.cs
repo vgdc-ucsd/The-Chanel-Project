@@ -33,10 +33,9 @@ public class BasicDuelAI
             // Set TileInteractableRef
             BoardCoords randomTile = legalTiles[Random.Range(0, legalTiles.Count)];
             TileInteractable ti = DuelManager.Instance.UI.FindTileInteractable(randomTile);
-            c.TileInteractableRef = ti;
 
             // Play card
-            ci.transform.SetParent(c.TileInteractableRef.transform);
+            ci.transform.SetParent(ti.transform);
             dc.PlayCard(c, randomTile);
         }
     }

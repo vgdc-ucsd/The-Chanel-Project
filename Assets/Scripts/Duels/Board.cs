@@ -6,7 +6,6 @@ using UnityEngine;
 public class Board
 {
     [HideInInspector] public Card[,] CardSlots = null;
-
     public int Rows;
     public int Cols;
 
@@ -16,6 +15,8 @@ public class Board
         Cols = cols;
         DuelEvents.Instance.OnPlaceCard += PlaceCard;
     }
+
+
 
     public Card GetCard(BoardCoords pos)
     {
@@ -29,20 +30,65 @@ public class Board
         return !(GetCard(pos) == null);
     }
 
-    public void PlaceCard(Card card, BoardCoords pos, Team team) //force for some weird effects
+    private void SetCard(Card card, BoardCoords pos)
+    {
+        CardSlots[pos.ToRowColV2().x, pos.ToRowColV2().y] = card;
+    }
+
+    public void PlaceCard(Card card, BoardCoords pos) 
     {
         if (IsOutOfBounds(pos)) return;
         if (GetCard(pos) != null) return; //cannot place card at occupied tile
-        CardSlots[pos.ToRowColV2().x, pos.ToRowColV2().y] = card;
+        SetCard(card, pos);
         card.pos = pos;
         card.Place(pos);
         return;
     }
 
+    public void PlaceCard(Card card, BoardCoords pos, Team team)
+    {
+        PlaceCard(card, pos);
+    }
+
     public void RemoveCard(BoardCoords pos)
     {
         if (IsOutOfBounds(pos)) return;
-        CardSlots[pos.ToRowColV2().x, pos.ToRowColV2().y] = null;
+        SetCard(null, pos);
+    }
+
+    public void MoveCard(Card card, BoardCoords pos)
+    {
+        // move card and update board and card data
+        if (IsOutOfBounds(pos)) return;
+        if (GetCard(pos) != null) return;
+        SetCard(null, card.pos);
+        SetCard(card, pos);
+        card.pos = pos;
+    }
+
+    public List<BoardCoords> GetAdjacentTiles(BoardCoords pos)
+    {
+        List<BoardCoords> tiles = new List<BoardCoords>();
+        BoardCoords up = pos + new BoardCoords(0, 1);
+        if (!IsOutOfBounds(up)) tiles.Add(up);
+        BoardCoords right = pos + new BoardCoords(1, 0);
+        if (!IsOutOfBounds(right)) tiles.Add(right);
+        BoardCoords down = pos + new BoardCoords(0, -1);
+        if (!IsOutOfBounds(down)) tiles.Add(down);
+        BoardCoords left = pos + new BoardCoords(-1, 0);
+        if (!IsOutOfBounds(left)) tiles.Add(left);
+
+        return tiles;
+    }
+    
+    public List<BoardCoords> GetEmptyAdjacentTiles(BoardCoords pos)
+    {
+        List<BoardCoords> tiles = GetAdjacentTiles(pos);
+        for (int i = tiles.Count - 1; i >= 0; i--)
+        {
+            if (IsOccupied(tiles[i])) tiles.RemoveAt(i);
+        }
+        return tiles;
     }
 
     public bool OnEnemyEdge(BoardCoords pos)

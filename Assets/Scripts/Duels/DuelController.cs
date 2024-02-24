@@ -19,7 +19,6 @@ public class DuelController
     private Team currentTeam;
     public int turnNumber = 1;
 
-    private Card selectedCard;
 
     public DuelController(CharStatus player, CharStatus enemy)
     {
@@ -72,6 +71,10 @@ public class DuelController
             Debug.Log(pos + " out of bounds");
             return;
         }
+        if (board.IsOccupied(pos))
+        {
+            return;
+        }
         CharStatus charStatus = CurrentCharStatus();
         if (!charStatus.CanUseMana(card.ManaCost))
         {
@@ -84,19 +87,22 @@ public class DuelController
         DuelEvents.Instance.UpdateUI();
     }
 
-    public void SelectCard(Card card)
+    public void MoveCard(Card card, BoardCoords pos)
     {
-        if (selectedCard != null) selectedCard.SetSelected(false);
-
-        // for now, unselect a card by clicking it again
-        // will have better control later
-        if (card == selectedCard)
+        // update board data and trigger any move effects
+        if (board.IsOutOfBounds(pos))
         {
-            selectedCard = null;
+            Debug.Log("Tried to move card out of bounds");
             return;
         }
-        selectedCard = card;
-        card.SetSelected(true);
+        if (board.IsOccupied(pos))
+        {
+            Debug.Log("Tried to move card onto occupied tile");
+            return;
+        }
+        board.MoveCard(card, pos);
+        card.CardInteractableRef.UpdateCardPos();
+
     }
 
     private void ProcessBoard() {
@@ -215,6 +221,11 @@ public class DuelController
             return enemyStatus;
         }
         else return playerStatus;
+    }
+
+    public Team GetCurrentTeam()
+    {
+        return currentTeam;
     }
 
     private void DrawCardPlayer(int count) {

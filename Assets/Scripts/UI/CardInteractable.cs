@@ -97,11 +97,9 @@ public class CardInteractable : MonoBehaviour,
 
     // Updates UI to show card being played
     public void PlaceCard(TileInteractable tile) {
-        if (tile != null && tile.occupied == false) {
+        if (tile != null) {
             // TODO: move some actions here to PlaceCard in Board
             inHand = false;
-            tile.occupied = true;
-            card.TileInteractableRef = tile;
             transform.position = tile.transform.position;
             if(handInterface != null) handInterface.cardObjects.Remove(this.gameObject);
             transform.SetParent(tile.transform);
@@ -109,6 +107,14 @@ public class CardInteractable : MonoBehaviour,
             DrawArrows(); 
             CardCost.enabled = false;
         }
+    }
+
+    public void UpdateCardPos()
+    {
+        TileInteractable tile = BoardInterface.Instance.GetTile(card.pos);
+        transform.position = tile.transform.position;
+        transform.SetParent(tile.transform);
+        DrawArrows();
     }
 
     public void PlaceCard(BoardCoords pos)
@@ -180,7 +186,7 @@ public class CardInteractable : MonoBehaviour,
     {
         if (!inHand) 
         {
-            DuelManager.Instance.DC.SelectCard(card);
+            PlayerInputController.Instance.InteractCard(card);
         }
     }
 
