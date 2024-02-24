@@ -90,3 +90,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   occupied: 0
   locationRC: {x: 0, y: 0}
+  isHighlighted: 0
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightColor: {r: 0.5518868, g: 1, b: 0.5668641, a: 1}

@@ -20,6 +20,7 @@ public class DuelController
     public int turnNumber = 1;
 
     private Card selectedCard;
+    public Card cardToMove;
 
     public DuelController(CharStatus player, CharStatus enemy)
     {
@@ -86,6 +87,7 @@ public class DuelController
 
     public void SelectCard(Card card)
     {
+        if (card.team != currentTeam) return;
         if (selectedCard != null) selectedCard.SetSelected(false);
 
         // for now, unselect a card by clicking it again
@@ -97,6 +99,7 @@ public class DuelController
         }
         selectedCard = card;
         card.SetSelected(true);
+        cardToMove = card;
     }
 
     private void ProcessBoard() {
