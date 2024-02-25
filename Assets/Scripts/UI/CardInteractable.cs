@@ -98,7 +98,9 @@ public class CardInteractable : MonoBehaviour,
     }
 
     // Updates UI to show card being played
-    public void PlaceCard(TileInteractable tile) {
+    public void PlaceCard(BoardCoords pos)
+    {
+        TileInteractable tile = BoardInterface.Instance.GetTile(pos);
         if (tile != null) {
             // TODO: move some actions here to PlaceCard in Board
             inHand = false;
@@ -106,18 +108,16 @@ public class CardInteractable : MonoBehaviour,
             transform.localEulerAngles = Vector3.zero;
             transform.localScale = Vector3.one;
             transform.position = tile.transform.position;
-            if(handInterface != null) handInterface.cardObjects.Remove(this.gameObject);
+            if(handInterface != null) {
+                handInterface.cardObjects.Remove(this);
+                Debug.Log("Removing card from hand");
+            }
             transform.SetParent(tile.transform);
             transform.localScale = Vector3.one;
             DrawArrows(); 
             CardCost.enabled = false;
             handInterface.OrganizeCards();
         }
-    }
-
-    public void PlaceCard(BoardCoords pos)
-    {
-        PlaceCard(BoardInterface.Instance.GetTile(pos));
     }
 
     public void UpdateCardPos()

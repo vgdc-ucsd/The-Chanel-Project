@@ -27,6 +27,9 @@ public class DuelManager : MonoBehaviour
     // Script that handles logic for the duels
     public DuelController DC;
 
+    // Animation Manager
+    public AnimationManager AM;
+
     void Awake() {
         if (Instance != null && Instance != this) Destroy(this);
         else Instance = this;
@@ -57,6 +60,10 @@ public class DuelManager : MonoBehaviour
         }
         if(UI == null) {
             Debug.LogError("Could not start duel, the UIManager is uninitalized");
+            return;
+        }
+        if(AM == null) {
+            Debug.LogError("Could not start duel, the AnimationManager is uninitalized");
             return;
         }
         if(Settings == null) {

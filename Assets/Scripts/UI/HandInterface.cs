@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 // Manages the player's and interactions with their hand
 public class HandInterface : MonoBehaviour
 {
     public CardInteractable TemplateCard;
-    [HideInInspector] public List<GameObject> cardObjects = new List<GameObject>();
+    [HideInInspector] public List<CardInteractable> cardObjects = new List<CardInteractable>();
     public Team myTeam;
 
     // Determines how much the cards rotate in the player's hand
@@ -23,6 +24,7 @@ public class HandInterface : MonoBehaviour
     void Awake() {
         DuelEvents.Instance.OnDrawCard += Draw;
         DuelEvents.Instance.OnRemoveFromHand += RemoveFromHand;
+        DuelEvents.Instance.onUpdateHand += OrganizeCards;
     }
 
     public void Draw(Card c, Team team) {
@@ -34,24 +36,27 @@ public class HandInterface : MonoBehaviour
         if (team == myTeam) {
             // Draw a random card from the deck (doesn't remove from deck)
             c.team = team;
-            GameObject cardObject = Instantiate(TemplateCard.gameObject);
+            CardInteractable cardObject = Instantiate(TemplateCard);
             SetCard(c, cardObject);
-            cardObject.transform.SetParent(this.transform);
             cardObject.transform.localScale = Vector3.one;
             cardObjects.Add(cardObject);
-
-            OrganizeCards();
         }
     }
 
     public void RemoveFromHand(Card card)
     {
-
+        //Debug.Log("here");
+        //cardObjects.Remove(card.CardInteractableRef.gameObject);
+        //foreach(CardInteractable ci in cardObjects) {
+        //    if(ci.card == card) {
+        //        Debug.Log("here");
+        //        cardObjects.Remove(ci);
+        //    }
+        //}
     }
 
     // Maps a Card to a CardInteractable
-    private void SetCard(Card c, GameObject cardObject) {
-        CardInteractable ci = cardObject.GetComponent<CardInteractable>();
+    private void SetCard(Card c, CardInteractable ci) {
         if(ci == null) {
             Debug.Log("Could not set card, TemplateCard has no CardInteractable");
             return;
@@ -69,14 +74,50 @@ public class HandInterface : MonoBehaviour
 
     // Displays cards neatly in the UI
     public void OrganizeCards() {
+        Debug.Log("Organizing hand");
         for(int i = 0; i < cardObjects.Count; i++) {
-            GameObject card = cardObjects[i];
+            GameObject card = cardObjects[i].gameObject;
+
+            // index
             float normalizedIndex = -1 + (2 * (float)i/(cardObjects.Count-1)); // Ranges between -1 and 1
             if(cardObjects.Count == 1) normalizedIndex = 0;
+
+            // arc
             card.transform.localEulerAngles = new Vector3(0, 0, normalizedIndex * maxRotationDegrees);
             float arcValue = arcIntensity * (1-Mathf.Abs(normalizedIndex)); // Ranges between 0 and arcIntensity
-            card.transform.localPosition = new Vector3(-normalizedIndex * cardDistance, arcValue, 0);
-            card.transform.SetAsFirstSibling(); // Make sure they appear overlayed in the right order
+            
+            // Target Position
+            Vector3 targetPosition = new Vector3(-normalizedIndex * cardDistance, arcValue, 0);
+            targetPosition += transform.position;
+
+            // Animation
+            if(targetPosition != card.transform.position) {
+                // new cards
+                if(card.transform.parent != this.transform) {
+                    card.transform.SetParent(this.transform); //
+                    IEnumerator animation = DuelManager.Instance.AM.SimpleTranslate(
+                        card.transform,
+                        targetPosition,
+                        0.2f,
+                        InterpolationMode.Linear
+                    );
+                    QueueableAnimation qa = new QueueableAnimation(animation, 0.1f);
+                    DuelManager.Instance.AM.QueueAnimation(qa);
+                }
+                // old cards
+                else {
+                    IEnumerator animation = DuelManager.Instance.AM.SimpleTranslate(
+                        card.transform,
+                        targetPosition,
+                        0.1f,
+                        InterpolationMode.Linear
+                    );
+                    DuelManager.Instance.AM.Play(animation);
+                }   
+            }
+
+            // Make sure they appear overlayed in the right order
+            card.transform.SetAsFirstSibling(); 
         }
     }
 }

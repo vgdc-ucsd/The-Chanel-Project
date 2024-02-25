@@ -57,7 +57,6 @@ public class DuelController
     public void StartDuel() {
         DrawCardPlayer(playerSettings.StartingCards);
         DrawCardEnemy(enemySettings.StartingCards);
-        
     }
 
     // Updates the board with the card played at the desired index
@@ -247,6 +246,7 @@ public class DuelController
         }
 
         DuelEvents.Instance.UpdateUI();
+        DuelEvents.Instance.UpdateHand();
     }
 
     private void DrawCardEnemy(int count) {
@@ -258,7 +258,9 @@ public class DuelController
             DuelEvents.Instance.DrawCard(c,Team.Enemy);
         }
 
+        Debug.Log("Updating UI");
         DuelEvents.Instance.UpdateUI();
+        DuelEvents.Instance.UpdateHand();
     }
 
     // Flips attacks vertically, is used on cards the enemy plays

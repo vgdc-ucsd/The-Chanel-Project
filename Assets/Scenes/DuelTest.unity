@@ -306,6 +306,7 @@ GameObject:
   - component: {fileID: 37294270}
   - component: {fileID: 37294269}
   - component: {fileID: 37294274}
+  - component: {fileID: 37294275}
   m_Layer: 0
   m_Name: DuelManager(Canvas)
   m_TagString: Untagged
@@ -355,6 +356,7 @@ MonoBehaviour:
   PlayerStatus: {fileID: 1455160713}
   EnemyStatus: {fileID: 2060407187}
   UI: {fileID: 37294274}
+  AM: {fileID: 37294275}
 --- !u!114 &37294270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -465,6 +467,18 @@ MonoBehaviour:
   EnemyHand: {fileID: 794390335}
   Player: {fileID: 1455160712}
   Enemy: {fileID: 2060407186}
+--- !u!114 &37294275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37294268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ed7c26354de3d4a8003a5df80d2017, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &161343925
 GameObject:
   m_ObjectHideFlags: 0
