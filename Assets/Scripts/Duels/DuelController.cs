@@ -207,6 +207,7 @@ public class DuelController
             DuelEvents.Instance.AdvanceGameTurn(); // if player starts first, then game turn increase by one when enemy ends turn
         }
 
+        PlayerInputController.Instance.ClearSelection();
         DuelEvents.Instance.UpdateUI();
     }
 

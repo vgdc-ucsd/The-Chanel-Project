@@ -44,14 +44,17 @@ public class PlayerInputController: MonoBehaviour
     public void InteractCard(Card card)
     {
         SetAction(ControlAction.None);
-        if (card.team != DuelManager.Instance.DC.GetCurrentTeam()) return;
+        if (card.team != DuelManager.Instance.DC.GetCurrentTeam())
+        {
+            ClearSelection();
+            return;
+        }
 
         // for now, unselect a card by clicking it again
         // will have better control later
         if (card == selectedCard)
         {
-            SelectCard(card, false);
-            SetAction(ControlAction.None);
+            ClearSelection();
             return;
         }
         SelectCard(card, true);
@@ -79,6 +82,13 @@ public class PlayerInputController: MonoBehaviour
             card.SetSelected(false);
             selectedCard = null;
         }
+    }
+
+    public void ClearSelection()
+    {
+        if (selectedCard != null) SelectCard(selectedCard, false);
+        SetAction(ControlAction.None);
+
     }
 
     // Handle any input that involves clicking a tile
