@@ -20,8 +20,8 @@ public class UIManager : MonoBehaviour
     public PlayerUI Player;
     public PlayerUI Enemy;
 
-
-
+    // Animation Manager
+    public AnimationManager AM;
 
     public void SetupBoard() {
         BoardContainer.CreateBoard();
@@ -52,6 +52,10 @@ public class UIManager : MonoBehaviour
     }
 
     public void CheckProperInitialization() {
+        if(AM == null) {
+            Debug.LogWarning("The AnimationManager (AM) is uninitialzed, creating new AnimationManager");
+            AM = new AnimationManager();
+        }
         if(TemplateTile == null) {
             Debug.LogError("Cannot create board, TemplateTile is uninitialized");
             return;
