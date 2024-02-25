@@ -21,10 +21,16 @@ public class DuelEvents : MonoBehaviour
     }
 
 
-    public event Action onTurnEnd;
+    public event Action onTurnEnd; // triggers right after the player is no longer able to make moves (after clicking end turn)
     public void TurnEnd()
     {
         if (onTurnEnd != null) onTurnEnd();
+    }
+
+    public event Action onTurnStart; // triggers right before the player is about to move
+    public void TurnStart()
+    {
+        if (onTurnStart != null) onTurnStart();
     }
 
     public event Action onUpdateUI;

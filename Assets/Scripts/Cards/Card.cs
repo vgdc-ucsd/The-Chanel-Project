@@ -24,8 +24,7 @@ public class Card : ScriptableObject
     // The image that is displayed on the card
     public Texture2D Artwork;
 
-    // True if it's the player's card, false if it's the enemy's
-    [HideInInspector] public Team team = Team.Player;
+    [HideInInspector] public Team team = Team.Neutral;
 
     // References to card and tile interactables
     [HideInInspector] public CardInteractable CardInteractableRef;

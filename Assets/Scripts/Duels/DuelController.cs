@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum Team
 {
-    Player, Enemy
+    Player, Enemy, Neutral
 }
 
 public class DuelController
@@ -190,13 +190,15 @@ public class DuelController
 
     // Use EndTurn() for ending both player and enemy turn, for control and AI purposes
     public void EndTurn() {
+        DuelEvents.Instance.TurnEnd();
         ProcessBoard(); 
         if (currentTeam == Team.Player)
         {
             currentTeam = Team.Enemy;
             DrawCardEnemy(1);
-            //enemyStatus.GiveMana();
-            EnemyTurn();
+            //enemyStatus.GiveMana() 
+            DuelEvents.Instance.TurnStart();
+            if (!settings.EnablePVPMode) EnemyTurn();
         }
         else
         {
@@ -205,6 +207,7 @@ public class DuelController
             //playerStatus.GiveMana();
             turnNumber++;
             DuelEvents.Instance.AdvanceGameTurn(); // if player starts first, then game turn increase by one when enemy ends turn
+            DuelEvents.Instance.TurnStart();
         }
 
         PlayerInputController.Instance.ClearSelection();
@@ -214,11 +217,9 @@ public class DuelController
 
 
     private void EnemyTurn() {
-        if (!settings.EnablePVPMode) {
-            DrawCardEnemy(1);
-            ai.MakeMove(board);
-            EndTurn();
-        }
+        ai.MakeMove(board);
+        EndTurn();
+        
     }
 
     public CharStatus CurrentCharStatus()

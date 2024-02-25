@@ -109,6 +109,11 @@ public class CardInteractable : MonoBehaviour,
         }
     }
 
+    public void PlaceCard(BoardCoords pos)
+    {
+        PlaceCard(BoardInterface.Instance.GetTile(pos));
+    }
+
     public void UpdateCardPos()
     {
         TileInteractable tile = BoardInterface.Instance.GetTile(card.pos);
@@ -117,10 +122,7 @@ public class CardInteractable : MonoBehaviour,
         DrawArrows();
     }
 
-    public void PlaceCard(BoardCoords pos)
-    {
-        PlaceCard(BoardInterface.Instance.GetTile(pos));
-    }
+
 
     public void OnPointerEnter(PointerEventData eventData)
     {
