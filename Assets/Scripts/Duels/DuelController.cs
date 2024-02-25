@@ -242,7 +242,6 @@ public class DuelController
             Card c = ScriptableObject.Instantiate(playerDeck.CardList[index]);
             c.team = Team.Player;
             DuelEvents.Instance.DrawCard(c, Team.Player);
-
         }
 
         DuelEvents.Instance.UpdateUI();
@@ -258,7 +257,6 @@ public class DuelController
             DuelEvents.Instance.DrawCard(c,Team.Enemy);
         }
 
-        Debug.Log("Updating UI");
         DuelEvents.Instance.UpdateUI();
         DuelEvents.Instance.UpdateHand();
     }

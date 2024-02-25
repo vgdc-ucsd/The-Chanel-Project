@@ -19,7 +19,7 @@ public class HandInterface : MonoBehaviour
     // Determines how tall the arch of the cards is in the player's hand
     private float arcIntensity = 15f;
 
-    // Adds a number of cards to the player's hand
+    private List<QueueableAnimation> cardAnimations = new List<QueueableAnimation>(); 
 
     void Awake() {
         DuelEvents.Instance.OnDrawCard += Draw;
@@ -74,7 +74,13 @@ public class HandInterface : MonoBehaviour
 
     // Displays cards neatly in the UI
     public void OrganizeCards() {
-        Debug.Log("Organizing hand");
+        // clear old animations
+        foreach(QueueableAnimation qa in cardAnimations) {
+            DuelManager.Instance.AM.StopCoroutine(qa.Animation);
+            qa.Animation = null;
+        }
+        cardAnimations.Clear();
+
         for(int i = 0; i < cardObjects.Count; i++) {
             GameObject card = cardObjects[i].gameObject;
 
@@ -102,6 +108,7 @@ public class HandInterface : MonoBehaviour
                         InterpolationMode.Linear
                     );
                     QueueableAnimation qa = new QueueableAnimation(animation, 0.1f);
+                    cardAnimations.Add(qa);
                     DuelManager.Instance.AM.QueueAnimation(qa);
                 }
                 // old cards
@@ -112,7 +119,9 @@ public class HandInterface : MonoBehaviour
                         0.1f,
                         InterpolationMode.Linear
                     );
-                    DuelManager.Instance.AM.Play(animation);
+                    QueueableAnimation qa = new QueueableAnimation(animation, 0f);
+                    cardAnimations.Add(qa);
+                    DuelManager.Instance.AM.Play(qa.Animation);
                 }   
             }
 

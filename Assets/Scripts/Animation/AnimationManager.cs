@@ -33,11 +33,13 @@ public class AnimationManager : MonoBehaviour
             float startTime = Time.time;
             // Dequeues and plays the animation
             QueueableAnimation current = animations.Dequeue();
-            Play(current.Animation);
+            if(current != null && current.Animation != null) {
+                Play(current.Animation);
 
-            // Waits until the delay is done
-            while(Time.time - startTime < current.Delay) {
-                yield return null;
+                // Waits until the delay is done
+                while(Time.time - startTime < current.Delay) {
+                    yield return null;
+                }
             }
         }
         activelyPlaying = false;

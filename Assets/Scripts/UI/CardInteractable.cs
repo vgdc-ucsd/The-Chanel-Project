@@ -110,13 +110,12 @@ public class CardInteractable : MonoBehaviour,
             transform.position = tile.transform.position;
             if(handInterface != null) {
                 handInterface.cardObjects.Remove(this);
-                Debug.Log("Removing card from hand");
-            }
+            } 
             transform.SetParent(tile.transform);
             transform.localScale = Vector3.one;
             DrawArrows(); 
             CardCost.enabled = false;
-            handInterface.OrganizeCards();
+            //handInterface.OrganizeCards();
         }
     }
 
