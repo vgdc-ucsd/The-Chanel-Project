@@ -60,6 +60,7 @@ public class HandInterface : MonoBehaviour
 
         ci.card = c;
         ci.handInterface = this;
+        c.CardInteractableRef = ci;
         ci.SetCardInfo();
     }
 

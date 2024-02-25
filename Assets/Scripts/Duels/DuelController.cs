@@ -12,7 +12,7 @@ public class DuelController
     private DuelSettings settings;
     private Board board;
     private PlayerSettings playerSettings, enemySettings;
-    private CharStatus playerStatus, enemyStatus;
+    public CharStatus playerStatus, enemyStatus;
     private UIManager ui;
     private List<Card> modifiedCards = new List<Card>();
     private BasicDuelAI ai;
@@ -76,7 +76,7 @@ public class DuelController
             return;
         }
         if (currentTeam != card.team) {
-            Debug.Log("Playing from wrong hand");
+            Debug.Log($"Tried to play {card.team} card while on {currentTeam} turn");
             return;
         }
         CharStatus charStatus = CurrentCharStatus();
@@ -217,7 +217,12 @@ public class DuelController
 
 
     private void EnemyTurn() {
-        ai.MakeMove(board);
+        foreach (Card card in enemyStatus.cards)
+        {
+            Debug.Log(card.CardInteractableRef);
+            Debug.Log(card.Name);
+        }
+        ai.MakeMove();
         EndTurn();
         
     }
@@ -242,6 +247,8 @@ public class DuelController
             int index = Random.Range(0, playerDeck.CardList.Count);
             Card c = playerDeck.CardList[index];
             DuelEvents.Instance.DrawCard(c, Team.Player);
+            if (c.CardInteractableRef == null) Debug.Log("CI of drawn card is null!");
+
         }
 
         DuelEvents.Instance.UpdateUI();
@@ -253,6 +260,7 @@ public class DuelController
             int index = Random.Range(0, enemyDeck.CardList.Count);
             Card c = enemyDeck.CardList[index];
             DuelEvents.Instance.DrawCard(c,Team.Enemy);
+            if (c.CardInteractableRef == null) Debug.Log("CI of drawn card is null!");
         }
 
         DuelEvents.Instance.UpdateUI();

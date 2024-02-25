@@ -41,7 +41,7 @@ public class DuelManager : MonoBehaviour
         UI.SetupHand();
         DuelEvents.Instance.UpdateUI();
 
-        if (Settings.EnablePVPMode) {
+        if (Settings.EnablePVPMode || Settings.ShowEnemyHand) {
             UI.EnemyHand.gameObject.SetActive(true);
         }
 

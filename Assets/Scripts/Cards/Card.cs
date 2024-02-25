@@ -11,6 +11,8 @@ using UnityEngine;
 // Stores data on any given card in the game
 public class Card : ScriptableObject
 {
+    public bool enableLogging;
+
     // The name and stats of the card 
     public string Name;
     public int Health;
@@ -24,7 +26,7 @@ public class Card : ScriptableObject
     // The image that is displayed on the card
     public Texture2D Artwork;
 
-    [HideInInspector] public Team team = Team.Neutral;
+    public Team team = Team.Neutral;
 
     // References to card and tile interactables
     [HideInInspector] public CardInteractable CardInteractableRef;
@@ -57,6 +59,8 @@ public class Card : ScriptableObject
         }
     }
 
+    
+
     public TileInteractable GetTile()
     {
         return BoardInterface.Instance.Tiles[pos.ToRowColV2().x, pos.ToRowColV2().y];
@@ -84,6 +88,8 @@ public class Card : ScriptableObject
     public void Place(BoardCoords pos)
     {
         isActive = true;
+        Debug.Log($"Placing {Name}");
+        Debug.Log(CardInteractableRef);
         CardInteractableRef.PlaceCard(pos);
     }
 

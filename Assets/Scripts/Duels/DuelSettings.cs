@@ -22,4 +22,5 @@ public class DuelSettings
     public bool EnablePVPMode = false;
     public bool RestrictPlacement = true;
     public bool UnlimitedMana = false;
+    public bool ShowEnemyHand = false;
 }

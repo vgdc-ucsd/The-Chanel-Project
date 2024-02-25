@@ -13,9 +13,9 @@ public class CharStatus : MonoBehaviour
     [HideInInspector] public int MaxHealth;
     [HideInInspector] public int MaxMana;
     [HideInInspector] public int ManaCapacity;
-    private Team team;
+    public Team team;
     public Deck Deck;
-    private List<Card> cards = new List<Card>();
+    public List<Card> cards = new List<Card>();
 
 
     //[SerializeField] 
@@ -57,8 +57,12 @@ public class CharStatus : MonoBehaviour
 
     public void AddCard(Card card, Team team)
     {
-        if (team == this.team) { }
-        cards.Add(card);
+        if (team == this.team) 
+        { 
+            cards.Add(card);
+            card.team = team;
+        }
+        
     }
 
     public void RemoveFromHand(Card card)

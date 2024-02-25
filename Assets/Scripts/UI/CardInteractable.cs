@@ -31,6 +31,7 @@ public class CardInteractable : MonoBehaviour,
     public TextMeshProUGUI CardHealth;
     public TextMeshProUGUI CardAttack;
     public TextMeshProUGUI CardCost;
+    public TextMeshProUGUI DebugText;
 
     //Image object of the card
     [SerializeField] private Image image;
