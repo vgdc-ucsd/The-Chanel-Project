@@ -60,7 +60,7 @@ public class BasicDuelAI
         int index = Random.Range(0, status.cards.Count);
         Card cardToPlay = status.cards[index];
 
-        Debug.Log(cardToPlay.CardInteractableRef);
+        Debug.Log(cardToPlay.CardInteractableRef); // THIS RETURNS NULL FOR SOME REASON
 
         dc.PlayCard(cardToPlay, randomTile);
         Debug.Log($"AI: Tried to play card {cardToPlay.Name} of {cardToPlay.team}, out of available cards: \n {status.cards.ToLineSeparatedString() }");
