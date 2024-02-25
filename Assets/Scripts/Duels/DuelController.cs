@@ -217,11 +217,6 @@ public class DuelController
 
 
     private void EnemyTurn() {
-        foreach (Card card in enemyStatus.cards)
-        {
-            Debug.Log(card.CardInteractableRef);
-            Debug.Log(card.Name);
-        }
         ai.MakeMove();
         EndTurn();
         
@@ -245,9 +240,9 @@ public class DuelController
         Deck playerDeck = playerStatus.Deck;
         for(int i = 0; i < count; i++) {
             int index = Random.Range(0, playerDeck.CardList.Count);
-            Card c = playerDeck.CardList[index];
+            Card c = ScriptableObject.Instantiate(playerDeck.CardList[index]);
+            c.team = Team.Player;
             DuelEvents.Instance.DrawCard(c, Team.Player);
-            if (c.CardInteractableRef == null) Debug.Log("CI of drawn card is null!");
 
         }
 
@@ -258,9 +253,9 @@ public class DuelController
         Deck enemyDeck = enemyStatus.Deck;
         for(int i = 0; i < count; i++) {
             int index = Random.Range(0, enemyDeck.CardList.Count);
-            Card c = enemyDeck.CardList[index];
+            Card c = ScriptableObject.Instantiate(enemyDeck.CardList[index]);
+            c.team = Team.Enemy;
             DuelEvents.Instance.DrawCard(c,Team.Enemy);
-            if (c.CardInteractableRef == null) Debug.Log("CI of drawn card is null!");
         }
 
         DuelEvents.Instance.UpdateUI();

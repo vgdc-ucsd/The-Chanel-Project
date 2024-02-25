@@ -25,6 +25,7 @@ public class CardInteractable : MonoBehaviour,
     public GraphicRaycaster raycaster; 
     public GameObject TemplateArrowPlayer;
     public GameObject TemplateArrowEnemy;
+    public Canvas canvas;
 
     // Text fields on the card
     public TextMeshProUGUI CardName;
@@ -101,12 +102,16 @@ public class CardInteractable : MonoBehaviour,
         if (tile != null) {
             // TODO: move some actions here to PlaceCard in Board
             inHand = false;
+            ToggleVisibility(true);
+            transform.localEulerAngles = Vector3.zero;
+            transform.localScale = Vector3.one;
             transform.position = tile.transform.position;
             if(handInterface != null) handInterface.cardObjects.Remove(this.gameObject);
             transform.SetParent(tile.transform);
             transform.localScale = Vector3.one;
             DrawArrows(); 
             CardCost.enabled = false;
+            handInterface.OrganizeCards();
         }
     }
 
@@ -181,8 +186,9 @@ public class CardInteractable : MonoBehaviour,
                 Debug.Log("Could not organize hand, handInterface is uninitialized");
                 return;
             }
-            handInterface.OrganizeCards();
+            
         }
+        handInterface.OrganizeCards();
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -214,5 +220,10 @@ public class CardInteractable : MonoBehaviour,
             Debug.LogError("Could not create hand, TemplateCard is has no TemplateArrowEnemy");
             return;
         }
+    }
+
+    public void ToggleVisibility(bool toggle)
+    {
+        canvas.enabled = toggle;
     }
 }

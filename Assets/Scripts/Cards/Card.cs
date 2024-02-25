@@ -88,8 +88,6 @@ public class Card : ScriptableObject
     public void Place(BoardCoords pos)
     {
         isActive = true;
-        Debug.Log($"Placing {Name}");
-        Debug.Log(CardInteractableRef);
         CardInteractableRef.PlaceCard(pos);
     }
 

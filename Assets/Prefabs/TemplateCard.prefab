@@ -151,7 +151,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &9059629096068527697
 RectTransform:
   m_ObjectHideFlags: 0
@@ -802,6 +802,8 @@ GameObject:
   - component: {fileID: 4980021907758871777}
   - component: {fileID: 5031173131582061888}
   - component: {fileID: 3382568235958084768}
+  - component: {fileID: 4633144380959704258}
+  - component: {fileID: 5767723507367173616}
   m_Layer: 0
   m_Name: TemplateCard
   m_TagString: Untagged
@@ -848,9 +850,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   card: {fileID: 0}
   handInterface: {fileID: 0}
-  raycaster: {fileID: 0}
+  raycaster: {fileID: 5767723507367173616}
   TemplateArrowPlayer: {fileID: 4576968097883469193, guid: fe365ff3c0c94f041a73df91789e03c2, type: 3}
   TemplateArrowEnemy: {fileID: 67719645880803081, guid: 504658362447dc74a9d4f248d6be4fab, type: 3}
+  canvas: {fileID: 4633144380959704258}
   CardName: {fileID: 8775277688575511005}
   CardHealth: {fileID: 6426648206735701756}
   CardAttack: {fileID: 8856066283348533103}
@@ -868,6 +871,46 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7125500276102778040}
   m_CullTransparentMesh: 1
+--- !u!223 &4633144380959704258
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7125500276102778040}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &5767723507367173616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7125500276102778040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &7649041539445918436
 GameObject:
   m_ObjectHideFlags: 0

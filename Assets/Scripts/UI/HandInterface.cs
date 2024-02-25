@@ -33,7 +33,6 @@ public class HandInterface : MonoBehaviour
 
         if (team == myTeam) {
             // Draw a random card from the deck (doesn't remove from deck)
-            c = ScriptableObject.Instantiate(c);
             c.team = team;
             GameObject cardObject = Instantiate(TemplateCard.gameObject);
             SetCard(c, cardObject);
@@ -62,6 +61,10 @@ public class HandInterface : MonoBehaviour
         ci.handInterface = this;
         c.CardInteractableRef = ci;
         ci.SetCardInfo();
+        if (myTeam == Team.Enemy && !(DuelManager.Instance.Settings.ShowEnemyHand || DuelManager.Instance.Settings.EnablePVPMode))
+        {
+            ci.ToggleVisibility(false);
+        }
     }
 
     // Displays cards neatly in the UI

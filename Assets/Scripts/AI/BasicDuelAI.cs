@@ -16,7 +16,7 @@ public class BasicDuelAI
     }
 
 
-
+    /* OLD
     public void MakeMove(Board b) {
         List<BoardCoords> legalTiles = GetLegalTiles(b);
 
@@ -42,14 +42,10 @@ public class BasicDuelAI
             dc.PlayCard(c, randomTile);
         }
     }
+    */
 
     public void MakeMove()
     {
-        foreach (Card card in status.cards)
-        {
-            Debug.Log(card.CardInteractableRef);
-            Debug.Log(card.Name);
-        }
         if (dc.GetCurrentTeam() != Team.Enemy) 
         {
             Debug.Log("AI tried to make move while not on enemy turn");
@@ -59,13 +55,8 @@ public class BasicDuelAI
         BoardCoords randomTile = legalTiles[Random.Range(0, legalTiles.Count)];
         int index = Random.Range(0, status.cards.Count);
         Card cardToPlay = status.cards[index];
-
-        Debug.Log(cardToPlay.CardInteractableRef); // THIS RETURNS NULL FOR SOME REASON
-
         dc.PlayCard(cardToPlay, randomTile);
-        Debug.Log($"AI: Tried to play card {cardToPlay.Name} of {cardToPlay.team}, out of available cards: \n {status.cards.ToLineSeparatedString() }");
-        Debug.Log($"status team: {status.team}");
-
+        // Debug.Log($"AI: Tried to play card {cardToPlay.Name} of {cardToPlay.team}, out of available cards: \n {status.cards.ToLineSeparatedString() }");
     }
 
     // Returns a list of spaces on the board that are unrestricted and not occupied by another card
