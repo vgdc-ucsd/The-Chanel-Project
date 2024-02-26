@@ -184,6 +184,16 @@ public class DuelController
             atk.Hit(target);
             // Remove this?
             modifiedCards.Add(target); 
+
+            // animation
+            float animDuration = 0.3f;
+            IEnumerator anim = DuelManager.Instance.AM.CardAttack(
+                card.CardInteractableRef.transform, 
+                atk.direction,
+                animDuration
+            );
+            QueueableAnimation qa = new QueueableAnimation(anim, animDuration);
+            DuelManager.Instance.AM.QueueAnimation(qa);
         }
     }
 
@@ -212,8 +222,6 @@ public class DuelController
         PlayerInputController.Instance.ClearSelection();
         DuelEvents.Instance.UpdateUI();
     }
-
-
 
     private void EnemyTurn() {
         ai.MakeMove();

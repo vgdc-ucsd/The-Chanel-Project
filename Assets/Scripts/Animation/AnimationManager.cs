@@ -61,4 +61,31 @@ public class AnimationManager : MonoBehaviour
 
         origin.position = dest;
     }
+
+    // Animation that plays when a card makes an attack in a direction
+    // Pulls backwards briefly then launches forwards
+    public IEnumerator CardAttack(Transform card, Vector2 atkDir, float duration) {
+        InterpolationMode mode = InterpolationMode.Linear;
+        Vector3 startPos = card.position;
+
+        // windup
+        float windupDuration = duration * 0.4f;
+        float windupOffset = 10f;
+        Vector3 windupPos = startPos + new Vector3(windupOffset*(-atkDir.x), windupOffset*(-atkDir.y), 0);
+
+        // launch
+        float launchDuration = duration * 0.3f;
+        float launchOffset = 40f;
+        Vector3 launchPos = startPos + new Vector3(launchOffset*atkDir.x, launchOffset*atkDir.y, 0);
+
+        // recover
+        float recoverDuration = duration * 0.3f;
+
+        // animation
+        yield return SimpleTranslate(card, windupPos, windupDuration, mode);
+        yield return SimpleTranslate(card, launchPos, launchDuration, mode);
+        yield return SimpleTranslate(card, startPos, recoverDuration, mode);
+
+        card.position = startPos;
+    }
 }
