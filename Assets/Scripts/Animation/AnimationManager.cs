@@ -47,12 +47,14 @@ public class AnimationManager : MonoBehaviour
 
     // Translates the transform at origin to the position at dest
     public IEnumerator SimpleTranslate(Transform origin, Vector3 dest, float duration, InterpolationMode mode) {
+        if(origin == null) yield break;
         float startTime = Time.time;
         Vector3 startPos = origin.position;
         float elapsedTime = Time.time - startTime;
 
         // Interpolates between two positions until elapsedTime reaches duration
         while(elapsedTime < duration) {
+            if(origin == null) yield break;
             float t = elapsedTime / duration;
             origin.position = Interpolation.Interpolate(startPos, dest, t, mode);
             elapsedTime = Time.time - startTime;
@@ -65,6 +67,8 @@ public class AnimationManager : MonoBehaviour
     // Animation that plays when a card makes an attack in a direction
     // Pulls backwards briefly then launches forwards
     public IEnumerator CardAttack(Transform card, Vector2 atkDir, float duration) {
+        if(card == null) yield break;
+
         InterpolationMode mode = InterpolationMode.Linear;
         Vector3 startPos = card.position;
 
@@ -85,6 +89,7 @@ public class AnimationManager : MonoBehaviour
         yield return SimpleTranslate(card, windupPos, windupDuration, mode);
         yield return SimpleTranslate(card, launchPos, launchDuration, mode);
         yield return SimpleTranslate(card, startPos, recoverDuration, mode);
+        if(card == null) yield break;
 
         card.position = startPos;
     }
