@@ -100,7 +100,8 @@ public class HandInterface : MonoBehaviour
             if(targetPosition != card.transform.position) {
                 // new cards
                 if(card.transform.parent != this.transform) {
-                    card.transform.SetParent(this.transform); //
+                    card.transform.SetParent(this.transform);
+                    card.transform.localScale = Vector3.one;
                     IEnumerator animation = DuelManager.Instance.AM.SimpleTranslate(
                         card.transform,
                         targetPosition,
