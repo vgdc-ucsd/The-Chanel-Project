@@ -16,8 +16,8 @@ public class InventoryItemInteractable : MonoBehaviour,
     public Card card;
 
     // How much the card scales on hover
-    private float originalCardSize = 2f;
-    private float scaleFactor = 1.1f;
+    [SerializeField] private float originalCardSize = 2f;
+    [SerializeField] private float scaleFactor = 1.1f;
 
     // Inventory Manager Instance
     private InventoryManager inventoryManager;
@@ -25,6 +25,7 @@ public class InventoryItemInteractable : MonoBehaviour,
     private void Awake()
     {
         inventoryManager = FindObjectOfType<InventoryManager>();
+        transform.localScale = new Vector3(originalCardSize, originalCardSize, 1f);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -48,6 +49,6 @@ public class InventoryItemInteractable : MonoBehaviour,
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        transform.localScale = new Vector3(originalCardSize, originalCardSize, 1);
+        transform.localScale = new Vector3(originalCardSize, originalCardSize, 1f);
     }
 }
