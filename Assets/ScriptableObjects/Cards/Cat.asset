@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Cat
   Health: 1
-  Attack: 1
+  AttackDamage: 0
+  ManaCost: 1
+  AttackDamages: ffffffff01000000ffffffffffffffffffffffffffffffffffffffffffffffff
   Artwork: {fileID: 0}
+  BelongsToPlayer: 1
+  team: 0
+  CardInteractableRef: {fileID: 0}
+  TileInteractableRef: {fileID: 0}
   AttackDirections:
-  - {x: 1, y: 0}
+  - {x: 0, y: 1}

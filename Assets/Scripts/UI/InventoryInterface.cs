@@ -35,7 +35,7 @@ public class InventoryInterface : MonoBehaviour
             for (int j = 0; j < inventory.Cols; j++)
             {
                 GameObject tile = Instantiate(templateTile);
-                tile.GetComponent<TileInteractable>().location = new Vector2Int(i, j);
+                tile.GetComponent<TileInteractable>().locationRC = new Vector2Int(i, j);
                 tile.transform.SetParent(this.transform);
                 tile.transform.localScale = Vector3.one;
                 tile.SetActive(true);

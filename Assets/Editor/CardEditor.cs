@@ -69,4 +69,6 @@ public class CardEditor : Editor
     private void ShowToggle(Vector2Int atkDir, Card c) {
         enabledAttacks[AttackDirections.AllAttackDirections.IndexOf(atkDir)] = GUILayout.Toggle(c.AttackDirections.Contains(atkDir), "");
     }
+
+
 }
