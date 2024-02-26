@@ -146,8 +146,16 @@ public class DuelController
             Debug.Log("Tried to process null card!");
             return;
         }
+
         // Player cards only attack on player's turn
         if (card.team == currentTeam) {
+            // Activate abilities        
+            foreach(Ability a in card.Abilities) {
+                if(a != null && a.Condition == ActivationCondition.OnProcess) {
+                    a.Activate(card);
+                }
+            }
+
             foreach(Attack atk in card.Attacks) {
                 ProcessAttack(atk);
             }

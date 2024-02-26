@@ -48,6 +48,8 @@ public class Card : ScriptableObject
          -1,-1,-1};
 
     public List<Attack> Attacks = new List<Attack>();
+    public List<Ability> Abilities = new List<Ability>();
+
     private void Awake()
     {
         for (int i = 0; i < 8; i++)
