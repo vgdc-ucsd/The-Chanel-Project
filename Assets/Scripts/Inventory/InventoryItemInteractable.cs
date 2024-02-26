@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Jobs;
 using UnityEngine.UI;
 
 public class InventoryItemInteractable : MonoBehaviour,
@@ -15,6 +16,7 @@ public class InventoryItemInteractable : MonoBehaviour,
     public Card card;
 
     // How much the card scales on hover
+    private float originalCardSize = 2f;
     private float scaleFactor = 1.1f;
 
     // Inventory Manager Instance
@@ -41,11 +43,11 @@ public class InventoryItemInteractable : MonoBehaviour,
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+        transform.localScale = new Vector3(transform.localScale.x * scaleFactor, transform.localScale.y * scaleFactor, 1f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        transform.localScale = Vector3.one;
+        transform.localScale = new Vector3(originalCardSize, originalCardSize, 1);
     }
 }
