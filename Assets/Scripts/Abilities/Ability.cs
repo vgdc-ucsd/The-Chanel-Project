@@ -6,7 +6,8 @@ using UnityEngine;
 public enum ActivationCondition {
     OnProcess,
     OnDeath,
-    OnDraw
+    OnDraw,
+    OnPlay
 }
 
 [Serializable]
