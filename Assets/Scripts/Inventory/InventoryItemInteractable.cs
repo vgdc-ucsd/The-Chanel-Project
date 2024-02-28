@@ -4,24 +4,20 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Jobs;
 using UnityEngine.UI;
 
-// The MonoBehavior counterpart for a Card, this is what the user actually interacts with
 public class InventoryItemInteractable : MonoBehaviour,
     IPointerEnterHandler,
     IPointerExitHandler,
     IPointerClickHandler
 {
     // Determines what card this object is
-    public InventoryItemData item;
-
-    // Text fields on the card
-    public TextMeshProUGUI CardName;
-    public TextMeshProUGUI CardHealth;
-    public TextMeshProUGUI CardAttack;
+    public Card card;
 
     // How much the card scales on hover
-    private float scaleFactor = 1.1f;
+    [SerializeField] private float originalCardSize = 2f;
+    [SerializeField] private float scaleFactor = 1.1f;
 
     // Inventory Manager Instance
     private InventoryManager inventoryManager;
@@ -29,6 +25,7 @@ public class InventoryItemInteractable : MonoBehaviour,
     private void Awake()
     {
         inventoryManager = FindObjectOfType<InventoryManager>();
+        transform.localScale = new Vector3(originalCardSize, originalCardSize, 1f);
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -41,17 +38,17 @@ public class InventoryItemInteractable : MonoBehaviour,
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
             // FOR TESTING PURPOSES
-            inventoryManager.RemoveItem(item);
+            inventoryManager.RemoveItem(card);
         }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+        transform.localScale = new Vector3(transform.localScale.x * scaleFactor, transform.localScale.y * scaleFactor, 1f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        transform.localScale = Vector3.one;
+        transform.localScale = new Vector3(originalCardSize, originalCardSize, 1f);
     }
 }

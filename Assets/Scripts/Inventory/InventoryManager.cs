@@ -9,8 +9,10 @@ using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
+    // IGNORE THIS maxItems. IT IS FOR TESTING PURPOSES
     public int maxItems = 10;
-    public List<InventoryItemData> items;
+    // IDK IF THIS IS SUPPOSED TO BE A LIST OF CARDS OR A DECK
+    public List<Card> cards;
     public InventoryUI inventoryUI;
 
     void Start()
@@ -18,19 +20,21 @@ public class InventoryManager : MonoBehaviour
         // Create a new list at the start
         InitializeInventory();
 
+        // NOTE: There should only be one object with InventoryUI scripts. If not
+        // this line does not work properly.
         inventoryUI = FindObjectOfType<InventoryUI>();
     }
 
     private void InitializeInventory()
     {
-        items = new List<InventoryItemData>(maxItems);
+        cards = new List<Card>(maxItems);
     }
 
-    public void AddItem(InventoryItemData inventoryItem)
+    public void AddItem(Card card)
     {
-        if (items.Count < maxItems)
+        if (cards.Count < maxItems)
         {
-            items.Add(inventoryItem);
+            cards.Add(card);
         }
         else
         {
@@ -40,49 +44,49 @@ public class InventoryManager : MonoBehaviour
         inventoryUI.RefreshInventoryItems();
     }
 
-    public void RemoveItem(InventoryItemData itemToRemove)
+    public void RemoveItem(Card card)
     {
-        items.Remove(itemToRemove);
+        cards.Remove(card);
 
         inventoryUI.RefreshInventoryItems();
     }
 
     // Quicksort to sort 'items' list by name (in ascending order)
-    public List<InventoryItemData> SortItemsByName(List<InventoryItemData> inventoryItemDatas, int leftIndex, int rightIndex)
+    public List<Card> SortItemsByName(List<Card> cards, int leftIndex, int rightIndex)
     {
         var i = leftIndex;
         var j = rightIndex;
-        var pivot = inventoryItemDatas[leftIndex];
+        var pivot = cards[leftIndex];
 
         while (i <= j)
         {
-            while (String.Compare(inventoryItemDatas[i].name, pivot.name) < 0)
+            while (String.Compare(cards[i].name, pivot.name) < 0)
             // inventoryItemDatas[i].name < pivot.name)
             {
                 i++;
             }
 
-            while (String.Compare(inventoryItemDatas[j].name, pivot.name) > 0)
+            while (String.Compare(cards[j].name, pivot.name) > 0)
             {
                 j--;
             }
 
             if (i <= j)
             {
-                InventoryItemData temp = inventoryItemDatas[i];
-                inventoryItemDatas[i] = inventoryItemDatas[j];
-                inventoryItemDatas[j] = temp;
+                Card temp = cards[i];
+                cards[i] = cards[j];
+                cards[j] = temp;
                 i++;
                 j--;
             }
         }
 
         if (leftIndex < j)
-            SortItemsByName(inventoryItemDatas, leftIndex, j);
+            SortItemsByName(cards, leftIndex, j);
 
         if (i < rightIndex)
-            SortItemsByName(inventoryItemDatas, i, rightIndex);
+            SortItemsByName(cards, i, rightIndex);
 
-        return inventoryItemDatas;
+        return cards;
     }
 }

@@ -1,10 +1,9 @@
 fileFormatVersion: 2
-guid: cc226bd8fb5eead409ac88e0a181a474
+guid: 1ad9f13843bfc3a4bbe61cf5b52a83e7
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - deck: {fileID: 11400000, guid: 3fee81777dd337d44af028e8dc03f5ee, type: 2}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
