@@ -279,6 +279,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4623958654389551448, guid: 66b632cbc40f96149bf143f57ca746ee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7941678108802521201, guid: 66b632cbc40f96149bf143f57ca746ee, type: 3}
       propertyPath: m_Name
       value: Encounter
@@ -309,6 +313,10 @@ PrefabInstance:
     - target: {fileID: 1152119393304664273, guid: e8f592762a0f63442b1c72c14e93c6c7, type: 3}
       propertyPath: m_Name
       value: Shop
+      objectReference: {fileID: 0}
+    - target: {fileID: 5437272890115848539, guid: e8f592762a0f63442b1c72c14e93c6c7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 9102792183385168071, guid: e8f592762a0f63442b1c72c14e93c6c7, type: 3}
       propertyPath: m_Pivot.x
@@ -413,6 +421,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2079452801}
     m_Modifications:
+    - target: {fileID: 515419052380234911, guid: 05b90e52c005f6348931e6f58b78067d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4484942432259405148, guid: 05b90e52c005f6348931e6f58b78067d, type: 3}
       propertyPath: m_Name
       value: Boss
@@ -994,6 +1006,10 @@ PrefabInstance:
     - target: {fileID: 1497212369034187663, guid: f587ee085a825b94fb338a22b2526d9e, type: 3}
       propertyPath: m_Colors.m_HighlightedColor.r
       value: 0.080744065
+      objectReference: {fileID: 0}
+    - target: {fileID: 1497212369034187663, guid: f587ee085a825b94fb338a22b2526d9e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3880589661642436888, guid: f587ee085a825b94fb338a22b2526d9e, type: 3}
       propertyPath: m_Pivot.x

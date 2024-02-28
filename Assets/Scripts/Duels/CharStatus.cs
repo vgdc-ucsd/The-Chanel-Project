@@ -85,10 +85,12 @@ public class CharStatus : MonoBehaviour
             if (team == Team.Player)
             {
                 Debug.Log("Enemy Won!");
+                MenuScript.Instance.LoadMap(); // Transitions into map - Kiichi
             }
             else
             {
                 Debug.Log("Player Won!");
+                MenuScript.Instance.LoadMap();
             }
         }
     }
