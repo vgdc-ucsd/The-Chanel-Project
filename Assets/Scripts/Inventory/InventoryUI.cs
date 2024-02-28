@@ -46,7 +46,7 @@ public class InventoryUI : MonoBehaviour
             // Set name, health, attack text appropriately
             inventorySlotRectTransform.Find("Name").GetComponent<TextMeshProUGUI>().text = card.name;
             inventorySlotRectTransform.Find("Health").GetComponent<TextMeshProUGUI>().text = "Health: " + card.Health.ToString();
-            inventorySlotRectTransform.Find("Attack").GetComponent<TextMeshProUGUI>().text = "Attack: " + card.Attack.ToString();
+            inventorySlotRectTransform.Find("Attack").GetComponent<TextMeshProUGUI>().text = "Attack: " + card.AttackDamage.ToString();
 
             // Set card info appropriately
             inventorySlotRectTransform.GetComponent<InventoryItemInteractable>().card = card;

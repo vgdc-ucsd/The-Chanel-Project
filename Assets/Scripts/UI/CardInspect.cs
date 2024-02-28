@@ -26,7 +26,7 @@ public class CardInspect : MonoBehaviour
             return;
         }
         CardName.text = card.Name;
-        CardAttack.text = "Attack: " + card.Attack;
+        CardAttack.text = "Attack: " + card.AttackDamage; 
         CardHealth.text = "Health: " + card.Health;
     }
 }
