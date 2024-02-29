@@ -86,6 +86,13 @@ public class MapGrid : MonoBehaviour
         CreatePath(path2);
         CreatePath(path3);
         InstantiateStairs();
+
+        // removes any unused assets generated
+        GameObject[] unusedObjects = GameObject.FindGameObjectsWithTag("NotUsed");
+        foreach(GameObject node in unusedObjects)
+        {
+            Destroy(node);
+        }
     }
 
     void MoveBossAndExit()
@@ -94,6 +101,7 @@ public class MapGrid : MonoBehaviour
         Boss.transform.position = new Vector3(OrientingPosition.x + 100 * (numberOfRooms), OrientingPosition.y + 173.2f);
         row3.Add(Boss);
         row3.Add(exit);
+        exit.tag = "UsedNodes";
     }
     // Sets exit position based on number of rooms and adds it to row3
     void AddPoints(float x, float y)
@@ -118,7 +126,8 @@ public class MapGrid : MonoBehaviour
     // Instantiates Event at point
     void CreateStairs(Vector3 point, GameObject stairsType)
     {
-        Instantiate(stairsType, point, stairsType.transform.rotation, stairsType.transform.parent);
+        GameObject clone = Instantiate(stairsType, point, stairsType.transform.rotation, stairsType.transform.parent);
+        clone.tag = "UsedNodes";
     }
     // Instantiates stairs at point
     void SortNodeRow(Vector3 point, GameObject type)
@@ -263,10 +272,11 @@ public class MapGrid : MonoBehaviour
         ListStairPoints(StairsPoints, path3);
         for (int i = 0; i < StairsPoints.Count; i++)
         {
-            CreateStairs(StairsPoints[i], stairDirections[i]);
+             CreateStairs(StairsPoints[i], stairDirections[i]);
         }
     }
     // Generates stairs
+
 }
 
 
