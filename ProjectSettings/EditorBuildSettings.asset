@@ -15,12 +15,15 @@ EditorBuildSettings:
     path: Assets/Scenes/2) DuelTest.unity
     guid: d190577ec00e80a4b85a3848ce13958d
   - enabled: 1
-    path: Assets/Scenes/BossScene.unity
+    path: Assets/Scenes/3) ShopTest.unity
+    guid: d4b0720338ec35d4dadbb840cd16d5fd
+  - enabled: 1
+    path: Assets/Scenes/5) BossScene.unity
     guid: 86ece6505e4489e44948406b76190505
   - enabled: 1
-    path: Assets/Scenes/ShopScene.unity
-    guid: d87315733fbb52b4199b79b7b42f6804
-  - enabled: 1
-    path: Assets/Scenes/EventScene.unity
+    path: Assets/Scenes/4) EventScene.unity
     guid: 42e942ec641a8e14f90b41a14b76aed0
+  - enabled: 1
+    path: Assets/Scenes/6) InventoryTest.unity
+    guid: 61bdc14f0e0284e4a97cac0751bfe12f
   m_configObjects: {}
