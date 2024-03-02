@@ -36,7 +36,7 @@ public class MapGrid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
         // Sets starting position of character
         OrientingPosition = new Vector3(start.transform.position.x, start.transform.position.y);
 
@@ -47,11 +47,11 @@ public class MapGrid : MonoBehaviour
         CreateEncounter(new Vector3(OrientingPosition.x + 50, OrientingPosition.y + 86.6f));
 
         // Creates grid of 3 x numberOfRooms points to procedurally generate map nodes
-        for(int i = row1.Count; i < numberOfRooms; i++)
+        for (int i = row1.Count; i < numberOfRooms; i++)
         {
             AddPoints(OrientingPosition.x + 100 * i, OrientingPosition.y);
         }
-        for(int i = row2.Count; i < numberOfRooms; i++)
+        for (int i = row2.Count; i < numberOfRooms; i++)
         {
             AddPoints(OrientingPosition.x + 50 + 100 * i, OrientingPosition.y + 86.6f);
         }
@@ -62,18 +62,18 @@ public class MapGrid : MonoBehaviour
         transform.rotation = Quaternion.identity;
 
         // Generates Encounter, Shop, or Event for each point aside from preset nodes
-        foreach(Vector3 Point in Points)
+        foreach (Vector3 Point in Points)
         {
             int random = UnityEngine.Random.Range(1, 4);
-            if(random == 1)
+            if (random == 1)
             {
                 CreateEncounter(Point);
             }
-            else if(random == 2)
+            else if (random == 2)
             {
                 CreateShop(Point);
             }
-            else if(random == 3)
+            else if (random == 3)
             {
                 CreateEvent(Point);
             }
@@ -89,7 +89,7 @@ public class MapGrid : MonoBehaviour
 
         // removes any unused assets generated
         GameObject[] unusedObjects = GameObject.FindGameObjectsWithTag("NotUsed");
-        foreach(GameObject node in unusedObjects)
+        foreach (GameObject node in unusedObjects)
         {
             Destroy(node);
         }
@@ -132,15 +132,15 @@ public class MapGrid : MonoBehaviour
     // Instantiates stairs at point
     void SortNodeRow(Vector3 point, GameObject type)
     {
-        if(point.y == OrientingPosition.y)
+        if (point.y == OrientingPosition.y)
         {
             row1.Add(Instantiate(type, point, transform.rotation, type.transform.parent));
         }
-        else if(point.y == OrientingPosition.y + 86.6f)
+        else if (point.y == OrientingPosition.y + 86.6f)
         {
             row2.Add(Instantiate(type, point, transform.rotation, type.transform.parent));
         }
-        else if(point.y == OrientingPosition.y + 173.2f)
+        else if (point.y == OrientingPosition.y + 173.2f)
         {
             row3.Add(Instantiate(type, point, transform.rotation, type.transform.parent));
         }
@@ -148,17 +148,18 @@ public class MapGrid : MonoBehaviour
     // Sorts nodes into rows to draw lines
     void CreatePath(List<GameObject> pathNodes)
     {
-        pathNodes.Add(start);
-        int count = 1;
         bool repeat = true;
-        while(repeat == true)
+        while (repeat == true)
         {
-            for(int i = 1; i < numberOfRooms + 2; i++)
+            pathNodes.Clear();
+            pathNodes.Add(start);
+            int count = 1;
+            for (int i = 1; i < numberOfRooms + 2; i++)
             {
                 int random = UnityEngine.Random.Range(0, 2);
-                if(count == 1)
+                if (count == 1)
                 {
-                    if(random == 0 && i < 4)
+                    if (random == 0 && i < 4)
                     {
                         pathNodes.Add(row1[i]);
                         row1[i].tag = KeepTag;
@@ -170,9 +171,9 @@ public class MapGrid : MonoBehaviour
                         count += 1;
                     }
                 }
-                else if(count == 2)
+                else if (count == 2)
                 {
-                    if(random == 0 && i < 5)
+                    if (random == 0 && i < 5)
                     {
                         pathNodes.Add(row2[i - 1]);
                         row2[i - 1].tag = KeepTag;
@@ -190,24 +191,17 @@ public class MapGrid : MonoBehaviour
                     row3[i - 2].tag = KeepTag;
                 }
             }
-            if(paths.Count == 0)
+            if (paths.Count == 0)
             {
                 paths.Add(pathNodes);
                 repeat = false;
             }
             else
             {
-                for(int i = 0; i < paths.Count; i++)
+                if (!CheckDuplicatePath(pathNodes))
                 {
-                    if(paths[i] == pathNodes)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        paths.Add(pathNodes);
-                        repeat = false;
-                    }
+                    paths.Add(pathNodes);
+                    repeat = false;
                 }
             }
         }
@@ -215,9 +209,9 @@ public class MapGrid : MonoBehaviour
     // Creates paths to generate stairs between nodes; paths cannot be entirely identical
     void ListStairPoints(List<Vector3> StairsPoints, List<GameObject> path)
     {
-        if(StairsPoints.Count == 0)
+        if (StairsPoints.Count == 0)
         {
-            for(int i = 0; i < path.Count - 1; i++)
+            for (int i = 0; i < path.Count - 1; i++)
             {
                 Vector3 pos = new((path[i].transform.position.x + path[i + 1].transform.position.x) / 2, (path[i].transform.position.y + path[i + 1].transform.position.y) / 2);
                 StairsPoints.Add(pos);
@@ -233,13 +227,13 @@ public class MapGrid : MonoBehaviour
         }
         else
         {
-            for(int i = 0; i < path.Count - 1; i++)
+            for (int i = 0; i < path.Count - 1; i++)
             {
                 int count = 0;
                 Vector3 pos = new((path[i].transform.position.x + path[i + 1].transform.position.x) / 2, (path[i].transform.position.y + path[i + 1].transform.position.y) / 2);
-                foreach(Vector3 p in StairsPoints)
+                foreach (Vector3 p in StairsPoints)
                 {
-                    if(p != pos)
+                    if (p != pos)
                     {
                         continue;
                     }
@@ -252,7 +246,7 @@ public class MapGrid : MonoBehaviour
                 if (count == 0)
                 {
                     StairsPoints.Add(pos);
-                    if(pos.y == path[i].transform.position.y)
+                    if (pos.y == path[i].transform.position.y)
                     {
                         stairDirections.Add(horStairs);
                     }
@@ -272,12 +266,23 @@ public class MapGrid : MonoBehaviour
         ListStairPoints(StairsPoints, path3);
         for (int i = 0; i < StairsPoints.Count; i++)
         {
-             CreateStairs(StairsPoints[i], stairDirections[i]);
+            CreateStairs(StairsPoints[i], stairDirections[i]);
         }
     }
     // Generates stairs
 
+    bool CheckDuplicatePath(List<GameObject> path)
+    {
+        bool duplicate = false;
+        for (int i = 0; i < paths.Count; i++)
+        {
+            bool dup = true;
+            for (int j = 0; j < paths[i].Count; j++)
+            {
+                dup &= paths[i][j] == path[j];
+            }
+            duplicate |= dup;
+        }
+        return duplicate;
+    }
 }
-
-
-
