@@ -227,7 +227,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryManager: {fileID: 181525947}
   inventoryContainer: {fileID: 898474643}
-  inventoryTemplateCardPrefab: {fileID: 5933769366924284088, guid: 201a3cd9fa78e5443a25932cbba26128, type: 3}
+  inventoryTemplateCardPrefab: {fileID: 5933769366924284088, guid: d35b28c3fa2e48b4da3b5392952fc305, type: 3}
 --- !u!1 &314132578
 GameObject:
   m_ObjectHideFlags: 0
