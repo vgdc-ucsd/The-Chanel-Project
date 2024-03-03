@@ -304,8 +304,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shopManager: {fileID: 1272793908}
-  shopSlotContainer: {fileID: 0}
-  shopSlotTemplate: {fileID: 0}
 --- !u!1 &160499841
 GameObject:
   m_ObjectHideFlags: 0
@@ -872,9 +870,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '
-
-    New Text'
+  m_text: New Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -909,7 +905,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1414,9 +1410,6 @@ MonoBehaviour:
   CardHealth: {fileID: 1443533141}
   CardAttack: {fileID: 1245378288}
   CardCost: {fileID: 217177033}
-  scaleFactor: 1.1
-  shopManager: {fileID: 0}
-  purchaseManager: {fileID: 0}
 --- !u!222 &501184055
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2597,7 +2590,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1272793906}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afc2dbec3e1bae046a69949d44589c8d, type: 3}
+  m_Script: {fileID: 11500000, guid: 0609d877f04883e4ca5b96ee860b8d07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxItems: 40
@@ -2616,15 +2609,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerMoney: {fileID: 1164251814}
-  shopManager: {fileID: 0}
-  CardItem: {fileID: 0}
-  toBuy: {fileID: 92947341}
-  buyButton: {fileID: 370519273}
   CardName: {fileID: 1674882839}
   CardHealth: {fileID: 825304225}
   CardAttack: {fileID: 184079285}
   CardCost: {fileID: 2083482384}
   CardExcerpt: {fileID: 1785137688}
+  toBuy: {fileID: 92947341}
+  buyButton: {fileID: 370519273}
 --- !u!1 &1313050721
 GameObject:
   m_ObjectHideFlags: 0
