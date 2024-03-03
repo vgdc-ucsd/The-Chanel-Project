@@ -15,9 +15,9 @@ public class HandInterface : MonoBehaviour
     // Determines how much the cards rotate in the player's hand
     private float maxRotationDegrees = 15;
     // Determines how much space is between the cards in the player's hand
-    private float cardDistance = 50f;
+    private float cardDistance = 0f;
     // Determines how tall the arch of the cards is in the player's hand
-    private float arcIntensity = 15f;
+    private float arcIntensity = 30f;
 
     private List<QueueableAnimation> cardAnimations = new List<QueueableAnimation>(); 
 
@@ -74,6 +74,8 @@ public class HandInterface : MonoBehaviour
 
     // Displays cards neatly in the UI
     public void OrganizeCards() {
+        cardDistance = 50 * cardObjects.Count;
+
         // clear old animations
         foreach(QueueableAnimation qa in cardAnimations) {
             DuelManager.Instance.AM.StopCoroutine(qa.Animation);
