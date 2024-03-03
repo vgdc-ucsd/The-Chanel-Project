@@ -12,6 +12,6 @@ public class TestAbility : Ability
     
     public override void Activate(Card c) {
         BoardCoords pos = c.GetTile().location;
-        Debug.Log(c.Name + " activated ability at (" + pos.x + ", " + pos.y + ")");
+        //Debug.Log(c.Name + " activated ability at (" + pos.x + ", " + pos.y + ")");
     }
 }

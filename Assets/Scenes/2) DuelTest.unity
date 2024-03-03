@@ -350,7 +350,7 @@ MonoBehaviour:
     EnablePVPMode: 0
     RestrictPlacement: 0
     UnlimitedMana: 0
-    ShowEnemyHand: 1
+    ShowEnemyHand: 0
   PlayerDeck: {fileID: 11400000, guid: 1b62fd89b8fe4734eb4697de89df34b7, type: 2}
   EnemyDeck: {fileID: 11400000, guid: 3fee81777dd337d44af028e8dc03f5ee, type: 2}
   PlayerStatus: {fileID: 1455160713}
@@ -435,8 +435,6 @@ RectTransform:
   - {fileID: 1721334445}
   - {fileID: 1048503926}
   - {fileID: 1938627642}
-  - {fileID: 1419523777}
-  - {fileID: 794390334}
   - {fileID: 1109121971}
   - {fileID: 27659406}
   - {fileID: 1455160711}
@@ -444,6 +442,8 @@ RectTransform:
   - {fileID: 1180991548}
   - {fileID: 1417589960}
   - {fileID: 248040382}
+  - {fileID: 1419523777}
+  - {fileID: 794390334}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -970,7 +970,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 248040385}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &248040385
 MonoBehaviour:
   m_ObjectHideFlags: 0

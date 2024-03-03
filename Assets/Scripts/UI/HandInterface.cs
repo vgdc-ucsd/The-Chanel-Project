@@ -74,7 +74,7 @@ public class HandInterface : MonoBehaviour
 
     // Displays cards neatly in the UI
     public void OrganizeCards() {
-        cardDistance = 50 * cardObjects.Count;
+        cardDistance = 45 * cardObjects.Count;
 
         // clear old animations
         foreach(QueueableAnimation qa in cardAnimations) {

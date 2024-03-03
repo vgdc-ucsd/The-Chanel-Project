@@ -189,10 +189,6 @@ public class DuelController
         // Deal damage
         Card target = board.GetCard(atkDest);
         if(card.team != target.team) {
-            atk.Hit(target);
-            // Remove this?
-            modifiedCards.Add(target); 
-
             // animation
             float animDuration = 0.3f;
             IEnumerator anim = DuelManager.Instance.AM.CardAttack(
@@ -202,6 +198,10 @@ public class DuelController
             );
             QueueableAnimation qa = new QueueableAnimation(anim, animDuration);
             DuelManager.Instance.AM.QueueAnimation(qa);
+
+            atk.Hit(target);
+            // Remove this?
+            modifiedCards.Add(target); 
         }
     }
 

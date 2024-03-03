@@ -93,4 +93,9 @@ public class AnimationManager : MonoBehaviour
 
         card.position = startPos;
     }
+
+    public IEnumerator CardDeath(CardInteractable ci) {
+        yield return null;
+        Destroy(ci.gameObject);
+    }
 }

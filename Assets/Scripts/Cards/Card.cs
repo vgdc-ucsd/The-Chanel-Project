@@ -83,7 +83,9 @@ public class Card : ScriptableObject
         if (Health <= 0)
         {
             DuelManager.Instance.DC.GetCurrentBoard().RemoveCard(pos);
-            MonoBehaviour.Destroy(CardInteractableRef.gameObject);
+            IEnumerator ie = DuelManager.Instance.AM.CardDeath(CardInteractableRef);
+            QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+            DuelManager.Instance.AM.QueueAnimation(qa);
         }
     }
 
