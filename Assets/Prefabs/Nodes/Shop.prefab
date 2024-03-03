@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5437272890115848539}
   m_Layer: 5
   m_Name: Shop
-  m_TagString: Untagged
+  m_TagString: NotUsed
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +28,7 @@ RectTransform:
   m_GameObject: {fileID: 1152119393304664273}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.35, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2570197349210485840}
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -2135585597343286014, guid: dc4024e8885d2f043a6010a57d895179, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d3849ceaf878ee248b9c3af5c25c22b5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
