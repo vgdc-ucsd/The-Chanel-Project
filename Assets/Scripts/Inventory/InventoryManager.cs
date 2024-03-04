@@ -10,7 +10,12 @@ using UnityEngine.UI;
 public class InventoryManager : MonoBehaviour
 {
     public int maxItems = 10;
+<<<<<<< Updated upstream
     public List<InventoryItemData> items;
+=======
+    // IDK IF THIS IS SUPPOSED TO BE A LIST OF CARDS OR A DECK
+    public List<UnitCard> cards;
+>>>>>>> Stashed changes
     public InventoryUI inventoryUI;
 
     void Start()
@@ -23,10 +28,17 @@ public class InventoryManager : MonoBehaviour
 
     private void InitializeInventory()
     {
+<<<<<<< Updated upstream
         items = new List<InventoryItemData>(maxItems);
     }
 
     public void AddItem(InventoryItemData inventoryItem)
+=======
+        cards = new List<UnitCard>(maxItems);
+    }
+
+    public void AddItem(UnitCard card)
+>>>>>>> Stashed changes
     {
         if (items.Count < maxItems)
         {
@@ -40,7 +52,11 @@ public class InventoryManager : MonoBehaviour
         inventoryUI.RefreshInventoryItems();
     }
 
+<<<<<<< Updated upstream
     public void RemoveItem(InventoryItemData itemToRemove)
+=======
+    public void RemoveItem(UnitCard card)
+>>>>>>> Stashed changes
     {
         items.Remove(itemToRemove);
 
@@ -48,7 +64,11 @@ public class InventoryManager : MonoBehaviour
     }
 
     // Quicksort to sort 'items' list by name (in ascending order)
+<<<<<<< Updated upstream
     public List<InventoryItemData> SortItemsByName(List<InventoryItemData> inventoryItemDatas, int leftIndex, int rightIndex)
+=======
+    public List<UnitCard> SortItemsByName(List<UnitCard> cards, int leftIndex, int rightIndex)
+>>>>>>> Stashed changes
     {
         var i = leftIndex;
         var j = rightIndex;
@@ -69,9 +89,15 @@ public class InventoryManager : MonoBehaviour
 
             if (i <= j)
             {
+<<<<<<< Updated upstream
                 InventoryItemData temp = inventoryItemDatas[i];
                 inventoryItemDatas[i] = inventoryItemDatas[j];
                 inventoryItemDatas[j] = temp;
+=======
+                UnitCard temp = cards[i];
+                cards[i] = cards[j];
+                cards[j] = temp;
+>>>>>>> Stashed changes
                 i++;
                 j--;
             }

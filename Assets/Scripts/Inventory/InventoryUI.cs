@@ -37,8 +37,13 @@ public class InventoryUI : MonoBehaviour
             inventoryManager.items = inventoryManager.SortItemsByName(inventoryManager.items, 0, inventoryManager.items.Count - 1);
         }
 
+<<<<<<< Updated upstream
         // Add all cards in inventory to the UI
         foreach (InventoryItemData item in inventoryManager.items)
+=======
+        // Add/Instantiate all cards in inventory to the UI
+        foreach (UnitCard card in inventoryManager.cards)
+>>>>>>> Stashed changes
         {
             RectTransform inventorySlotRectTransform = Instantiate(inventorySlotTemplate, inventorySlotContainer).GetComponent<RectTransform>();
             inventorySlotRectTransform.gameObject.SetActive(true);

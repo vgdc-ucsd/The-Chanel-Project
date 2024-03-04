@@ -54,7 +54,7 @@ public class BasicDuelAI
         List<BoardCoords> legalTiles = GetLegalTiles(dc.GetCurrentBoard());
         BoardCoords randomTile = legalTiles[Random.Range(0, legalTiles.Count)];
         int index = Random.Range(0, status.cards.Count);
-        Card cardToPlay = status.cards[index];
+        UnitCard cardToPlay = status.cards[index];
         dc.PlayCard(cardToPlay, randomTile);
         // Debug.Log($"AI: Tried to play card {cardToPlay.Name} of {cardToPlay.team}, out of available cards: \n {status.cards.ToLineSeparatedString() }");
     }

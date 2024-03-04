@@ -25,7 +25,7 @@ public class HandInterface : MonoBehaviour
         DuelEvents.Instance.OnRemoveFromHand += RemoveFromHand;
     }
 
-    public void Draw(Card c, Team team) {
+    public void Draw(UnitCard c, Team team) {
         if(TemplateCard == null) {
             Debug.Log("Could not draw cards, TemplateCard is uninitialized");
             return;
@@ -44,14 +44,18 @@ public class HandInterface : MonoBehaviour
         }
     }
 
-    public void RemoveFromHand(Card card)
+    public void RemoveFromHand(UnitCard card)
     {
 
     }
 
     // Maps a Card to a CardInteractable
+<<<<<<< Updated upstream
     private void SetCard(Card c, GameObject cardObject) {
         CardInteractable ci = cardObject.GetComponent<CardInteractable>();
+=======
+    private void SetCard(UnitCard c, CardInteractable ci) {
+>>>>>>> Stashed changes
         if(ci == null) {
             Debug.Log("Could not set card, TemplateCard has no CardInteractable");
             return;
