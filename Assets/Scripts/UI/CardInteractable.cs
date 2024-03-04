@@ -16,7 +16,7 @@ public class CardInteractable : MonoBehaviour,
     IPointerDownHandler
 {
     // Data for the card it contains
-    [HideInInspector] public UnitCard card;
+    [HideInInspector] public Card card;
 
     // Reference to the HandInterface
     [HideInInspector] public HandInterface handInterface;

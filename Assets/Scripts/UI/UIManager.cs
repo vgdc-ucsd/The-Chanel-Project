@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
         EnemyHand.TemplateCard = TemplateCard;
     }
 
-    public CardInteractable GenerateCardInteractable(UnitCard c) {
+    public CardInteractable GenerateCardInteractable(Card c) {
         CardInteractable ci = Instantiate(TemplateCard);
         ci.card = c;
         ci.SetCardInfo();

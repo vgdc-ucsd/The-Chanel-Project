@@ -1,23 +1,36 @@
+using JetBrains.Annotations;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-<<<<<<< Updated upstream
 
 // Allows a card to be created fropm the menu when right clicking in the inspector
 [CreateAssetMenu(menuName = "Cards/Card")]
 
 // Stores data on any given card in the game
 public class Card : ScriptableObject
-=======
-public abstract class Card: ScriptableObject
->>>>>>> Stashed changes
 {
+    public bool enableLogging;
+
+    // The name and stats of the card 
     public string Name;
+    public int Health;
+    public int AttackDamage; // OLD
     public int ManaCost;
+    public bool isSelected = false;
+
+    public BoardCoords pos;
+    [HideInInspector] public bool isActive = false;
+
+    // The image that is displayed on the card
+    public Texture2D Artwork;
+
+    public Team team = Team.Neutral;
 
     // References to card and tile interactables
     [HideInInspector] public CardInteractable CardInteractableRef;
 
-<<<<<<< Updated upstream
 
     //[HideInInspector] public TileInteractable TileInteractableRef;
     // Removed - too annoying to keep updating the tile interactable ref when card moves
@@ -89,8 +102,3 @@ public abstract class Card: ScriptableObject
 
 
 }
-=======
-    // The image that is displayed on the card
-    public Texture2D Artwork;
-}
->>>>>>> Stashed changes

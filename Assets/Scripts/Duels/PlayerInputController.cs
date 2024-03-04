@@ -9,7 +9,7 @@ enum ControlAction
 
 public class PlayerInputController: MonoBehaviour
 {
-    public UnitCard selectedCard;
+    public Card selectedCard;
     ControlAction currentAction;
     public static PlayerInputController Instance;
 
@@ -41,7 +41,7 @@ public class PlayerInputController: MonoBehaviour
     }
     
     // Handle any input that involves clicking a card on the board
-    public void InteractCard(UnitCard card)
+    public void InteractCard(Card card)
     {
         SetAction(ControlAction.None);
         if (card.team != DuelManager.Instance.DC.GetCurrentTeam())
@@ -63,7 +63,7 @@ public class PlayerInputController: MonoBehaviour
     }
 
     // Toggles the selection state of a card and updates the previously selected card
-    public void SelectCard(UnitCard card, bool toggle = true)
+    public void SelectCard(Card card, bool toggle = true)
     {
         if (card == null) return;
         if (toggle && selectedCard != null && selectedCard != card)

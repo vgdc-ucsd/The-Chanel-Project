@@ -13,16 +13,12 @@ public class InventoryItemInteractable : MonoBehaviour,
     IPointerClickHandler
 {
     // Determines what card this object is
-<<<<<<< Updated upstream
     public InventoryItemData item;
 
     // Text fields on the card
     public TextMeshProUGUI CardName;
     public TextMeshProUGUI CardHealth;
     public TextMeshProUGUI CardAttack;
-=======
-    public UnitCard card;
->>>>>>> Stashed changes
 
     // How much the card scales on hover
     private float scaleFactor = 1.1f;

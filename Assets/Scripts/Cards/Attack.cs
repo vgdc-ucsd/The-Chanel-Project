@@ -6,15 +6,15 @@ public class Attack
 {
     public Vector2Int direction;
     public int damage;
-    public UnitCard card;
-    public Attack(Vector2Int direction, int damage, UnitCard origin)
+    public Card card;
+    public Attack(Vector2Int direction, int damage, Card origin)
     {
         this.direction = direction;
         this.damage = damage;
         this.card = origin;
     }
 
-    public void Hit(UnitCard card)
+    public void Hit(Card card)
     {
         card.DealDamage(damage);
         //additional effects..
