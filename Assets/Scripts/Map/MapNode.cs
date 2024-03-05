@@ -14,49 +14,35 @@ IPointerClickHandler,
 IPointerEnterHandler,
 IPointerExitHandler
 {
-    // This is 0-indexed
-    public int layer;
-    public int indexInLayer;
     public bool visited;
-    public bool locked;
+    public bool locked = true;
     public MapNodeType mapNodeType;
     public List<MapNode> nextNodes;
     public List<MapNode> prevNodes;
-    [SerializeField] LineRenderer lineRendererPrefab;
-    [HideInInspector] public List<LineRenderer> lineRenderers;
-    [SerializeField] MapController mapController;
 
-    private void Awake()
+    private bool initialized;
+
+    private void Start()
     {
-        InitializeNodes();
-        ConnectPathToNextNodes();
+        // Set locked to true initially
+        locked = true;
     }
 
-    /// <summary>
-    /// This method sets up the node. This method ensures only first layer nodes
-    /// are not locked and can be selected.
-    /// </summary>
-    private void InitializeNodes()
+    private void Update()
     {
-        visited = false;
-        if (layer != 0)
+        // Initialize here because it is called after Start
+        if (!initialized)
         {
-            locked = true;
-        }
-    }
-
-    /// <summary>
-    /// This method draws lines to each of its nextNodes using Line Renderers.
-    /// </summary>
-    public void ConnectPathToNextNodes()
-    {
-        foreach (var node in nextNodes)
-        {
-            Vector3[] lrPositions = new Vector3[2] { transform.position, node.transform.position };
-            LineRenderer lr = Instantiate(lineRendererPrefab, transform);
-            lr.SetPositions(lrPositions);
-            lr.gameObject.SetActive(true);
-            lineRenderers.Add(lr);
+            visited = gameObject.name == "start";
+            if (visited == true)
+            {
+                Debug.Log(nextNodes.Count);
+                foreach (var node in nextNodes)
+                {
+                    node.locked = false;
+                }
+            }
+            initialized = true;
         }
     }
 
@@ -70,8 +56,11 @@ IPointerExitHandler
         visited = true;
         locked = true;
 
-        // TODO: this is a temporary color to show that the node has been visited
-        gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        // TODO: Show that the node has been visited
+        // This can be done by doing a either a sprite swap or instantiate a 'X' on it
+
+        // Lock all other nodes
+        FindObjectOfType<MapGrid>().LockSiblingNodes();
 
         // Unlock all of its nextNodes
         foreach (var node in nextNodes)
@@ -79,28 +68,26 @@ IPointerExitHandler
             node.locked = false;
         }
 
-        // Changes color of line renderers pointing to this map node
-        // The color change is temporary
-        foreach (var node in prevNodes)
+        // TODO: Load new scene after click
+        int mapNodeTypeIdx = -1;
+        if (mapNodeType == MapNodeType.Encounter)
         {
-            if (node.visited)
-            {
-                foreach (var lr in node.lineRenderers)
-                {
-                    if (lr.GetPosition(1) == transform.position)
-                    {
-                        lr.startColor = Color.white;
-                        lr.endColor = Color.white;
-                    }
-                }
-            }
+            mapNodeTypeIdx = 2;
+        }
+        else if (mapNodeType == MapNodeType.Shop)
+        {
+            mapNodeTypeIdx = 3;
+        }
+        else if (mapNodeType == MapNodeType.Event)
+        {
+            mapNodeTypeIdx = 4;
+        }
+        else if (mapNodeType == MapNodeType.Boss)
+        {
+            mapNodeTypeIdx = 5;
         }
 
-        // This ensures nodes on the same layer cannot be accessed/are locked
-        mapController.LockSiblingNodes(this);
-
-        // TODO: Replace this line with loading a new scene in the future.
-        Debug.Log("Load Next Scene: " + mapNodeType.ToString());
+        FindObjectOfType<ChangeScene>().MoveToScene(mapNodeTypeIdx);
     }
 
     /// <summary>
@@ -111,8 +98,9 @@ IPointerExitHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (locked || visited) return;
-        // TODO: this is a temporary color change
-        gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+
+        // TODO: Show that the node is selected / being hovered on
+        // This can be done either by sprite swap or change color maybe?
     }
 
     /// <summary>
@@ -123,16 +111,17 @@ IPointerExitHandler
     public void OnPointerExit(PointerEventData eventData)
     {
         if (locked || visited) return;
-        // TODO: This is a temporary color change
-        gameObject.GetComponent<SpriteRenderer>().color = new Color(0.1839623f, 0.1839623f, 0.1839623f, 1);
+
+        // TODO: Show that the node is no longer selected / being hovered on
+        // This can be done either by sprite swap or change color maybe?
     }
 }
 
 // This is an enum type to show all the possible node types
 public enum MapNodeType
 {
-    Enemy,
-    Rest,
+    Encounter,
+    Event,
     Shop,
     Boss
 }

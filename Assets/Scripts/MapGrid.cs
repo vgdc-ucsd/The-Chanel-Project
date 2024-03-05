@@ -36,7 +36,6 @@ public class MapGrid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         // Sets starting position of character
         OrientingPosition = new Vector3(start.transform.position.x, start.transform.position.y);
 
@@ -195,6 +194,11 @@ public class MapGrid : MonoBehaviour
             {
                 paths.Add(pathNodes);
                 repeat = false;
+                for (int i = 0; i < pathNodes.Count - 1; i++)
+                {
+                    pathNodes[i].GetComponent<MapNode>().nextNodes.Add(pathNodes[i + 1].GetComponent<MapNode>());
+                    pathNodes[i + 1].GetComponent<MapNode>().prevNodes.Add(pathNodes[i].GetComponent<MapNode>());
+                }
             }
             else
             {
@@ -202,6 +206,12 @@ public class MapGrid : MonoBehaviour
                 {
                     paths.Add(pathNodes);
                     repeat = false;
+                    for (int i = 0; i < pathNodes.Count - 1; i++)
+                    {
+                        pathNodes[i].GetComponent<MapNode>().nextNodes.Add(pathNodes[i + 1].GetComponent<MapNode>());
+                        pathNodes[i + 1].GetComponent<MapNode>().prevNodes.Add(pathNodes[i].GetComponent<MapNode>());
+                    }
+
                 }
             }
         }
@@ -284,5 +294,16 @@ public class MapGrid : MonoBehaviour
             duplicate |= dup;
         }
         return duplicate;
+    }
+
+    public void LockSiblingNodes()
+    {
+        foreach (var path in paths)
+        {
+            foreach (var node in path)
+            {
+                node.GetComponent<MapNode>().locked = true;
+            }
+        }
     }
 }
