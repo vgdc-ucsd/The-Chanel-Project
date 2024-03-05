@@ -10,9 +10,9 @@ public class BoardInterface : MonoBehaviour
     public static BoardInterface Instance;
 
     // The size of each tile on the canvas
-    public Vector2 CellSize = new Vector2Int(100, 100);
+    public Vector2 CellSize = new Vector2Int(0, 0);
     // The size of the grid on the canvas
-    public Vector2 GridSize;
+    [HideInInspector] public Vector2 GridSize;
 
     // Holds all board tile GameObjects
     public TileInteractable[,] Tiles;
