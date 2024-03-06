@@ -610,7 +610,7 @@ Transform:
   m_GameObject: {fileID: 1706818020}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 46, y: 289, z: -2.1474242}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -655,6 +655,9 @@ MonoBehaviour:
     randomization: 0.7
   - mapNodeType: 2
     randomization: 0.5
+  heightBetweenRows: 86.6
+  distanceBetweenNodes: 100
+  offsetDistanceBetweenRows: 50
 --- !u!1 &1747339426
 GameObject:
   m_ObjectHideFlags: 0

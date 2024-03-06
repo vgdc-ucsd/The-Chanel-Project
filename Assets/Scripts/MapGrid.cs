@@ -40,11 +40,11 @@ public class MapGrid : MonoBehaviour
     public int numberOfRooms;
     public string KeepTag = "UsedNodes";
     public List<MapLayerOptions> layerOptions;
+    [SerializeField] float heightBetweenRows = 86.6f;
+    [SerializeField] float distanceBetweenNodes = 100f;
+    [SerializeField] float XOffsetDistanceBetweenRows = 50f;
 
-    private List<List<Vector3>> layers = new();
-    private List<Vector3> layer2 = new();
-    private List<Vector3> layer3 = new();
-    private List<Vector3> layer4 = new();
+    private List<List<Vector3>> layers;
 
     // Start is called before the first frame update
     void Start()
@@ -52,52 +52,48 @@ public class MapGrid : MonoBehaviour
         // Sets starting position of character
         OrientingPosition = new Vector3(start.transform.position.x, start.transform.position.y);
 
+        layers = new(numberOfRooms - 1);
+        for (int i = 0; i < layers.Capacity; i++)
+        {
+            layers.Add(new());
+        }
+
         row1.Add(start);
-        layers.Add(layer2);
-        layers.Add(layer3);
-        layers.Add(layer4);
 
         // Creates preset nodes for first room/boss and exits
-        CreateEncounter(new Vector3(OrientingPosition.x + 100, OrientingPosition.y));
-        CreateEncounter(new Vector3(OrientingPosition.x + 50, OrientingPosition.y + 86.6f));
+        CreateEncounter(new Vector3(OrientingPosition.x + distanceBetweenNodes, OrientingPosition.y));
+        CreateEncounter(new Vector3(OrientingPosition.x + XOffsetDistanceBetweenRows, OrientingPosition.y + heightBetweenRows));
 
 
         // Creates grid of 3 x numberOfRooms points to procedurally generate map nodes
         for (int i = row1.Count; i < numberOfRooms; i++)
         {
-            AddPoints(OrientingPosition.x + 100 * i, OrientingPosition.y);
+            AddPoints(OrientingPosition.x + distanceBetweenNodes * i, OrientingPosition.y);
             layers[i - row1.Count].Add(Points[Points.Count - 1]);
         }
         for (int i = row2.Count; i < numberOfRooms; i++)
         {
-            AddPoints(OrientingPosition.x + 50 + 100 * i, OrientingPosition.y + 86.6f);
+            AddPoints(OrientingPosition.x + XOffsetDistanceBetweenRows + distanceBetweenNodes * i, OrientingPosition.y + heightBetweenRows);
             layers[i - row2.Count].Add(Points[Points.Count - 1]);
         }
         for (int i = row3.Count; i < numberOfRooms - 1; i++)
         {
-            AddPoints(OrientingPosition.x + 100 * (i + 1), OrientingPosition.y + 173.2f);
+            AddPoints(OrientingPosition.x + (2 * XOffsetDistanceBetweenRows) + distanceBetweenNodes * i, OrientingPosition.y + (2 * heightBetweenRows));
             layers[i].Add(Points[Points.Count - 1]);
         }
         transform.rotation = Quaternion.identity;
 
         // Generates Encounter, Shop, or Event for each point aside from preset nodes
-        foreach (Vector3 point in layer2)
+        for (int i = 0; i < layers.Count; i++)
         {
-            GenerateRandomNode(0, point);
-        }
-
-        foreach (Vector3 point in layer3)
-        {
-            GenerateRandomNode(1, point);
-        }
-
-        foreach (Vector3 point in layer4)
-        {
-            GenerateRandomNode(2, point);
+            for (int j = 0; j < layers[i].Count; j++)
+            {
+                GenerateRandomNode(i, layers[i][j]);
+            }
         }
 
         MoveBossAndExit();
-        CreateStairs(new Vector3(exit.transform.position.x - 50, exit.transform.position.y), horStairs);
+        CreateStairs(new Vector3(exit.transform.position.x - XOffsetDistanceBetweenRows, exit.transform.position.y), horStairs);
 
         // Creates path and stairs
         CreatePath(path1);
@@ -115,8 +111,8 @@ public class MapGrid : MonoBehaviour
 
     void MoveBossAndExit()
     {
-        exit.transform.position = new Vector3(OrientingPosition.x + 100 * (numberOfRooms + 1), OrientingPosition.y + 173.2f);
-        Boss.transform.position = new Vector3(OrientingPosition.x + 100 * (numberOfRooms), OrientingPosition.y + 173.2f);
+        exit.transform.position = new Vector3(OrientingPosition.x + (2 * XOffsetDistanceBetweenRows) + distanceBetweenNodes * numberOfRooms, OrientingPosition.y + (2 * heightBetweenRows));
+        Boss.transform.position = new Vector3(OrientingPosition.x + distanceBetweenNodes * numberOfRooms, OrientingPosition.y + (2 * heightBetweenRows));
         row3.Add(Boss);
         row3.Add(exit);
         exit.tag = "UsedNodes";
@@ -154,11 +150,11 @@ public class MapGrid : MonoBehaviour
         {
             row1.Add(Instantiate(type, point, transform.rotation, type.transform.parent));
         }
-        else if (point.y == OrientingPosition.y + 86.6f)
+        else if (point.y == OrientingPosition.y + heightBetweenRows)
         {
             row2.Add(Instantiate(type, point, transform.rotation, type.transform.parent));
         }
-        else if (point.y == OrientingPosition.y + 173.2f)
+        else if (point.y == OrientingPosition.y + (2 * heightBetweenRows))
         {
             row3.Add(Instantiate(type, point, transform.rotation, type.transform.parent));
         }
@@ -328,6 +324,12 @@ public class MapGrid : MonoBehaviour
 
     private void GenerateRandomNode(int i, Vector3 point)
     {
+        // THIS IS FOR DEBUGGING PURPOSES
+        if (layerOptions.Count < numberOfRooms - 1)
+        {
+            Debug.Log("There are unequal amounts of layerOptions and numberOfRooms");
+        }
+
         float random = UnityEngine.Random.Range(0f, 1f);
         if (random < layerOptions[i].randomization)
         {
