@@ -648,9 +648,13 @@ MonoBehaviour:
   OrientingPosition: {x: 0, y: 0, z: 0}
   numberOfRooms: 4
   KeepTag: UsedNodes
-  layer2: []
-  layer3: []
-  layer4: []
+  layerOptions:
+  - mapNodeType: 0
+    randomization: 0.7
+  - mapNodeType: 1
+    randomization: 0.7
+  - mapNodeType: 2
+    randomization: 0.5
 --- !u!1 &1747339426
 GameObject:
   m_ObjectHideFlags: 0

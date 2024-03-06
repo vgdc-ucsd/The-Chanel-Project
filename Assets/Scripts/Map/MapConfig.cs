@@ -12,6 +12,6 @@ public class MapConfig : ScriptableObject
 [Serializable]
 public class MapLayerOptions
 {
-    public int numOfNodes;
     public MapNodeType mapNodeType;
+    [Range(0f, 1f)] public float randomization;
 }

@@ -12,9 +12,11 @@ using static UnityEditor.PlayerSettings;
 
 public class MapGrid : MonoBehaviour
 {
+    [Header("Debugging Info")]
     public List<Vector3> Points;
     public List<Vector3> StairsPoints = new();
     public List<GameObject> stairDirections;
+
     public List<GameObject> row1;
     public List<GameObject> row2;
     public List<GameObject> row3;
@@ -22,6 +24,8 @@ public class MapGrid : MonoBehaviour
     public List<GameObject> path1;
     public List<GameObject> path2;
     public List<GameObject> path3;
+
+    [Header("Prefabs")]
     public GameObject start;
     public GameObject exit;
     public GameObject Encounter;
@@ -30,14 +34,17 @@ public class MapGrid : MonoBehaviour
     public GameObject Boss;
     public GameObject horStairs;
     public GameObject diagStairs;
+
+    [Header("Map Settings")]
     public Vector3 OrientingPosition;
     public int numberOfRooms;
     public string KeepTag = "UsedNodes";
+    public List<MapLayerOptions> layerOptions;
 
     private List<List<Vector3>> layers = new();
-    private List<Vector3> layer2;
-    private List<Vector3> layer3;
-    private List<Vector3> layer4;
+    private List<Vector3> layer2 = new();
+    private List<Vector3> layer3 = new();
+    private List<Vector3> layer4 = new();
 
     // Start is called before the first frame update
     void Start()
@@ -76,17 +83,17 @@ public class MapGrid : MonoBehaviour
         // Generates Encounter, Shop, or Event for each point aside from preset nodes
         foreach (Vector3 point in layer2)
         {
-            CreateEncounter(point);
+            GenerateRandomNode(0, point);
         }
 
         foreach (Vector3 point in layer3)
         {
-            CreateEvent(point);
+            GenerateRandomNode(1, point);
         }
 
         foreach (Vector3 point in layer4)
         {
-            CreateShop(point);
+            GenerateRandomNode(2, point);
         }
 
         MoveBossAndExit();
@@ -315,6 +322,67 @@ public class MapGrid : MonoBehaviour
             foreach (var node in path)
             {
                 node.GetComponent<MapNode>().locked = true;
+            }
+        }
+    }
+
+    private void GenerateRandomNode(int i, Vector3 point)
+    {
+        float random = UnityEngine.Random.Range(0f, 1f);
+        if (random < layerOptions[i].randomization)
+        {
+            float r = UnityEngine.Random.Range(0f, 1f);
+            if (layerOptions[i].mapNodeType == MapNodeType.Encounter)
+            {
+                if (r < 0.8f)
+                {
+                    CreateShop(point);
+                }
+                else
+                {
+                    CreateEvent(point);
+                }
+            }
+            else if (layerOptions[i].mapNodeType == MapNodeType.Event)
+            {
+                if (r < 0.8f)
+                {
+                    CreateEncounter(point);
+                }
+                else
+                {
+                    CreateShop(point);
+                }
+            }
+            else
+            {
+                if (r < 0.8f)
+                {
+                    CreateEncounter(point);
+                }
+                else
+                {
+                    CreateEvent(point);
+                }
+            }
+        }
+        else
+        {
+            if (layerOptions[i].mapNodeType == MapNodeType.Encounter)
+            {
+                CreateEncounter(point);
+            }
+            else if (layerOptions[i].mapNodeType == MapNodeType.Shop)
+            {
+                CreateShop(point);
+            }
+            else if (layerOptions[i].mapNodeType == MapNodeType.Event)
+            {
+                CreateEvent(point);
+            }
+            else
+            {
+                Debug.Log("Invalid layer node type for layer: " + (i + 2));
             }
         }
     }
