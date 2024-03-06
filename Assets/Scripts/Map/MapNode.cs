@@ -36,7 +36,6 @@ IPointerExitHandler
             visited = gameObject.name == "start";
             if (visited == true)
             {
-                Debug.Log(nextNodes.Count);
                 foreach (var node in nextNodes)
                 {
                     node.locked = false;

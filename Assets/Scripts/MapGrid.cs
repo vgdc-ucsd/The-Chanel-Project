@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Security.Cryptography;
 using Unity.VisualScripting;
@@ -33,6 +34,11 @@ public class MapGrid : MonoBehaviour
     public int numberOfRooms;
     public string KeepTag = "UsedNodes";
 
+    private List<List<Vector3>> layers = new();
+    private List<Vector3> layer2;
+    private List<Vector3> layer3;
+    private List<Vector3> layer4;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,43 +46,49 @@ public class MapGrid : MonoBehaviour
         OrientingPosition = new Vector3(start.transform.position.x, start.transform.position.y);
 
         row1.Add(start);
+        layers.Add(layer2);
+        layers.Add(layer3);
+        layers.Add(layer4);
 
         // Creates preset nodes for first room/boss and exits
         CreateEncounter(new Vector3(OrientingPosition.x + 100, OrientingPosition.y));
         CreateEncounter(new Vector3(OrientingPosition.x + 50, OrientingPosition.y + 86.6f));
 
+
         // Creates grid of 3 x numberOfRooms points to procedurally generate map nodes
         for (int i = row1.Count; i < numberOfRooms; i++)
         {
             AddPoints(OrientingPosition.x + 100 * i, OrientingPosition.y);
+            layers[i - row1.Count].Add(Points[Points.Count - 1]);
         }
         for (int i = row2.Count; i < numberOfRooms; i++)
         {
             AddPoints(OrientingPosition.x + 50 + 100 * i, OrientingPosition.y + 86.6f);
+            layers[i - row2.Count].Add(Points[Points.Count - 1]);
         }
         for (int i = row3.Count; i < numberOfRooms - 1; i++)
         {
             AddPoints(OrientingPosition.x + 100 * (i + 1), OrientingPosition.y + 173.2f);
+            layers[i].Add(Points[Points.Count - 1]);
         }
         transform.rotation = Quaternion.identity;
 
         // Generates Encounter, Shop, or Event for each point aside from preset nodes
-        foreach (Vector3 Point in Points)
+        foreach (Vector3 point in layer2)
         {
-            int random = UnityEngine.Random.Range(1, 4);
-            if (random == 1)
-            {
-                CreateEncounter(Point);
-            }
-            else if (random == 2)
-            {
-                CreateShop(Point);
-            }
-            else if (random == 3)
-            {
-                CreateEvent(Point);
-            }
+            CreateEncounter(point);
         }
+
+        foreach (Vector3 point in layer3)
+        {
+            CreateEvent(point);
+        }
+
+        foreach (Vector3 point in layer4)
+        {
+            CreateShop(point);
+        }
+
         MoveBossAndExit();
         CreateStairs(new Vector3(exit.transform.position.x - 50, exit.transform.position.y), horStairs);
 
