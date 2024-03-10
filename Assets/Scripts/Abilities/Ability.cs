@@ -7,7 +7,8 @@ public enum ActivationCondition {
     OnProcess,
     OnDeath,
     OnDraw,
-    OnPlay
+    OnPlay,
+    OnMove
 }
 
 [Serializable]

@@ -19,6 +19,7 @@ public class Card : ScriptableObject
     public int AttackDamage; // OLD
     public int ManaCost;
     public bool isSelected = false;
+    public bool CanMove = true;
 
     public BoardCoords pos;
     [HideInInspector] public bool isActive = false;
@@ -91,6 +92,7 @@ public class Card : ScriptableObject
 
     public void Place(BoardCoords pos)
     {
+        CanMove = true;
         isActive = true;
         CardInteractableRef.PlaceCard(pos);
     }
