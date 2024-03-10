@@ -3,35 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class StateMachine : MonoBehaviour
 {
     // Enemy variables
-    public float health = 100f;
-    public float mana = 1f;
+    private CharStatus status;
 
     // State variables
+    // Current states: "attack", "defend" | potential state ideas: "pressure", "heal", "last resort"
     public string state = "attack";
-    public float lowHealth = 50f;
+    public float lowHealthThreshold = 50f;
 
     // Cards for the enemy to use
-    List<string> attackCards = new List<string>() {"Card1", "Card2", "Card3", "..."};
-    List<string> defenseCards = new List<string>() { "Card1", "Card2", "Card3", "..." };
+    List<Card> attackCards = new List<Card>();
+    List<Card> defenseCards = new List<Card>();
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        Debug.Log("works!");
+    public StateMachine(CharStatus status) {
+        this.status = status;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("works!");
-        if (health <= lowHealth)
-        {
-            // use a card from defenseCards
+        if (status.Health <= lowHealthThreshold) {
+            state = "defend";
         } else {
-            // use a card from attackCards
+            state = "attack";
         }
     }
 }
