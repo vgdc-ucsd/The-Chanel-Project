@@ -16,7 +16,7 @@ public class CardInteractable : MonoBehaviour,
     IPointerDownHandler
 {
     // Data for the card it contains
-    [HideInInspector] public Card card;
+    [HideInInspector] public UnitCard card;
 
     // Reference to the HandInterface
     [HideInInspector] public HandInterface handInterface;
@@ -101,7 +101,7 @@ public class CardInteractable : MonoBehaviour,
     }
 
     // Updates UI to show card being played
-    public void PlaceCard(BoardCoords pos)
+    public void PlaceUnitCard(BoardCoords pos)
     {
         TileInteractable tile = BoardInterface.Instance.GetTile(pos);
         if (tile != null) {
