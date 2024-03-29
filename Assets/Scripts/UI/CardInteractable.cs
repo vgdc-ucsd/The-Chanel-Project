@@ -41,6 +41,9 @@ public class CardInteractable : MonoBehaviour,
     // How much the card scales on hover
     private float scaleFactor = 1.1f;
 
+    private static int hoveredCardIndex;
+    private static CardInteractable hoveredCard;
+
     // Determines if a card is able to be played
     // Not hidden for debugging purposes
     public bool inHand = true;
@@ -98,7 +101,9 @@ public class CardInteractable : MonoBehaviour,
     }
 
     // Updates UI to show card being played
-    public void PlaceCard(TileInteractable tile) {
+    public void PlaceCard(BoardCoords pos)
+    {
+        TileInteractable tile = BoardInterface.Instance.GetTile(pos);
         if (tile != null) {
             // TODO: move some actions here to PlaceCard in Board
             inHand = false;
@@ -106,18 +111,15 @@ public class CardInteractable : MonoBehaviour,
             transform.localEulerAngles = Vector3.zero;
             transform.localScale = Vector3.one;
             transform.position = tile.transform.position;
-            if(handInterface != null) handInterface.cardObjects.Remove(this.gameObject);
+            if(handInterface != null) {
+                handInterface.cardObjects.Remove(this);
+            } 
             transform.SetParent(tile.transform);
             transform.localScale = Vector3.one;
             DrawArrows(); 
             CardCost.enabled = false;
-            handInterface.OrganizeCards();
+            //handInterface.OrganizeCards();
         }
-    }
-
-    public void PlaceCard(BoardCoords pos)
-    {
-        PlaceCard(BoardInterface.Instance.GetTile(pos));
     }
 
     public void UpdateCardPos()
@@ -133,6 +135,9 @@ public class CardInteractable : MonoBehaviour,
     public void OnPointerEnter(PointerEventData eventData)
     {
         if(inHand) {
+            hoveredCard = this;
+            hoveredCardIndex = transform.GetSiblingIndex();
+            hoveredCard.transform.SetAsLastSibling();
             transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
         }
     }
@@ -140,6 +145,10 @@ public class CardInteractable : MonoBehaviour,
     public void OnPointerExit(PointerEventData eventData)
     {
         if(inHand) {
+            if(this == hoveredCard) {
+                hoveredCard.transform.SetSiblingIndex(hoveredCardIndex);
+                hoveredCard = null;
+            }
             transform.localScale = Vector3.one;
         }
     }

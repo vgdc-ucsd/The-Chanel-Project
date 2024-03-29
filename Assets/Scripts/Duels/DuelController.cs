@@ -57,7 +57,6 @@ public class DuelController
     public void StartDuel() {
         DrawCardPlayer(playerSettings.StartingCards);
         DrawCardEnemy(enemySettings.StartingCards);
-        
     }
 
     // Updates the board with the card played at the desired index
@@ -147,8 +146,16 @@ public class DuelController
             Debug.Log("Tried to process null card!");
             return;
         }
+
         // Player cards only attack on player's turn
         if (card.team == currentTeam) {
+            // Activate abilities        
+            foreach(Ability a in card.Abilities) {
+                if(a != null && a.Condition == ActivationCondition.OnProcess) {
+                    a.Activate(card);
+                }
+            }
+
             foreach(Attack atk in card.Attacks) {
                 ProcessAttack(atk);
             }
@@ -182,6 +189,16 @@ public class DuelController
         // Deal damage
         Card target = board.GetCard(atkDest);
         if(card.team != target.team) {
+            // animation
+            float animDuration = 0.3f;
+            IEnumerator anim = DuelManager.Instance.AM.CardAttack(
+                card.CardInteractableRef.transform, 
+                atk.direction,
+                animDuration
+            );
+            QueueableAnimation qa = new QueueableAnimation(anim, animDuration);
+            DuelManager.Instance.AM.QueueAnimation(qa);
+
             atk.Hit(target);
             // Remove this?
             modifiedCards.Add(target); 
@@ -203,6 +220,7 @@ public class DuelController
         else
         {
             currentTeam = Team.Player;
+            RenewMovement(Team.Player);
             DrawCardPlayer(1);
             //playerStatus.GiveMana();
             turnNumber++;
@@ -213,8 +231,6 @@ public class DuelController
         PlayerInputController.Instance.ClearSelection();
         DuelEvents.Instance.UpdateUI();
     }
-
-
 
     private void EnemyTurn() {
         ai.MakeMove();
@@ -243,10 +259,10 @@ public class DuelController
             Card c = ScriptableObject.Instantiate(playerDeck.CardList[index]);
             c.team = Team.Player;
             DuelEvents.Instance.DrawCard(c, Team.Player);
-
         }
 
         DuelEvents.Instance.UpdateUI();
+        DuelEvents.Instance.UpdateHand();
     }
 
     private void DrawCardEnemy(int count) {
@@ -259,6 +275,7 @@ public class DuelController
         }
 
         DuelEvents.Instance.UpdateUI();
+        DuelEvents.Instance.UpdateHand();
     }
 
     // Flips attacks vertically, is used on cards the enemy plays
@@ -272,5 +289,17 @@ public class DuelController
             ));
         }
         c.Attacks = mirroredAttacks;
+    }
+
+    private void RenewMovement(Team t) {
+        for(int i = 0; i < board.Cols; i++) {
+            for(int j = 0; j < board.Rows; j++) {
+                BoardCoords pos = new BoardCoords(i,j);
+                if (board.IsOccupied(pos)) {
+                    Card c = board.GetCard(pos);
+                    if(c.team == t) c.CanMove = true;
+                }
+            }
+        }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.UIElements;
+//using UnityEditor.UIElements; - Bugging the Build
 using UnityEngine;
 
 public class DuelEvents : MonoBehaviour
@@ -37,6 +37,12 @@ public class DuelEvents : MonoBehaviour
     public void UpdateUI()
     {
         if (onUpdateUI != null) onUpdateUI();
+    }
+
+    public event Action onUpdateHand;
+    public void UpdateHand()
+    {
+        if (onUpdateHand != null) onUpdateHand();
     }
 
     public event Action<Card, Team> OnDrawCard;

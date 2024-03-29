@@ -2,8 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Cards/Deck")]
+[CreateAssetMenu(fileName = "New Deck", menuName = "Cards/Deck")]
 public class Deck : ScriptableObject
 {
-    public List<Card> CardList;
+    public List<Card> CardList = new List<Card>();
+
+    private void addCard(Card card)
+    {
+        CardList.Add(card);
+    }
 }

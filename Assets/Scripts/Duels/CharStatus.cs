@@ -85,10 +85,20 @@ public class CharStatus : MonoBehaviour
             if (team == Team.Player)
             {
                 Debug.Log("Enemy Won!");
+                if (MenuScript.Instance != null)
+                {
+                    MenuScript.Instance.LoadMap(); // Transitions into map - Kiichi
+                    Debug.Log("SceneManager not Present: Failed to Load Map");
+                }
             }
             else
             {
                 Debug.Log("Player Won!");
+                if (MenuScript.Instance != null)
+                {
+                    MenuScript.Instance.LoadMap(); // Transitions into map - Kiichi
+                    Debug.Log("SceneManager not Present: Failed to Load Map");
+                }
             }
         }
     }
