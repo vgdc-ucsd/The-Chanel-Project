@@ -220,6 +220,7 @@ public class DuelController
         else
         {
             currentTeam = Team.Player;
+            RenewMovement(Team.Player);
             DrawCardPlayer(1);
             //playerStatus.GiveMana();
             turnNumber++;
@@ -288,5 +289,17 @@ public class DuelController
             ));
         }
         c.Attacks = mirroredAttacks;
+    }
+
+    private void RenewMovement(Team t) {
+        for(int i = 0; i < board.Cols; i++) {
+            for(int j = 0; j < board.Rows; j++) {
+                BoardCoords pos = new BoardCoords(i,j);
+                if (board.IsOccupied(pos)) {
+                    Card c = board.GetCard(pos);
+                    if(c.team == t) c.CanMove = true;
+                }
+            }
+        }
     }
 }
