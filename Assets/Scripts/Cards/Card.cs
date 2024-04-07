@@ -78,18 +78,6 @@ public class Card : ScriptableObject
         return null;
     }
 
-    public void DealDamage(int damage)
-    {
-        Health -= damage;
-        if (Health <= 0)
-        {
-            DuelManager.Instance.DC.GetCurrentBoard().RemoveCard(pos);
-            IEnumerator ie = DuelManager.Instance.AM.CardDeath(CardInteractableRef);
-            QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
-            DuelManager.Instance.AM.QueueAnimation(qa);
-        }
-    }
-
     public void Place(BoardCoords pos)
     {
         CanMove = true;
@@ -102,9 +90,4 @@ public class Card : ScriptableObject
         isSelected = selected;
         CardInteractableRef.SetSelected(selected);
     }
-
-
-
-
-
 }

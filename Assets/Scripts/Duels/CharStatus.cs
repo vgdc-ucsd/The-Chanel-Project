@@ -121,6 +121,11 @@ public class CharStatus : MonoBehaviour
         }
     }
 
+    public void ResetMana()
+    {
+        Mana = MaxMana;
+    }
+
     public void GiveMana()
     {
         if (ManaCapacity < MaxMana)

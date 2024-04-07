@@ -32,7 +32,7 @@ public class PlayerInputController: MonoBehaviour
                 currentAction = action;
                 return;
             case ControlAction.Move:
-                foreach (BoardCoords adj in DuelManager.Instance.DC.GetCurrentBoard().GetEmptyAdjacentTiles(selectedCard.pos))
+                foreach (BoardCoords adj in DuelManager.Instance.CurrentBoard.GetEmptyAdjacentTiles(selectedCard.pos))
                 {
                     BoardInterface.Instance.GetTile(adj).SetHighlight(true);
                 }
@@ -45,11 +45,11 @@ public class PlayerInputController: MonoBehaviour
     public void InteractCard(Card card)
     {
         SetAction(ControlAction.None);
-        if (card.team != DuelManager.Instance.DC.GetCurrentTeam())
-        {
-            ClearSelection();
-            return;
-        }
+        //if (card.team != DuelManager.Instance.DC.GetCurrentTeam())
+        //{
+        //    ClearSelection();
+        //    return;
+        //} TODO
 
         // for now, unselect a card by clicking it again
         // will have better control later
@@ -100,11 +100,12 @@ public class PlayerInputController: MonoBehaviour
         if (currentAction == ControlAction.Move)
         {
             // TODO check that it is the player's turn
-            if (DuelManager.Instance.DC.GetCurrentBoard().IsOccupied(pos)) return;
-            if (!DuelManager.Instance.DC.GetCurrentBoard().GetEmptyAdjacentTiles(selectedCard.pos).Contains(pos)) return;
+            if (DuelManager.Instance.CurrentBoard.IsOccupied(pos)) return;
+            if (!DuelManager.Instance.CurrentBoard.GetEmptyAdjacentTiles(selectedCard.pos).Contains(pos)) return;
             TileInteractable tile = BoardInterface.Instance.GetTile(pos);
 
-            DuelManager.Instance.DC.MoveCard(selectedCard, pos);
+            DuelManager.Instance.CurrentBoard.MoveCard(selectedCard, pos);
+            selectedCard.CardInteractableRef.UpdateCardPos();
             SelectCard(selectedCard, false);
             selectedCard = null;
             SetAction(ControlAction.None);
