@@ -50,7 +50,7 @@ public class DuelManager : MonoBehaviour
         if (Settings.EnablePVPMode || Settings.ShowEnemyHand) {
             UI.EnemyHand.gameObject.SetActive(true);
         }
-;
+
         CurrentBoard = new Board(Settings.BoardRows, Settings.BoardCols);
         ai = new MctsAI(PlayerStatus, EnemyStatus);
         MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, true);

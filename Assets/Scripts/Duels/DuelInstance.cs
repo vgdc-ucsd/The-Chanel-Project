@@ -130,7 +130,7 @@ public class DuelInstance
                 DuelManager.Instance.AM.QueueAnimation(qa);
             }
 
-            DealDamage(card, atk.damage);
+            DealDamage(target, atk.damage);
         }
     }
 
