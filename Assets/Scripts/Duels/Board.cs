@@ -23,6 +23,11 @@ public class Board
         if (IsOutOfBounds(pos)) return null;
         return CardSlots[pos.ToRowColV2().x,pos.ToRowColV2().y];
     }
+    public UnitCard GetCard(int x, int y)
+    {
+        return GetCard(new BoardCoords(x,y));
+    }
+
 
     public bool IsOccupied(BoardCoords pos)
     {
@@ -35,6 +40,7 @@ public class Board
         CardSlots[pos.ToRowColV2().x, pos.ToRowColV2().y] = card;
     }
 
+    // for initial placement only
     public void PlaceCard(UnitCard card, BoardCoords pos) 
     {
         if (IsOutOfBounds(pos)) return;
@@ -56,18 +62,27 @@ public class Board
         SetCard(null, pos);
     }
 
-    public void MoveCard(UnitCard card, BoardCoords pos)
+    public void MoveCard(UnitCard card, BoardCoords pos, bool bypass = false, bool keepOriginal = false)
     {
         // move card and update board and card data
         if (IsOutOfBounds(pos)) return;
         if (GetCard(pos) != null) return;
-        SetCard(null, card.pos);
+        if (!keepOriginal) // mainly for swapping or cloning
+        {
+            SetCard(null, card.pos); 
+        }
         SetCard(card, pos);
         card.pos = pos;
-        card.CanMove = false;
-        foreach(Ability a in card.Abilities) {
-            if(a.Condition == ActivationCondition.OnMove) a.Activate(this, card);
+        if (!bypass) // bypass = movement caused by external action, e.g. spell cards
+        {
+            card.CanMove = false;
+            foreach (Ability a in card.Abilities)
+            {
+                if (a.Condition == ActivationCondition.OnMove) a.Activate(this, card);
+            }
         }
+        card.CardInteractableRef.UpdateCardPos();
+        
     }
 
     public void RenewMovement(Team t) {
@@ -96,6 +111,7 @@ public class Board
 
         return tiles;
     }
+
     
     public List<BoardCoords> GetEmptyAdjacentTiles(BoardCoords pos)
     {
@@ -105,6 +121,32 @@ public class Board
             if (IsOccupied(tiles[i])) tiles.RemoveAt(i);
         }
         return tiles;
+    }
+
+    // size 1 = 1x1, size 2 = 3x3
+    public List<BoardCoords> GetSquareTiles(BoardCoords pos, int size)
+    {
+        List<BoardCoords> tiles = new List<BoardCoords>();
+        for (int i = -(size - 1); i <= (size - 1); i++)
+        {
+            for (int j = -(size-1); j <= (size-1); j++)
+            {
+                BoardCoords tile = pos + new BoardCoords(i, j);
+                if (!IsOutOfBounds(tile)) tiles.Add(tile);
+            }
+        }
+        return tiles;
+    }
+
+    public List<UnitCard> GetCardsInSquare(BoardCoords pos, int size)
+    {
+        List<UnitCard> cards = new List<UnitCard>();
+        foreach (BoardCoords tile in GetSquareTiles(pos, size))
+        {
+            UnitCard card = GetCard(tile);
+            if (card != null) cards.Add(card);
+        }
+        return cards;
     }
 
     public bool OnEnemyEdge(BoardCoords pos)

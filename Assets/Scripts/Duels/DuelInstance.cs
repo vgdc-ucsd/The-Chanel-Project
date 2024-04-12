@@ -49,6 +49,11 @@ public class DuelInstance
         return new DuelInstance(PlayerStatus.Clone(), EnemyStatus.Clone(), false);
     }
 
+    public void InitBoard(Board board)
+    {
+        this.board = board;
+    }
+
     public void ProcessBoard(Board board, Team team) {
         // the team is whoever just activated end turn
 
@@ -155,7 +160,7 @@ public class DuelInstance
         }
     }
 
-    private void DealDamage(UnitCard card, int damage)
+    public void DealDamage(UnitCard card, int damage)
     {
         // TODO activate on hit abilites
 

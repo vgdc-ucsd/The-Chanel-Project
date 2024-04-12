@@ -59,6 +59,7 @@ public class DuelManager : MonoBehaviour
         CurrentBoard = new Board(Settings.BoardRows, Settings.BoardCols);
         ai = new MctsAI(PlayerStatus, EnemyStatus);
         MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, true);
+        MainDuel.InitBoard(CurrentBoard);
 
         DuelEvents.Instance.UpdateUI();
         DuelEvents.Instance.UpdateHand();

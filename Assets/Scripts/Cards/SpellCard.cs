@@ -5,6 +5,10 @@ using UnityEditor;
 using UnityEngine;
 
 
+
+
+
+
 // Allows a card to be created from the menu when right clicking in the inspector
 [CreateAssetMenu(fileName = "New Spell Card", menuName = "Cards/SpellCard")]
 
@@ -17,6 +21,7 @@ public class SpellCard : Card
     
     public int Health;
     public int ManaCost;
+
 
     public override void Place(BoardCoords pos)
     {
