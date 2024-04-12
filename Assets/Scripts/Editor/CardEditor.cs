@@ -5,7 +5,7 @@ using UnityEditor;
 using System.Linq;
 
 // Lets this function as the editor in the inspector for the Card script
-[CustomEditor(typeof(Card))]
+[CustomEditor(typeof(UnitCard))]
 public class CardEditor : Editor
 {
     // Keeps track of which attacks, from the list of all attacks, are enabled for this card
@@ -15,7 +15,7 @@ public class CardEditor : Editor
     {
         base.OnInspectorGUI();
 
-        Card c = (Card)target;
+        UnitCard c = (UnitCard)target;
    
         GUILayout.Label("Attack Directions (Right Facing)");
 
@@ -66,7 +66,7 @@ public class CardEditor : Editor
     }
 
     // Displays a toggle on the Unity Inspector
-    private void ShowToggle(Vector2Int atkDir, Card c) {
+    private void ShowToggle(Vector2Int atkDir, UnitCard c) {
         enabledAttacks[AttackDirections.AllAttackDirections.IndexOf(atkDir)] = GUILayout.Toggle(c.AttackDirections.Contains(atkDir), "");
     }
 

@@ -10,7 +10,7 @@ public class TestAbility : Ability
         get{ return ActivationCondition.OnProcess; }
     }
     
-    public override void Activate(Board b, Card c) {
+    public override void Activate(Board b, UnitCard c) {
         BoardCoords pos = c.GetTile().location;
         //Debug.Log(c.Name + " activated ability at (" + pos.x + ", " + pos.y + ")");
     }

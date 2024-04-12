@@ -16,7 +16,7 @@ public class CharStatus //: MonoBehaviour
     [HideInInspector] public int ManaCapacity;
     public Team team;
     public Deck Deck;
-    public List<Card> cards = new List<Card>();
+    public List<UnitCard> cards = new List<UnitCard>();
 
 
     //[SerializeField] 
@@ -45,7 +45,7 @@ public class CharStatus //: MonoBehaviour
         else {
             Deck = DuelManager.Instance.EnemyDeck;
         }
-        cards = new List<Card>();
+        cards = new List<UnitCard>();
     }
 
     public CharStatus() {
@@ -96,8 +96,8 @@ public class CharStatus //: MonoBehaviour
         copy.ManaCapacity = this.ManaCapacity;
         copy.team = this.team;
         copy.Deck = this.Deck.Clone();
-        copy.cards = new List<Card>();
-        foreach(Card c in this.cards) {
+        copy.cards = new List<UnitCard>();
+        foreach(UnitCard c in this.cards) {
             copy.cards.Add(c.Clone());
         }
         copy.playerSettings = this.playerSettings;
@@ -105,7 +105,7 @@ public class CharStatus //: MonoBehaviour
         return copy;
     }
 
-    public void AddCard(Card card, Team team)
+    public void AddCard(UnitCard card, Team team)
     {
         if (team == this.team) 
         { 
@@ -115,7 +115,7 @@ public class CharStatus //: MonoBehaviour
         
     }
 
-    public void RemoveFromHand(Card card)
+    public void RemoveFromHand(UnitCard card)
     {
         if (!cards.Contains(card)) 
         {

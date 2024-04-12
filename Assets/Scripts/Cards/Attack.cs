@@ -6,8 +6,8 @@ public class Attack
 {
     public Vector2Int direction;
     public int damage;
-    public Card card; // TODO remove
-    public Attack(Vector2Int direction, int damage, Card origin)
+    public UnitCard card; // TODO remove
+    public Attack(Vector2Int direction, int damage, UnitCard origin)
     {
         this.direction = direction;
         this.damage = damage;

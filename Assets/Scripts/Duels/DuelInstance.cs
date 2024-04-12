@@ -73,7 +73,7 @@ public class DuelInstance
         }
     }
 
-    private void ProcessCard(Card card, BoardCoords pos, Team team) {
+    private void ProcessCard(UnitCard card, BoardCoords pos, Team team) {
         if (card == null) {
             Debug.LogError("Tried to process null card!");
             return;
@@ -96,7 +96,7 @@ public class DuelInstance
         }
     }
 
-    private void ProcessAttack(Card card, Attack atk) {
+    private void ProcessAttack(UnitCard card, Attack atk) {
         if (atk == null) {
             Debug.Log("Tried to process null attack");
             return;
@@ -122,7 +122,7 @@ public class DuelInstance
         if(board.GetCard(atkDest) == null) return;
         
         // Deal damage
-        Card target = board.GetCard(atkDest);
+        UnitCard target = board.GetCard(atkDest);
         if(card.team != target.team) {
             // animation
             if(mainDuel) {
@@ -147,7 +147,7 @@ public class DuelInstance
 
         for(int i = 0; i < count; i++) {
             int index = Random.Range(0, deck.CardList.Count);
-            Card c = ScriptableObject.Instantiate(deck.CardList[index]);
+            UnitCard c = ScriptableObject.Instantiate(deck.CardList[index]);
             c.team = team;
             if(mainDuel) {
                 DuelEvents.Instance.DrawCard(c, team); // TODO double check
@@ -155,7 +155,7 @@ public class DuelInstance
         }
     }
 
-    private void DealDamage(Card card, int damage)
+    private void DealDamage(UnitCard card, int damage)
     {
         // TODO activate on hit abilites
 

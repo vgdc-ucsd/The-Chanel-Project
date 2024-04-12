@@ -34,7 +34,7 @@ public class UIManager : MonoBehaviour
         Enemy.Status = DuelManager.Instance.EnemyStatus;
     }
 
-    public CardInteractable GenerateCardInteractable(Card c) {
+    public CardInteractable GenerateCardInteractable(UnitCard c) {
         CardInteractable ci = Instantiate(TemplateCard);
         ci.card = c;
         ci.SetCardInfo();

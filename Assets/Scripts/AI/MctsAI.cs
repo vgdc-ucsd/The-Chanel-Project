@@ -84,7 +84,7 @@ public class MctsAI
         
         // pick random card
         int index = Random.Range(0, enemyStatus.cards.Count);
-        Card cardToPlay = enemyStatus.cards[index];
+        UnitCard cardToPlay = enemyStatus.cards[index];
 
         // play card if enough mana
         if(enemyStatus.Mana >= cardToPlay.ManaCost) { // temp (doesnt deduct mana)

@@ -5,9 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Deck", menuName = "Cards/Deck")]
 public class Deck : ScriptableObject
 {
-    public List<Card> CardList = new List<Card>();
+    public List<UnitCard> CardList = new List<UnitCard>();
 
-    private void addCard(Card card)
+    private void addCard(UnitCard card)
     {
         CardList.Add(card);
     }
@@ -15,7 +15,7 @@ public class Deck : ScriptableObject
     public Deck Clone() {
         Deck copy = (Deck) ScriptableObject.CreateInstance("Deck");
 
-        foreach(Card c in this.CardList) {
+        foreach(UnitCard c in this.CardList) {
             copy.CardList.Add(c.Clone());
         }
 

@@ -106,7 +106,7 @@ public class DuelManager : MonoBehaviour
         DuelEvents.Instance.UpdateHand();
     }
 
-    public void PlaceCard(Card card, BoardCoords pos) {
+    public void PlaceCard(UnitCard card, BoardCoords pos) {
         // Check out of bounds
         if (CurrentBoard.IsOutOfBounds(pos)) { 
             Debug.LogWarning(pos + " out of bounds");

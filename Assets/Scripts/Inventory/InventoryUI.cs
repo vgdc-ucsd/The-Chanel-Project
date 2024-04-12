@@ -38,7 +38,7 @@ public class InventoryUI : MonoBehaviour
         }
 
         // Add/Instantiate all cards in inventory to the UI
-        foreach (Card card in inventoryManager.cards)
+        foreach (UnitCard card in inventoryManager.cards)
         {
             RectTransform inventorySlotRectTransform = Instantiate(inventoryTemplateCardPrefab, inventoryContainer).GetComponent<RectTransform>();
             inventorySlotRectTransform.gameObject.SetActive(true);
