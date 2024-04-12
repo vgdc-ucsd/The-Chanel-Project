@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class CardInspect : MonoBehaviour
 {
-    public UnitCard card;
+    public Card card;
 
     // Text fields on the card
     public TextMeshProUGUI CardName;

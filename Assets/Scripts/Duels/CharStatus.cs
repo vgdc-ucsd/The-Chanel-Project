@@ -15,7 +15,7 @@ public class CharStatus : MonoBehaviour
     [HideInInspector] public int ManaCapacity;
     public Team team;
     public Deck Deck;
-    public List<UnitCard> cards = new List<UnitCard>();
+    public List<Card> cards = new List<Card>();
 
 
     //[SerializeField] 
@@ -55,7 +55,7 @@ public class CharStatus : MonoBehaviour
         ManaCapacity = 1;
     }
 
-    public void AddCard(UnitCard card, Team team)
+    public void AddCard(Card card, Team team)
     {
         if (team == this.team) 
         { 
@@ -65,7 +65,7 @@ public class CharStatus : MonoBehaviour
         
     }
 
-    public void RemoveFromHand(UnitCard card)
+    public void RemoveFromHand(Card card)
     {
         if (!cards.Contains(card)) 
         {

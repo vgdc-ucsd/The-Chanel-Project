@@ -14,7 +14,7 @@ public class DuelController
     private PlayerSettings playerSettings, enemySettings;
     public CharStatus playerStatus, enemyStatus;
     private UIManager ui;
-    private List<UnitCard> modifiedCards = new List<UnitCard>();
+    private List<Card> modifiedCards = new List<Card>();
     private BasicDuelAI ai;
     private Team currentTeam;
     public int turnNumber = 1;
@@ -64,7 +64,7 @@ public class DuelController
     // if successful, places a card on UI.
 
     // ALL attempts to play a card should go through this method, it will update everything needed.
-    public void PlayCard(UnitCard card, BoardCoords pos) {
+    public void PlayCard(Card card, BoardCoords pos) {
         // Check out of bounds
         if (board.IsOutOfBounds(pos)) { 
             Debug.Log(pos + " out of bounds");
@@ -90,7 +90,7 @@ public class DuelController
         DuelEvents.Instance.UpdateUI();
     }
 
-    public void MoveCard(UnitCard card, BoardCoords pos)
+    public void MoveCard(Card card, BoardCoords pos)
     {
         // update board data and trigger any move effects
         if (board.IsOutOfBounds(pos))
@@ -140,7 +140,7 @@ public class DuelController
         DuelEvents.Instance.UpdateUI();
     }
 
-    private void ProcessCard(UnitCard card, BoardCoords pos) {
+    private void ProcessCard(Card card, BoardCoords pos) {
         if (card == null)
         {
             Debug.Log("Tried to process null card!");
@@ -169,7 +169,7 @@ public class DuelController
             Debug.Log("Tried to process null attack");
             return;
         }
-        UnitCard card = atk.card;
+        Card card = atk.card;
         BoardCoords atkDest = card.pos + new BoardCoords(atk.direction);
         // Attack targeting enemy
         if(board.BeyondEnemyEdge(atkDest) && card.team == Team.Player) {
@@ -187,7 +187,7 @@ public class DuelController
         if(board.GetCard(atkDest) == null) return;
         
         // Deal damage
-        UnitCard target = board.GetCard(atkDest);
+        Card target = board.GetCard(atkDest);
         if(card.team != target.team) {
             // animation
             float animDuration = 0.3f;
@@ -256,7 +256,7 @@ public class DuelController
         Deck playerDeck = playerStatus.Deck;
         for(int i = 0; i < count; i++) {
             int index = Random.Range(0, playerDeck.CardList.Count);
-            UnitCard c = ScriptableObject.Instantiate(playerDeck.CardList[index]);
+            Card c = ScriptableObject.Instantiate(playerDeck.CardList[index]);
             c.team = Team.Player;
             DuelEvents.Instance.DrawCard(c, Team.Player);
         }
@@ -269,7 +269,7 @@ public class DuelController
         Deck enemyDeck = enemyStatus.Deck;
         for(int i = 0; i < count; i++) {
             int index = Random.Range(0, enemyDeck.CardList.Count);
-            UnitCard c = ScriptableObject.Instantiate(enemyDeck.CardList[index]);
+            Card c = ScriptableObject.Instantiate(enemyDeck.CardList[index]);
             c.team = Team.Enemy;
             DuelEvents.Instance.DrawCard(c,Team.Enemy);
         }
@@ -279,7 +279,7 @@ public class DuelController
     }
 
     // Flips attacks vertically, is used on cards the enemy plays
-    private void MirrorAttacks(UnitCard c) {
+    private void MirrorAttacks(Card c) {
         List<Attack> mirroredAttacks = new List<Attack>();
         foreach(Attack a in c.Attacks) {
             mirroredAttacks.Add(new Attack(
@@ -296,7 +296,7 @@ public class DuelController
             for(int j = 0; j < board.Rows; j++) {
                 BoardCoords pos = new BoardCoords(i,j);
                 if (board.IsOccupied(pos)) {
-                    UnitCard c = board.GetCard(pos);
+                    Card c = board.GetCard(pos);
                     if(c.team == t) c.CanMove = true;
                 }
             }

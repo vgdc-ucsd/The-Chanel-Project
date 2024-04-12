@@ -14,6 +14,6 @@ public enum ActivationCondition {
 [Serializable]
 public abstract class Ability : ScriptableObject
 {
-    public abstract void Activate(UnitCard c);
+    public abstract void Activate(Card c);
     public abstract ActivationCondition Condition{ get; }
 }

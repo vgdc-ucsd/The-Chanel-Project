@@ -5,12 +5,12 @@ using UnityEngine;
 // Stores information about the state of the board
 public class Board
 {
-    [HideInInspector] public UnitCard[,] CardSlots = null;
+    [HideInInspector] public Card[,] CardSlots = null;
     public int Rows;
     public int Cols;
 
     public Board(int rows, int cols) {
-        CardSlots = new UnitCard[rows, cols];
+        CardSlots = new Card[rows, cols];
         Rows = rows;
         Cols = cols;
         DuelEvents.Instance.OnPlaceCard += PlaceCard;
@@ -18,7 +18,7 @@ public class Board
 
 
 
-    public UnitCard GetCard(BoardCoords pos)
+    public Card GetCard(BoardCoords pos)
     {
         if (IsOutOfBounds(pos)) return null;
         return CardSlots[pos.ToRowColV2().x,pos.ToRowColV2().y];
@@ -30,12 +30,12 @@ public class Board
         return !(GetCard(pos) == null);
     }
 
-    private void SetCard(UnitCard card, BoardCoords pos)
+    private void SetCard(Card card, BoardCoords pos)
     {
         CardSlots[pos.ToRowColV2().x, pos.ToRowColV2().y] = card;
     }
 
-    public void PlaceCard(UnitCard card, BoardCoords pos) 
+    public void PlaceCard(Card card, BoardCoords pos) 
     {
         if (IsOutOfBounds(pos)) return;
         if (GetCard(pos) != null) return; //cannot place card at occupied tile
@@ -45,7 +45,7 @@ public class Board
         return;
     }
 
-    public void PlaceCard(UnitCard card, BoardCoords pos, Team team)
+    public void PlaceCard(Card card, BoardCoords pos, Team team)
     {
         PlaceCard(card, pos);
     }
@@ -56,7 +56,7 @@ public class Board
         SetCard(null, pos);
     }
 
-    public void MoveCard(UnitCard card, BoardCoords pos)
+    public void MoveCard(Card card, BoardCoords pos)
     {
         // move card and update board and card data
         if (IsOutOfBounds(pos)) return;

@@ -12,7 +12,7 @@ public class InventoryManager : MonoBehaviour
     // IGNORE THIS maxItems. IT IS FOR TESTING PURPOSES
     public int maxItems = 10;
     // IDK IF THIS IS SUPPOSED TO BE A LIST OF CARDS OR A DECK
-    public List<UnitCard> cards;
+    public List<Card> cards;
     public InventoryUI inventoryUI;
 
     void Start()
@@ -27,10 +27,10 @@ public class InventoryManager : MonoBehaviour
 
     private void InitializeInventory()
     {
-        cards = new List<UnitCard>(maxItems);
+        cards = new List<Card>(maxItems);
     }
 
-    public void AddItem(UnitCard card)
+    public void AddItem(Card card)
     {
         if (cards.Count < maxItems)
         {
@@ -44,7 +44,7 @@ public class InventoryManager : MonoBehaviour
         inventoryUI.RefreshInventoryItems();
     }
 
-    public void RemoveItem(UnitCard card)
+    public void RemoveItem(Card card)
     {
         cards.Remove(card);
 
@@ -52,7 +52,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     // Quicksort to sort 'items' list by name (in ascending order)
-    public List<UnitCard> SortItemsByName(List<UnitCard> cards, int leftIndex, int rightIndex)
+    public List<Card> SortItemsByName(List<Card> cards, int leftIndex, int rightIndex)
     {
         var i = leftIndex;
         var j = rightIndex;
@@ -73,7 +73,7 @@ public class InventoryManager : MonoBehaviour
 
             if (i <= j)
             {
-                UnitCard temp = cards[i];
+                Card temp = cards[i];
                 cards[i] = cards[j];
                 cards[j] = temp;
                 i++;

@@ -13,7 +13,7 @@ public class InventoryItemInteractable : MonoBehaviour,
     IPointerClickHandler
 {
     // Determines what card this object is
-    public UnitCard card;
+    public Card card;
 
     // How much the card scales on hover
     [SerializeField] private float originalCardSize = 2f;

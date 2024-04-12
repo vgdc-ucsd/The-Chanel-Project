@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class ShopCardInteract : MonoBehaviour, IPointerClickHandler
 {
-    public UnitCard card;
+    public Card card;
 
 
     public void OnPointerClick(PointerEventData eventData)
