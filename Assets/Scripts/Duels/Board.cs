@@ -66,7 +66,7 @@ public class Board
         card.pos = pos;
         card.CanMove = false;
         foreach(Ability a in card.Abilities) {
-            if(a.Condition == ActivationCondition.OnMove) a.Activate(card);
+            if(a.Condition == ActivationCondition.OnMove) a.Activate(this, card);
         }
     }
 

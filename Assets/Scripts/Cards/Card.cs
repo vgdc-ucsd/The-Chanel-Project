@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -62,7 +63,39 @@ public class Card : ScriptableObject
         }
     }
 
-    
+    public Card Clone() {
+        Card copy = (Card) ScriptableObject.CreateInstance("Card");
+
+        copy.enableLogging = this.enableLogging;
+        copy.Name = this.Name;
+        // attack damage (old)
+        copy.Health = this.Health;
+        copy.ManaCost = this.ManaCost;
+        copy.isSelected = false;
+        copy.CanMove = this.CanMove;
+        copy.pos = this.pos;
+        copy.isActive = this.isActive;
+        copy.Artwork = null;
+        copy.team = this.team;
+        copy.CardInteractableRef = null;
+
+        // TODO cleanup
+        copy.AttackDirections = new List<Vector2Int>();
+        foreach(Vector2Int atk in this.AttackDirections) { // TODO double check if vector2Ints need to be deep copied
+            copy.AttackDirections.Add(atk);
+        }
+        copy.AttackDamages = this.AttackDamages;
+        copy.Attacks = new List<Attack>();
+        foreach(Attack atk in this.Attacks) {
+            copy.Attacks.Add(new Attack(atk.direction, atk.damage, copy));
+        }
+        copy.Abilities = new List<Ability>();
+        foreach(Ability ab in this.Abilities) {
+            copy.Abilities.Add(ab);
+        }
+
+        return copy;
+    }
 
     public TileInteractable GetTile()
     {

@@ -32,15 +32,21 @@ public class DuelInstance
         PlayerStatus = player;
         EnemyStatus = enemy;
 
-        // initialize
-        PlayerStatus.Init(Team.Player);
-        EnemyStatus.Init(Team.Enemy);
-        PlayerStatus.SetDeck(DuelManager.Instance.PlayerDeck);
-        EnemyStatus.SetDeck(DuelManager.Instance.EnemyDeck);
+        if(mainDuel) {
+            // initialize
+            PlayerStatus.Init(Team.Player);
+            EnemyStatus.Init(Team.Enemy);
+            PlayerStatus.SetDeck(DuelManager.Instance.PlayerDeck);
+            EnemyStatus.SetDeck(DuelManager.Instance.EnemyDeck);
 
-        // Draw staring cards
-        DrawCards(Team.Player, playerSettings.StartingCards);
-        DrawCards(Team.Enemy, enemySettings.StartingCards);
+            // Draw staring cards
+            DrawCards(Team.Player, playerSettings.StartingCards); // TODO remove
+            DrawCards(Team.Enemy, enemySettings.StartingCards);
+        }
+    }
+
+    public DuelInstance Clone() {
+        return new DuelInstance(PlayerStatus.Clone(), EnemyStatus.Clone(), false);
     }
 
     public void ProcessBoard(Board board, Team team) {
@@ -79,7 +85,7 @@ public class DuelInstance
             foreach(Ability a in card.Abilities) {
                 // Only activate if the activation condition is OnProcess
                 if(a != null && a.Condition == ActivationCondition.OnProcess) {
-                    a.Activate(card);
+                    a.Activate(board, card);
                 }
             }
 

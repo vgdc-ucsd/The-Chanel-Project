@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Burst.Intrinsics;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class CharStatus : MonoBehaviour
+public class CharStatus //: MonoBehaviour
 {
     public int Health { get; private set; }
     public int Mana { get; private set; }
@@ -21,8 +22,38 @@ public class CharStatus : MonoBehaviour
     //[SerializeField] 
     PlayerSettings playerSettings;
     DuelSettings duelSettings;
-    private void Awake()
-    {
+
+    public CharStatus(Team team) {
+        duelSettings = DuelManager.Instance.Settings;
+        if(team == Team.Player || duelSettings.SameSettingsForBothPlayers) {
+            playerSettings = duelSettings.Player;
+        }
+        else {
+            playerSettings = duelSettings.Enemy;
+        }
+
+        Mana = playerSettings.StartingMana;
+        Health = playerSettings.StartingHealth;
+        isAlive = true;
+        MaxHealth = playerSettings.MaxHealth;
+        MaxMana = playerSettings.MaxMana;
+        ManaCapacity = 1; // double check
+        this.team = team;
+        if(team == Team.Player) {
+            Deck = DuelManager.Instance.PlayerDeck;
+        }
+        else {
+            Deck = DuelManager.Instance.EnemyDeck;
+        }
+        cards = new List<Card>();
+    }
+
+    public CharStatus() {
+        
+    }
+
+    //private void Awake()
+    //{
         //currently settings are set at duel manager, can change to set here if desired
         /*
         Health = settings.StartingHealth;
@@ -31,11 +62,11 @@ public class CharStatus : MonoBehaviour
         MaxMana = settings.MaxMana;
         ManaRegen = settings.ManaRegen;
         */
-        duelSettings = DuelManager.Instance.Settings;
-        DuelEvents.Instance.OnDrawCard += AddCard;
-        DuelEvents.Instance.OnRemoveFromHand += RemoveFromHand;
-        DuelEvents.Instance.OnAdvanceGameTurn += GiveMana;
-    }
+    //    duelSettings = DuelManager.Instance.Settings;
+    //    DuelEvents.Instance.OnDrawCard += AddCard;
+    //    DuelEvents.Instance.OnRemoveFromHand += RemoveFromHand;
+    //    DuelEvents.Instance.OnAdvanceGameTurn += GiveMana;
+    //}
 
     public void Init(Team team)
     {
@@ -53,6 +84,25 @@ public class CharStatus : MonoBehaviour
         MaxHealth = playerSettings.MaxHealth;
         MaxMana = playerSettings.MaxMana;
         ManaCapacity = 1;
+    }
+
+    public CharStatus Clone() {
+        CharStatus copy = new CharStatus();
+        copy.Mana = this.Mana;
+        copy.Health = this.Health;
+        copy.isAlive = this.isAlive;
+        copy.MaxHealth = this.MaxHealth;
+        copy.MaxMana = this.MaxMana;
+        copy.ManaCapacity = this.ManaCapacity;
+        copy.team = this.team;
+        copy.Deck = this.Deck.Clone();
+        copy.cards = new List<Card>();
+        foreach(Card c in this.cards) {
+            copy.cards.Add(c.Clone());
+        }
+        copy.playerSettings = this.playerSettings;
+        copy.duelSettings = this.duelSettings;
+        return copy;
     }
 
     public void AddCard(Card card, Team team)

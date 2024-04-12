@@ -152,7 +152,7 @@ public class DuelController
             // Activate abilities        
             foreach(Ability a in card.Abilities) {
                 if(a != null && a.Condition == ActivationCondition.OnProcess) {
-                    a.Activate(card);
+                    a.Activate(board, card);
                 }
             }
 
