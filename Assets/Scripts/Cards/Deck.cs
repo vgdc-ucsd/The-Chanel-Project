@@ -11,4 +11,14 @@ public class Deck : ScriptableObject
     {
         CardList.Add(card);
     }
+
+    public Deck Clone() {
+        Deck copy = (Deck) ScriptableObject.CreateInstance("Deck");
+
+        foreach(Card c in this.CardList) {
+            copy.CardList.Add(c.Clone());
+        }
+
+        return copy;
+    }
 }

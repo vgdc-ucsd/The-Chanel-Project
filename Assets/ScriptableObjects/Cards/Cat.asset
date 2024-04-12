@@ -15,9 +15,10 @@ MonoBehaviour:
   enableLogging: 0
   Name: Cat
   Health: 1
-  AttackDamage: 0
+  AttackDamage: 1
   ManaCost: 1
   isSelected: 0
+  CanMove: 1
   isActive: 0
   Artwork: {fileID: 0}
   team: 0

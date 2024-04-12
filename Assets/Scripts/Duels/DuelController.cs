@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Team
-{
-    Player, Enemy, Neutral
-}
+//public enum Team
+//{
+//    Player, Enemy, Neutral
+//}
 
 public class DuelController
 {
@@ -152,7 +152,7 @@ public class DuelController
             // Activate abilities        
             foreach(Ability a in card.Abilities) {
                 if(a != null && a.Condition == ActivationCondition.OnProcess) {
-                    a.Activate(card);
+                    a.Activate(board, card);
                 }
             }
 
@@ -199,7 +199,7 @@ public class DuelController
             QueueableAnimation qa = new QueueableAnimation(anim, animDuration);
             DuelManager.Instance.AM.QueueAnimation(qa);
 
-            atk.Hit(target);
+            //atk.Hit(target); removed dc
             // Remove this?
             modifiedCards.Add(target); 
         }

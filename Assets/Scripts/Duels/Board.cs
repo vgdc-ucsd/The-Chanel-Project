@@ -45,7 +45,7 @@ public class Board
         return;
     }
 
-    public void PlaceCard(Card card, BoardCoords pos, Team team)
+    public void PlaceCard(Card card, BoardCoords pos, Team team) // ?
     {
         PlaceCard(card, pos);
     }
@@ -66,7 +66,19 @@ public class Board
         card.pos = pos;
         card.CanMove = false;
         foreach(Ability a in card.Abilities) {
-            if(a.Condition == ActivationCondition.OnMove) a.Activate(card);
+            if(a.Condition == ActivationCondition.OnMove) a.Activate(this, card);
+        }
+    }
+
+    public void RenewMovement(Team t) {
+        for(int i = 0; i < Cols; i++) {
+            for(int j = 0; j < Rows; j++) {
+                BoardCoords pos = new BoardCoords(i,j);
+                if (IsOccupied(pos)) {
+                    Card c = GetCard(pos);
+                    if(c.team == t) c.CanMove = true;
+                }
+            }
         }
     }
 

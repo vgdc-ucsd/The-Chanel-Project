@@ -353,8 +353,6 @@ MonoBehaviour:
     ShowEnemyHand: 0
   PlayerDeck: {fileID: 11400000, guid: 1b62fd89b8fe4734eb4697de89df34b7, type: 2}
   EnemyDeck: {fileID: 11400000, guid: 3fee81777dd337d44af028e8dc03f5ee, type: 2}
-  PlayerStatus: {fileID: 1455160713}
-  EnemyStatus: {fileID: 2060407187}
   UI: {fileID: 37294274}
   AM: {fileID: 37294275}
 --- !u!114 &37294270
@@ -2052,7 +2050,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 37294269}
         m_TargetAssemblyTypeName: DuelManager, Assembly-CSharp
-        m_MethodName: EndTurn
+        m_MethodName: EndTurnPlayer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2699,7 +2697,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1455160711}
   - component: {fileID: 1455160712}
-  - component: {fileID: 1455160713}
   m_Layer: 0
   m_Name: Player Status
   m_TagString: Untagged
@@ -2745,26 +2742,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HealthText: {fileID: 914697323}
   ManaText: {fileID: 1594936779}
-  Status: {fileID: 1455160713}
---- !u!114 &1455160713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1455160710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d88e92a2d504af40bfebf41ccb7fa36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isAlive: 0
-  MaxHealth: 0
-  MaxMana: 0
-  ManaCapacity: 0
-  team: 0
-  Deck: {fileID: 0}
-  cards: []
 --- !u!1 &1594936777
 GameObject:
   m_ObjectHideFlags: 0
@@ -3479,7 +3456,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2060407185}
   - component: {fileID: 2060407186}
-  - component: {fileID: 2060407187}
   m_Layer: 0
   m_Name: Enemy Status
   m_TagString: Untagged
@@ -3525,26 +3501,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HealthText: {fileID: 627234910}
   ManaText: {fileID: 1294336626}
-  Status: {fileID: 2060407187}
---- !u!114 &2060407187
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2060407184}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d88e92a2d504af40bfebf41ccb7fa36, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isAlive: 0
-  MaxHealth: 0
-  MaxMana: 0
-  ManaCapacity: 0
-  team: 1
-  Deck: {fileID: 0}
-  cards: []
 --- !u!1001 &255684334413570682
 PrefabInstance:
   m_ObjectHideFlags: 0

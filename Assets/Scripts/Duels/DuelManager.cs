@@ -24,8 +24,12 @@ public class DuelManager : MonoBehaviour
     // Script for managing UI
     public UIManager UI;
 
+    public Board CurrentBoard;
+
     // Script that handles logic for the duels
-    public DuelController DC;
+    //public DuelController DC;
+    public DuelInstance MainDuel;
+    private MctsAI ai;
 
     // Animation Manager
     public AnimationManager AM;
@@ -39,16 +43,25 @@ public class DuelManager : MonoBehaviour
     void Start()
     {
         CheckProperInitialization();
-        DC = new DuelController(PlayerStatus,EnemyStatus);
+
         UI.SetupBoard();
         UI.SetupHand();
-        DuelEvents.Instance.UpdateUI();
 
         if (Settings.EnablePVPMode || Settings.ShowEnemyHand) {
             UI.EnemyHand.gameObject.SetActive(true);
         }
 
-        DC.StartDuel();
+        PlayerStatus = new CharStatus(Team.Player);
+        EnemyStatus = new CharStatus(Team.Enemy);
+
+        UI.SetupStatus();
+
+        CurrentBoard = new Board(Settings.BoardRows, Settings.BoardCols);
+        ai = new MctsAI(PlayerStatus, EnemyStatus);
+        MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, true);
+
+        DuelEvents.Instance.UpdateUI();
+        DuelEvents.Instance.UpdateHand();
     }
 
     private void CheckProperInitialization() {
@@ -72,7 +85,56 @@ public class DuelManager : MonoBehaviour
         }
     }
 
-    public void EndTurn() {
-        DC.EndTurn();
+    //public void EndTurn() {
+    //    DC.EndTurn();
+    //}
+
+    public void EndTurnPlayer() {
+        if(Settings.EnablePVPMode) {
+            // TODO
+        }
+        else {
+            // TODO await events to be finished (no spamming end turn)
+            MainDuel.ProcessBoard(CurrentBoard, Team.Player);
+            // TODO begin MCTS
+            // TODO await animations
+            // TODO await MCTS
+            ai.MakeMove();
+        }
+
+        DuelEvents.Instance.UpdateUI();
+        DuelEvents.Instance.UpdateHand();
+    }
+
+    public void PlaceCard(Card card, BoardCoords pos) {
+        // Check out of bounds
+        if (CurrentBoard.IsOutOfBounds(pos)) { 
+            Debug.LogWarning(pos + " out of bounds");
+            return;
+        }
+        if (CurrentBoard.IsOccupied(pos))
+        {
+            return;
+        }
+        // TODO
+        //if (currentTeam != card.team) {
+        //    Debug.Log($"Tried to play {card.team} card while on {currentTeam} turn");
+        //    return;
+        //}
+        CharStatus charStatus;
+        if(card.team == Team.Player) charStatus = MainDuel.PlayerStatus;
+        else charStatus = MainDuel.EnemyStatus;
+       
+        if (!charStatus.CanUseMana(card.ManaCost))
+        {
+            Debug.Log("Not enough Mana"); //TODO: UI feedback
+            return;
+        }
+        //if(card.team == Team.Enemy) MirrorAttacks(card); // this should only be called once per enemy card
+        charStatus.UseMana(card.ManaCost);
+
+        CurrentBoard.PlaceCard(card, pos);
+        DuelEvents.Instance.PlaceCard(card, pos, card.team); // team?
+        DuelEvents.Instance.UpdateUI();
     }
 }
