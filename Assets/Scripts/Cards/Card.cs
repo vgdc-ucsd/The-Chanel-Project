@@ -21,6 +21,8 @@ public class Card : ScriptableObject
     public bool isSelected = false;
     public bool CanMove = true;
 
+    public int ShopCost; // Gold cost for Shop
+
     public BoardCoords pos;
     [HideInInspector] public bool isActive = false;
 

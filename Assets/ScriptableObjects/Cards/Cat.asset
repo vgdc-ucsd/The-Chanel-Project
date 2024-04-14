@@ -18,6 +18,8 @@ MonoBehaviour:
   AttackDamage: 0
   ManaCost: 1
   isSelected: 0
+  CanMove: 1
+  ShopCost: 0
   isActive: 0
   Artwork: {fileID: 0}
   team: 0

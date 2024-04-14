@@ -1,88 +1,138 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class ShopManager : MonoBehaviour
 {
-    public int maxItems = 10;
-    public List<ShopItemData> items;
-    public ShopUI shopUI;
+    // Collection of Cards Player Unlocked
+    public Deck cardCollection;
+    // Player's Current Deck
+    public Deck playerDeck;
+    // Player's Gold
+    public int playerGold;
+
+    //TEST, Text Reference for Player Gold
+    public TextMeshProUGUI goldText;
+
+    // Tracks Index of Cards Generated
+    public List<int> shopCards;
+
+    // Prefab ShopCard Template
+    public GameObject shopCardPrefab;
+
+    // Inspect GameObject/Screen
+    //public GameObject inspectScreen;
 
     void Start()
     {
-        // Create a new list at the start
-        InitializeShop();
+        //TESTING VALUE
+        playerGold = 1000;
 
-        shopUI = FindObjectOfType<ShopUI>();
+        goldText.text = "Gold: " + playerGold.ToString();
     }
 
-    private void InitializeShop()
+    // Randomly Generates a Card Index from Player's Card Collection
+    public int generateNum(int collectionSize)
     {
-        items = new List<ShopItemData>(maxItems);
-    }
-
-    public void AddItem(ShopItemData shopItem)
-    {
-        if (items.Count < maxItems)
+        int num = Random.Range(0, collectionSize);
+        while (shopCards.Contains(num))
         {
-            items.Add(shopItem);
+            num = Random.Range(0, collectionSize);
+        }
+        shopCards.Add(num);
+        return num;
+    }
+
+    
+    // OnClick Function from ShopCardInteractable
+    public void purchase(Card card)
+    {
+        if(card.ShopCost <= playerGold)
+        {
+            //FIX: when changing playerDeck, it permanently affects the ScriptableObject
+            playerDeck.addCard(card);
+            playerGold -= card.ShopCost;
+            goldText.text = "Gold: " + playerGold.ToString();
+        }
+        else
+        {
+            //TODO: Set up Proper Response to Insufficient Funds
+            Debug.Log("Insufficient Funds");
+        }
+    }
+
+    // Inspect Function for ShopCardInteractable
+    public void inspect(GameObject card)
+    {
+        Debug.Log("Inspect");
+        //inspectScreen.SetActive(true);
+    }
+
+    //TODO: REMOVE AFTER TESTING
+    /*public void AddItem(ShopItemData shopItem)
+    {
+        if (shopCards.Count < maxshopCards)
+        {
+            shopCards.Add(shopItem);
         }
         else
         {
             Debug.Log("No space in shop");
         }
 
-        shopUI.RefreshShopItems();
-    }
+        shopUI.RefreshShopCards();
+    }*/
 
-    public void RemoveItem(ShopItemData itemToRemove)
+    //TODO: REMOVE AFTER TESTING
+    /*public void RemoveItem(Card cardToRemove)
     {
-        items.Remove(itemToRemove);
+        shopCards.Remove(cardToRemove);
 
-        shopUI.RefreshShopItems();
-    }
+        shopUI.RefreshShopCards();
+    }*/
 
-    // Quicksort to sort 'items' list by name (in ascending order)
-    public List<ShopItemData> SortItemsByName(List<ShopItemData> shopItemDatas, int leftIndex, int rightIndex)
+    // TODO: Port Function to Inventory
+    // NOT NEEDED FOR SHOP, BUT WONDERFUL FOR INVENTORY :)
+    // Quicksort to sort 'shopCards' list by name (in ascending order)
+
+    /*public List<Card> SortCardsByName(List<Card> cards, int leftIndex, int rightIndex)
     {
         var i = leftIndex;
         var j = rightIndex;
-        var pivot = shopItemDatas[leftIndex];
+        var pivot = cards[leftIndex];
 
         while (i <= j)
         {
-            while (String.Compare(shopItemDatas[i].name, pivot.name) < 0)
-            // shopItemDatas[i].name < pivot.name)
+            while (String.Compare(cards[i].name, pivot.name) < 0)
+            // cards[i].name < pivot.name)
             {
                 i++;
             }
 
-            while (String.Compare(shopItemDatas[j].name, pivot.name) > 0)
+            while (String.Compare(cards[j].name, pivot.name) > 0)
             {
                 j--;
             }
 
             if (i <= j)
             {
-                ShopItemData temp = shopItemDatas[i];
-                shopItemDatas[i] = shopItemDatas[j];
-                shopItemDatas[j] = temp;
+                Card temp = cards[i];
+                cards[i] = cards[j];
+                cards[j] = temp;
                 i++;
                 j--;
             }
         }
 
         if (leftIndex < j)
-            SortItemsByName(shopItemDatas, leftIndex, j);
+            SortCardsByName(cards, leftIndex, j);
 
         if (i < rightIndex)
-            SortItemsByName(shopItemDatas, i, rightIndex);
+            SortCardsByName(cards, i, rightIndex);
 
-        return shopItemDatas;
-    }
+        return cards;
+    }*/
 }

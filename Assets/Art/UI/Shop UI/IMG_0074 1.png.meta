@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 21313c71625cf77489685c9bdf42d434
+guid: adfe0d4b06837eb4084eefc0b4f5463a
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -43,17 +43,17 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
+  alignment: 9
+  spritePivot: {x: 0.28144494, y: 0.6253476}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 1447, y: 1606, z: 4122, w: 284}
+  spriteBorder: {x: 1447, y: 1606, z: 4122, w: 794}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: -1
+  spriteTessellationDetail: 0
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -121,8 +121,33 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
-    outline: []
+    sprites:
+    - serializedVersion: 2
+      name: IMG_0074 1_0
+      rect:
+        serializedVersion: 2
+        x: 1449
+        y: 1606
+        width: 558
+        height: 959
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de6940ec513d3174a9a7894032b1fbb6
+      internalID: -1535834915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline:
+    - - {x: -1608.8195, y: -68.36841}
+      - {x: -1614.2167, y: 882.4978}
+      - {x: -1053.4471, y: 882.4978}
+      - {x: -1063.8165, y: -67.63562}
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
@@ -132,7 +157,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      IMG_0074 1_0: -1535834915
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
