@@ -55,8 +55,8 @@ public class DuelController
         return board;
     }
     public void StartDuel() {
-        DrawCardPlayer(playerSettings.StartingCards);
-        DrawCardEnemy(enemySettings.StartingCards);
+        DrawCard(playerSettings.StartingCards, Team.Player);
+        DrawCard(enemySettings.StartingCards, Team.Enemy);
     }
 
     // Updates the board with the card played at the desired index
@@ -212,8 +212,7 @@ public class DuelController
         if (currentTeam == Team.Player)
         {
             currentTeam = Team.Enemy;
-            DrawCardEnemy(1);
-            //enemyStatus.GiveMana() 
+            DrawCard(1, Team.Enemy);
             DuelEvents.Instance.TurnStart();
             if (!settings.EnablePVPMode) EnemyTurn();
         }
@@ -221,8 +220,7 @@ public class DuelController
         {
             currentTeam = Team.Player;
             RenewMovement(Team.Player);
-            DrawCardPlayer(1);
-            //playerStatus.GiveMana();
+            DrawCard(1, Team.Player);
             turnNumber++;
             DuelEvents.Instance.AdvanceGameTurn(); // if player starts first, then game turn increase by one when enemy ends turn
             DuelEvents.Instance.TurnStart();
@@ -252,26 +250,16 @@ public class DuelController
         return currentTeam;
     }
 
-    private void DrawCardPlayer(int count) {
-        Deck playerDeck = playerStatus.Deck;
-        for(int i = 0; i < count; i++) {
-            int index = Random.Range(0, playerDeck.CardList.Count);
-            UnitCard c = ScriptableObject.Instantiate(playerDeck.CardList[index]);
-            c.team = Team.Player;
-            DuelEvents.Instance.DrawCard(c, Team.Player);
-        }
+    private void DrawCard(int count, Team team) {
+        Deck targetDeck;
+        if (team == Team.Player) targetDeck = playerStatus.Deck;
+        else targetDeck = enemyStatus.Deck;
 
-        DuelEvents.Instance.UpdateUI();
-        DuelEvents.Instance.UpdateHand();
-    }
-
-    private void DrawCardEnemy(int count) {
-        Deck enemyDeck = enemyStatus.Deck;
-        for(int i = 0; i < count; i++) {
-            int index = Random.Range(0, enemyDeck.CardList.Count);
-            UnitCard c = ScriptableObject.Instantiate(enemyDeck.CardList[index]);
-            c.team = Team.Enemy;
-            DuelEvents.Instance.DrawCard(c,Team.Enemy);
+        for (int i = 0; i < count; i++) {
+            int index = Random.Range(0, targetDeck.CardList.Count);
+            UnitCard c = ScriptableObject.Instantiate(targetDeck.CardList[index]);
+            c.team = team;
+            DuelEvents.Instance.DrawCard(c, team);
         }
 
         DuelEvents.Instance.UpdateUI();
