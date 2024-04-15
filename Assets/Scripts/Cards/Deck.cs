@@ -5,9 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Deck", menuName = "Cards/Deck")]
 public class Deck : ScriptableObject
 {
-    public List<UnitCard> CardList = new List<UnitCard>();
+    public List<Card> CardList = new List<Card>();
 
-    private void addCard(UnitCard card)
+    private void addCard(Card card)
     {
         CardList.Add(card);
     }

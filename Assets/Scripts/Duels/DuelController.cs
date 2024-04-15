@@ -257,7 +257,7 @@ public class DuelController
 
         for (int i = 0; i < count; i++) {
             int index = Random.Range(0, targetDeck.CardList.Count);
-            UnitCard c = ScriptableObject.Instantiate(targetDeck.CardList[index]);
+            Card c = ScriptableObject.Instantiate(targetDeck.CardList[index]);
             c.team = team;
             DuelEvents.Instance.DrawCard(c, team);
         }

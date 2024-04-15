@@ -112,25 +112,34 @@ public class CardInteractable : MonoBehaviour,
     {
         if (card is SpellCard)
         {
+            if (handInterface != null)
+            {
+                handInterface.cardObjects.Remove(this);
+            }
             Destroy(gameObject);
             return;
         }
-        TileInteractable tile = BoardInterface.Instance.GetTile(pos);
-        if (tile != null) {
-            // TODO: move some actions here to PlaceCard in Board
-            inHand = false;
-            ToggleVisibility(true);
-            transform.localEulerAngles = Vector3.zero;
-            transform.localScale = Vector3.one;
-            transform.position = tile.transform.position;
-            if(handInterface != null) {
-                handInterface.cardObjects.Remove(this);
-            } 
-            transform.SetParent(tile.transform);
-            transform.localScale = Vector3.one;
-            DrawArrows(); 
-            CardCost.enabled = false;
-            //handInterface.OrganizeCards();
+        else if (card is UnitCard)
+        {
+            TileInteractable tile = BoardInterface.Instance.GetTile(pos);
+            if (tile != null)
+            {
+                // TODO: move some actions here to PlaceCard in Board
+                inHand = false;
+                ToggleVisibility(true);
+                transform.localEulerAngles = Vector3.zero;
+                transform.localScale = Vector3.one;
+                transform.position = tile.transform.position;
+                if (handInterface != null)
+                {
+                    handInterface.cardObjects.Remove(this);
+                }
+                transform.SetParent(tile.transform);
+                transform.localScale = Vector3.one;
+                DrawArrows();
+                CardCost.enabled = false;
+                //handInterface.OrganizeCards();
+            }
         }
     }
 

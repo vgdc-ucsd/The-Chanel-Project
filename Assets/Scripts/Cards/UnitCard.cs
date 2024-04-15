@@ -25,7 +25,6 @@ public class UnitCard : Card
     [HideInInspector] public bool isActive = false;
 
 
-    public Team team = Team.Neutral;
 
 
     // The directions that the card attacks when facing right.

@@ -152,7 +152,7 @@ public class DuelInstance
 
         for(int i = 0; i < count; i++) {
             int index = Random.Range(0, deck.CardList.Count);
-            UnitCard c = ScriptableObject.Instantiate(deck.CardList[index]);
+            Card c = ScriptableObject.Instantiate(deck.CardList[index]);
             c.team = team;
             if(mainDuel) {
                 DuelEvents.Instance.DrawCard(c, team); // TODO double check

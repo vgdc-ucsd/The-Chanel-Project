@@ -114,6 +114,11 @@ public class DuelManager : MonoBehaviour
             return;
         }
 
+        CharStatus charStatus;
+        if (card.team == Team.Player) charStatus = MainDuel.PlayerStatus;
+        else charStatus = MainDuel.EnemyStatus;
+
+
         if (card is UnitCard unit)
         {
             if (CurrentBoard.IsOccupied(pos))
@@ -125,9 +130,6 @@ public class DuelManager : MonoBehaviour
             //    Debug.Log($"Tried to play {card.team} card while on {currentTeam} turn");
             //    return;
             //}
-            CharStatus charStatus;
-            if (unit.team == Team.Player) charStatus = MainDuel.PlayerStatus;
-            else charStatus = MainDuel.EnemyStatus;
 
             if (!charStatus.CanUseMana(unit.ManaCost))
             {
@@ -139,11 +141,13 @@ public class DuelManager : MonoBehaviour
 
             CurrentBoard.PlaceCard(unit, pos);
             DuelEvents.Instance.PlaceCard(unit, pos, unit.team); // team?
-            DuelEvents.Instance.UpdateUI();
+            
         }
         else if (card is SpellCard spell) 
         {
-            // spell card behavior
+            spell.Place(pos); //not ideal, should follow same path as unit cards
+            return;
         }
+        DuelEvents.Instance.UpdateUI();
     }
 }

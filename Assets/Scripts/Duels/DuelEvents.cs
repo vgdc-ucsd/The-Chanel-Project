@@ -45,8 +45,8 @@ public class DuelEvents : MonoBehaviour
         if (onUpdateHand != null) onUpdateHand();
     }
 
-    public event Action<UnitCard, Team> OnDrawCard;
-    public void DrawCard(UnitCard c, Team team)
+    public event Action<Card, Team> OnDrawCard;
+    public void DrawCard(Card c, Team team)
     {
         if (OnDrawCard != null) OnDrawCard(c, team);
     }

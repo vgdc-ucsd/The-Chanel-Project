@@ -6,5 +6,6 @@ public abstract class Card: ScriptableObject
     public string Name;
     // The image that is displayed on the card
     public Texture2D Artwork;
+    public Team team = Team.Neutral;
     public abstract void Place(BoardCoords pos);
 }

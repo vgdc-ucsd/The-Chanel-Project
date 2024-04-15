@@ -27,7 +27,7 @@ public class HandInterface : MonoBehaviour
         DuelEvents.Instance.onUpdateHand += OrganizeCards;
     }
 
-    public void Draw(UnitCard c, Team team) {
+    public void Draw(Card c, Team team) {
         if(TemplateCard == null) {
             Debug.Log("Could not draw cards, TemplateCard is uninitialized");
             return;
@@ -56,7 +56,7 @@ public class HandInterface : MonoBehaviour
     }
 
     // Maps a Card to a CardInteractable
-    private void SetCard(UnitCard c, CardInteractable ci) {
+    private void SetCard(Card c, CardInteractable ci) {
         if(ci == null) {
             Debug.Log("Could not set card, TemplateCard has no CardInteractable");
             return;
