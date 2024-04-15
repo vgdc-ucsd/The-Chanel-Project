@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "Bomb", menuName = "Cards/Spells/Bomb")]
 public class SpellBomb : Spell , ISpellTypeTile
 {
     int damage = 2;

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "Portal", menuName = "Cards/Spells/Portal")]
 public class SpellPortal : Spell, ISpellTypeTwoUnits
 {
     public void CastSpell(UnitCard unit1, UnitCard unit2)

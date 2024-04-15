@@ -15,12 +15,12 @@ using UnityEngine;
 // Stores data on any given card in the game
 public class SpellCard : Card
 {
-    public bool enableLogging;
 
     // The name and stats of the card 
     
     public int Health;
     public int ManaCost;
+    public Spell spell;
 
 
     public override void Place(BoardCoords pos)

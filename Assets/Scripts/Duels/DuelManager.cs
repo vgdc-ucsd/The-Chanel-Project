@@ -107,35 +107,43 @@ public class DuelManager : MonoBehaviour
         DuelEvents.Instance.UpdateHand();
     }
 
-    public void PlaceCard(UnitCard card, BoardCoords pos) {
+    public void PlaceCard(Card card, BoardCoords pos) {
         // Check out of bounds
         if (CurrentBoard.IsOutOfBounds(pos)) { 
             Debug.LogWarning(pos + " out of bounds");
             return;
         }
-        if (CurrentBoard.IsOccupied(pos))
-        {
-            return;
-        }
-        // TODO
-        //if (currentTeam != card.team) {
-        //    Debug.Log($"Tried to play {card.team} card while on {currentTeam} turn");
-        //    return;
-        //}
-        CharStatus charStatus;
-        if(card.team == Team.Player) charStatus = MainDuel.PlayerStatus;
-        else charStatus = MainDuel.EnemyStatus;
-       
-        if (!charStatus.CanUseMana(card.ManaCost))
-        {
-            Debug.Log("Not enough Mana"); //TODO: UI feedback
-            return;
-        }
-        //if(card.team == Team.Enemy) MirrorAttacks(card); // this should only be called once per enemy card
-        charStatus.UseMana(card.ManaCost);
 
-        CurrentBoard.PlaceCard(card, pos);
-        DuelEvents.Instance.PlaceCard(card, pos, card.team); // team?
-        DuelEvents.Instance.UpdateUI();
+        if (card is UnitCard unit)
+        {
+            if (CurrentBoard.IsOccupied(pos))
+            {
+                return;
+            }
+            // TODO
+            //if (currentTeam != card.team) {
+            //    Debug.Log($"Tried to play {card.team} card while on {currentTeam} turn");
+            //    return;
+            //}
+            CharStatus charStatus;
+            if (unit.team == Team.Player) charStatus = MainDuel.PlayerStatus;
+            else charStatus = MainDuel.EnemyStatus;
+
+            if (!charStatus.CanUseMana(unit.ManaCost))
+            {
+                Debug.Log("Not enough Mana"); //TODO: UI feedback
+                return;
+            }
+            //if(card.team == Team.Enemy) MirrorAttacks(card); // this should only be called once per enemy card
+            charStatus.UseMana(unit.ManaCost);
+
+            CurrentBoard.PlaceCard(unit, pos);
+            DuelEvents.Instance.PlaceCard(unit, pos, unit.team); // team?
+            DuelEvents.Instance.UpdateUI();
+        }
+        else if (card is SpellCard spell) 
+        {
+            // spell card behavior
+        }
     }
 }

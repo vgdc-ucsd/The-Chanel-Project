@@ -16,7 +16,7 @@ public class CardInteractable : MonoBehaviour,
     IPointerDownHandler
 {
     // Data for the card it contains
-    [HideInInspector] public UnitCard card;
+    [HideInInspector] public Card card;
 
     // Reference to the HandInterface
     [HideInInspector] public HandInterface handInterface;
@@ -55,28 +55,32 @@ public class CardInteractable : MonoBehaviour,
     }
 
     public void DrawArrows() {
-        foreach(Vector2Int v in AttackDirections.AllAttackDirections) {
-            if (card.GetAttack(v) != null)
+        if (card is UnitCard unit)
+        {
+            foreach (Vector2Int v in AttackDirections.AllAttackDirections)
             {
-                GameObject arrow;
-                if (card.team == Team.Player)
+                if (unit.GetAttack(v) != null)
                 {
-                    arrow = Instantiate(TemplateArrowPlayer);
-                }
-                else
-                {
-                    arrow = Instantiate(TemplateArrowEnemy);
-                }
+                    GameObject arrow;
+                    if (unit.team == Team.Player)
+                    {
+                        arrow = Instantiate(TemplateArrowPlayer);
+                    }
+                    else
+                    {
+                        arrow = Instantiate(TemplateArrowEnemy);
+                    }
 
-                arrow.transform.eulerAngles = new Vector3(0, 0, Vector2.SignedAngle(Vector2.up, v));
-                arrow.transform.SetParent(this.transform);
-                arrow.transform.localPosition = Vector3.zero;
-                arrow.transform.localScale = new Vector3(
-                    arrow.transform.localScale.x,
-                    v.magnitude / 2,
-                    1
-                );
-                arrow.SetActive(true);
+                    arrow.transform.eulerAngles = new Vector3(0, 0, Vector2.SignedAngle(Vector2.up, v));
+                    arrow.transform.SetParent(this.transform);
+                    arrow.transform.localPosition = Vector3.zero;
+                    arrow.transform.localScale = new Vector3(
+                        arrow.transform.localScale.x,
+                        v.magnitude / 2,
+                        1
+                    );
+                    arrow.SetActive(true);
+                }
             }
         }
     }
@@ -95,14 +99,22 @@ public class CardInteractable : MonoBehaviour,
 
     public void UpdateCardInfo() 
     {
-        CardAttack.text = "Attack: " + card.AttackDamage;
-        CardHealth.text = "Health: " + card.Health;
-        if (inHand) CardCost.text = "Mana Cost: " + card.ManaCost;
+        if (card is UnitCard unit)
+        {
+            CardAttack.text = "Attack: " + unit.AttackDamage;
+            CardHealth.text = "Health: " + unit.Health;
+            if (inHand) CardCost.text = "Mana Cost: " + unit.ManaCost;
+        }
     }
 
     // Updates UI to show card being played
     public void PlaceCard(BoardCoords pos)
     {
+        if (card is SpellCard)
+        {
+            Destroy(gameObject);
+            return;
+        }
         TileInteractable tile = BoardInterface.Instance.GetTile(pos);
         if (tile != null) {
             // TODO: move some actions here to PlaceCard in Board
@@ -124,10 +136,12 @@ public class CardInteractable : MonoBehaviour,
 
     public void UpdateCardPos()
     {
-        TileInteractable tile = BoardInterface.Instance.GetTile(card.pos);
-        transform.position = tile.transform.position;
-        transform.SetParent(tile.transform);
-        DrawArrows();
+        if (card is UnitCard unit) { 
+            TileInteractable tile = BoardInterface.Instance.GetTile(unit.pos);
+            transform.position = tile.transform.position;
+            transform.SetParent(tile.transform);
+            DrawArrows();
+        }   
     }
 
 
@@ -202,9 +216,9 @@ public class CardInteractable : MonoBehaviour,
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (!inHand) 
+        if (!inHand && card is UnitCard unit) 
         {
-            PlayerInputController.Instance.InteractCard(card);
+            PlayerInputController.Instance.InteractCard(unit);
         }
     }
 

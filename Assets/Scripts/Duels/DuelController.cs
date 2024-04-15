@@ -266,6 +266,7 @@ public class DuelController
         DuelEvents.Instance.UpdateHand();
     }
 
+
     // Flips attacks vertically, is used on cards the enemy plays
     private void MirrorAttacks(UnitCard c) {
         List<Attack> mirroredAttacks = new List<Attack>();
