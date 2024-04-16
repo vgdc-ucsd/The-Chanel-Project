@@ -24,7 +24,7 @@ public class ShopManager : MonoBehaviour
     public GameObject shopCardPrefab;
 
     // Inspect GameObject/Screen
-    //public GameObject inspectScreen;
+    public GameObject inspectScreen;
 
     void Start()
     {
@@ -32,6 +32,13 @@ public class ShopManager : MonoBehaviour
         playerGold = 1000;
 
         goldText.text = "Gold: " + playerGold.ToString();
+    }
+
+    // TESTING ONLY, REMOVE LATER
+    void OnApplicationQuit()
+    {
+        Debug.Log("QUIT: RESETTING TEST DECK");
+        playerDeck.CardList.Clear();
     }
 
     // Randomly Generates a Card Index from Player's Card Collection
@@ -65,34 +72,13 @@ public class ShopManager : MonoBehaviour
     }
 
     // Inspect Function for ShopCardInteractable
-    public void inspect(GameObject card)
+    public void inspect(Card card)
     {
-        Debug.Log("Inspect");
-        //inspectScreen.SetActive(true);
+        inspectScreen.SetActive(true);
+        GameObject inspectCard = inspectScreen.transform.GetChild(0).gameObject;
+        CardDisplay display = inspectCard.GetComponent<CardDisplay>();
+        display.setDisplay(card);
     }
-
-    //TODO: REMOVE AFTER TESTING
-    /*public void AddItem(ShopItemData shopItem)
-    {
-        if (shopCards.Count < maxshopCards)
-        {
-            shopCards.Add(shopItem);
-        }
-        else
-        {
-            Debug.Log("No space in shop");
-        }
-
-        shopUI.RefreshShopCards();
-    }*/
-
-    //TODO: REMOVE AFTER TESTING
-    /*public void RemoveItem(Card cardToRemove)
-    {
-        shopCards.Remove(cardToRemove);
-
-        shopUI.RefreshShopCards();
-    }*/
 
     // TODO: Port Function to Inventory
     // NOT NEEDED FOR SHOP, BUT WONDERFUL FOR INVENTORY :)

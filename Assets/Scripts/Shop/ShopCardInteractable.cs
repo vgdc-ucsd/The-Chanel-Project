@@ -32,16 +32,21 @@ public class ShopCardInteractable : MonoBehaviour,
     //Awake() to be First before Start()
     private void Awake()
     {
+        // Assigns Necessary Scripts
         shopManager = FindObjectOfType<ShopManager>();
         display = this.gameObject.GetComponent<CardDisplay>();
+
+        if(shopManager == null || display == null)
+        {
+            Debug.LogWarning("Missing shopManager or display script");
+        }
 
         // Generates Unique Random Card from Card Collection
         int collectionSize = cardCollection.CardList.Count - 1;
         int randomIndex = shopManager.generateNum(collectionSize);
-
         Card randomCard = cardCollection.CardList[randomIndex];
-            
-        display.card = randomCard;
+
+        display.setDisplay(randomCard);
         card = randomCard;
     }
 
@@ -50,14 +55,12 @@ public class ShopCardInteractable : MonoBehaviour,
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            Debug.Log("BUY CARD");
             this.gameObject.SetActive(false);
             shopManager.purchase(card);
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            Debug.Log("inspect card");
-            shopManager.inspect(this.gameObject);
+            shopManager.inspect(card);
         }
     }
 

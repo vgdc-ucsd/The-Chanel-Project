@@ -13,7 +13,8 @@ using TMPro;
 public class CardDisplay : MonoBehaviour
 {
     // Card to Display
-    public Card card;
+    [SerializeField]
+    private Card card;
 
     public TextMeshProUGUI CardName;
     public TextMeshProUGUI CardHealth;
@@ -23,8 +24,10 @@ public class CardDisplay : MonoBehaviour
 
     public Texture2D CardArt;
 
-    void Start()
+    public void setDisplay(Card card)
     {
+        this.card = card;
+
         CardName.text = card.Name;
         CardHealth.text = "Health: " + card.Health;
         CardAttack.text = "Attack: " + card.AttackDamage;
@@ -33,7 +36,4 @@ public class CardDisplay : MonoBehaviour
 
         CardArt = card.Artwork;
     }
-
-
-
 }
