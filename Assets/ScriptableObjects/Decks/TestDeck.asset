@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: TestDeck
   m_EditorClassIdentifier: 
   CardList:
-  - {fileID: 11400000, guid: eb7d38ae15c928b48a3de6fc238291a2, type: 2}
+  - {fileID: 11400000, guid: bca5dcb3c747b704697a0cf8447dd5ae, type: 2}
   - {fileID: 11400000, guid: b7ef493239673974998509332c847fad, type: 2}
-  - {fileID: 11400000, guid: fdaf9f44f7b4f4144b9089a8ecba156b, type: 2}
+  - {fileID: 11400000, guid: eb7d38ae15c928b48a3de6fc238291a2, type: 2}

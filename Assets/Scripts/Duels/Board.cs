@@ -64,6 +64,10 @@ public class Board
         SetCard(null, card.pos);
         SetCard(card, pos);
         card.pos = pos;
+        card.CanMove = false;
+        foreach(Ability a in card.Abilities) {
+            if(a.Condition == ActivationCondition.OnMove) a.Activate(card);
+        }
     }
 
     public List<BoardCoords> GetAdjacentTiles(BoardCoords pos)
