@@ -82,6 +82,8 @@ public class CardEditor : Editor
                 if(hasAtk) c.Attacks.Remove(atk);
             }
         }
+
+        EditorUtility.SetDirty(c);
     }
 
     // Displays a toggle on the Unity Inspector
