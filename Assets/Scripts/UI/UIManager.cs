@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,7 +10,8 @@ public class UIManager : MonoBehaviour
 {
     // "Blank" objects that are intantiated many times
     public TileInteractable TemplateTile;
-    public CardInteractable TemplateCard;
+    //public CardInteractable TemplateCard;
+    public UnitCardInteractable TemplateUnitCard;
 
     // Interface GameObjects
     public BoardInterface BoardContainer;
@@ -24,21 +26,25 @@ public class UIManager : MonoBehaviour
         BoardContainer.CreateBoard();
     }
 
-    public void SetupHand() {
-        Hand.TemplateCard = TemplateCard;
-        EnemyHand.TemplateCard = TemplateCard;
-    }
-
     public void SetupStatus() {
         Player.Status = DuelManager.Instance.PlayerStatus;
         Enemy.Status = DuelManager.Instance.EnemyStatus;
     }
 
-    public CardInteractable GenerateCardInteractable(UnitCard c) {
-        CardInteractable ci = Instantiate(TemplateCard);
-        ci.card = c;
-        ci.SetCardInfo();
-        return ci;
+    public CardInteractable GenerateCardInteractable(Card c) {
+        if(c.GetType() == typeof(UnitCard)) {
+            UnitCardInteractable ci = Instantiate(TemplateUnitCard);
+            ci.card = (UnitCard) c;
+            ci.SetCardInfo();
+            return ci;
+        }
+        if(c.GetType() == typeof(SpellCard)) {
+            throw new NotImplementedException();
+        }
+        else {
+            Debug.LogError("Unidentified card type");
+            return null;
+        }
     }
 
     public TileInteractable FindTileInteractable(BoardCoords bc) {
@@ -58,11 +64,11 @@ public class UIManager : MonoBehaviour
             Debug.LogError("Cannot create board, TemplateTile is uninitialized");
             return;
         }
-        if(TemplateCard == null) {
+        if(TemplateUnitCard == null) {
             Debug.LogError("Could not create hand, TemplateCard is uninitialized");
             return;
         }
-        TemplateCard.CheckProperInitialization();
+        TemplateUnitCard.CheckProperInitialization();
 
         if(BoardContainer == null) {
             Debug.LogError("Cannot create board, BoardContainer is uninitialized");

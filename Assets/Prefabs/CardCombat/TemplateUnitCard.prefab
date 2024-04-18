@@ -803,9 +803,9 @@ GameObject:
   - component: {fileID: 3382568235958084768}
   - component: {fileID: 4633144380959704258}
   - component: {fileID: 5767723507367173616}
-  - component: {fileID: 2867605282765005136}
+  - component: {fileID: 5529432279168170932}
   m_Layer: 0
-  m_Name: TemplateCard
+  m_Name: TemplateUnitCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -884,7 +884,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &2867605282765005136
+--- !u!114 &5529432279168170932
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

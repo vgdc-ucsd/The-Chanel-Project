@@ -45,7 +45,6 @@ public class DuelManager : MonoBehaviour
         CheckProperInitialization();
 
         UI.SetupBoard();
-        UI.SetupHand();
 
         if (Settings.EnablePVPMode || Settings.ShowEnemyHand) {
             UI.EnemyHand.gameObject.SetActive(true);
@@ -86,10 +85,6 @@ public class DuelManager : MonoBehaviour
         }
     }
 
-    //public void EndTurn() {
-    //    DC.EndTurn();
-    //}
-
     public void EndTurnPlayer() {
         if(Settings.EnablePVPMode) {
             // TODO
@@ -107,23 +102,18 @@ public class DuelManager : MonoBehaviour
         DuelEvents.Instance.UpdateHand();
     }
 
-    public void PlaceCard(UnitCard card, BoardCoords pos) {
+    public void TryPlaceCard(UnitCard card, BoardCoords pos) {
         // Check out of bounds
-        if (CurrentBoard.IsOutOfBounds(pos)) { 
-            Debug.LogWarning(pos + " out of bounds");
-            return;
-        }
-        if (CurrentBoard.IsOccupied(pos))
-        {
-            return;
-        }
+        if (CurrentBoard.IsOutOfBounds(pos)) return;
+        if (CurrentBoard.IsOccupied(pos)) return;
+
         // TODO
         //if (currentTeam != card.team) {
         //    Debug.Log($"Tried to play {card.team} card while on {currentTeam} turn");
         //    return;
         //}
         CharStatus charStatus;
-        if(card.team == Team.Player) charStatus = MainDuel.PlayerStatus;
+        if(card.CurrentTeam == Team.Player) charStatus = MainDuel.PlayerStatus;
         else charStatus = MainDuel.EnemyStatus;
        
         if (!charStatus.CanUseMana(card.ManaCost))
@@ -132,10 +122,8 @@ public class DuelManager : MonoBehaviour
             return;
         }
         //if(card.team == Team.Enemy) MirrorAttacks(card); // this should only be called once per enemy card
-        charStatus.UseMana(card.ManaCost);
 
-        CurrentBoard.PlaceCard(card, pos);
-        DuelEvents.Instance.PlaceCard(card, pos, card.team); // team?
+        CurrentBoard.PlayCard(card, pos, charStatus);
         DuelEvents.Instance.UpdateUI();
     }
 }

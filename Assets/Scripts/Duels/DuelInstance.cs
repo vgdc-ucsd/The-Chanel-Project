@@ -85,7 +85,7 @@ public class DuelInstance
         }
 
         // Cards only take actions on their turn
-        if (card.team == team) {
+        if (card.CurrentTeam == team) {
             // Activate abilities        
             foreach(Ability a in card.Abilities) {
                 // Only activate if the activation condition is OnProcess
@@ -107,16 +107,16 @@ public class DuelInstance
             return;
         }
 
-        BoardCoords atkDest = card.pos + new BoardCoords(atk.direction);
+        BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
 
         // Attack targeting enemy
-        if(board.BeyondEnemyEdge(atkDest) && card.team == Team.Player) {
+        if(board.BeyondEnemyEdge(atkDest) && card.CurrentTeam == Team.Player) {
             EnemyStatus.DealDamage(atk.damage);
             return;
         }
 
         // Attack targeting player
-        if(board.BeyondPlayerEdge(atkDest) && card.team == Team.Enemy) {
+        if(board.BeyondPlayerEdge(atkDest) && card.CurrentTeam == Team.Enemy) {
             PlayerStatus.DealDamage(atk.damage);
             return;
         }
@@ -127,8 +127,8 @@ public class DuelInstance
         if(board.GetCard(atkDest) == null) return;
         
         // Deal damage
-        UnitCard target = board.GetCard(atkDest);
-        if(card.team != target.team) {
+        Card target = board.GetCard(atkDest);
+        if(card.CurrentTeam != target.CurrentTeam) {
             // animation
             if(mainDuel) {
                 float animDuration = 0.3f;
@@ -141,7 +141,7 @@ public class DuelInstance
                 DuelManager.Instance.AM.QueueAnimation(qa);
             }
 
-            DealDamage(target, atk.damage);
+            DealDamage((UnitCard)target, atk.damage); // TODO
         }
     }
 
@@ -152,8 +152,8 @@ public class DuelInstance
 
         for(int i = 0; i < count; i++) {
             int index = Random.Range(0, deck.CardList.Count);
-            UnitCard c = ScriptableObject.Instantiate(deck.CardList[index]);
-            c.team = team;
+            Card c = ScriptableObject.Instantiate(deck.CardList[index]);
+            c.CurrentTeam = team;
             if(mainDuel) {
                 DuelEvents.Instance.DrawCard(c, team); // TODO double check
             }
@@ -167,7 +167,7 @@ public class DuelInstance
         card.Health -= damage;
         if (card.Health <= 0)
         {
-            board.RemoveCard(card.pos);
+            board.RemoveCard(card.Pos);
 
             if(mainDuel) {
                 IEnumerator ie = DuelManager.Instance.AM.CardDeath(card.CardInteractableRef);

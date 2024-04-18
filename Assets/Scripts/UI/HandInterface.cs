@@ -8,9 +8,8 @@ using UnityEngine.UIElements;
 // Manages the player's and interactions with their hand
 public class HandInterface : MonoBehaviour
 {
-    public CardInteractable TemplateCard;
     [HideInInspector] public List<CardInteractable> cardObjects = new List<CardInteractable>();
-    public Team myTeam;
+    [HideInInspector] public Team myTeam;
 
     // Determines how much the cards rotate in the player's hand
     private float maxRotationDegrees = 15;
@@ -27,23 +26,18 @@ public class HandInterface : MonoBehaviour
         DuelEvents.Instance.onUpdateHand += OrganizeCards;
     }
 
-    public void Draw(UnitCard c, Team team) {
-        if(TemplateCard == null) {
-            Debug.Log("Could not draw cards, TemplateCard is uninitialized");
-            return;
-        }
-
+    public void Draw(Card c, Team team) {
         if (team == myTeam) {
-            // Draw a random card from the deck (doesn't remove from deck)
-            c.team = team;
-            CardInteractable cardObject = Instantiate(TemplateCard);
-            SetCard(c, cardObject);
-            cardObject.transform.localScale = Vector3.one;
-            cardObjects.Add(cardObject);
+            // Draw a random card from the deck (doesn't remove from deck) 
+            c.CurrentTeam = team; // ?
+            CardInteractable ci = DuelManager.Instance.UI.GenerateCardInteractable(c);
+            ci.handInterface = this;
+            ci.transform.localScale = Vector3.one;
+            cardObjects.Add(ci);
         }
     }
 
-    public void RemoveFromHand(UnitCard card)
+    public void RemoveFromHand(Card card)
     {
         //Debug.Log("here");
         //cardObjects.Remove(card.CardInteractableRef.gameObject);
@@ -56,7 +50,7 @@ public class HandInterface : MonoBehaviour
     }
 
     // Maps a Card to a CardInteractable
-    private void SetCard(UnitCard c, CardInteractable ci) {
+    /* private void SetCard(Card c, CardInteractable ci) {
         if(ci == null) {
             Debug.Log("Could not set card, TemplateCard has no CardInteractable");
             return;
@@ -70,7 +64,7 @@ public class HandInterface : MonoBehaviour
         {
             ci.ToggleVisibility(false);
         }
-    }
+    } */
 
     // Displays cards neatly in the UI
     public void OrganizeCards() {

@@ -6,78 +6,41 @@ using UnityEditor;
 using UnityEngine;
 
 
-// Allows a card to be created fropm the menu when right clicking in the inspector
+// Allows a card to be created from the menu when right clicking in the inspector
 [CreateAssetMenu(fileName = "New Card", menuName = "Cards/Card")]
 
 // Stores data on any given card in the game
 public class UnitCard : Card
 {
-    public bool enableLogging;
-
-    // The name and stats of the card 
     public int Health;
-    public int AttackDamage; // OLD
-    public int ManaCost;
-    public bool isSelected = false;
-    public bool CanMove = true;
-
-    public BoardCoords pos;
-    [HideInInspector] public bool isActive = false;
-
-
-    public Team team = Team.Neutral;
-
-
-    // The directions that the card attacks when facing right.
-    // Hidden because values here are set through the custom editor
-    [HideInInspector] public List<Vector2Int> AttackDirections = new List<Vector2Int>();
-
-    // Directions: upleft, up, upright, left, right, downleft, down, downright
-    // Someone please replace this soon, this is disgusting
-    public int[] AttackDamages = new int[8] 
-        {-1,-1,-1,
-         -1,   -1,
-         -1,-1,-1};
+    
+    [HideInInspector] public bool CanMove = true;
+    [HideInInspector] public BoardCoords Pos;
+    [HideInInspector] public bool isSelected = false;
+    [HideInInspector] public int BaseDamage = 1; // set in the custom card editor
+    [HideInInspector] public override CardInteractable CardInteractableRef { get {return UnitCardInteractableRef;} }
+    public UnitCardInteractable UnitCardInteractableRef;
 
     public List<Attack> Attacks = new List<Attack>();
     public List<Ability> Abilities = new List<Ability>();
 
-    private void Awake()
-    {
-        for (int i = 0; i < 8; i++)
-        {
-            if (AttackDamages[i] != -1)
-            {
-                Attacks.Add(new Attack(global::AttackDirections.AllAttackDirections[i], AttackDamages[i], this));
-            }
-        }
-    }
+    public override Card Clone() {
+        UnitCard copy = (UnitCard) ScriptableObject.CreateInstance("UnitCard");
 
-    public UnitCard Clone() {
-        UnitCard copy = (UnitCard) ScriptableObject.CreateInstance("Card");
-
-        copy.enableLogging = this.enableLogging;
         copy.Name = this.Name;
-        // attack damage (old)
+        copy.BaseDamage = this.BaseDamage;
         copy.Health = this.Health;
         copy.ManaCost = this.ManaCost;
         copy.isSelected = false;
         copy.CanMove = this.CanMove;
-        copy.pos = this.pos;
-        copy.isActive = this.isActive;
-        copy.Artwork = null;
-        copy.team = this.team;
-        copy.CardInteractableRef = null;
+        copy.Pos = this.Pos;
+        copy.Artwork = null; // maybe
+        copy.CurrentTeam = this.CurrentTeam;
+        copy.UnitCardInteractableRef = null;
 
-        // TODO cleanup
-        copy.AttackDirections = new List<Vector2Int>();
-        foreach(Vector2Int atk in this.AttackDirections) { // TODO double check if vector2Ints need to be deep copied
-            copy.AttackDirections.Add(atk);
-        }
-        copy.AttackDamages = this.AttackDamages;
         copy.Attacks = new List<Attack>();
         foreach(Attack atk in this.Attacks) {
-            copy.Attacks.Add(new Attack(atk.direction, atk.damage, copy));
+            copy.Attacks.Add(new Attack(atk.direction, atk.damage));
         }
         copy.Abilities = new List<Ability>();
         foreach(Ability ab in this.Abilities) {
@@ -89,7 +52,7 @@ public class UnitCard : Card
 
     public TileInteractable GetTile()
     {
-        return BoardInterface.Instance.Tiles[pos.ToRowColV2().x, pos.ToRowColV2().y];
+        return BoardInterface.Instance.Tiles[Pos.ToRowColV2().x, Pos.ToRowColV2().y];
     }
 
     public Attack GetAttack(Vector2Int dir)
@@ -101,16 +64,16 @@ public class UnitCard : Card
         return null;
     }
 
-    public override void Place(BoardCoords pos)
+    public void Place(BoardCoords pos)
     {
+        this.Pos = pos;
         CanMove = true;
-        isActive = true;
-        CardInteractableRef.PlaceCard(pos);
+        if( UnitCardInteractableRef != null) UnitCardInteractableRef.PlaceCard(pos);
     }
 
     public void SetSelected(bool selected)
     {
         isSelected = selected;
-        CardInteractableRef.SetSelected(selected);
+        CardInteractableRef.SetSelected(selected); // TODO
     }
 }

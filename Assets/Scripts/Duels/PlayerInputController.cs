@@ -32,7 +32,7 @@ public class PlayerInputController: MonoBehaviour
                 currentAction = action;
                 return;
             case ControlAction.Move:
-                foreach (BoardCoords adj in DuelManager.Instance.CurrentBoard.GetEmptyAdjacentTiles(selectedCard.pos))
+                foreach (BoardCoords adj in DuelManager.Instance.CurrentBoard.GetEmptyAdjacentTiles(selectedCard.Pos))
                 {
                     BoardInterface.Instance.GetTile(adj).SetHighlight(true);
                 }
@@ -101,7 +101,7 @@ public class PlayerInputController: MonoBehaviour
         {
             // TODO check that it is the player's turn
             if (DuelManager.Instance.CurrentBoard.IsOccupied(pos)) return;
-            if (!DuelManager.Instance.CurrentBoard.GetEmptyAdjacentTiles(selectedCard.pos).Contains(pos)) return;
+            if (!DuelManager.Instance.CurrentBoard.GetEmptyAdjacentTiles(selectedCard.Pos).Contains(pos)) return;
             TileInteractable tile = BoardInterface.Instance.GetTile(pos);
 
             DuelManager.Instance.CurrentBoard.MoveCard(selectedCard, pos);

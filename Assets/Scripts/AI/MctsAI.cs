@@ -61,16 +61,38 @@ public class MctsAI
         yield return null;
     }
 
-    private void Simulate(DuelInstance duel) {
+    private void Simulate(DuelInstance duel, Board board) {
         for(int i = 0; i < MAX_GAMES; i++) {
-            PickRandomMove(duel, Team.Player);
+            PickRandomMove(duel, board, Team.Player);
             //duel.ProcessBoard(duel.Team.Player)
 
         }
     }
 
-    private void PickRandomMove(DuelInstance duel, Team team) {
+    private void PickRandomMove(DuelInstance duel, Board board, Team team) {
+        CharStatus status;
+        if(team == Team.Player) {
+            status = duel.PlayerStatus;
+        }
+        else {
+            status = duel.EnemyStatus;
+        }
 
+        List<Card> playableCards = GetPlayableCards(status);
+        List<BoardCoords> legalTiles = GetLegalTiles(board); // TODO behind spawn line
+
+        while(playableCards.Count > 0 && legalTiles.Count > 0) {
+            int randomCardIndex = Random.Range(0, playableCards.Count);
+            Card randomCard = playableCards[randomCardIndex];
+            
+            int randomTileIndex = Random.Range(0, legalTiles.Count);
+            BoardCoords randomTile = legalTiles[randomCardIndex];
+
+            // play card
+
+            playableCards = GetPlayableCards(status);
+            legalTiles = GetLegalTiles(board);
+        }
     }
 
     private void testMove(Board board)
@@ -83,12 +105,14 @@ public class MctsAI
         BoardCoords randomTile = legalTiles[Random.Range(0, legalTiles.Count)];
         
         // pick random card
-        int index = Random.Range(0, enemyStatus.cards.Count);
-        UnitCard cardToPlay = enemyStatus.cards[index];
+        int index = Random.Range(0, enemyStatus.Cards.Count);
+        //UnitCard cardToPlay = enemyStatus.Cards[index];
+        UnitCard cardToPlay = null;
+        // TODO
 
         // play card if enough mana
         if(enemyStatus.Mana >= cardToPlay.ManaCost) { // temp (doesnt deduct mana)
-            board.PlaceCard(cardToPlay, randomTile);
+            board.PlayCard(cardToPlay, randomTile, enemyStatus);
         }
     }
 
@@ -128,5 +152,14 @@ public class MctsAI
         }
 
         return legalTiles;
+    }
+
+    private List<Card> GetPlayableCards(CharStatus status) {
+        List<Card> results = new List<Card>();
+        if(status.Mana == 0) return results;
+        foreach(Card c in status.Cards) {
+            if(c.ManaCost <= status.Mana) results.Add(c);
+        }
+        return results;
     }
 }

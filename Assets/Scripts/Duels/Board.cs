@@ -13,10 +13,18 @@ public class Board
         CardSlots = new UnitCard[rows, cols];
         Rows = rows;
         Cols = cols;
-        DuelEvents.Instance.OnPlaceCard += PlaceCard;
     }
 
-
+    public Board Clone() {
+        Board clone = new Board(Rows, Cols);
+        for(int i = 0; i < Rows; i++) {
+            for(int j = 0; j < Cols; j++) {
+                // guarenteed to be a UnitCard
+                clone.CardSlots[i, j] = (UnitCard) this.CardSlots[i, j].Clone();
+            }
+        }
+        return clone;
+    }
 
     public UnitCard GetCard(BoardCoords pos)
     {
@@ -40,20 +48,27 @@ public class Board
         CardSlots[pos.ToRowColV2().x, pos.ToRowColV2().y] = card;
     }
 
-    // for initial placement only
-    public void PlaceCard(UnitCard card, BoardCoords pos) 
-    {
-        if (IsOutOfBounds(pos)) return;
-        if (GetCard(pos) != null) return; //cannot place card at occupied tile
-        SetCard(card, pos);
-        card.pos = pos;
-        card.Place(pos);
-        return;
-    }
+    public void PlayCard(UnitCard card, BoardCoords pos, CharStatus status) {
+        if(IsOutOfBounds(pos)) {
+            Debug.LogWarning("Tried to play card at out of bounds position");
+            return;
+        }
+        if (GetCard(pos) != null) {
+            Debug.LogWarning("Cannot place card at occupied tile");
+            return;
+        }
+        if(status.Mana < card.ManaCost) {
+            Debug.LogWarning("Tried to play card without enough mana");
+            return;
+        }
 
-    public void PlaceCard(UnitCard card, BoardCoords pos, Team team) // ?
-    {
-        PlaceCard(card, pos);
+        card.Place(pos);
+        status.UseMana(card.ManaCost);
+        SetCard(card, pos);
+
+        foreach(Ability a in card.Abilities) {
+            if(a.Condition == ActivationCondition.OnPlay) a.Activate(this, card);
+        }
     }
 
     public void RemoveCard(BoardCoords pos)
@@ -67,21 +82,14 @@ public class Board
         // move card and update board and card data
         if (IsOutOfBounds(pos)) return;
         if (GetCard(pos) != null) return;
-        if (!keepOriginal) // mainly for swapping or cloning
-        {
-            SetCard(null, card.pos); 
-        }
+        SetCard(null, card.Pos);
         SetCard(card, pos);
-        card.pos = pos;
-        if (!bypass) // bypass = movement caused by external action, e.g. spell cards
-        {
-            card.CanMove = false;
-            foreach (Ability a in card.Abilities)
-            {
-                if (a.Condition == ActivationCondition.OnMove) a.Activate(this, card);
-            }
+        card.Pos = pos;
+        card.CanMove = false;
+        foreach(Ability a in card.Abilities) {
+            if(a.Condition == ActivationCondition.OnMove) a.Activate(this, card);
         }
-        card.CardInteractableRef.UpdateCardPos();
+        card.UnitCardInteractableRef.UpdateCardPos();
         
     }
 
@@ -91,7 +99,7 @@ public class Board
                 BoardCoords pos = new BoardCoords(i,j);
                 if (IsOccupied(pos)) {
                     UnitCard c = GetCard(pos);
-                    if(c.team == t) c.CanMove = true;
+                    if(c.CurrentTeam == t) c.CanMove = true;
                 }
             }
         }

@@ -4,28 +4,16 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-
-
-
-
-
 // Allows a card to be created from the menu when right clicking in the inspector
 [CreateAssetMenu(fileName = "New Spell Card", menuName = "Cards/SpellCard")]
 
-// Stores data on any given card in the game
+// Spells do not occupy a space on the board when played
 public class SpellCard : Card
 {
-    public bool enableLogging;
+    public override CardInteractable CardInteractableRef { get; }
 
-    // The name and stats of the card 
-    
-    public int Health;
-    public int ManaCost;
-
-
-    public override void Place(BoardCoords pos)
+    public override Card Clone()
     {
-        // CardInteractableRef.PlaceSpellCard(pos);
+        throw new System.NotImplementedException();
     }
-
 }

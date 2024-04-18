@@ -6,17 +6,17 @@ using Unity.Burst.Intrinsics;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class CharStatus //: MonoBehaviour
+public class CharStatus
 {
     public int Health { get; private set; }
     public int Mana { get; private set; }
-    public bool isAlive = true;
+    public bool IsAlive = true;
     [HideInInspector] public int MaxHealth;
     [HideInInspector] public int MaxMana;
     [HideInInspector] public int ManaCapacity;
-    public Team team;
+    public Team CharTeam;
     public Deck Deck;
-    public List<UnitCard> cards = new List<UnitCard>();
+    public List<Card> Cards = new List<Card>();
 
 
     //[SerializeField] 
@@ -34,18 +34,18 @@ public class CharStatus //: MonoBehaviour
 
         Mana = playerSettings.StartingMana;
         Health = playerSettings.StartingHealth;
-        isAlive = true;
+        IsAlive = true;
         MaxHealth = playerSettings.MaxHealth;
         MaxMana = playerSettings.MaxMana;
         ManaCapacity = 1; // double check
-        this.team = team;
+        this.CharTeam = team;
         if(team == Team.Player) {
             Deck = DuelManager.Instance.PlayerDeck;
         }
         else {
             Deck = DuelManager.Instance.EnemyDeck;
         }
-        cards = new List<UnitCard>();
+        Cards = new List<Card>();
     }
 
     public CharStatus() {
@@ -70,7 +70,7 @@ public class CharStatus //: MonoBehaviour
 
     public void Init(Team team)
     {
-        this.team = team;
+        this.CharTeam = team;
         if (team == Team.Player || duelSettings.SameSettingsForBothPlayers)
         {
             playerSettings = DuelManager.Instance.Settings.Player;
@@ -90,39 +90,39 @@ public class CharStatus //: MonoBehaviour
         CharStatus copy = new CharStatus();
         copy.Mana = this.Mana;
         copy.Health = this.Health;
-        copy.isAlive = this.isAlive;
+        copy.IsAlive = this.IsAlive;
         copy.MaxHealth = this.MaxHealth;
         copy.MaxMana = this.MaxMana;
         copy.ManaCapacity = this.ManaCapacity;
-        copy.team = this.team;
+        copy.CharTeam = this.CharTeam;
         copy.Deck = this.Deck.Clone();
-        copy.cards = new List<UnitCard>();
-        foreach(UnitCard c in this.cards) {
-            copy.cards.Add(c.Clone());
+        copy.Cards = new List<Card>();
+        foreach(Card c in this.Cards) {
+            copy.Cards.Add(c.Clone());
         }
         copy.playerSettings = this.playerSettings;
         copy.duelSettings = this.duelSettings;
         return copy;
     }
 
-    public void AddCard(UnitCard card, Team team)
+    public void AddCard(Card card, Team team)
     {
-        if (team == this.team) 
+        if (team == this.CharTeam) 
         { 
-            cards.Add(card);
-            card.team = team;
+            Cards.Add(card);
+            card.CurrentTeam = team;
         }
         
     }
 
-    public void RemoveFromHand(UnitCard card)
+    public void RemoveFromHand(Card card)
     {
-        if (!cards.Contains(card)) 
+        if (!Cards.Contains(card)) 
         {
             //Debug.Log($"Tried to remove {card.Name} but was not in hand");
             return;
         }
-        cards.Remove(card);
+        Cards.Remove(card);
     }
 
     public void DealDamage(int damage)
@@ -131,8 +131,8 @@ public class CharStatus //: MonoBehaviour
         if (Health <= 0)
         {
             Health = 0;
-            isAlive = false;
-            if (team == Team.Player)
+            IsAlive = false;
+            if (CharTeam == Team.Player)
             {
                 Debug.Log("Enemy Won!");
                 if (MenuScript.Instance != null)

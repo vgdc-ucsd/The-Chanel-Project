@@ -1,10 +1,14 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public abstract class Card: ScriptableObject
 {
-    [HideInInspector] public CardInteractable CardInteractableRef;
     public string Name;
-    // The image that is displayed on the card
+    public int ManaCost;
     public Texture2D Artwork;
-    public abstract void Place(BoardCoords pos);
+    
+    [HideInInspector] public Team CurrentTeam = Team.Neutral;
+    [HideInInspector] public abstract CardInteractable CardInteractableRef { get; }
+
+    public abstract Card Clone();
 }
