@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEditor.PlayerSettings;
 
 // The MonoBehavior counterpart for a Card, this is what the user actually interacts with
 public abstract class CardInteractable : MonoBehaviour,
@@ -18,15 +17,10 @@ public abstract class CardInteractable : MonoBehaviour,
 
     // fields set through inspector
     public GraphicRaycaster raycaster; 
-    public GameObject TemplateArrowPlayer;
-    public GameObject TemplateArrowEnemy;
 
     // Text fields on the card
     public TextMeshProUGUI CardName;
-    public TextMeshProUGUI CardHealth;
-    public TextMeshProUGUI CardAttack;
     public TextMeshProUGUI CardCost;
-    public TextMeshProUGUI DebugText;
 
     //Image object of the card
     [SerializeField] private Image image;
@@ -96,17 +90,6 @@ public abstract class CardInteractable : MonoBehaviour,
         else
         {
             image.color = defaultColor;
-        }
-    }
-
-    public void CheckProperInitialization() {
-        if(TemplateArrowPlayer == null) {
-            Debug.LogError("Could not create hand, TemplateCard is has no TemplateArrowPlayer");
-            return;
-        }
-        if(TemplateArrowEnemy == null) {
-            Debug.LogError("Could not create hand, TemplateCard is has no TemplateArrowEnemy");
-            return;
         }
     }
 }

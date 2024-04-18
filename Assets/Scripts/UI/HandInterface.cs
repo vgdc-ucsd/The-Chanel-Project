@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 public class HandInterface : MonoBehaviour
 {
     [HideInInspector] public List<CardInteractable> cardObjects = new List<CardInteractable>();
-    [HideInInspector] public Team myTeam;
+    public Team myTeam;
 
     // Determines how much the cards rotate in the player's hand
     private float maxRotationDegrees = 15;
@@ -48,23 +48,6 @@ public class HandInterface : MonoBehaviour
         //    }
         //}
     }
-
-    // Maps a Card to a CardInteractable
-    /* private void SetCard(Card c, CardInteractable ci) {
-        if(ci == null) {
-            Debug.Log("Could not set card, TemplateCard has no CardInteractable");
-            return;
-        }
-
-        ci.card = c;
-        ci.handInterface = this;
-        c.CardInteractableRef = ci;
-        ci.SetCardInfo();
-        if (myTeam == Team.Enemy && !(DuelManager.Instance.Settings.ShowEnemyHand || DuelManager.Instance.Settings.EnablePVPMode))
-        {
-            ci.ToggleVisibility(false);
-        }
-    } */
 
     // Displays cards neatly in the UI
     public void OrganizeCards() {

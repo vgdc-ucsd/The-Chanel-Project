@@ -2875,7 +2875,7 @@ GameObject:
   - component: {fileID: 1455160711}
   - component: {fileID: 1455160712}
   m_Layer: 0
-  m_Name: Player Status
+  m_Name: Player Status UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3634,7 +3634,7 @@ GameObject:
   - component: {fileID: 2060407185}
   - component: {fileID: 2060407186}
   m_Layer: 0
-  m_Name: Enemy Status
+  m_Name: Enemy Status UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

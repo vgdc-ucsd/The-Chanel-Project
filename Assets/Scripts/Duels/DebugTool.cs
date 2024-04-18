@@ -20,6 +20,5 @@ public class DebugTool : MonoBehaviour
             swapSpell.CastSpell(board.GetCard(0,0),board.GetCard(1,1));
             Debug.Log("Swapping");
         }
-        
     }
 }

@@ -31,11 +31,11 @@ public class Board
         if (IsOutOfBounds(pos)) return null;
         return CardSlots[pos.ToRowColV2().x,pos.ToRowColV2().y];
     }
-    public UnitCard GetCard(int x, int y)
+
+    public UnitCard GetCard(int x, int y) // Should only use BoardCoords
     {
         return GetCard(new BoardCoords(x,y));
     }
-
 
     public bool IsOccupied(BoardCoords pos)
     {
@@ -119,8 +119,7 @@ public class Board
 
         return tiles;
     }
-
-    
+ 
     public List<BoardCoords> GetEmptyAdjacentTiles(BoardCoords pos)
     {
         List<BoardCoords> tiles = GetAdjacentTiles(pos);

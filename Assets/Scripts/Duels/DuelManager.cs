@@ -12,30 +12,24 @@ public class DuelManager : MonoBehaviour
     // Singleton
     public static DuelManager Instance;
 
-    // Game Settings
+    // Set through inspector
     public DuelSettings Settings;
-
-    // The decks of cards used in the duel
     public Deck PlayerDeck;
     public Deck EnemyDeck;
-
-    public CharStatus PlayerStatus, EnemyStatus;
-
-    // Script for managing UI
     public UIManager UI;
+    public AnimationManager AM;
 
+    // Game Logic
+    public CharStatus PlayerStatus, EnemyStatus;
     public Board CurrentBoard;
-
-    // Script that handles logic for the duels
-    //public DuelController DC;
     public DuelInstance MainDuel;
     private MctsAI ai;
 
-    // Animation Manager
-    public AnimationManager AM;
-
     void Awake() {
-        if (Instance != null && Instance != this) Destroy(this);
+        if (Instance != null && Instance != this) {
+            Debug.LogWarning("Tried to create more than one instance of the DuelManager singleton");
+            Destroy(this);
+        }
         else Instance = this;
     }
 

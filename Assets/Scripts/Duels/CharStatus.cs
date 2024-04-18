@@ -8,18 +8,16 @@ using UnityEngine;
 
 public class CharStatus
 {
-    public int Health { get; private set; }
-    public int Mana { get; private set; }
+    public int Health;
+    public int Mana;
     public bool IsAlive = true;
-    [HideInInspector] public int MaxHealth;
-    [HideInInspector] public int MaxMana;
-    [HideInInspector] public int ManaCapacity;
+    public int MaxHealth;
+    public int MaxMana;
+    public int ManaCapacity;
     public Team CharTeam;
     public Deck Deck;
     public List<Card> Cards = new List<Card>();
 
-
-    //[SerializeField] 
     PlayerSettings playerSettings;
     DuelSettings duelSettings;
 
@@ -48,43 +46,7 @@ public class CharStatus
         Cards = new List<Card>();
     }
 
-    public CharStatus() {
-        
-    }
-
-    //private void Awake()
-    //{
-        //currently settings are set at duel manager, can change to set here if desired
-        /*
-        Health = settings.StartingHealth;
-        Mana = settings.StartingMana;
-        MaxHealth = settings.MaxHealth;
-        MaxMana = settings.MaxMana;
-        ManaRegen = settings.ManaRegen;
-        */
-    //    duelSettings = DuelManager.Instance.Settings;
-    //    DuelEvents.Instance.OnDrawCard += AddCard;
-    //    DuelEvents.Instance.OnRemoveFromHand += RemoveFromHand;
-    //    DuelEvents.Instance.OnAdvanceGameTurn += GiveMana;
-    //}
-
-    public void Init(Team team)
-    {
-        this.CharTeam = team;
-        if (team == Team.Player || duelSettings.SameSettingsForBothPlayers)
-        {
-            playerSettings = DuelManager.Instance.Settings.Player;
-        }
-        else
-        {
-            playerSettings = DuelManager.Instance.Settings.Enemy;
-        }
-        Health = playerSettings.StartingHealth;
-        Mana = playerSettings.StartingMana;
-        MaxHealth = playerSettings.MaxHealth;
-        MaxMana = playerSettings.MaxMana;
-        ManaCapacity = 1;
-    }
+    private CharStatus() {}
 
     public CharStatus Clone() {
         CharStatus copy = new CharStatus();
@@ -105,14 +67,9 @@ public class CharStatus
         return copy;
     }
 
-    public void AddCard(Card card, Team team)
-    {
-        if (team == this.CharTeam) 
-        { 
-            Cards.Add(card);
-            card.CurrentTeam = team;
-        }
-        
+    public void AddCard(Card c) {
+        c.CurrentTeam = CharTeam;
+        Cards.Add(c);
     }
 
     public void RemoveFromHand(Card card)
@@ -125,7 +82,7 @@ public class CharStatus
         Cards.Remove(card);
     }
 
-    public void DealDamage(int damage)
+    public void TakeDamage(int damage)
     {
         Health -= damage;
         if (Health <= 0)

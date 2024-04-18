@@ -2,12 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class UnitCardInteractable : CardInteractable,
     IEndDragHandler,
     IPointerDownHandler
 {
     public UnitCard card;
+
+    public GameObject TemplateArrowPlayer;
+    public GameObject TemplateArrowEnemy;
+
+    public TextMeshProUGUI CardHealth;
+    public TextMeshProUGUI CardAttack;
 
     public override void SetCardInfo() {
         if(card == null) {
@@ -111,6 +118,17 @@ public class UnitCardInteractable : CardInteractable,
         if (!inHand) 
         {
             PlayerInputController.Instance.InteractCard(card);
+        }
+    }
+
+    public void CheckProperInitialization() {
+        if(TemplateArrowPlayer == null) {
+            Debug.LogError("Could not create hand, TemplateCard is has no TemplateArrowPlayer");
+            return;
+        }
+        if(TemplateArrowEnemy == null) {
+            Debug.LogError("Could not create hand, TemplateCard is has no TemplateArrowEnemy");
+            return;
         }
     }
 }

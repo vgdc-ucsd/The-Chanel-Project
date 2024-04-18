@@ -34,8 +34,6 @@ public class DuelInstance
 
         if(mainDuel) {
             // initialize
-            PlayerStatus.Init(Team.Player);
-            EnemyStatus.Init(Team.Enemy);
             PlayerStatus.SetDeck(DuelManager.Instance.PlayerDeck);
             EnemyStatus.SetDeck(DuelManager.Instance.EnemyDeck);
 
@@ -111,13 +109,13 @@ public class DuelInstance
 
         // Attack targeting enemy
         if(board.BeyondEnemyEdge(atkDest) && card.CurrentTeam == Team.Player) {
-            EnemyStatus.DealDamage(atk.damage);
+            EnemyStatus.TakeDamage(atk.damage);
             return;
         }
 
         // Attack targeting player
         if(board.BeyondPlayerEdge(atkDest) && card.CurrentTeam == Team.Enemy) {
-            PlayerStatus.DealDamage(atk.damage);
+            PlayerStatus.TakeDamage(atk.damage);
             return;
         }
         
@@ -127,7 +125,7 @@ public class DuelInstance
         if(board.GetCard(atkDest) == null) return;
         
         // Deal damage
-        Card target = board.GetCard(atkDest);
+        UnitCard target = board.GetCard(atkDest);
         if(card.CurrentTeam != target.CurrentTeam) {
             // animation
             if(mainDuel) {
@@ -141,36 +139,48 @@ public class DuelInstance
                 DuelManager.Instance.AM.QueueAnimation(qa);
             }
 
-            DealDamage((UnitCard)target, atk.damage); // TODO
+            foreach(Ability a in card.Abilities) {
+                if(a.Condition == ActivationCondition.OnDealDamage) a.Activate(board, card);
+            }
+            DealDamage(target, atk.damage);
         }
     }
 
     private void DrawCards(Team team, int count) {
         Deck deck;
-        if(team == Team.Player) deck = PlayerStatus.Deck;
-        else deck = EnemyStatus.Deck;
+        CharStatus status;
+
+        if(team == Team.Player) {
+            deck = PlayerStatus.Deck;
+            status = PlayerStatus;
+        }
+        else {
+            deck = EnemyStatus.Deck;
+            status = EnemyStatus;
+        }
 
         for(int i = 0; i < count; i++) {
+            // pick a random card, TODO keep track of how many cards are left in deck
             int index = Random.Range(0, deck.CardList.Count);
             Card c = ScriptableObject.Instantiate(deck.CardList[index]);
-            c.CurrentTeam = team;
+
+            status.AddCard(c);
+
             if(mainDuel) {
                 DuelEvents.Instance.DrawCard(c, team); // TODO double check
             }
         }
     }
 
-    public void DealDamage(UnitCard card, int damage)
+    public void DealDamage(UnitCard target, int damage)
     {
-        // TODO activate on hit abilites
-
-        card.Health -= damage;
-        if (card.Health <= 0)
+        target.TakeDamage(board, damage);
+        if (target.Health <= 0)
         {
-            board.RemoveCard(card.Pos);
+            board.RemoveCard(target.Pos);
 
             if(mainDuel) {
-                IEnumerator ie = DuelManager.Instance.AM.CardDeath(card.CardInteractableRef);
+                IEnumerator ie = DuelManager.Instance.AM.CardDeath(target.CardInteractableRef);
                 QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
                 DuelManager.Instance.AM.QueueAnimation(qa);
             }

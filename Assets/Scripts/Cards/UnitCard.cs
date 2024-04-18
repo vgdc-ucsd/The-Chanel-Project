@@ -64,6 +64,23 @@ public class UnitCard : Card
         return null;
     }
 
+    public void TakeDamage(Board board, int damage) {
+        Health -= damage;
+
+        // On receive damage but still alive
+        if (Health > 0) {
+            foreach (Ability a in Abilities) {
+                if(a.Condition == ActivationCondition.OnReceiveDamage) a.Activate(board, this);
+            }
+        }
+        // On death
+        else {
+            foreach(Ability a in Abilities) {
+                if (a.Condition == ActivationCondition.OnDeath) a.Activate(board, this);
+            }
+        }
+    }
+
     public void Place(BoardCoords pos)
     {
         this.Pos = pos;
