@@ -69,6 +69,14 @@ public class CharStatus
 
     public void AddCard(Card c) {
         c.CurrentTeam = CharTeam;
+        if(c.CurrentTeam == Team.Enemy) {
+            if(c.GetType() == typeof(UnitCard)) {
+                UnitCard unitCard = (UnitCard) c;
+                foreach(Attack atk in unitCard.Attacks) {
+                    atk.direction.y *= -1;
+                }
+            }
+        }
         Cards.Add(c);
     }
 

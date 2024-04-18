@@ -117,7 +117,7 @@ public class DuelManager : MonoBehaviour
         }
         //if(card.team == Team.Enemy) MirrorAttacks(card); // this should only be called once per enemy card
 
-        CurrentBoard.PlayCard(card, pos, charStatus);
+        CurrentBoard.PlayCard(card, pos, charStatus, true);
         DuelEvents.Instance.UpdateUI();
     }
 }

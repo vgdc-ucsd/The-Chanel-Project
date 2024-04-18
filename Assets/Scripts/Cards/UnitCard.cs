@@ -64,19 +64,19 @@ public class UnitCard : Card
         return null;
     }
 
-    public void TakeDamage(Board board, int damage) {
+    public void TakeDamage(Board board, int damage, bool mainDuel) {
         Health -= damage;
 
         // On receive damage but still alive
         if (Health > 0) {
             foreach (Ability a in Abilities) {
-                if(a.Condition == ActivationCondition.OnReceiveDamage) a.Activate(board, this);
+                if(a.Condition == ActivationCondition.OnReceiveDamage) a.Activate(board, this, mainDuel);
             }
         }
         // On death
         else {
             foreach(Ability a in Abilities) {
-                if (a.Condition == ActivationCondition.OnDeath) a.Activate(board, this);
+                if (a.Condition == ActivationCondition.OnDeath) a.Activate(board, this, mainDuel);
             }
         }
     }

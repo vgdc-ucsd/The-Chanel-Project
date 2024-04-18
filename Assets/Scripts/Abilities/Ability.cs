@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum ActivationCondition {
@@ -16,6 +14,6 @@ public enum ActivationCondition {
 [Serializable]
 public abstract class Ability : ScriptableObject
 {
-    public abstract void Activate(Board b, UnitCard c);
+    public abstract void Activate(Board b, UnitCard c, bool mainDuel);
     public abstract ActivationCondition Condition{ get; }
 }

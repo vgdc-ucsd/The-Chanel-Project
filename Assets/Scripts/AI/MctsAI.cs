@@ -46,7 +46,7 @@ public class MctsAI
         Board board = DuelManager.Instance.CurrentBoard;
         //MCTS(board); coroutine
         //testCloneSpeed(DuelManager.Instance.MainDuel);
-        //testMove(board);
+        testMove(board);
         DuelManager.Instance.MainDuel.ProcessBoard(board, Team.Enemy);
     }
 
@@ -106,13 +106,13 @@ public class MctsAI
         
         // pick random card
         int index = Random.Range(0, enemyStatus.Cards.Count);
-        //UnitCard cardToPlay = enemyStatus.Cards[index];
-        UnitCard cardToPlay = null;
+        UnitCard cardToPlay = (UnitCard)enemyStatus.Cards[index]; // TODO
+        //UnitCard cardToPlay = null;
         // TODO
 
         // play card if enough mana
         if(enemyStatus.Mana >= cardToPlay.ManaCost) { // temp (doesnt deduct mana)
-            board.PlayCard(cardToPlay, randomTile, enemyStatus);
+            board.PlayCard(cardToPlay, randomTile, enemyStatus, true);
         }
     }
 

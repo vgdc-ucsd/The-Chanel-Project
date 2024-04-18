@@ -88,7 +88,7 @@ public class DuelInstance
             foreach(Ability a in card.Abilities) {
                 // Only activate if the activation condition is OnProcess
                 if(a != null && a.Condition == ActivationCondition.OnProcess) {
-                    a.Activate(board, card);
+                    a.Activate(board, card, mainDuel);
                 }
             }
 
@@ -140,7 +140,7 @@ public class DuelInstance
             }
 
             foreach(Ability a in card.Abilities) {
-                if(a.Condition == ActivationCondition.OnDealDamage) a.Activate(board, card);
+                if(a.Condition == ActivationCondition.OnDealDamage) a.Activate(board, card, mainDuel);
             }
             DealDamage(target, atk.damage);
         }
@@ -174,7 +174,7 @@ public class DuelInstance
 
     public void DealDamage(UnitCard target, int damage)
     {
-        target.TakeDamage(board, damage);
+        target.TakeDamage(board, damage, mainDuel);
         if (target.Health <= 0)
         {
             board.RemoveCard(target.Pos);

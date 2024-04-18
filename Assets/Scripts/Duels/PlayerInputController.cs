@@ -104,7 +104,7 @@ public class PlayerInputController: MonoBehaviour
             if (!DuelManager.Instance.CurrentBoard.GetEmptyAdjacentTiles(selectedCard.Pos).Contains(pos)) return;
             TileInteractable tile = BoardInterface.Instance.GetTile(pos);
 
-            DuelManager.Instance.CurrentBoard.MoveCard(selectedCard, pos);
+            DuelManager.Instance.CurrentBoard.MoveCard(selectedCard, pos, true);
             SelectCard(selectedCard, false);
             selectedCard = null;
             SetAction(ControlAction.None);
