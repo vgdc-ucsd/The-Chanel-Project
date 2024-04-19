@@ -123,22 +123,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: IMG_0074 1_0
+      name: IMG_0074 1_1
       rect:
         serializedVersion: 2
-        x: 1449
-        y: 1606
-        width: 558
-        height: 959
+        x: 0
+        y: 2568
+        width: 3604
+        height: 501
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: de6940ec513d3174a9a7894032b1fbb6
-      internalID: -1535834915
+      spriteID: 06b0a564915826f4bbb93d11078ff572
+      internalID: 1671470198
       vertices: []
       indices: 
       edges: []
@@ -158,7 +158,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      IMG_0074 1_0: -1535834915
+      IMG_0074 1_1: 1671470198
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

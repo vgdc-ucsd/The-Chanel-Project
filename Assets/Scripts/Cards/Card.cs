@@ -27,7 +27,8 @@ public class Card : ScriptableObject
     [HideInInspector] public bool isActive = false;
 
     // The image that is displayed on the card
-    public Texture2D Artwork;
+    // Andrew K changed it to Sprite instead of Texture2D
+    public Sprite Artwork;
 
     public Team team = Team.Neutral;
 

@@ -44,6 +44,7 @@ public class ShopManager : MonoBehaviour
     // Randomly Generates a Card Index from Player's Card Collection
     public int generateNum(int collectionSize)
     {
+        Debug.Log("CollectionSize: " + collectionSize);
         int num = Random.Range(0, collectionSize);
         while (shopCards.Contains(num))
         {
@@ -59,7 +60,7 @@ public class ShopManager : MonoBehaviour
     {
         if(card.ShopCost <= playerGold)
         {
-            //FIX: when changing playerDeck, it permanently affects the ScriptableObject
+            //TODO FIX: when changing playerDeck, it permanently affects the ScriptableObject
             playerDeck.addCard(card);
             playerGold -= card.ShopCost;
             goldText.text = "Gold: " + playerGold.ToString();
@@ -75,7 +76,9 @@ public class ShopManager : MonoBehaviour
     public void inspect(Card card)
     {
         inspectScreen.SetActive(true);
+        // Gets GameObject Reference of Card
         GameObject inspectCard = inspectScreen.transform.GetChild(0).gameObject;
+
         CardDisplay display = inspectCard.GetComponent<CardDisplay>();
         display.setDisplay(card);
     }

@@ -22,7 +22,7 @@ public class CardDisplay : MonoBehaviour
     public TextMeshProUGUI CardMana;
     public TextMeshProUGUI CardCost;
 
-    public Texture2D CardArt;
+    public Image CardArt;
 
     public void setDisplay(Card card)
     {
@@ -34,6 +34,6 @@ public class CardDisplay : MonoBehaviour
         CardMana.text = card.ManaCost.ToString();
         CardCost.text = card.ShopCost.ToString();
 
-        CardArt = card.Artwork;
+        CardArt.sprite = card.Artwork;
     }
 }

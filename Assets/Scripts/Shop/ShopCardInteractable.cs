@@ -26,6 +26,9 @@ public class ShopCardInteractable : MonoBehaviour,
     // Display Card Info
     private CardDisplay display;
 
+    // Cost Child Object
+    public Transform costObject;
+
     // How much the card scales on hover
     private float scaleFactor = 1.1f;
 
@@ -42,7 +45,7 @@ public class ShopCardInteractable : MonoBehaviour,
         }
 
         // Generates Unique Random Card from Card Collection
-        int collectionSize = cardCollection.CardList.Count - 1;
+        int collectionSize = cardCollection.CardList.Count;
         int randomIndex = shopManager.generateNum(collectionSize);
         Card randomCard = cardCollection.CardList[randomIndex];
 
@@ -64,13 +67,19 @@ public class ShopCardInteractable : MonoBehaviour,
         }
     }
 
+    // Hover Effect on Card 
     public void OnPointerEnter(PointerEventData eventData)
     {
         transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+        // Lets Cost Object stay static
+        costObject.localPosition /= scaleFactor;
+        costObject.localScale /= scaleFactor;
     }
-
     public void OnPointerExit(PointerEventData eventData)
     {
         transform.localScale = Vector3.one;
+        // Lets Cost Object stay static
+        costObject.localPosition *= scaleFactor;
+        costObject.localScale *= scaleFactor;
     }
 }
