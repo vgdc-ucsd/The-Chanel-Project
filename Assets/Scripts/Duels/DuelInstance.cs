@@ -85,10 +85,11 @@ public class DuelInstance
         // Cards only take actions on their turn
         if (card.CurrentTeam == team) {
             // Activate abilities        
+            ActivationInfo info = new ActivationInfo(mainDuel);
             foreach(Ability a in card.Abilities) {
                 // Only activate if the activation condition is OnProcess
                 if(a != null && a.Condition == ActivationCondition.OnProcess) {
-                    a.Activate(board, card, mainDuel);
+                    a.Activate(board, card, info);
                 }
             }
 
@@ -139,10 +140,12 @@ public class DuelInstance
                 DuelManager.Instance.AM.QueueAnimation(qa);
             }
 
+            ActivationInfo info = new ActivationInfo(mainDuel);
+            info.TotalDamage = atk.damage;
+            info.OverkillDamage = DealDamage(target, atk.damage);
             foreach(Ability a in card.Abilities) {
-                if(a.Condition == ActivationCondition.OnDealDamage) a.Activate(board, card, mainDuel);
+                if(a.Condition == ActivationCondition.OnDealDamage) a.Activate(board, card, info);
             }
-            DealDamage(target, atk.damage);
         }
     }
 
@@ -172,11 +175,13 @@ public class DuelInstance
         }
     }
 
-    public void DealDamage(UnitCard target, int damage)
+    public int DealDamage(UnitCard target, int damage)
     {
+        int overkillDamage = 0;
         target.TakeDamage(board, damage, mainDuel);
         if (target.Health <= 0)
         {
+            overkillDamage = -1*target.Health;
             board.RemoveCard(target.Pos);
 
             if(mainDuel) {
@@ -185,6 +190,8 @@ public class DuelInstance
                 DuelManager.Instance.AM.QueueAnimation(qa);
             }
         }
+
+        return overkillDamage;
     }
 
     private void EndTurn(Team team) {

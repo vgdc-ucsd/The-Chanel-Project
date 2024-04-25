@@ -66,17 +66,20 @@ public class UnitCard : Card
 
     public void TakeDamage(Board board, int damage, bool mainDuel) {
         Health -= damage;
+        ActivationInfo info = new ActivationInfo(mainDuel);
+        info.TotalDamage = damage;
+        if(Health < 0) info.OverkillDamage = Health*-1;
 
         // On receive damage but still alive
         if (Health > 0) {
-            foreach (Ability a in Abilities) {
-                if(a.Condition == ActivationCondition.OnReceiveDamage) a.Activate(board, this, mainDuel);
+            foreach (Ability a in Abilities) {      
+                if(a.Condition == ActivationCondition.OnReceiveDamage) a.Activate(board, this, info);
             }
         }
         // On death
         else {
             foreach(Ability a in Abilities) {
-                if (a.Condition == ActivationCondition.OnDeath) a.Activate(board, this, mainDuel);
+                if (a.Condition == ActivationCondition.OnDeath) a.Activate(board, this, info);
             }
         }
     }

@@ -67,8 +67,9 @@ public class Board
         status.UseMana(card.ManaCost);
         SetCard(card, pos);
 
+        ActivationInfo info = new ActivationInfo(mainDuel);
         foreach(Ability a in card.Abilities) {
-            if(a.Condition == ActivationCondition.OnPlay) a.Activate(this, card, mainDuel);
+            if(a.Condition == ActivationCondition.OnPlay) a.Activate(this, card, info);
         }
     }
 
@@ -87,8 +88,9 @@ public class Board
         SetCard(card, pos);
         card.Pos = pos;
         card.CanMove = false;
+        ActivationInfo info = new ActivationInfo(mainDuel);
         foreach(Ability a in card.Abilities) {
-            if(a.Condition == ActivationCondition.OnMove) a.Activate(this, card, mainDuel);
+            if(a.Condition == ActivationCondition.OnMove) a.Activate(this, card, info);
         }
         card.UnitCardInteractableRef.UpdateCardPos();
         
