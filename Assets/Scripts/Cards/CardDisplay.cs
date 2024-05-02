@@ -29,10 +29,10 @@ public class CardDisplay : MonoBehaviour
         this.card = card;
 
         CardName.text = card.Name;
-        CardHealth.text = "Health: " + card.Health;
-        CardAttack.text = "Attack: " + card.AttackDamage;
+        CardHealth.text = card.Health.ToString();
+        CardAttack.text = card.AttackDamage.ToString();
         CardMana.text = card.ManaCost.ToString();
-        CardCost.text = card.ShopCost.ToString();
+        CardCost.text = card.ShopCost.ToString() + "g";
 
         CardArt.sprite = card.Artwork;
     }
