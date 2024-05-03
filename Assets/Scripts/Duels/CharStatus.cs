@@ -21,7 +21,7 @@ public class CharStatus
     PlayerSettings playerSettings;
     DuelSettings duelSettings;
 
-    public CharStatus(Team team) {
+    public CharStatus(Team team, Deck deck) {
         duelSettings = DuelManager.Instance.Settings;
         if(team == Team.Player || duelSettings.SameSettingsForBothPlayers) {
             playerSettings = duelSettings.Player;
@@ -37,12 +37,7 @@ public class CharStatus
         MaxMana = playerSettings.MaxMana;
         ManaCapacity = 1; // double check
         this.CharTeam = team;
-        if(team == Team.Player) {
-            Deck = DuelManager.Instance.PlayerDeck;
-        }
-        else {
-            Deck = DuelManager.Instance.EnemyDeck;
-        }
+        Deck = deck;
         Cards = new List<Card>();
     }
 

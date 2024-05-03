@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AnimationManager : MonoBehaviour
@@ -21,8 +22,11 @@ public class AnimationManager : MonoBehaviour
     }
 
     // Plays the animation when the delay from the previous animation has finished
-    public void QueueAnimation(QueueableAnimation qa) {
+    public void Enqueue(QueueableAnimation qa) {
         animations.Enqueue(qa);
+    }
+    public void Enqueue(Queue<QueueableAnimation> qa) {
+        while(qa.Count > 0) animations.Enqueue(qa.Dequeue());
     }
 
     private IEnumerator PlayAnimations() {

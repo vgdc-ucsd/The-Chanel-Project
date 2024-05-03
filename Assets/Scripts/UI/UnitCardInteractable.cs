@@ -97,10 +97,10 @@ public class UnitCardInteractable : CardInteractable,
 
             if (tile != null)
             {
-                if (!DuelManager.Instance.Settings.RestrictPlacement) DuelManager.Instance.TryPlaceCard(card, tile.location);
+                if (!DuelManager.Instance.Settings.RestrictPlacement) PlayerInputController.Instance.TryPlaceCard(card, tile.location);
                 else if (tile.location.y <= 1)
                 { // can't place in the row closest to enemy
-                    DuelManager.Instance.TryPlaceCard(card, tile.location);
+                    PlayerInputController.Instance.TryPlaceCard(card, tile.location);
                 }
             }
             // Reorganize the player's hand

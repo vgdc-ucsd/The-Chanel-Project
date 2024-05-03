@@ -48,7 +48,7 @@ public class Board
         CardSlots[pos.ToRowColV2().x, pos.ToRowColV2().y] = card;
     }
 
-    public void PlayCard(UnitCard card, BoardCoords pos, CharStatus status, bool mainDuel) {
+    public void PlayCard(UnitCard card, BoardCoords pos, CharStatus status, DuelInstance duel) {
         if(IsOutOfBounds(pos)) {
             Debug.LogWarning("Tried to play card at out of bounds position");
             return;
@@ -67,9 +67,9 @@ public class Board
         status.UseMana(card.ManaCost);
         SetCard(card, pos);
 
-        ActivationInfo info = new ActivationInfo(mainDuel);
+        ActivationInfo info = new ActivationInfo(duel);
         foreach(Ability a in card.Abilities) {
-            if(a.Condition == ActivationCondition.OnPlay) a.Activate(this, card, info);
+            if(a.Condition == ActivationCondition.OnPlay) a.Activate(card, info);
         }
     }
 
@@ -79,7 +79,7 @@ public class Board
         SetCard(null, pos);
     }
 
-    public void MoveCard(UnitCard card, BoardCoords pos, bool mainDuel)
+    public void MoveCard(UnitCard card, BoardCoords pos, DuelInstance duel)
     {
         // move card and update board and card data
         if (IsOutOfBounds(pos)) return;
@@ -88,9 +88,9 @@ public class Board
         SetCard(card, pos);
         card.Pos = pos;
         card.CanMove = false;
-        ActivationInfo info = new ActivationInfo(mainDuel);
+        ActivationInfo info = new ActivationInfo(duel);
         foreach(Ability a in card.Abilities) {
-            if(a.Condition == ActivationCondition.OnMove) a.Activate(this, card, info);
+            if(a.Condition == ActivationCondition.OnMove) a.Activate(card, info);
         }
         card.UnitCardInteractableRef.UpdateCardPos();
         

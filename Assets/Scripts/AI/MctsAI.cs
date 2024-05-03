@@ -156,7 +156,7 @@ public class MctsAI
 
         // play card if enough mana
         if(enemyStatus.Mana >= cardToPlay.ManaCost) { // temp (doesnt deduct mana)
-            board.PlayCard(cardToPlay, randomTile, enemyStatus, true);
+            //board.PlayCard(cardToPlay, randomTile, enemyStatus);
         }
     }
 

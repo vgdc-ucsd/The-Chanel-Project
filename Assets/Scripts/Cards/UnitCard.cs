@@ -64,22 +64,22 @@ public class UnitCard : Card
         return null;
     }
 
-    public void TakeDamage(Board board, int damage, bool mainDuel) {
+    public void TakeDamage(DuelInstance duel, int damage) {
         Health -= damage;
-        ActivationInfo info = new ActivationInfo(mainDuel);
+        ActivationInfo info = new ActivationInfo(duel);
         info.TotalDamage = damage;
         if(Health < 0) info.OverkillDamage = Health*-1;
 
         // On receive damage but still alive
         if (Health > 0) {
             foreach (Ability a in Abilities) {      
-                if(a.Condition == ActivationCondition.OnReceiveDamage) a.Activate(board, this, info);
+                if(a.Condition == ActivationCondition.OnReceiveDamage) a.Activate(this, info);
             }
         }
         // On death
         else {
             foreach(Ability a in Abilities) {
-                if (a.Condition == ActivationCondition.OnDeath) a.Activate(board, this, info);
+                if (a.Condition == ActivationCondition.OnDeath) a.Activate(this, info);
             }
         }
     }

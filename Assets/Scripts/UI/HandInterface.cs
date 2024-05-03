@@ -89,7 +89,7 @@ public class HandInterface : MonoBehaviour
                     );
                     QueueableAnimation qa = new QueueableAnimation(animation, 0.1f);
                     cardAnimations.Add(qa);
-                    DuelManager.Instance.AM.QueueAnimation(qa);
+                    DuelManager.Instance.AM.Enqueue(qa);
                 }
                 // old cards
                 else {

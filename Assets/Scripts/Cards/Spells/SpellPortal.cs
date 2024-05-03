@@ -5,7 +5,7 @@ public class SpellPortal : Spell, ISpellTypeTwoUnits
 {
     public void CastSpell(UnitCard unit1, UnitCard unit2)
     {
-        Board board = DuelManager.Instance.CurrentBoard;
+        Board board = DuelManager.Instance.MainDuel.DuelBoard;
         board.RemoveCard(unit1.Pos);
         board.RemoveCard(unit2.Pos);
         BoardCoords oldPos = unit2.Pos;

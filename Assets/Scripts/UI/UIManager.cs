@@ -27,8 +27,8 @@ public class UIManager : MonoBehaviour
     }
 
     public void SetupStatus() {
-        Player.Status = DuelManager.Instance.PlayerStatus;
-        Enemy.Status = DuelManager.Instance.EnemyStatus;
+        Player.Status = DuelManager.Instance.MainDuel.PlayerStatus;
+        Enemy.Status = DuelManager.Instance.MainDuel.EnemyStatus;
     }
 
     public CardInteractable GenerateCardInteractable(Card c) {
