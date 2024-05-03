@@ -42,23 +42,63 @@ public class MctsAI
         enemyStatus = enemy;
     }
 
-    public void MakeMove() {
+/*     public IEnumerator MakeMove() {
         Board board = DuelManager.Instance.CurrentBoard;
         //MCTS(board); coroutine
         //testCloneSpeed(DuelManager.Instance.MainDuel);
-        testMove(board);
+
+        StartCoroutine(MCTS());
+
+        //testMove(board);
         DuelManager.Instance.MainDuel.ProcessBoard(board, Team.Enemy);
+    } */
+
+    public IEnumerator MCTS(DuelInstance state) {
+        float maxTime = 0.008f; // <= 120 fps
+        float maxIterations = 100;
+        float iterations = 0;
+
+        Node root = new Node(state, null); // no parent since this is the root node
+        float startTime = Time.time;
+
+        while(iterations < maxIterations) {
+            // Advance to next frame if taking too long
+            while(Time.time - startTime < maxTime) {
+                // Selection
+                Node selection = GreedySelection(root);
+
+                // Expansion
+                List<Node> children = RandomExpand(selection);
+
+                // Simulation
+                foreach(Node child in children) {
+                    int result = RandomRollout(child);
+                    
+                    // Backpropagation
+                    child.BackProp(result);
+                }
+
+                iterations++;
+            }
+
+            startTime = Time.time;
+            yield return null;
+        }
+
+        DuelInstance move = FindBestMove(root).State;
+        DuelManager.Instance.EnemyMove(move);
     }
 
-    private IEnumerable MCTS(Board board) {
-        // Selection
+    private Node GreedySelection(Node root) {
+        return null;
+    }
 
-        // Expansion
+    private List<Node> RandomExpand(Node parent) {
+        return null;
+    }
 
-        // Simulation
-
-        // Backpropagation
-        yield return null;
+    private int RandomRollout(Node n) {
+        return 0;
     }
 
     private void Simulate(DuelInstance duel, Board board) {
@@ -67,6 +107,10 @@ public class MctsAI
             //duel.ProcessBoard(duel.Team.Player)
 
         }
+    }
+
+    private Node FindBestMove(Node root) {
+        return null;
     }
 
     private void PickRandomMove(DuelInstance duel, Board board, Team team) {

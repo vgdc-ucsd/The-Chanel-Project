@@ -24,6 +24,7 @@ public class DuelManager : MonoBehaviour
     public Board CurrentBoard;
     public DuelInstance MainDuel;
     private MctsAI ai;
+    private bool awaitingAI;
 
     void Awake() {
         if (Instance != null && Instance != this) {
@@ -51,6 +52,7 @@ public class DuelManager : MonoBehaviour
 
         CurrentBoard = new Board(Settings.BoardRows, Settings.BoardCols);
         ai = new MctsAI(PlayerStatus, EnemyStatus);
+        awaitingAI = false;
         MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, true);
         MainDuel.InitBoard(CurrentBoard);
 
@@ -85,15 +87,25 @@ public class DuelManager : MonoBehaviour
         }
         else {
             // TODO await events to be finished (no spamming end turn)
-            MainDuel.ProcessBoard(CurrentBoard, Team.Player);
+           // MainDuel.ProcessBoard(CurrentBoard, Team.Player);
             // TODO begin MCTS
             // TODO await animations
             // TODO await MCTS
-            ai.MakeMove();
+            //ai.MakeMove();
+            //List<QueueableAnimation>
+
+            StartCoroutine(ai.MCTS(state));
+            awaitingAI = true;
         }
 
-        DuelEvents.Instance.UpdateUI();
-        DuelEvents.Instance.UpdateHand();
+        //DuelEvents.Instance.UpdateUI();
+        //DuelEvents.Instance.UpdateHand();
+    }
+
+    public void EnemyMove(DuelInstance state) {
+        // process board
+        // queue animations
+        awaitingAI = false;
     }
 
     public void TryPlaceCard(UnitCard card, BoardCoords pos) {
