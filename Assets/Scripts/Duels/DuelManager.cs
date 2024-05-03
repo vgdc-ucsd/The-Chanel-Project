@@ -42,7 +42,7 @@ public class DuelManager : MonoBehaviour
         CharStatus PlayerStatus = new CharStatus(Team.Player, PlayerDeck);
         CharStatus EnemyStatus = new CharStatus(Team.Enemy, EnemyDeck);
         Board board = new Board(Settings.BoardRows, Settings.BoardCols);
-        DuelInstance MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, board);
+        MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, board);
 
         // Draw staring cards
         AM.Enqueue(MainDuel.DrawStartingCards());
@@ -52,8 +52,7 @@ public class DuelManager : MonoBehaviour
         awaitingAI = false;
 
         // UI Setup
-        UI.SetupStatus();
-        UI.SetupBoard();
+        UI.Initialize(PlayerStatus, EnemyStatus);
         if (Settings.EnablePVPMode || Settings.ShowEnemyHand) {
             UI.EnemyHand.gameObject.SetActive(true);
         }
@@ -89,14 +88,14 @@ public class DuelManager : MonoBehaviour
             // TODO
         }
         else {
+            AM.Enqueue(MainDuel.ProcessBoard(Team.Player));
             StartCoroutine(ai.MCTS(MainDuel));
             awaitingAI = true;
         }
     }
 
     public void EnemyMove(DuelInstance state) {
-        // process board
-        // queue animations
+        MainDuel = state;
         AM.Enqueue(state.ProcessBoard(Team.Enemy));
         awaitingAI = false;
         //DuelEvents.Instance.UpdateUI();

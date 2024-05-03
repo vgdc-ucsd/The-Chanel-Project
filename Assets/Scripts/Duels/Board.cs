@@ -20,7 +20,9 @@ public class Board
         for(int i = 0; i < Rows; i++) {
             for(int j = 0; j < Cols; j++) {
                 // guarenteed to be a UnitCard
-                clone.CardSlots[i, j] = (UnitCard) this.CardSlots[i, j].Clone();
+                if(this.CardSlots[i, j] != null) {
+                    clone.CardSlots[i, j] = (UnitCard) this.CardSlots[i, j].Clone();
+                }
             }
         }
         return clone;

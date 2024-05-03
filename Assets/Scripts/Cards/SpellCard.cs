@@ -10,7 +10,7 @@ using UnityEngine;
 // Spells do not occupy a space on the board when played
 public class SpellCard : Card
 {
-    public override CardInteractable CardInteractableRef { get; }
+    public override CardInteractable CardInteractableRef { get; set; }
 
     public override Card Clone()
     {

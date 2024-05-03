@@ -102,4 +102,14 @@ public class AnimationManager : MonoBehaviour
         yield return null;
         Destroy(ci.gameObject);
     }
+
+    public IEnumerator OrganizeCardsAnimation(List<Card> cards) {
+        foreach(Card c in cards) {
+            if(c.CardInteractableRef == null) {
+                c.CardInteractableRef = DuelManager.Instance.UI.GenerateCardInteractable(c);
+            }
+        }
+        DuelManager.Instance.UI.Hand.OrganizeCards();
+        yield return null;
+    }
 }

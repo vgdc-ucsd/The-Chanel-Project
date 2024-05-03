@@ -59,10 +59,11 @@ public class MctsAI
         float iterations = 0;
 
         Node root = new Node(state, null); // no parent since this is the root node
-        float startTime = Time.time;
+        float startTime;
 
         while(iterations < maxIterations) {
             // Advance to next frame if taking too long
+            startTime = Time.time;
             while(Time.time - startTime < maxTime) {
                 // Selection
                 Node selection = GreedySelection(root);
@@ -71,17 +72,16 @@ public class MctsAI
                 List<Node> children = RandomExpand(selection);
 
                 // Simulation
-                foreach(Node child in children) {
+                /* foreach(Node child in children) {
                     int result = RandomRollout(child);
                     
                     // Backpropagation
                     child.BackProp(result);
-                }
+                } */
 
                 iterations++;
+                if(iterations > maxIterations) break;
             }
-
-            startTime = Time.time;
             yield return null;
         }
 
@@ -105,12 +105,11 @@ public class MctsAI
         for(int i = 0; i < MAX_GAMES; i++) {
             PickRandomMove(duel, board, Team.Player);
             //duel.ProcessBoard(duel.Team.Player)
-
         }
     }
 
     private Node FindBestMove(Node root) {
-        return null;
+        return root;
     }
 
     private void PickRandomMove(DuelInstance duel, Board board, Team team) {

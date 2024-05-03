@@ -131,12 +131,17 @@ public class DuelInstance
             status = EnemyStatus;
         }
 
+        List<Card> drawnCards = new List<Card>();
         for(int i = 0; i < count; i++) {
             // pick a random card, TODO keep track of how many cards are left in deck
             int index = Random.Range(0, deck.CardList.Count);
             Card c = ScriptableObject.Instantiate(deck.CardList[index]);
+            c.CurrentTeam = team;
             status.AddCard(c);
+            drawnCards.Add(c);
         }
+
+        animations.Enqueue(OrganizeCardsAnimation(drawnCards));
     }
 
     public int DealDamage(UnitCard target, int damage)
@@ -187,6 +192,12 @@ public class DuelInstance
 
     private QueueableAnimation DeathAnimation(UnitCard card) {
         IEnumerator ie = DuelManager.Instance.AM.CardDeath(card.CardInteractableRef);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+        return qa;
+    }
+
+    private QueueableAnimation OrganizeCardsAnimation(List<Card> cards) {
+        IEnumerator ie = DuelManager.Instance.AM.OrganizeCardsAnimation(cards);
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
         return qa;
     }

@@ -18,7 +18,7 @@ public class UnitCard : Card
     [HideInInspector] public BoardCoords Pos;
     [HideInInspector] public bool isSelected = false;
     [HideInInspector] public int BaseDamage = 1; // set in the custom card editor
-    [HideInInspector] public override CardInteractable CardInteractableRef { get {return UnitCardInteractableRef;} }
+    [HideInInspector] public override CardInteractable CardInteractableRef { get {return UnitCardInteractableRef;} set{UnitCardInteractableRef = (UnitCardInteractable)value;} }
     public UnitCardInteractable UnitCardInteractableRef;
 
     public List<Attack> Attacks = new List<Attack>();

@@ -22,23 +22,25 @@ public class UIManager : MonoBehaviour
     public PlayerUI Player;
     public PlayerUI Enemy;
 
-    public void SetupBoard() {
+    public void Initialize(CharStatus player, CharStatus enemy) {
         BoardContainer.CreateBoard();
-    }
-
-    public void SetupStatus() {
-        Player.Status = DuelManager.Instance.MainDuel.PlayerStatus;
-        Enemy.Status = DuelManager.Instance.MainDuel.EnemyStatus;
+        Player.Status = player;
+        Enemy.Status = enemy;
     }
 
     public CardInteractable GenerateCardInteractable(Card c) {
-        if(c.GetType() == typeof(UnitCard)) {
+        if(c is UnitCard) {
             UnitCardInteractable ci = Instantiate(TemplateUnitCard);
             ci.card = (UnitCard) c;
             ci.SetCardInfo();
+
+            if(c.CurrentTeam == Team.Player) ci.handInterface = Hand;
+            else ci.handInterface = EnemyHand;
+
+            ci.handInterface.cardObjects.Add(ci);
             return ci;
         }
-        if(c.GetType() == typeof(SpellCard)) {
+        else if(c is SpellCard) {
             throw new NotImplementedException();
         }
         else {
