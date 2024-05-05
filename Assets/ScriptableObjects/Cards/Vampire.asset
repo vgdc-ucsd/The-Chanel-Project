@@ -10,16 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba1ad278697cae34da6360ecf631cd87, type: 3}
-  m_Name: TestCard 1
+  m_Name: Vampire
   m_EditorClassIdentifier: 
-  Name: 
-  ManaCost: 0
+  Name: Vampire
+  ManaCost: 2
   Artwork: {fileID: 0}
   CurrentTeam: 2
-  Health: 0
+  Health: 3
   CanMove: 1
   isSelected: 0
   BaseDamage: 1
   UnitCardInteractableRef: {fileID: 0}
-  Attacks: []
+  Attacks:
+  - direction: {x: -1, y: 1}
+    damage: 1
+  - direction: {x: 1, y: 1}
+    damage: 1
+  - direction: {x: 1, y: -1}
+    damage: 1
+  - direction: {x: -1, y: -1}
+    damage: 1
   Abilities: []
