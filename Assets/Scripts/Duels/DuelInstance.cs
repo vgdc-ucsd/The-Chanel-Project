@@ -194,7 +194,7 @@ public class DuelInstance
         return qa;
     }
 
-    private CharStatus GetStatus(Team team) {
+    public CharStatus GetStatus(Team team) {
         if(team == Team.Player) return PlayerStatus;
         else return EnemyStatus;
     }

@@ -48,7 +48,7 @@ public class DuelManager : MonoBehaviour
         AM.Enqueue(MainDuel.DrawStartingCards());
 
         // AI setup
-        ai = new MctsAI(PlayerStatus, EnemyStatus);
+        ai = new MctsAI();
         awaitingAI = false;
 
         // UI Setup
