@@ -898,19 +898,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handInterface: {fileID: 0}
   raycaster: {fileID: 5767723507367173616}
-  TemplateArrowPlayer: {fileID: 4576968097883469193, guid: fe365ff3c0c94f041a73df91789e03c2, type: 3}
-  TemplateArrowEnemy: {fileID: 67719645880803081, guid: 504658362447dc74a9d4f248d6be4fab, type: 3}
-  canvas: {fileID: 0}
   CardName: {fileID: 8775277688575511005}
-  CardHealth: {fileID: 6426648206735701756}
-  CardAttack: {fileID: 8856066283348533103}
   CardCost: {fileID: 1935634880742371814}
-  DebugText: {fileID: 292568802583019688}
-  image: {fileID: 0}
-  defaultColor: {r: 0, g: 0, b: 0, a: 0}
-  selectedColor: {r: 0, g: 0, b: 0, a: 0}
+  image: {fileID: 7934217333704476081}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedColor: {r: 0.8443396, g: 0.8443396, b: 0.8443396, a: 1}
   inHand: 1
   card: {fileID: 0}
+  TemplateArrowPlayer: {fileID: 4576968097883469193, guid: fe365ff3c0c94f041a73df91789e03c2, type: 3}
+  TemplateArrowEnemy: {fileID: 67719645880803081, guid: 504658362447dc74a9d4f248d6be4fab, type: 3}
+  CardHealth: {fileID: 6426648206735701756}
+  CardAttack: {fileID: 8856066283348533103}
 --- !u!1 &7649041539445918436
 GameObject:
   m_ObjectHideFlags: 0

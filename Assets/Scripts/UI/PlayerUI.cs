@@ -9,22 +9,13 @@ public class PlayerUI : MonoBehaviour
 {
     public TextMeshProUGUI HealthText;
     public TextMeshProUGUI ManaText;
-    public CharStatus Status;
 
-    void Awake() {
-        DuelEvents.Instance.onUpdateUI += UpdateUI;
-    }
-
-    private void UpdateUI() {
-        HealthText.text = Status.Health.ToString();
-        ManaText.text = Status.Mana.ToString();
+    public void UpdateUI(CharStatus status) {
+        HealthText.text = status.Health.ToString();
+        ManaText.text = status.Mana.ToString();
     }
 
     public void CheckProperInitialization() {
-        if(Status == null) {
-            Debug.LogError("PlayerUI Error, Status is uninitalized");
-            return;
-        }
         if(HealthText == null) {
             Debug.LogError("PlayerUIError, HealthText is uninitialized");
             return;

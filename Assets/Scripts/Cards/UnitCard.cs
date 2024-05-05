@@ -34,9 +34,10 @@ public class UnitCard : Card
         copy.isSelected = false;
         copy.CanMove = this.CanMove;
         copy.Pos = this.Pos;
-        copy.Artwork = null; // maybe
+        copy.Artwork = this.Artwork;
         copy.CurrentTeam = this.CurrentTeam;
-        copy.UnitCardInteractableRef = null;
+        copy.UnitCardInteractableRef = this.UnitCardInteractableRef;
+        if(copy.UnitCardInteractableRef != null) copy.UnitCardInteractableRef.card = copy;
 
         copy.Attacks = new List<Attack>();
         foreach(Attack atk in this.Attacks) {

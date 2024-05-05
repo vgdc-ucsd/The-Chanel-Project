@@ -8,11 +8,6 @@ public class GameUI : MonoBehaviour
     // General UI not related to either player
     [SerializeField] TMP_Text turnNumberText;
     [SerializeField] TMP_Text teamText;
-    private void Awake()
-    {
-        DuelEvents.Instance.OnAdvanceGameTurn += UpdateGameTurn;
-        DuelEvents.Instance.onTurnStart += UpdateTeam;
-    }
 
     void UpdateGameTurn()
     {

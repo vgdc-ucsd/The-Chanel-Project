@@ -38,7 +38,6 @@ public abstract class CardInteractable : MonoBehaviour,
 
     public void Awake()
     {
-        DuelEvents.Instance.onUpdateUI += UpdateCardInfo;
         raycaster = DuelManager.Instance.GetComponent<GraphicRaycaster>();
     }
 

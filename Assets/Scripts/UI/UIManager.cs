@@ -22,10 +22,13 @@ public class UIManager : MonoBehaviour
     public PlayerUI Player;
     public PlayerUI Enemy;
 
-    public void Initialize(CharStatus player, CharStatus enemy) {
+    public void Initialize() {
         BoardContainer.CreateBoard();
-        Player.Status = player;
-        Enemy.Status = enemy;
+    }
+
+    public void UpdateStatus(DuelInstance state) {
+        Player.UpdateUI(state.PlayerStatus);
+        Enemy.UpdateUI(state.EnemyStatus);
     }
 
     public CardInteractable GenerateCardInteractable(Card c) {

@@ -20,12 +20,6 @@ public class HandInterface : MonoBehaviour
 
     private List<QueueableAnimation> cardAnimations = new List<QueueableAnimation>(); 
 
-    void Awake() {
-        DuelEvents.Instance.OnDrawCard += Draw;
-        DuelEvents.Instance.OnRemoveFromHand += RemoveFromHand;
-        DuelEvents.Instance.onUpdateHand += OrganizeCards;
-    }
-
     public void Draw(Card c, Team team) {
         if (team == myTeam) {
             // Draw a random card from the deck (doesn't remove from deck) 

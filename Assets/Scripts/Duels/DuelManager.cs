@@ -52,7 +52,8 @@ public class DuelManager : MonoBehaviour
         awaitingAI = false;
 
         // UI Setup
-        UI.Initialize(PlayerStatus, EnemyStatus);
+        UI.Initialize();
+        UI.UpdateStatus(MainDuel);
         if (Settings.EnablePVPMode || Settings.ShowEnemyHand) {
             UI.EnemyHand.gameObject.SetActive(true);
         }
@@ -97,6 +98,7 @@ public class DuelManager : MonoBehaviour
     public void EnemyMove(DuelInstance state) {
         MainDuel = state;
         AM.Enqueue(state.ProcessBoard(Team.Enemy));
+        UI.UpdateStatus(state);
         awaitingAI = false;
         //DuelEvents.Instance.UpdateUI();
         //if(team == Team.Player) DuelEvents.Instance.UpdateHand();

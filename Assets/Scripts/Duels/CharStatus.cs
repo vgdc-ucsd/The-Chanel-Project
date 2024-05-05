@@ -130,12 +130,7 @@ public class CharStatus
             Mana = MaxMana;
         }
     }
-
-    public void ResetMana()
-    {
-        Mana = MaxMana;
-    }
-
+    
     public void GiveMana()
     {
         if (ManaCapacity < MaxMana)

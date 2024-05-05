@@ -12,7 +12,6 @@ public class DuelInstance
 {
     public Board DuelBoard;
     public CharStatus PlayerStatus, EnemyStatus;
-    //private int turnNumber = 1;
 
     private Queue<QueueableAnimation> animations;
 
@@ -119,17 +118,8 @@ public class DuelInstance
     }
 
     private void DrawCards(Team team, int count) {
-        Deck deck;
-        CharStatus status;
-
-        if(team == Team.Player) {
-            deck = PlayerStatus.Deck;
-            status = PlayerStatus;
-        }
-        else {
-            deck = EnemyStatus.Deck;
-            status = EnemyStatus;
-        }
+        CharStatus status = GetStatus(team);
+        Deck deck = status.Deck;
 
         List<Card> drawnCards = new List<Card>();
         for(int i = 0; i < count; i++) {
@@ -172,8 +162,10 @@ public class DuelInstance
             oppositeTeam = Team.Player;
             oppositeStatus = PlayerStatus;
         }
-        // TODO increase mana cap
-        oppositeStatus.ResetMana();
+
+        // gain 1 mana capacity every turn until it reaches the max then it caps out;
+        oppositeStatus.GiveMana();
+
         DuelBoard.RenewMovement(oppositeTeam);
         DrawCards(oppositeTeam, 1);
     }
@@ -200,6 +192,11 @@ public class DuelInstance
         IEnumerator ie = DuelManager.Instance.AM.OrganizeCardsAnimation(cards);
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
         return qa;
+    }
+
+    private CharStatus GetStatus(Team team) {
+        if(team == Team.Player) return PlayerStatus;
+        else return EnemyStatus;
     }
 
     public void UpdateCardInfo(UnitCard c) {

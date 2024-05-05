@@ -133,6 +133,6 @@ public class PlayerInputController: MonoBehaviour
         //if(card.team == Team.Enemy) MirrorAttacks(card); // this should only be called once per enemy card
 
         DuelManager.Instance.MainDuel.DuelBoard.PlayCard(card, pos, charStatus, DuelManager.Instance.MainDuel);
-        DuelEvents.Instance.UpdateUI();
+        DuelManager.Instance.UI.UpdateStatus(DuelManager.Instance.MainDuel);
     }
 }
