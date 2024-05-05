@@ -12,24 +12,24 @@ public class DuelInstance
 {
     public Board DuelBoard;
     public CharStatus PlayerStatus, EnemyStatus;
-
-    private Queue<QueueableAnimation> animations;
+    public Queue<QueueableAnimation> Animations;
 
     public DuelInstance(CharStatus player, CharStatus enemy, Board board) {
         DuelBoard = board;
         PlayerStatus = player;
         EnemyStatus = enemy;
+        Animations = new Queue<QueueableAnimation>();
     }
 
     public DuelInstance Clone() {
         return new DuelInstance(PlayerStatus.Clone(), EnemyStatus.Clone(), DuelBoard.Clone());
     }
 
-    public Queue<QueueableAnimation> ProcessBoard(Team team) {
+    public void ProcessBoard(Team team) {
         // the team is whoever just activated end turn
 
         // clear old animations
-        animations = new Queue<QueueableAnimation>();
+        //Animations = new Queue<QueueableAnimation>();
 
         // Process all cards
         for(int i = 0; i < DuelBoard.Cols; i++) {
@@ -42,11 +42,10 @@ public class DuelInstance
         }
 
         EndTurn(team);
-        return animations;
     }
 
     public Queue<QueueableAnimation> DrawStartingCards() {
-        animations = new Queue<QueueableAnimation>();
+        Animations = new Queue<QueueableAnimation>();
 
         // Player cards
         DrawCards(Team.Player, DuelManager.Instance.Settings.Player.StartingCards);
@@ -57,7 +56,7 @@ public class DuelInstance
         }
         else DrawCards(Team.Enemy, DuelManager.Instance.Settings.Enemy.StartingCards);
         
-        return animations;
+        return Animations;
     }
 
     private void ProcessCard(UnitCard card, Team team) {
@@ -105,7 +104,7 @@ public class DuelInstance
         UnitCard target = DuelBoard.GetCard(atkDest);
         if(card.CurrentTeam != target.CurrentTeam) {
             // Animation
-            animations.Enqueue(AttackAnimation(card, atk));
+            AnimationManager.Instance.AttackAnimation(this, card, atk);
             
             // Abilities
             ActivationInfo info = new ActivationInfo(this);
@@ -131,7 +130,7 @@ public class DuelInstance
             drawnCards.Add(c);
         }
 
-        animations.Enqueue(OrganizeCardsAnimation(drawnCards));
+        AnimationManager.Instance.OrganizeCardsAnimation(this, drawnCards);
     }
 
     public int DealDamage(UnitCard target, int damage)
@@ -144,7 +143,7 @@ public class DuelInstance
         {
             overkillDamage = -1*target.Health;
             DuelBoard.RemoveCard(target.Pos);
-            animations.Enqueue(DeathAnimation(target));
+            AnimationManager.Instance.DeathAnimation(this, target);
         }
 
         return overkillDamage;
@@ -170,37 +169,8 @@ public class DuelInstance
         DrawCards(oppositeTeam, 1);
     }
 
-    // TODO move
-    private QueueableAnimation AttackAnimation(UnitCard card, Attack atk) {
-        float animDuration = 0.3f;
-        IEnumerator anim = DuelManager.Instance.AM.CardAttack(
-            card.CardInteractableRef.transform, 
-            atk.direction,
-            animDuration
-        );
-        QueueableAnimation qa = new QueueableAnimation(anim, animDuration);
-        return qa;
-    }
-
-    private QueueableAnimation DeathAnimation(UnitCard card) {
-        IEnumerator ie = DuelManager.Instance.AM.CardDeath(card.CardInteractableRef);
-        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
-        return qa;
-    }
-
-    private QueueableAnimation OrganizeCardsAnimation(List<Card> cards) {
-        IEnumerator ie = DuelManager.Instance.AM.OrganizeCardsAnimation(cards);
-        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
-        return qa;
-    }
-
     public CharStatus GetStatus(Team team) {
         if(team == Team.Player) return PlayerStatus;
         else return EnemyStatus;
-    }
-
-    public void UpdateCardInfo(UnitCard c) {
-        // queue animation
-        if(c.CardInteractableRef != null) {c.CardInteractableRef.UpdateCardInfo();}
     }
 }

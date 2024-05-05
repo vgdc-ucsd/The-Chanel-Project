@@ -35,7 +35,7 @@ public class CharStatus
         IsAlive = true;
         MaxHealth = playerSettings.MaxHealth;
         MaxMana = playerSettings.MaxMana;
-        ManaCapacity = 1; // double check
+        ManaCapacity = playerSettings.StartingMana;
         this.CharTeam = team;
         Deck = deck;
         Cards = new List<Card>();
@@ -130,7 +130,7 @@ public class CharStatus
             Mana = MaxMana;
         }
     }
-    
+
     public void GiveMana()
     {
         if (ManaCapacity < MaxMana)

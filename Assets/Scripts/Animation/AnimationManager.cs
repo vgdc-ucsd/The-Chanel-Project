@@ -5,8 +5,19 @@ using UnityEngine;
 
 public class AnimationManager : MonoBehaviour
 {
+    public static AnimationManager Instance;
+
     private Queue<QueueableAnimation> animations = new Queue<QueueableAnimation>();
     private bool activelyPlaying = false;
+
+    void Awake() {
+        // Singleton
+        if (Instance != null && Instance != this) {
+            Debug.LogWarning("Tried to create more than one instance of the AnimationManager singleton");
+            Destroy(this);
+        }
+        else Instance = this;
+    }
     
     // Update is called once per frame
     void Update()
@@ -49,6 +60,10 @@ public class AnimationManager : MonoBehaviour
         activelyPlaying = false;
     }
 
+    // **************************************************************
+    //                 Animation logic (IEnumerator)
+    // **************************************************************
+
     // Translates the transform at origin to the position at dest
     public IEnumerator SimpleTranslate(Transform origin, Vector3 dest, float duration, InterpolationMode mode) {
         if(origin == null) yield break;
@@ -70,11 +85,11 @@ public class AnimationManager : MonoBehaviour
 
     // Animation that plays when a card makes an attack in a direction
     // Pulls backwards briefly then launches forwards
-    public IEnumerator CardAttack(Transform card, Vector2 atkDir, float duration) {
-        if(card == null) yield break;
+    private IEnumerator CardAttack(UnitCard card, Vector2 atkDir, float duration) {
 
         InterpolationMode mode = InterpolationMode.Linear;
-        Vector3 startPos = card.position;
+        Transform cardTransform = card.CardInteractableRef.transform;
+        Vector3 startPos = cardTransform.position;
 
         // windup
         float windupDuration = duration * 0.4f;
@@ -90,20 +105,20 @@ public class AnimationManager : MonoBehaviour
         float recoverDuration = duration * 0.3f;
 
         // animation
-        yield return SimpleTranslate(card, windupPos, windupDuration, mode);
-        yield return SimpleTranslate(card, launchPos, launchDuration, mode);
-        yield return SimpleTranslate(card, startPos, recoverDuration, mode);
+        yield return SimpleTranslate(cardTransform, windupPos, windupDuration, mode);
+        yield return SimpleTranslate(cardTransform, launchPos, launchDuration, mode);
+        yield return SimpleTranslate(cardTransform, startPos, recoverDuration, mode);
         if(card == null) yield break;
 
-        card.position = startPos;
+        cardTransform.position = startPos;
     }
 
-    public IEnumerator CardDeath(CardInteractable ci) {
+    private IEnumerator CardDeath(UnitCard card) {
         yield return null;
-        Destroy(ci.gameObject);
+        Destroy(card.CardInteractableRef.gameObject);
     }
 
-    public IEnumerator OrganizeCardsAnimation(List<Card> cards) {
+    private IEnumerator OrganizeCards(List<Card> cards) {
         foreach(Card c in cards) {
             if(c.CardInteractableRef == null) {
                 c.CardInteractableRef = DuelManager.Instance.UI.GenerateCardInteractable(c);
@@ -111,5 +126,55 @@ public class AnimationManager : MonoBehaviour
         }
         DuelManager.Instance.UI.Hand.OrganizeCards();
         yield return null;
+    }
+
+    public IEnumerator PlaceUnitCard(UnitCard c, BoardCoords pos) {
+        if(c.UnitCardInteractableRef == null) c.UnitCardInteractableRef = (UnitCardInteractable) DuelManager.Instance.UI.GenerateCardInteractable(c); // TODO cleanup
+        c.UnitCardInteractableRef.PlaceCard(pos);
+        yield return null;
+    }
+
+    private IEnumerator UpdateCardInfo(Card c) {
+        if(c.CardInteractableRef != null) {c.CardInteractableRef.UpdateCardInfo();}
+        yield return null;
+    }
+
+    // **************************************************************
+    //              public animation methods (void)
+    // **************************************************************
+
+    public void AttackAnimation(DuelInstance duel, UnitCard card, Attack atk) {
+        float animDuration = 0.3f;
+        IEnumerator anim = CardAttack(
+            card, 
+            atk.direction,
+            animDuration
+        );
+        QueueableAnimation qa = new QueueableAnimation(anim, animDuration);
+        duel.Animations.Enqueue(qa);
+    }
+
+    public void DeathAnimation(DuelInstance duel, UnitCard card) {
+        IEnumerator ie = CardDeath(card);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+        duel.Animations.Enqueue(qa);
+    }
+
+    public void OrganizeCardsAnimation(DuelInstance duel, List<Card> cards) {
+        IEnumerator ie = OrganizeCards(cards);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+        duel.Animations.Enqueue(qa);
+    }
+
+    public void PlaceUnitCardAnimation(DuelInstance duel, UnitCard c, BoardCoords pos) {
+        IEnumerator ie = PlaceUnitCard(c, pos);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0.5f);
+        duel.Animations.Enqueue(qa);
+    }
+
+    public void UpdateCardInfoAnimation(DuelInstance duel, UnitCard c) {
+        IEnumerator ie = UpdateCardInfo(c);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+        duel.Animations.Enqueue(qa);
     }
 }

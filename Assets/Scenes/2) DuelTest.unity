@@ -305,7 +305,7 @@ MonoBehaviour:
       StartingHealth: 10
       MaxHealth: 10
       MaxHealthEnabled: 0
-      StartingMana: 1
+      StartingMana: 0
       MaxMana: 4
       MaxManaEnabled: 1
       StartingCards: 4
@@ -319,7 +319,6 @@ MonoBehaviour:
   PlayerDeck: {fileID: 11400000, guid: 1b62fd89b8fe4734eb4697de89df34b7, type: 2}
   EnemyDeck: {fileID: 11400000, guid: 3fee81777dd337d44af028e8dc03f5ee, type: 2}
   UI: {fileID: 37294274}
-  AM: {fileID: 37294275}
 --- !u!114 &37294270
 MonoBehaviour:
   m_ObjectHideFlags: 0

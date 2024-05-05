@@ -68,6 +68,7 @@ public class UnitCardInteractable : CardInteractable,
             transform.localScale = Vector3.one;
             DrawArrows(); 
             CardCost.enabled = false;
+            gameObject.SetActive(true);
             //handInterface.OrganizeCards();
         }
     }

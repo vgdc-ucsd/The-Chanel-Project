@@ -17,7 +17,6 @@ public class DuelManager : MonoBehaviour
     public Deck PlayerDeck;
     public Deck EnemyDeck;
     public UIManager UI;
-    public AnimationManager AM;
 
     // Game Logic
     public DuelInstance MainDuel;
@@ -45,7 +44,7 @@ public class DuelManager : MonoBehaviour
         MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, board);
 
         // Draw staring cards
-        AM.Enqueue(MainDuel.DrawStartingCards());
+        AnimationManager.Instance.Enqueue(MainDuel.DrawStartingCards());
 
         // AI setup
         ai = new MctsAI();
@@ -72,10 +71,6 @@ public class DuelManager : MonoBehaviour
             Debug.LogError("Could not start duel, the UIManager is uninitalized");
             return;
         }
-        if(AM == null) {
-            Debug.LogError("Could not start duel, the AnimationManager is uninitalized");
-            return;
-        }
         if(Settings == null) {
             Debug.LogError("Could not start duel, the DuelSettings are uninitialized");
             return;
@@ -89,7 +84,8 @@ public class DuelManager : MonoBehaviour
             // TODO
         }
         else {
-            AM.Enqueue(MainDuel.ProcessBoard(Team.Player));
+            MainDuel.ProcessBoard(Team.Player);
+            AnimationManager.Instance.Enqueue(MainDuel.Animations);
             StartCoroutine(ai.MCTS(MainDuel));
             awaitingAI = true;
         }
@@ -97,7 +93,8 @@ public class DuelManager : MonoBehaviour
 
     public void EnemyMove(DuelInstance state) {
         MainDuel = state;
-        AM.Enqueue(state.ProcessBoard(Team.Enemy));
+        state.ProcessBoard(Team.Enemy);
+        AnimationManager.Instance.Enqueue(state.Animations);
         UI.UpdateStatus(state);
         awaitingAI = false;
         //DuelEvents.Instance.UpdateUI();

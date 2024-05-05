@@ -49,7 +49,7 @@ public class HandInterface : MonoBehaviour
 
         // clear old animations
         foreach(QueueableAnimation qa in cardAnimations) {
-            DuelManager.Instance.AM.StopCoroutine(qa.Animation);
+            AnimationManager.Instance.StopCoroutine(qa.Animation);
             qa.Animation = null;
         }
         cardAnimations.Clear();
@@ -75,7 +75,7 @@ public class HandInterface : MonoBehaviour
                 if(card.transform.parent != this.transform) {
                     card.transform.SetParent(this.transform);
                     card.transform.localScale = Vector3.one;
-                    IEnumerator animation = DuelManager.Instance.AM.SimpleTranslate(
+                    IEnumerator animation = AnimationManager.Instance.SimpleTranslate(
                         card.transform,
                         targetPosition,
                         0.2f,
@@ -83,11 +83,11 @@ public class HandInterface : MonoBehaviour
                     );
                     QueueableAnimation qa = new QueueableAnimation(animation, 0.1f);
                     cardAnimations.Add(qa);
-                    DuelManager.Instance.AM.Enqueue(qa);
+                    AnimationManager.Instance.Enqueue(qa);
                 }
                 // old cards
                 else {
-                    IEnumerator animation = DuelManager.Instance.AM.SimpleTranslate(
+                    IEnumerator animation = AnimationManager.Instance.SimpleTranslate(
                         card.transform,
                         targetPosition,
                         0.1f,
@@ -95,7 +95,7 @@ public class HandInterface : MonoBehaviour
                     );
                     QueueableAnimation qa = new QueueableAnimation(animation, 0f);
                     cardAnimations.Add(qa);
-                    DuelManager.Instance.AM.Play(qa.Animation);
+                    AnimationManager.Instance.Play(qa.Animation);
                 }   
             }
 

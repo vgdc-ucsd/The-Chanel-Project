@@ -43,6 +43,11 @@ public class MctsAI
     private List<Node> nodes;
 
     public IEnumerator MCTS(DuelInstance state) {
+        DuelInstance duel = state.Clone();
+        PickRandomMove(duel, Team.Enemy);
+        DuelManager.Instance.EnemyMove(duel);
+        yield return null;
+        /* 
         float maxTime = 0.008f; // <= 120 fps
         float maxIterations = 100;
         float iterations = 0;
@@ -75,7 +80,7 @@ public class MctsAI
         }
 
         DuelInstance move = FindBestMove(root).State;
-        DuelManager.Instance.EnemyMove(move);
+        DuelManager.Instance.EnemyMove(move); */
     }
 
     private Node GreedySelection(Node root) {
@@ -146,7 +151,7 @@ public class MctsAI
             
             // pick random tile
             int randomTileIndex = Random.Range(0, legalTiles.Count);
-            BoardCoords randomTile = legalTiles[randomCardIndex];
+            BoardCoords randomTile = legalTiles[randomTileIndex];
 
             // play card
             duel.DuelBoard.PlayCard((UnitCard)randomCard, randomTile, status, duel); // TODO support spell cards

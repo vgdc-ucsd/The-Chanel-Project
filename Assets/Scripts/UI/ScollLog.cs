@@ -34,7 +34,7 @@ public class ScollLog : MonoBehaviour, IPointerDownHandler
             targetPos = new Vector3(transform.position.x, Open, transform.position.z);
         }
 
-        IEnumerator ie = DuelManager.Instance.AM.SimpleTranslate(
+        IEnumerator ie = AnimationManager.Instance.SimpleTranslate(
             transform,
             targetPos,
             Duration,
@@ -42,6 +42,6 @@ public class ScollLog : MonoBehaviour, IPointerDownHandler
         );
         
         anim = new QueueableAnimation(ie, 0f);
-        DuelManager.Instance.AM.Play(anim.Animation);
+        AnimationManager.Instance.Play(anim.Animation);
     }
 }

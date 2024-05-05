@@ -85,11 +85,13 @@ public class UnitCard : Card
         }
     }
 
-    public void Place(BoardCoords pos)
+    public void Place(BoardCoords pos, DuelInstance duel)
     {
         this.Pos = pos;
         CanMove = true;
-        if( UnitCardInteractableRef != null) UnitCardInteractableRef.PlaceCard(pos);
+        if(CurrentTeam == Team.Enemy) {
+            AnimationManager.Instance.PlaceUnitCardAnimation(duel, this, pos);
+        }
     }
 
     public void SetSelected(bool selected)

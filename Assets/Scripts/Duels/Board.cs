@@ -64,7 +64,7 @@ public class Board
             return;
         }
 
-        card.Place(pos);
+        card.Place(pos, duel);
         status.Cards.Remove(card);
         status.UseMana(card.ManaCost);
         SetCard(card, pos);
