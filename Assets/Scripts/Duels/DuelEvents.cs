@@ -51,9 +51,9 @@ public class DuelEvents : MonoBehaviour
         if (OnDrawCard != null) OnDrawCard(c, team);
     }
 
-    public event Action<Card, BoardCoords, Team> OnPlaceCard;
+    //public event Action<Card, BoardCoords, Team> OnPlaceCard;
     public event Action<Card> OnRemoveFromHand;
-    public void PlaceCard(Card c, BoardCoords pos, Team team)
+    /*public void PlaceCard(Card c, BoardCoords pos, Team team)
     {
         if (OnPlaceCard != null)
         {
@@ -61,6 +61,7 @@ public class DuelEvents : MonoBehaviour
             OnRemoveFromHand(c);
         }
     }
+    */
 
     public event Action OnAdvanceGameTurn;
     public void AdvanceGameTurn()

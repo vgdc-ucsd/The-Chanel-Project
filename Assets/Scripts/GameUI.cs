@@ -16,11 +16,13 @@ public class GameUI : MonoBehaviour
 
     void UpdateGameTurn()
     {
-        turnNumberText.text = DuelManager.Instance.DC.turnNumber.ToString();
+        // TODO
+        // turnNumberText.text = DuelManger.Instance.turnNumber.ToString();
     }
 
     void UpdateTeam()
     {
-        teamText.text = DuelManager.Instance.DC.GetCurrentTeam().ToString();
+        // TODO
+        // teamText.text = = DuelManger.Instance.currentTeam.ToString();
     }
 }

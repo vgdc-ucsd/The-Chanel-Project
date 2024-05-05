@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum ActivationCondition {
@@ -8,12 +6,26 @@ public enum ActivationCondition {
     OnDeath,
     OnDraw,
     OnPlay,
-    OnMove
+    OnMove,
+    OnReceiveDamage,
+    OnDealDamage
+}
+
+public struct ActivationInfo {
+    public ActivationInfo(bool mainDuel) {
+        IsMainDuel = mainDuel;
+        OverkillDamage = 0;
+        TotalDamage = 0;
+    }
+
+    public bool IsMainDuel;
+    public int OverkillDamage;
+    public int TotalDamage;
 }
 
 [Serializable]
 public abstract class Ability : ScriptableObject
 {
-    public abstract void Activate(Card c);
+    public abstract void Activate(Board b, UnitCard c, ActivationInfo info);
     public abstract ActivationCondition Condition{ get; }
 }

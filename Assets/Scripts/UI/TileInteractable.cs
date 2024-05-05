@@ -38,6 +38,6 @@ public class TileInteractable : MonoBehaviour, IPointerDownHandler
 
     public bool IsOccupied()
     {
-        return DuelManager.Instance.DC.GetCurrentBoard().IsOccupied(location);
+        return DuelManager.Instance.CurrentBoard.IsOccupied(location);
     }
 }

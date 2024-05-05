@@ -3,86 +3,101 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Burst.Intrinsics;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class CharStatus : MonoBehaviour
+public class CharStatus
 {
-    public int Health { get; private set; }
-    public int Mana { get; private set; }
-    public bool isAlive = true;
-    [HideInInspector] public int MaxHealth;
-    [HideInInspector] public int MaxMana;
-    [HideInInspector] public int ManaCapacity;
-    public Team team;
+    public int Health;
+    public int Mana;
+    public bool IsAlive = true;
+    public int MaxHealth;
+    public int MaxMana;
+    public int ManaCapacity;
+    public Team CharTeam;
     public Deck Deck;
-    public List<Card> cards = new List<Card>();
+    public List<Card> Cards = new List<Card>();
 
-
-    //[SerializeField] 
     PlayerSettings playerSettings;
     DuelSettings duelSettings;
-    private void Awake()
-    {
-        //currently settings are set at duel manager, can change to set here if desired
-        /*
-        Health = settings.StartingHealth;
-        Mana = settings.StartingMana;
-        MaxHealth = settings.MaxHealth;
-        MaxMana = settings.MaxMana;
-        ManaRegen = settings.ManaRegen;
-        */
-        duelSettings = DuelManager.Instance.Settings;
-        DuelEvents.Instance.OnDrawCard += AddCard;
-        DuelEvents.Instance.OnRemoveFromHand += RemoveFromHand;
-        DuelEvents.Instance.OnAdvanceGameTurn += GiveMana;
-    }
 
-    public void Init(Team team)
-    {
-        this.team = team;
-        if (team == Team.Player || duelSettings.SameSettingsForBothPlayers)
-        {
-            playerSettings = DuelManager.Instance.Settings.Player;
+    public CharStatus(Team team) {
+        duelSettings = DuelManager.Instance.Settings;
+        if(team == Team.Player || duelSettings.SameSettingsForBothPlayers) {
+            playerSettings = duelSettings.Player;
         }
-        else
-        {
-            playerSettings = DuelManager.Instance.Settings.Enemy;
+        else {
+            playerSettings = duelSettings.Enemy;
         }
-        Health = playerSettings.StartingHealth;
+
         Mana = playerSettings.StartingMana;
+        Health = playerSettings.StartingHealth;
+        IsAlive = true;
         MaxHealth = playerSettings.MaxHealth;
         MaxMana = playerSettings.MaxMana;
-        ManaCapacity = 1;
+        ManaCapacity = 1; // double check
+        this.CharTeam = team;
+        if(team == Team.Player) {
+            Deck = DuelManager.Instance.PlayerDeck;
+        }
+        else {
+            Deck = DuelManager.Instance.EnemyDeck;
+        }
+        Cards = new List<Card>();
     }
 
-    public void AddCard(Card card, Team team)
-    {
-        if (team == this.team) 
-        { 
-            cards.Add(card);
-            card.team = team;
+    private CharStatus() {}
+
+    public CharStatus Clone() {
+        CharStatus copy = new CharStatus();
+        copy.Mana = this.Mana;
+        copy.Health = this.Health;
+        copy.IsAlive = this.IsAlive;
+        copy.MaxHealth = this.MaxHealth;
+        copy.MaxMana = this.MaxMana;
+        copy.ManaCapacity = this.ManaCapacity;
+        copy.CharTeam = this.CharTeam;
+        copy.Deck = this.Deck.Clone();
+        copy.Cards = new List<Card>();
+        foreach(Card c in this.Cards) {
+            copy.Cards.Add(c.Clone());
         }
-        
+        copy.playerSettings = this.playerSettings;
+        copy.duelSettings = this.duelSettings;
+        return copy;
+    }
+
+    public void AddCard(Card c) {
+        c.CurrentTeam = CharTeam;
+        if(c.CurrentTeam == Team.Enemy) {
+            if(c.GetType() == typeof(UnitCard)) {
+                UnitCard unitCard = (UnitCard) c;
+                foreach(Attack atk in unitCard.Attacks) {
+                    atk.direction.y *= -1;
+                }
+            }
+        }
+        Cards.Add(c);
     }
 
     public void RemoveFromHand(Card card)
     {
-        if (!cards.Contains(card)) 
+        if (!Cards.Contains(card)) 
         {
             //Debug.Log($"Tried to remove {card.Name} but was not in hand");
             return;
         }
-        cards.Remove(card);
+        Cards.Remove(card);
     }
 
-    public void DealDamage(int damage)
+    public void TakeDamage(int damage)
     {
         Health -= damage;
         if (Health <= 0)
         {
             Health = 0;
-            isAlive = false;
-            if (team == Team.Player)
+            IsAlive = false;
+            if (CharTeam == Team.Player)
             {
                 Debug.Log("Enemy Won!");
                 if (MenuScript.Instance != null)
@@ -119,6 +134,11 @@ public class CharStatus : MonoBehaviour
         {
             Mana = MaxMana;
         }
+    }
+
+    public void ResetMana()
+    {
+        Mana = MaxMana;
     }
 
     public void GiveMana()

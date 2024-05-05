@@ -8,7 +8,6 @@ using UnityEngine.UIElements;
 // Manages the player's and interactions with their hand
 public class HandInterface : MonoBehaviour
 {
-    public CardInteractable TemplateCard;
     [HideInInspector] public List<CardInteractable> cardObjects = new List<CardInteractable>();
     public Team myTeam;
 
@@ -28,18 +27,13 @@ public class HandInterface : MonoBehaviour
     }
 
     public void Draw(Card c, Team team) {
-        if(TemplateCard == null) {
-            Debug.Log("Could not draw cards, TemplateCard is uninitialized");
-            return;
-        }
-
         if (team == myTeam) {
-            // Draw a random card from the deck (doesn't remove from deck)
-            c.team = team;
-            CardInteractable cardObject = Instantiate(TemplateCard);
-            SetCard(c, cardObject);
-            cardObject.transform.localScale = Vector3.one;
-            cardObjects.Add(cardObject);
+            // Draw a random card from the deck (doesn't remove from deck) 
+            c.CurrentTeam = team; // ?
+            CardInteractable ci = DuelManager.Instance.UI.GenerateCardInteractable(c);
+            ci.handInterface = this;
+            ci.transform.localScale = Vector3.one;
+            cardObjects.Add(ci);
         }
     }
 
@@ -53,23 +47,6 @@ public class HandInterface : MonoBehaviour
         //        cardObjects.Remove(ci);
         //    }
         //}
-    }
-
-    // Maps a Card to a CardInteractable
-    private void SetCard(Card c, CardInteractable ci) {
-        if(ci == null) {
-            Debug.Log("Could not set card, TemplateCard has no CardInteractable");
-            return;
-        }
-
-        ci.card = c;
-        ci.handInterface = this;
-        c.CardInteractableRef = ci;
-        ci.SetCardInfo();
-        if (myTeam == Team.Enemy && !(DuelManager.Instance.Settings.ShowEnemyHand || DuelManager.Instance.Settings.EnablePVPMode))
-        {
-            ci.ToggleVisibility(false);
-        }
     }
 
     // Displays cards neatly in the UI
