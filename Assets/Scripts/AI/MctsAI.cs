@@ -22,8 +22,7 @@ public class MctsAI
         }
 
         public void BackProp(int win) {
-            // win is either 1 or 0
-            // maybe add case for tie
+            // win is either 1 or -1, 0 on tie
 
             TotalGames++;
             NumWins += win;
@@ -43,11 +42,6 @@ public class MctsAI
     private List<Node> nodes;
 
     public IEnumerator MCTS(DuelInstance state) {
-        DuelInstance duel = state.Clone();
-        PickRandomMove(duel, Team.Enemy);
-        DuelManager.Instance.EnemyMove(duel);
-        yield return null;
-        /* 
         float maxTime = 0.008f; // <= 120 fps
         float maxIterations = 100;
         float iterations = 0;
@@ -80,7 +74,7 @@ public class MctsAI
         }
 
         DuelInstance move = FindBestMove(root).State;
-        DuelManager.Instance.EnemyMove(move); */
+        DuelManager.Instance.EnemyMove(move);
     }
 
     private Node GreedySelection(Node root) {
@@ -109,24 +103,33 @@ public class MctsAI
     }
 
     private int RandomRollout(Node n) {
-        //
         DuelInstance duel = n.State.Clone();
         for(int i = 0; i < MAX_GAMES; i++) {
+            // Player move
             PickRandomMove(duel, Team.Player);
             duel.ProcessBoard(Team.Player);
-            // if player won
-            return 0;
+
+            // On player win
+            if(duel.Winner == Team.Player) {
+                return -1;
+            }
+
+            // Enemy move
             PickRandomMove(duel, Team.Enemy);
             duel.ProcessBoard(Team.Enemy);
-            // if enemy won
-            return 1;
+            
+            // One Enemy win
+            if(duel.Winner == Team.Enemy) {
+                return 1;
+            }
         }
-        return 0; // timeout counts as player win
+
+        return 0; // Tie
     }
 
     private Node FindBestMove(Node parent) {
         Node selection = null;
-        float max = -1;
+        float max = -2;
         
         foreach(Node child in parent.Children) {
             if(child.Score() > max) {

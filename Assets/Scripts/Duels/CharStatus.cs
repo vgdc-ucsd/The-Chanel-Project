@@ -85,7 +85,7 @@ public class CharStatus
         Cards.Remove(card);
     }
 
-    public void TakeDamage(int damage)
+    public Team TakeDamage(int damage)
     {
         Health -= damage;
         if (Health <= 0)
@@ -94,23 +94,28 @@ public class CharStatus
             IsAlive = false;
             if (CharTeam == Team.Player)
             {
-                Debug.Log("Enemy Won!");
+                return Team.Enemy;
+                // TODO load scene as queueable animation
+
+                /* Debug.Log("Enemy Won!");
                 if (MenuScript.Instance != null)
                 {
                     MenuScript.Instance.LoadMap(); // Transitions into map - Kiichi
                     Debug.Log("SceneManager not Present: Failed to Load Map");
-                }
+                } */
             }
             else
             {
-                Debug.Log("Player Won!");
+                return Team.Player;
+                /* Debug.Log("Player Won!");
                 if (MenuScript.Instance != null)
                 {
                     MenuScript.Instance.LoadMap(); // Transitions into map - Kiichi
                     Debug.Log("SceneManager not Present: Failed to Load Map");
-                }
+                } */
             }
         }
+        return Team.Neutral;
     }
 
     public void SetDeck(Deck deck)

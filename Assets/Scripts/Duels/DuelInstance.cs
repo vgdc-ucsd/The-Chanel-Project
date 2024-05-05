@@ -13,12 +13,14 @@ public class DuelInstance
     public Board DuelBoard;
     public CharStatus PlayerStatus, EnemyStatus;
     public Queue<QueueableAnimation> Animations;
+    public Team Winner = Team.Neutral;
 
     public DuelInstance(CharStatus player, CharStatus enemy, Board board) {
         DuelBoard = board;
         PlayerStatus = player;
         EnemyStatus = enemy;
         Animations = new Queue<QueueableAnimation>();
+        Winner = Team.Neutral;
     }
 
     public DuelInstance Clone() {
@@ -27,9 +29,6 @@ public class DuelInstance
 
     public void ProcessBoard(Team team) {
         // the team is whoever just activated end turn
-
-        // clear old animations
-        //Animations = new Queue<QueueableAnimation>();
 
         // Process all cards
         for(int i = 0; i < DuelBoard.Cols; i++) {
@@ -84,13 +83,15 @@ public class DuelInstance
 
         // Attack targeting enemy
         if(DuelBoard.BeyondEnemyEdge(atkDest) && card.CurrentTeam == Team.Player) {
-            EnemyStatus.TakeDamage(atk.damage);
+            Team winner = EnemyStatus.TakeDamage(atk.damage);
+            if(winner != Team.Neutral) Winner = winner;
             return;
         }
 
         // Attack targeting player
         if(DuelBoard.BeyondPlayerEdge(atkDest) && card.CurrentTeam == Team.Enemy) {
-            PlayerStatus.TakeDamage(atk.damage);
+            Team winner = PlayerStatus.TakeDamage(atk.damage);
+            if(winner != Team.Neutral) Winner = winner;
             return;
         }
         
