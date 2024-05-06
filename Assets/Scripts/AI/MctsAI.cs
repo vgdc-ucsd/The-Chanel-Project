@@ -37,19 +37,20 @@ public class MctsAI
         }
     }
 
-    const int MAX_GAMES = 100;
+    const int MAX_TURNS = 100;
+    const int CHILD_COUNT = 3;
+    const int MAX_ITERATIONS = 100;
 
     private List<Node> nodes;
 
     public IEnumerator MCTS(DuelInstance state) {
         float maxTime = 0.008f; // <= 120 fps
-        float maxIterations = 100;
         float iterations = 0;
 
         Node root = new Node(state, null); // no parent since this is the root node
         float startTime;
 
-        while(iterations < maxIterations) {
+        while(iterations < MAX_ITERATIONS) {
             // Advance to next frame if taking too long
             startTime = Time.time;
             while(Time.time - startTime < maxTime) {
@@ -68,12 +69,26 @@ public class MctsAI
                 }
 
                 iterations++;
-                if(iterations > maxIterations) break;
+                if(iterations > MAX_ITERATIONS) break;
             }
             yield return null;
         }
 
         DuelInstance move = FindBestMove(root).State;
+
+        for(int i = 0; i < move.DuelBoard.Cols; i++) {
+            for(int j = 0; j < move.DuelBoard.Rows; j++) {
+                BoardCoords pos = new BoardCoords(i,j);
+                if (move.DuelBoard.IsOccupied(pos)) {
+                    Card c = move.DuelBoard.GetCard(pos);
+                    if(c.CardInteractableRef != null) {
+                        UnitCardInteractable uci = (UnitCardInteractable) c.CardInteractableRef;
+                        uci.card = (UnitCard)c;
+                    }
+                }
+            }
+        }
+
         DuelManager.Instance.EnemyMove(move);
     }
 
@@ -90,10 +105,9 @@ public class MctsAI
 
     private List<Node> RandomExpand(Node parent) {
         // determines how many new children will be created
-        int count = 3;
         List<Node> children = new List<Node>();
 
-        for(int i = 0; i < count; i++) {
+        for(int i = 0; i < CHILD_COUNT; i++) {
             Node child = new Node(parent.State, parent);
             PickRandomMove(child.State, Team.Enemy);
             children.Add(child);
@@ -104,7 +118,7 @@ public class MctsAI
 
     private int RandomRollout(Node n) {
         DuelInstance duel = n.State.Clone();
-        for(int i = 0; i < MAX_GAMES; i++) {
+        for(int i = 0; i < MAX_TURNS; i++) {
             // Player move
             PickRandomMove(duel, Team.Player);
             duel.ProcessBoard(Team.Player);
@@ -150,7 +164,7 @@ public class MctsAI
         while(playableCards.Count > 0 && legalTiles.Count > 0) {
             // pick random card
             int randomCardIndex = Random.Range(0, playableCards.Count);
-            Card randomCard = playableCards[randomCardIndex];
+            Card randomCard = playableCards[randomCardIndex].Clone();
             
             // pick random tile
             int randomTileIndex = Random.Range(0, legalTiles.Count);

@@ -92,12 +92,21 @@ public class DuelManager : MonoBehaviour
     }
 
     public void EnemyMove(DuelInstance state) {
-        MainDuel = state;
         state.ProcessBoard(Team.Enemy);
+        MainDuel = state;
         AnimationManager.Instance.Enqueue(state.Animations);
         UI.UpdateStatus(state);
         awaitingAI = false;
-        //DuelEvents.Instance.UpdateUI();
-        //if(team == Team.Player) DuelEvents.Instance.UpdateHand();
+
+        //Debug.Log("here");
+        foreach(Card c in state.PlayerStatus.Deck.CardList) {
+            if(c.Name.Contains("Centaur")) {
+                Debug.Log("centaur");
+                UnitCard uc = (UnitCard)c  ;
+                foreach(Attack atk in uc.Attacks) {
+                    Debug.Log(atk.damage);
+                }
+            }
+        }
     }
 }

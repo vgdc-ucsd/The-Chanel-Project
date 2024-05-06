@@ -37,7 +37,7 @@ public class UnitCard : Card
         copy.Artwork = this.Artwork;
         copy.CurrentTeam = this.CurrentTeam;
         copy.UnitCardInteractableRef = this.UnitCardInteractableRef;
-        if(copy.UnitCardInteractableRef != null) copy.UnitCardInteractableRef.card = copy;
+        //if(copy.UnitCardInteractableRef != null) copy.UnitCardInteractableRef.card = copy; // this line
 
         copy.Attacks = new List<Attack>();
         foreach(Attack atk in this.Attacks) {
@@ -73,6 +73,7 @@ public class UnitCard : Card
 
         // On receive damage but still alive
         if (Health > 0) {
+            AnimationManager.Instance.UpdateCardInfoAnimation(duel, this);
             foreach (Ability a in Abilities) {      
                 if(a.Condition == ActivationCondition.OnReceiveDamage) a.Activate(this, info);
             }
