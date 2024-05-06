@@ -76,6 +76,7 @@ public class MctsAI
 
         DuelInstance move = FindBestMove(root).State;
 
+        // TODO cleanup
         for(int i = 0; i < move.DuelBoard.Cols; i++) {
             for(int j = 0; j < move.DuelBoard.Rows; j++) {
                 BoardCoords pos = new BoardCoords(i,j);

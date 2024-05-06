@@ -37,7 +37,6 @@ public class UnitCard : Card
         copy.Artwork = this.Artwork;
         copy.CurrentTeam = this.CurrentTeam;
         copy.UnitCardInteractableRef = this.UnitCardInteractableRef;
-        //if(copy.UnitCardInteractableRef != null) copy.UnitCardInteractableRef.card = copy; // this line
 
         copy.Attacks = new List<Attack>();
         foreach(Attack atk in this.Attacks) {
