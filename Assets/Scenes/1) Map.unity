@@ -637,6 +637,7 @@ MonoBehaviour:
   path1: []
   path2: []
   path3: []
+  path4: []
   start: {fileID: 60141154164889898}
   exit: {fileID: 1839649391}
   Encounter: {fileID: 524626512}
@@ -646,18 +647,31 @@ MonoBehaviour:
   horStairs: {fileID: 1801152460}
   diagStairs: {fileID: 8029576115165412722}
   OrientingPosition: {x: 0, y: 0, z: 0}
-  numberOfRooms: 4
+  numberOfRooms: 10
+  pathDensityIndex: 7
   KeepTag: UsedNodes
   layerOptions:
   - mapNodeType: 0
-    randomization: 0.7
-  - mapNodeType: 1
-    randomization: 0.7
+    randomization: 0
+  - mapNodeType: 0
+    randomization: 0
   - mapNodeType: 2
+    randomization: 0.247
+  - mapNodeType: 1
+    randomization: 0.255
+  - mapNodeType: 0
     randomization: 0.5
+  - mapNodeType: 0
+    randomization: 0
+  - mapNodeType: 1
+    randomization: 0.267
+  - mapNodeType: 2
+    randomization: 0.418
+  - mapNodeType: 0
+    randomization: 0
   heightBetweenRows: 86.6
   distanceBetweenNodes: 100
-  offsetDistanceBetweenRows: 50
+  XOffsetDistanceBetweenRows: 50
 --- !u!1 &1747339426
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,9 +21,6 @@ public class MapGrid : MonoBehaviour
     public List<GameObject> row2;
     public List<GameObject> row3;
     public List<List<GameObject>> paths = new();
-    public List<GameObject> path1;
-    public List<GameObject> path2;
-    public List<GameObject> path3;
 
     [Header("Prefabs")]
     public GameObject start;
@@ -38,6 +35,8 @@ public class MapGrid : MonoBehaviour
     [Header("Map Settings")]
     public Vector3 OrientingPosition;
     public int numberOfRooms;
+    // Higher pathDensityIndex means more paths are generated
+    public int pathDensityIndex;
     public string KeepTag = "UsedNodes";
     public List<MapLayerOptions> layerOptions;
     [SerializeField] float heightBetweenRows = 86.6f;
@@ -65,7 +64,7 @@ public class MapGrid : MonoBehaviour
         CreateEncounter(new Vector3(OrientingPosition.x + XOffsetDistanceBetweenRows, OrientingPosition.y + heightBetweenRows));
 
 
-        // Creates grid of 3 x numberOfRooms points to procedurally generate map nodes
+        // Creates grid of 3 x numberOfRooms nodes to procedurally generate map nodes
         for (int i = row1.Count; i < numberOfRooms; i++)
         {
             AddPoints(OrientingPosition.x + distanceBetweenNodes * i, OrientingPosition.y);
@@ -96,12 +95,21 @@ public class MapGrid : MonoBehaviour
         CreateStairs(new Vector3(exit.transform.position.x - XOffsetDistanceBetweenRows, exit.transform.position.y), horStairs);
 
         // Creates path and stairs
-        CreatePath(path1);
-        CreatePath(path2);
-        CreatePath(path3);
+        if (pathDensityIndex < 1)
+        {
+            Debug.Log("Number of Paths needs to be greater than 0");
+        }
+
+
+        for (int i = 0; i < pathDensityIndex; i++)
+        {
+            paths.Add(new List<GameObject>());
+            CreatePath(paths[i], i);
+        }
+
         InstantiateStairs();
 
-        // removes any unused assets generated
+        // removes any unused nodes generated
         GameObject[] unusedObjects = GameObject.FindGameObjectsWithTag("NotUsed");
         foreach (GameObject node in unusedObjects)
         {
@@ -160,34 +168,66 @@ public class MapGrid : MonoBehaviour
         }
     }
     // Sorts nodes into rows to draw lines
-    void CreatePath(List<GameObject> pathNodes)
+    void CreatePath(List<GameObject> pathNodes, int currentPathIndex)
     {
         bool repeat = true;
         while (repeat == true)
         {
             pathNodes.Clear();
             pathNodes.Add(start);
-            int count = 1;
             for (int i = 1; i < numberOfRooms + 2; i++)
             {
-                int random = UnityEngine.Random.Range(0, 2);
-                if (count == 1)
+                float random = UnityEngine.Random.Range(0f, 1f);
+                GameObject lastNode = pathNodes[i - 1];
+                int lastNodeRow = GetNodeRow(lastNode);
+                if (lastNodeRow == 1)
                 {
-                    if (random == 0 && i < 4)
+                    if (lastNode == start)
                     {
-                        pathNodes.Add(row1[i]);
-                        row1[i].tag = KeepTag;
+                        if (random < 0.5 && i < numberOfRooms)
+                        {
+                            pathNodes.Add(row1[i]);
+                            row1[i].tag = KeepTag;
+                        }
+                        else
+                        {
+                            pathNodes.Add(row2[i - 1]);
+                            row2[i - 1].tag = KeepTag;
+                        }
                     }
                     else
                     {
-                        pathNodes.Add(row2[i - 1]);
-                        row2[i - 1].tag = KeepTag;
-                        count += 1;
+                        if (i < (numberOfRooms + 2) / 3)
+                        {
+                            if (random < 0.8)
+                            {
+                                pathNodes.Add(row1[i]);
+                                row1[i].tag = KeepTag;
+                            }
+                            else
+                            {
+                                pathNodes.Add(row2[i - 1]);
+                                row2[i - 1].tag = KeepTag;
+                            }
+                        }
+                        else
+                        {
+                            if (random < 0.6 && i < numberOfRooms)
+                            {
+                                pathNodes.Add(row1[i]);
+                                row1[i].tag = KeepTag;
+                            }
+                            else
+                            {
+                                pathNodes.Add(row2[i - 1]);
+                                row2[i - 1].tag = KeepTag;
+                            }
+                        }
                     }
                 }
-                else if (count == 2)
+                else if (lastNodeRow == 2)
                 {
-                    if (random == 0 && i < 5)
+                    if (random < 0.7 && i < numberOfRooms + 1)
                     {
                         pathNodes.Add(row2[i - 1]);
                         row2[i - 1].tag = KeepTag;
@@ -196,7 +236,6 @@ public class MapGrid : MonoBehaviour
                     {
                         pathNodes.Add(row3[i - 2]);
                         row3[i - 2].tag = KeepTag;
-                        count += 1;
                     }
                 }
                 else
@@ -205,9 +244,8 @@ public class MapGrid : MonoBehaviour
                     row3[i - 2].tag = KeepTag;
                 }
             }
-            if (paths.Count == 0)
+            if (paths[0].Equals(pathNodes))
             {
-                paths.Add(pathNodes);
                 repeat = false;
                 for (int i = 0; i < pathNodes.Count - 1; i++)
                 {
@@ -217,9 +255,8 @@ public class MapGrid : MonoBehaviour
             }
             else
             {
-                if (!CheckDuplicatePath(pathNodes))
+                if (!CheckDuplicatePath(pathNodes, currentPathIndex))
                 {
-                    paths.Add(pathNodes);
                     repeat = false;
                     for (int i = 0; i < pathNodes.Count - 1; i++)
                     {
@@ -283,12 +320,15 @@ public class MapGrid : MonoBehaviour
             }
         }
     }
+
     // Creates list of stair points to generate them with no copies in the same spot
     void InstantiateStairs()
     {
-        ListStairPoints(StairsPoints, path1);
-        ListStairPoints(StairsPoints, path2);
-        ListStairPoints(StairsPoints, path3);
+        foreach (var path in paths)
+        {
+            ListStairPoints(StairsPoints, path);
+        }
+
         for (int i = 0; i < StairsPoints.Count; i++)
         {
             CreateStairs(StairsPoints[i], stairDirections[i]);
@@ -296,10 +336,10 @@ public class MapGrid : MonoBehaviour
     }
     // Generates stairs
 
-    bool CheckDuplicatePath(List<GameObject> path)
+    bool CheckDuplicatePath(List<GameObject> path, int currentIndex)
     {
         bool duplicate = false;
-        for (int i = 0; i < paths.Count; i++)
+        for (int i = 0; i < currentIndex; i++)
         {
             bool dup = true;
             for (int j = 0; j < paths[i].Count; j++)
@@ -308,6 +348,17 @@ public class MapGrid : MonoBehaviour
             }
             duplicate |= dup;
         }
+
+        for (int i = currentIndex + 1; i < paths.Count; i++)
+        {
+            bool dup = true;
+            for (int j = 0; j < paths[i].Count; j++)
+            {
+                dup &= paths[i][j] == path[j];
+            }
+            duplicate |= dup;
+        }
+
         return duplicate;
     }
 
@@ -325,9 +376,9 @@ public class MapGrid : MonoBehaviour
     private void GenerateRandomNode(int i, Vector3 point)
     {
         // THIS IS FOR DEBUGGING PURPOSES
-        if (layerOptions.Count < numberOfRooms - 1)
+        if (layerOptions.Count != numberOfRooms - 1)
         {
-            Debug.Log("There are unequal amounts of layerOptions and numberOfRooms");
+            Debug.Log("There are unequal amounts of layerOptions and numberOfRooms. layerOptions.Length should be (numberOfRooms - 1).");
         }
 
         float random = UnityEngine.Random.Range(0f, 1f);
@@ -336,18 +387,18 @@ public class MapGrid : MonoBehaviour
             float r = UnityEngine.Random.Range(0f, 1f);
             if (layerOptions[i].mapNodeType == MapNodeType.Encounter)
             {
-                if (r < 0.8f)
+                if (r < 0.6f)
                 {
-                    CreateShop(point);
+                    CreateEvent(point);
                 }
                 else
                 {
-                    CreateEvent(point);
+                    CreateShop(point);
                 }
             }
             else if (layerOptions[i].mapNodeType == MapNodeType.Event)
             {
-                if (r < 0.8f)
+                if (r < 0.6f)
                 {
                     CreateEncounter(point);
                 }
@@ -358,7 +409,7 @@ public class MapGrid : MonoBehaviour
             }
             else
             {
-                if (r < 0.8f)
+                if (r < 0.6f)
                 {
                     CreateEncounter(point);
                 }
@@ -386,6 +437,22 @@ public class MapGrid : MonoBehaviour
             {
                 Debug.Log("Invalid layer node type for layer: " + (i + 2));
             }
+        }
+    }
+
+    private int GetNodeRow(GameObject node)
+    {
+        if (node.transform.position.y == OrientingPosition.y)
+        {
+            return 1;
+        }
+        else if (node.transform.position.y == OrientingPosition.y + heightBetweenRows)
+        {
+            return 2;
+        }
+        else
+        {
+            return 3;
         }
     }
 }
