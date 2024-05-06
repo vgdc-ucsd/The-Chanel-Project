@@ -29,7 +29,7 @@ public class ShopManager : MonoBehaviour
     void Start()
     {
         //TESTING VALUE
-        playerGold = 1000;
+        playerGold = 4;
 
         goldText.text = "Gold: " + playerGold.ToString();
     }
@@ -56,7 +56,7 @@ public class ShopManager : MonoBehaviour
 
     
     // OnClick Function from ShopCardInteractable
-    public void purchase(Card card)
+    public bool purchase(Card card)
     {
         if(card.ShopCost <= playerGold)
         {
@@ -64,11 +64,13 @@ public class ShopManager : MonoBehaviour
             playerDeck.addCard(card);
             playerGold -= card.ShopCost;
             goldText.text = "Gold: " + playerGold.ToString();
+            return true;
         }
         else
         {
             //TODO: Set up Proper Response to Insufficient Funds
             Debug.Log("Insufficient Funds");
+            return false;
         }
     }
 

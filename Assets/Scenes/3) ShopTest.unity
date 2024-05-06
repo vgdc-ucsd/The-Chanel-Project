@@ -732,7 +732,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 225614047}
         m_TargetAssemblyTypeName: ShopChangeScene, Assembly-CSharp
-        m_MethodName: openDeck
+        m_MethodName: leaveShop
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
