@@ -11,9 +11,23 @@ using UnityEngine;
 public class SpellCard : Card
 {
     public override CardInteractable CardInteractableRef { get; set; }
+    public Spell spell;
 
     public override Card Clone()
     {
-        throw new System.NotImplementedException();
+        SpellCard copy = (SpellCard)ScriptableObject.CreateInstance("SpellCard");
+
+        copy.Name = this.Name;
+        copy.ManaCost = this.ManaCost;
+        copy.Artwork = this.Artwork;
+        copy.CurrentTeam = this.CurrentTeam;
+        copy.CardInteractableRef = this.CardInteractableRef;
+        copy.spell = this.spell;
+
+        Debug.LogWarning("Spell card cloning is WIP!");
+
+        return copy;
     }
+
+
 }

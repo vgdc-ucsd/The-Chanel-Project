@@ -50,6 +50,7 @@ public class Board
         CardSlots[pos.ToRowColV2().x, pos.ToRowColV2().y] = card;
     }
 
+    // this should only be called on valid placements
     public void PlayCard(UnitCard card, BoardCoords pos, CharStatus status, DuelInstance duel) {
         if(IsOutOfBounds(pos)) {
             Debug.LogWarning("Tried to play card at out of bounds position");

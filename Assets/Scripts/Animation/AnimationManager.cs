@@ -130,7 +130,7 @@ public class AnimationManager : MonoBehaviour
 
     public IEnumerator PlaceUnitCard(UnitCard c, BoardCoords pos) {
         if(c.UnitCardInteractableRef == null) c.UnitCardInteractableRef = (UnitCardInteractable) DuelManager.Instance.UI.GenerateCardInteractable(c); // TODO cleanup
-        c.UnitCardInteractableRef.PlaceCard(pos);
+        c.UnitCardInteractableRef.UIPlaceCard(pos);
         yield return null;
     }
 
