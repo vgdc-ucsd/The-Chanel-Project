@@ -142,4 +142,5 @@ public class PlayerInputController: MonoBehaviour
         }
         DuelManager.Instance.UI.UpdateStatus(DuelManager.Instance.MainDuel);
     }
+   
 }

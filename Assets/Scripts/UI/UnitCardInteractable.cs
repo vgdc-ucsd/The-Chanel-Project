@@ -52,7 +52,7 @@ public class UnitCardInteractable : CardInteractable,
     }
 
     // Updates UI to show card being played
-    public void PlaceCard(BoardCoords pos)
+    public void UIPlaceCard(BoardCoords pos)
     {
         TileInteractable tile = BoardInterface.Instance.GetTile(pos);
         if (tile != null) {
@@ -81,37 +81,37 @@ public class UnitCardInteractable : CardInteractable,
         DrawArrows();
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    // attempts to play card at specified position, and calls Board to play card
+    // if successful
+    public override void TryPlayCard(BoardCoords pos)
     {
-        if(inHand) {
-            // Check if the drag ended over a TileInteractable using a raycast
-            List<RaycastResult> results = new List<RaycastResult>();
-            raycaster.Raycast(eventData, results);
-            TileInteractable tile = null;
+        if (!DuelManager.Instance.Settings.RestrictPlacement || pos.y <= 1)
+        {
+            // Check out of bounds
+            if (DuelManager.Instance.MainDuel.DuelBoard.IsOutOfBounds(pos)) return;
+            if (DuelManager.Instance.MainDuel.DuelBoard.IsOccupied(pos)) return;
 
-            foreach(RaycastResult hit in results) {
-                if(hit.gameObject.GetComponent<TileInteractable>() != null) {
-                    tile = hit.gameObject.GetComponent<TileInteractable>();
-                    break;
-                }
-            }
+            // TODO
+            //if (currentTeam != card.team) {
+            //    Debug.Log($"Tried to play {card.team} card while on {currentTeam} turn");
+            //    return;
+            //}
+            CharStatus charStatus;
+            if (card.CurrentTeam == Team.Player) charStatus = DuelManager.Instance.MainDuel.PlayerStatus;
+            else charStatus = DuelManager.Instance.MainDuel.EnemyStatus;
 
-            if (tile != null)
+            if (!charStatus.CanUseMana(card.ManaCost))
             {
-                if (!DuelManager.Instance.Settings.RestrictPlacement) PlayerInputController.Instance.TryPlaceCard(card, tile.location);
-                else if (tile.location.y <= 1)
-                { // can't place in the row closest to enemy
-                    PlayerInputController.Instance.TryPlaceCard(card, tile.location);
-                }
-            }
-            // Reorganize the player's hand
-            if(handInterface == null) {
-                Debug.Log("Could not organize hand, handInterface is uninitialized");
+                Debug.Log("Not enough Mana"); //TODO: UI feedback
                 return;
             }
-            
+            //if(card.team == Team.Enemy) MirrorAttacks(card); // this should only be called once per enemy card
+
+            DuelManager.Instance.MainDuel.DuelBoard.PlayCard(card, pos, charStatus, DuelManager.Instance.MainDuel);
+            IEnumerator ie = AnimationManager.Instance.PlaceUnitCard(card, pos);
+            AnimationManager.Instance.Play(ie);
+            DuelManager.Instance.UI.UpdateStatus(DuelManager.Instance.MainDuel);
         }
-        handInterface.OrganizeCards();
     }
 
     public void OnPointerDown(PointerEventData eventData)

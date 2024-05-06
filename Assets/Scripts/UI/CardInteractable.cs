@@ -80,6 +80,41 @@ public abstract class CardInteractable : MonoBehaviour,
         }
     }
 
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (inHand)
+        {
+            // Check if the drag ended over a TileInteractable using a raycast
+            List<RaycastResult> results = new List<RaycastResult>();
+            raycaster.Raycast(eventData, results);
+            TileInteractable tile = null;
+
+            foreach (RaycastResult hit in results)
+            {
+                if (hit.gameObject.GetComponent<TileInteractable>() != null)
+                {
+                    tile = hit.gameObject.GetComponent<TileInteractable>();
+                    break;
+                }
+            }
+
+            if (tile != null)
+            {
+                TryPlayCard(tile.location);
+            }
+            // Reorganize the player's hand
+            if (handInterface == null)
+            {
+                Debug.Log("Could not organize hand, handInterface is uninitialized");
+                return;
+            }
+
+        }
+        handInterface.OrganizeCards();
+    }
+
+    public abstract void TryPlayCard(BoardCoords pos);
+
     public void SetSelected(bool selected)
     {
         if (selected)

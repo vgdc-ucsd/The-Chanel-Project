@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     public TileInteractable TemplateTile;
     //public CardInteractable TemplateCard;
     public UnitCardInteractable TemplateUnitCard;
+    public SpellCardInteractable TemplateSpellCard;
 
     // Interface GameObjects
     public BoardInterface BoardContainer;
@@ -44,7 +45,15 @@ public class UIManager : MonoBehaviour
             return ci;
         }
         else if(c is SpellCard) {
-            throw new NotImplementedException();
+            SpellCardInteractable ci = Instantiate(TemplateSpellCard);
+            ci.card = (SpellCard)c;
+            ci.SetCardInfo();
+
+            if (c.CurrentTeam == Team.Player) ci.handInterface = Hand;
+            else ci.handInterface = EnemyHand;
+
+            ci.handInterface.cardObjects.Add(ci);
+            return ci;
         }
         else {
             Debug.LogError("Unidentified card type");
