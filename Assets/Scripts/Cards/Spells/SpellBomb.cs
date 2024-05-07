@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-
+[CreateAssetMenu(fileName = "Bomb Spell Card", menuName = "Cards/SpellBomb")]
 public class SpellBomb : SpellCard , ISpellTypeTile
 {
     int damage = 2;
@@ -10,7 +10,6 @@ public class SpellBomb : SpellCard , ISpellTypeTile
     public bool CastSpell(DuelInstance duel, BoardCoords pos)
     {
         List<UnitCard> damagedCards = duel.DuelBoard.GetCardsInSquare(pos, area);
-        Debug.Log(damagedCards.ToCommaSeparatedString());
         foreach(UnitCard card in damagedCards)
         {
             duel.DealDamage(card, damage, true);

@@ -173,6 +173,21 @@ public class Board
         return cards;
     }
 
+    public List<UnitCard> GetCardsInRow(int y)
+    {
+        if (IsOutOfBounds(new BoardCoords(0,y)))
+        {
+            return null;
+        }
+        List<UnitCard> cards = new List<UnitCard> ();
+        for (int i = 0; i < Cols; i++)
+        {
+            UnitCard card = GetCard(i, y);
+            if (card != null) cards.Add(card);
+        }
+        return cards;
+    }
+
     public bool OnEnemyEdge(BoardCoords pos)
     {
         return (pos.y == Rows - 1);

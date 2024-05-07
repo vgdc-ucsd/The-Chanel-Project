@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
-public class SpellPortal : Spell, ISpellTypeTwoUnits
+public class SpellPortal : SpellCard, ISpellTypeTwoUnits
 {
     public bool CastSpell(DuelInstance duel, UnitCard unit1, UnitCard unit2)
     {

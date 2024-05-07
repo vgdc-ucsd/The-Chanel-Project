@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f15f282beda789c4686a2671c4e99758, type: 3}
-  m_Name: SpellsOnly
+  m_Script: {fileID: 11500000, guid: 8178003525d2200409cb64cdf3154a48, type: 3}
+  m_Name: Tsunami Spell Card
   m_EditorClassIdentifier: 
-  CardList:
-  - {fileID: 11400000, guid: 8c7da54017624ab4ea2c64f891423225, type: 2}
-  - {fileID: 11400000, guid: c1af7b6de9f691a4ebd260c395c4f39f, type: 2}
+  Name: Tsunami
+  ManaCost: 2
+  Artwork: {fileID: 0}
+  CurrentTeam: 2
