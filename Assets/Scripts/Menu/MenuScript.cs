@@ -8,6 +8,7 @@ public class MenuScript : MonoBehaviour
     public static MenuScript Instance { get; set; }
     private static int TITLE_INDEX = 0;
     private static int MAP_INDEX = 1;
+    private static int INVENTORY_INDEX = 6;
 
     public void Awake()
     {
@@ -21,6 +22,19 @@ public class MenuScript : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
+    }
+
+    // For Debugging & Swapping Scenes Easily
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            LoadMap();
+        }
+        else if (Input.GetKeyDown(KeyCode.I))
+        {
+            LoadInventory();
+        }
     }
 
     public void PlayGame()
@@ -41,5 +55,15 @@ public class MenuScript : MonoBehaviour
     public void LoadMap()
     {
         SceneManager.LoadScene(MAP_INDEX);
+    }
+
+    public void LoadTitle()
+    {
+        SceneManager.LoadScene(TITLE_INDEX);
+    }
+
+    public void LoadInventory()
+    {
+        SceneManager.LoadScene(INVENTORY_INDEX);
     }
 }

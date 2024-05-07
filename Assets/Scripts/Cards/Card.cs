@@ -19,6 +19,7 @@ public class Card : ScriptableObject
     public int AttackDamage; // OLD
     public int ManaCost;
     public bool isSelected = false;
+    public bool CanMove = true;
 
     public BoardCoords pos;
     [HideInInspector] public bool isActive = false;
@@ -48,6 +49,8 @@ public class Card : ScriptableObject
          -1,-1,-1};
 
     public List<Attack> Attacks = new List<Attack>();
+    public List<Ability> Abilities = new List<Ability>();
+
     private void Awake()
     {
         for (int i = 0; i < 8; i++)
@@ -81,12 +84,15 @@ public class Card : ScriptableObject
         if (Health <= 0)
         {
             DuelManager.Instance.DC.GetCurrentBoard().RemoveCard(pos);
-            MonoBehaviour.Destroy(CardInteractableRef.gameObject);
+            IEnumerator ie = DuelManager.Instance.AM.CardDeath(CardInteractableRef);
+            QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+            DuelManager.Instance.AM.QueueAnimation(qa);
         }
     }
 
     public void Place(BoardCoords pos)
     {
+        CanMove = true;
         isActive = true;
         CardInteractableRef.PlaceCard(pos);
     }

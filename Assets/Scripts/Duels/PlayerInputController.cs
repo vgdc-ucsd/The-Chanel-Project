@@ -1,5 +1,6 @@
 
 // Handles player input of actions on the board, e.g. move card, activate abilities, etc
+using Unity.VisualScripting;
 using UnityEngine;
 
 enum ControlAction
@@ -58,8 +59,10 @@ public class PlayerInputController: MonoBehaviour
             return;
         }
         SelectCard(card, true);
-        SetAction(ControlAction.Move);
-
+        
+        if(card.CanMove) {
+            SetAction(ControlAction.Move);
+        }
     }
 
     // Toggles the selection state of a card and updates the previously selected card
@@ -96,6 +99,7 @@ public class PlayerInputController: MonoBehaviour
     {
         if (currentAction == ControlAction.Move)
         {
+            // TODO check that it is the player's turn
             if (DuelManager.Instance.DC.GetCurrentBoard().IsOccupied(pos)) return;
             if (!DuelManager.Instance.DC.GetCurrentBoard().GetEmptyAdjacentTiles(selectedCard.pos).Contains(pos)) return;
             TileInteractable tile = BoardInterface.Instance.GetTile(pos);

@@ -52,6 +52,7 @@ public class BasicDuelAI
             return;
         }
         List<BoardCoords> legalTiles = GetLegalTiles(dc.GetCurrentBoard());
+        if(legalTiles.Count == 0) return;
         BoardCoords randomTile = legalTiles[Random.Range(0, legalTiles.Count)];
         int index = Random.Range(0, status.cards.Count);
         Card cardToPlay = status.cards[index];
