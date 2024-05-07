@@ -131,7 +131,7 @@ public class DuelInstance
             drawnCards.Add(c);
         }
 
-        AnimationManager.Instance.OrganizeCardsAnimation(this, drawnCards);
+        AnimationManager.Instance.OrganizeCardsAnimation(this, drawnCards, team);
     }
 
     public int DealDamage(UnitCard target, int damage)

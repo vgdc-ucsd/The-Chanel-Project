@@ -22,6 +22,7 @@ public class DuelManager : MonoBehaviour
     public DuelInstance MainDuel;
     private MctsAI ai;
     private bool awaitingAI;
+    private Team currentTeam;
 
     void Awake() {
         // Singleton
@@ -49,6 +50,10 @@ public class DuelManager : MonoBehaviour
         // AI setup
         ai = new MctsAI();
         awaitingAI = false;
+
+        // Set Starting Team
+        if (Settings.EnemyGoesFirst) currentTeam = Team.Enemy;
+        else currentTeam = Team.Player;
 
         // UI Setup
         UI.Initialize();
@@ -81,7 +86,16 @@ public class DuelManager : MonoBehaviour
         // TODO can only end turn if awaitingAI is false
 
         if(Settings.EnablePVPMode) {
-            // TODO
+            if (currentTeam == Team.Player) {
+                MainDuel.ProcessBoard(Team.Player);
+                AnimationManager.Instance.Enqueue(MainDuel.Animations);
+                currentTeam = Team.Enemy;
+            }
+            else {
+                MainDuel.ProcessBoard(Team.Enemy);
+                AnimationManager.Instance.Enqueue(MainDuel.Animations);
+                currentTeam = Team.Player;
+            }
         }
         else {
             MainDuel.ProcessBoard(Team.Player);
