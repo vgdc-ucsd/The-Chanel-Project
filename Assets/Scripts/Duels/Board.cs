@@ -96,7 +96,7 @@ public class Board
             if(a.Condition == ActivationCondition.OnMove) a.Activate(card, info);
         }
         card.UnitCardInteractableRef.UpdateCardPos();
-        
+
     }
 
     public void RenewMovement(Team t) {
@@ -125,7 +125,18 @@ public class Board
 
         return tiles;
     }
- 
+
+    public List<UnitCard> GetAdjacentCards(BoardCoords pos)
+    {
+        List<UnitCard> cards = new List<UnitCard>();
+        foreach (BoardCoords tile in GetAdjacentTiles(pos))
+        {
+            UnitCard card = GetCard(tile);
+            if (card != null) cards.Add(card);
+        }
+        return cards;
+    }
+
     public List<BoardCoords> GetEmptyAdjacentTiles(BoardCoords pos)
     {
         List<BoardCoords> tiles = GetAdjacentTiles(pos);
