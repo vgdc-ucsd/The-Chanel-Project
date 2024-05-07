@@ -134,7 +134,7 @@ public class DuelInstance
         AnimationManager.Instance.OrganizeCardsAnimation(this, drawnCards, team);
     }
 
-    public int DealDamage(UnitCard target, int damage)
+    public int DealDamage(UnitCard target, int damage, bool immediate = false)
     {
         int overkillDamage = 0;
         target.TakeDamage(this, damage);
@@ -144,7 +144,8 @@ public class DuelInstance
         {
             overkillDamage = -1*target.Health;
             DuelBoard.RemoveCard(target.Pos);
-            AnimationManager.Instance.DeathAnimation(this, target);
+            if (immediate && this == DuelManager.Instance.MainDuel) AnimationManager.Instance.CardDeathImmediate(target);
+            else AnimationManager.Instance.DeathAnimation(this, target);
         }
 
         return overkillDamage;

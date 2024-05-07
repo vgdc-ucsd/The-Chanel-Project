@@ -12,3 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 587eed17cec12ad4898d970d1d7ce509, type: 3}
   m_Name: Bomb Spell
   m_EditorClassIdentifier: 
+  Name: Bomb
+  ManaCost: 2
+  Artwork: {fileID: 0}
+  CurrentTeam: 2

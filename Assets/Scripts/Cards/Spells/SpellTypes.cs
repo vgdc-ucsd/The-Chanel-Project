@@ -1,13 +1,13 @@
 public interface ISpellTypeAny {
-    public void CastSpell();
+    public bool CastSpell(DuelInstance duel);
 }
 public interface ISpellTypeTile {
-    public void CastSpell(BoardCoords pos);
+    public bool CastSpell(DuelInstance duel, BoardCoords pos);
 }
 public interface ISpellTypeUnit 
 {
-    public void CastSpell(UnitCard unit);
+    public bool CastSpell(DuelInstance duel, UnitCard unit);
 }
 public interface ISpellTypeTwoUnits {
-    public void CastSpell(UnitCard unit1, UnitCard unit2);
+    public bool CastSpell(DuelInstance duel, UnitCard unit1, UnitCard unit2);
 }

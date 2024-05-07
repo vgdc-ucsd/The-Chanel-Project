@@ -8,23 +8,21 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Spell Card", menuName = "Cards/SpellCard")]
 
 // Spells do not occupy a space on the board when played
-public class SpellCard : Card
+public abstract class SpellCard : Card
 {
     public override CardInteractable CardInteractableRef { get; set; }
-    public Spell spell;
 
     public override Card Clone()
     {
-        SpellCard copy = (SpellCard)ScriptableObject.CreateInstance("SpellCard");
+        SpellCard copy = (SpellCard)ScriptableObject.CreateInstance(this.GetType());
 
         copy.Name = this.Name;
         copy.ManaCost = this.ManaCost;
         copy.Artwork = this.Artwork;
         copy.CurrentTeam = this.CurrentTeam;
         copy.CardInteractableRef = this.CardInteractableRef;
-        copy.spell = this.spell;
 
-        Debug.LogWarning("Spell card cloning is WIP!");
+        //Debug.LogWarning("Spell card cloning is WIP!");
 
         return copy;
     }
