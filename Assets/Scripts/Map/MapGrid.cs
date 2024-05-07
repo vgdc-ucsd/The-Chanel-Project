@@ -21,6 +21,7 @@ public class MapGrid : MonoBehaviour
     public List<GameObject> row2;
     public List<GameObject> row3;
     public List<List<GameObject>> paths = new();
+    [SerializeField] GameObject contents;
 
     [Header("Prefabs")]
     public GameObject start;
@@ -49,7 +50,8 @@ public class MapGrid : MonoBehaviour
     void Start()
     {
         // Sets starting position of character
-        OrientingPosition = new Vector3(start.transform.position.x, start.transform.position.y);
+        OrientingPosition = new Vector2(start.GetComponent<RectTransform>().localPosition.x, start.GetComponent<RectTransform>().localPosition.y);
+
 
         layers = new(numberOfRooms - 1);
         for (int i = 0; i < layers.Capacity; i++)
@@ -148,7 +150,7 @@ public class MapGrid : MonoBehaviour
     // Instantiates Event at point
     void CreateStairs(Vector3 point, GameObject stairsType)
     {
-        GameObject clone = Instantiate(stairsType, point, stairsType.transform.rotation, stairsType.transform.parent);
+        GameObject clone = Instantiate(stairsType, point, stairsType.transform.rotation, contents.transform);
         clone.tag = "UsedNodes";
     }
     // Instantiates stairs at point
@@ -156,15 +158,15 @@ public class MapGrid : MonoBehaviour
     {
         if (point.y == OrientingPosition.y)
         {
-            row1.Add(Instantiate(type, point, transform.rotation, type.transform.parent));
+            row1.Add(Instantiate(type, point, transform.rotation, contents.transform));
         }
         else if (point.y == OrientingPosition.y + heightBetweenRows)
         {
-            row2.Add(Instantiate(type, point, transform.rotation, type.transform.parent));
+            row2.Add(Instantiate(type, point, transform.rotation, contents.transform));
         }
         else if (point.y == OrientingPosition.y + (2 * heightBetweenRows))
         {
-            row3.Add(Instantiate(type, point, transform.rotation, type.transform.parent));
+            row3.Add(Instantiate(type, point, transform.rotation, contents.transform));
         }
     }
     // Sorts nodes into rows to draw lines
