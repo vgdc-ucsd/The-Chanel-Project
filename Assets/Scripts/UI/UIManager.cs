@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     public TileInteractable TemplateTile;
     //public CardInteractable TemplateCard;
     public UnitCardInteractable TemplateUnitCard;
+    public SpellCardInteractable TemplateSpellCard;
 
     // Interface GameObjects
     public BoardInterface BoardContainer;
@@ -22,24 +23,37 @@ public class UIManager : MonoBehaviour
     public PlayerUI Player;
     public PlayerUI Enemy;
 
-    public void SetupBoard() {
+    public void Initialize() {
         BoardContainer.CreateBoard();
     }
 
-    public void SetupStatus() {
-        Player.Status = DuelManager.Instance.PlayerStatus;
-        Enemy.Status = DuelManager.Instance.EnemyStatus;
+    public void UpdateStatus(DuelInstance state) {
+        Player.UpdateUI(state.PlayerStatus);
+        Enemy.UpdateUI(state.EnemyStatus);
     }
 
     public CardInteractable GenerateCardInteractable(Card c) {
-        if(c.GetType() == typeof(UnitCard)) {
+        if(c is UnitCard) {
             UnitCardInteractable ci = Instantiate(TemplateUnitCard);
             ci.card = (UnitCard) c;
             ci.SetCardInfo();
+
+            if(c.CurrentTeam == Team.Player) ci.handInterface = Hand;
+            else ci.handInterface = EnemyHand;
+
+            ci.handInterface.cardObjects.Add(ci);
             return ci;
         }
-        if(c.GetType() == typeof(SpellCard)) {
-            throw new NotImplementedException();
+        else if(c is SpellCard) {
+            SpellCardInteractable ci = Instantiate(TemplateSpellCard);
+            ci.card = (SpellCard)c;
+            ci.SetCardInfo();
+
+            if (c.CurrentTeam == Team.Player) ci.handInterface = Hand;
+            else ci.handInterface = EnemyHand;
+
+            ci.handInterface.cardObjects.Add(ci);
+            return ci;
         }
         else {
             Debug.LogError("Unidentified card type");

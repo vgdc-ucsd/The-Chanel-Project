@@ -21,7 +21,7 @@ public class CharStatus
     PlayerSettings playerSettings;
     DuelSettings duelSettings;
 
-    public CharStatus(Team team) {
+    public CharStatus(Team team, Deck deck) {
         duelSettings = DuelManager.Instance.Settings;
         if(team == Team.Player || duelSettings.SameSettingsForBothPlayers) {
             playerSettings = duelSettings.Player;
@@ -35,14 +35,9 @@ public class CharStatus
         IsAlive = true;
         MaxHealth = playerSettings.MaxHealth;
         MaxMana = playerSettings.MaxMana;
-        ManaCapacity = 1; // double check
+        ManaCapacity = playerSettings.StartingMana;
         this.CharTeam = team;
-        if(team == Team.Player) {
-            Deck = DuelManager.Instance.PlayerDeck;
-        }
-        else {
-            Deck = DuelManager.Instance.EnemyDeck;
-        }
+        Deck = deck;
         Cards = new List<Card>();
     }
 
@@ -90,7 +85,7 @@ public class CharStatus
         Cards.Remove(card);
     }
 
-    public void TakeDamage(int damage)
+    public Team TakeDamage(int damage)
     {
         Health -= damage;
         if (Health <= 0)
@@ -99,23 +94,28 @@ public class CharStatus
             IsAlive = false;
             if (CharTeam == Team.Player)
             {
-                Debug.Log("Enemy Won!");
+                return Team.Enemy;
+                // TODO load scene as queueable animation
+
+                /* Debug.Log("Enemy Won!");
                 if (MenuScript.Instance != null)
                 {
                     MenuScript.Instance.LoadMap(); // Transitions into map - Kiichi
                     Debug.Log("SceneManager not Present: Failed to Load Map");
-                }
+                } */
             }
             else
             {
-                Debug.Log("Player Won!");
+                return Team.Player;
+                /* Debug.Log("Player Won!");
                 if (MenuScript.Instance != null)
                 {
                     MenuScript.Instance.LoadMap(); // Transitions into map - Kiichi
                     Debug.Log("SceneManager not Present: Failed to Load Map");
-                }
+                } */
             }
         }
+        return Team.Neutral;
     }
 
     public void SetDeck(Deck deck)
@@ -134,11 +134,6 @@ public class CharStatus
         {
             Mana = MaxMana;
         }
-    }
-
-    public void ResetMana()
-    {
-        Mana = MaxMana;
     }
 
     public void GiveMana()

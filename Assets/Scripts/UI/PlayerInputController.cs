@@ -1,5 +1,6 @@
 
 // Handles player input of actions on the board, e.g. move card, activate abilities, etc
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ public class PlayerInputController: MonoBehaviour
                 currentAction = action;
                 return;
             case ControlAction.Move:
-                foreach (BoardCoords adj in DuelManager.Instance.CurrentBoard.GetEmptyAdjacentTiles(selectedCard.Pos))
+                foreach (BoardCoords adj in DuelManager.Instance.MainDuel.DuelBoard.GetEmptyAdjacentTiles(selectedCard.Pos))
                 {
                     BoardInterface.Instance.GetTile(adj).SetHighlight(true);
                 }
@@ -100,14 +101,46 @@ public class PlayerInputController: MonoBehaviour
         if (currentAction == ControlAction.Move)
         {
             // TODO check that it is the player's turn
-            if (DuelManager.Instance.CurrentBoard.IsOccupied(pos)) return;
-            if (!DuelManager.Instance.CurrentBoard.GetEmptyAdjacentTiles(selectedCard.Pos).Contains(pos)) return;
+            if (DuelManager.Instance.MainDuel.DuelBoard.IsOccupied(pos)) return;
+            if (!DuelManager.Instance.MainDuel.DuelBoard.GetEmptyAdjacentTiles(selectedCard.Pos).Contains(pos)) return;
             TileInteractable tile = BoardInterface.Instance.GetTile(pos);
 
-            DuelManager.Instance.CurrentBoard.MoveCard(selectedCard, pos, true);
+            DuelManager.Instance.MainDuel.DuelBoard.MoveCard(selectedCard, pos, DuelManager.Instance.MainDuel);
             SelectCard(selectedCard, false);
             selectedCard = null;
             SetAction(ControlAction.None);
         }
     }
+
+    public void TryPlaceCard(UnitCard card, BoardCoords pos) {
+        // Check out of bounds
+        if (DuelManager.Instance.MainDuel.DuelBoard.IsOutOfBounds(pos)) return;
+        if (DuelManager.Instance.MainDuel.DuelBoard.IsOccupied(pos)) return;
+
+        // TODO
+        //if (currentTeam != card.team) {
+        //    Debug.Log($"Tried to play {card.team} card while on {currentTeam} turn");
+        //    return;
+        //}
+        CharStatus charStatus;
+        if(card.CurrentTeam == Team.Player) charStatus = DuelManager.Instance.MainDuel.PlayerStatus;
+        else charStatus = DuelManager.Instance.MainDuel.EnemyStatus;
+       
+        if (!charStatus.CanUseMana(card.ManaCost))
+        {
+            Debug.Log("Not enough Mana"); //TODO: UI feedback
+            return;
+        }
+        //if(card.team == Team.Enemy) MirrorAttacks(card); // this should only be called once per enemy card
+
+        UnitCard cardCopy = (UnitCard)card.Clone();
+        //Debug.Log(cardCopy.name);
+        DuelManager.Instance.MainDuel.DuelBoard.PlayCard(cardCopy, pos, charStatus, DuelManager.Instance.MainDuel);
+        if(cardCopy is UnitCard) {
+            IEnumerator ie = AnimationManager.Instance.PlaceUnitCard(cardCopy, pos);
+            AnimationManager.Instance.Play(ie);
+        }
+        DuelManager.Instance.UI.UpdateStatus(DuelManager.Instance.MainDuel);
+    }
+   
 }

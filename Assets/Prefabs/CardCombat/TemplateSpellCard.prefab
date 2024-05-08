@@ -803,9 +803,9 @@ GameObject:
   - component: {fileID: 3382568235958084768}
   - component: {fileID: 4633144380959704258}
   - component: {fileID: 5767723507367173616}
-  - component: {fileID: 5529432279168170932}
+  - component: {fileID: 255992776724812640}
   m_Layer: 0
-  m_Name: TemplateUnitCard
+  m_Name: TemplateSpellCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -884,7 +884,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &5529432279168170932
+--- !u!114 &255992776724812640
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -893,7 +893,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7125500276102778040}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13e71afcf8941ef4cab29799eed01e37, type: 3}
+  m_Script: {fileID: 11500000, guid: 19b9cf6abca95704db171f9cdebb496e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   handInterface: {fileID: 0}
@@ -901,14 +901,10 @@ MonoBehaviour:
   CardName: {fileID: 8775277688575511005}
   CardCost: {fileID: 1935634880742371814}
   image: {fileID: 7934217333704476081}
-  defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 0.8443396, g: 0.8443396, b: 0.8443396, a: 1}
+  defaultColor: {r: 1, g: 1, b: 1, a: 0}
+  selectedColor: {r: 0.8431373, g: 0.8431373, b: 0.8431373, a: 0}
   inHand: 1
   card: {fileID: 0}
-  TemplateArrowPlayer: {fileID: 4576968097883469193, guid: fe365ff3c0c94f041a73df91789e03c2, type: 3}
-  TemplateArrowEnemy: {fileID: 67719645880803081, guid: 504658362447dc74a9d4f248d6be4fab, type: 3}
-  CardHealth: {fileID: 6426648206735701756}
-  CardAttack: {fileID: 8856066283348533103}
 --- !u!1 &7649041539445918436
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ public class HydraAbility : Ability
         get{ return ActivationCondition.OnReceiveDamage; }
     }
 
-    public override void Activate(Board b, UnitCard c, ActivationInfo Info)
+    public override void Activate(UnitCard c, ActivationInfo Info)
     {
         // Add 1 damage to each attack
         c.BaseDamage++;
@@ -19,9 +19,6 @@ public class HydraAbility : Ability
             atk.damage++;
         }
 
-        // Update UI
-        if(Info.IsMainDuel) {
-            c.CardInteractableRef.UpdateCardInfo();
-        }
+        AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, c);
     }
 }

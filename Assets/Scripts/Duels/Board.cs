@@ -20,7 +20,9 @@ public class Board
         for(int i = 0; i < Rows; i++) {
             for(int j = 0; j < Cols; j++) {
                 // guarenteed to be a UnitCard
-                clone.CardSlots[i, j] = (UnitCard) this.CardSlots[i, j].Clone();
+                if(this.CardSlots[i, j] != null) {
+                    clone.CardSlots[i, j] = (UnitCard) this.CardSlots[i, j].Clone();
+                }
             }
         }
         return clone;
@@ -48,7 +50,8 @@ public class Board
         CardSlots[pos.ToRowColV2().x, pos.ToRowColV2().y] = card;
     }
 
-    public void PlayCard(UnitCard card, BoardCoords pos, CharStatus status, bool mainDuel) {
+    // this should only be called on valid placements
+    public void PlayCard(UnitCard card, BoardCoords pos, CharStatus status, DuelInstance duel) {
         if(IsOutOfBounds(pos)) {
             Debug.LogWarning("Tried to play card at out of bounds position");
             return;
@@ -62,14 +65,14 @@ public class Board
             return;
         }
 
-        card.Place(pos);
+        card.Place(pos, duel);
         status.Cards.Remove(card);
         status.UseMana(card.ManaCost);
         SetCard(card, pos);
 
-        ActivationInfo info = new ActivationInfo(mainDuel);
+        ActivationInfo info = new ActivationInfo(duel);
         foreach(Ability a in card.Abilities) {
-            if(a.Condition == ActivationCondition.OnPlay) a.Activate(this, card, info);
+            if(a.Condition == ActivationCondition.OnPlay) a.Activate(card, info);
         }
     }
 
@@ -79,7 +82,7 @@ public class Board
         SetCard(null, pos);
     }
 
-    public void MoveCard(UnitCard card, BoardCoords pos, bool mainDuel)
+    public void MoveCard(UnitCard card, BoardCoords pos, DuelInstance duel)
     {
         // move card and update board and card data
         if (IsOutOfBounds(pos)) return;
@@ -88,12 +91,12 @@ public class Board
         SetCard(card, pos);
         card.Pos = pos;
         card.CanMove = false;
-        ActivationInfo info = new ActivationInfo(mainDuel);
+        ActivationInfo info = new ActivationInfo(duel);
         foreach(Ability a in card.Abilities) {
-            if(a.Condition == ActivationCondition.OnMove) a.Activate(this, card, info);
+            if(a.Condition == ActivationCondition.OnMove) a.Activate(card, info);
         }
         card.UnitCardInteractableRef.UpdateCardPos();
-        
+
     }
 
     public void RenewMovement(Team t) {
@@ -122,7 +125,18 @@ public class Board
 
         return tiles;
     }
- 
+
+    public List<UnitCard> GetAdjacentCards(BoardCoords pos)
+    {
+        List<UnitCard> cards = new List<UnitCard>();
+        foreach (BoardCoords tile in GetAdjacentTiles(pos))
+        {
+            UnitCard card = GetCard(tile);
+            if (card != null) cards.Add(card);
+        }
+        return cards;
+    }
+
     public List<BoardCoords> GetEmptyAdjacentTiles(BoardCoords pos)
     {
         List<BoardCoords> tiles = GetAdjacentTiles(pos);
@@ -154,6 +168,21 @@ public class Board
         foreach (BoardCoords tile in GetSquareTiles(pos, size))
         {
             UnitCard card = GetCard(tile);
+            if (card != null) cards.Add(card);
+        }
+        return cards;
+    }
+
+    public List<UnitCard> GetCardsInRow(int y)
+    {
+        if (IsOutOfBounds(new BoardCoords(0,y)))
+        {
+            return null;
+        }
+        List<UnitCard> cards = new List<UnitCard> ();
+        for (int i = 0; i < Cols; i++)
+        {
+            UnitCard card = GetCard(i, y);
             if (card != null) cards.Add(card);
         }
         return cards;

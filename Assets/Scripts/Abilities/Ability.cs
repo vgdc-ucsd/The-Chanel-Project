@@ -12,13 +12,13 @@ public enum ActivationCondition {
 }
 
 public struct ActivationInfo {
-    public ActivationInfo(bool mainDuel) {
-        IsMainDuel = mainDuel;
+    public ActivationInfo(DuelInstance duel) {
+        Duel = duel;
         OverkillDamage = 0;
         TotalDamage = 0;
     }
 
-    public bool IsMainDuel;
+    public DuelInstance Duel;
     public int OverkillDamage;
     public int TotalDamage;
 }
@@ -26,6 +26,6 @@ public struct ActivationInfo {
 [Serializable]
 public abstract class Ability : ScriptableObject
 {
-    public abstract void Activate(Board b, UnitCard c, ActivationInfo info);
+    public abstract void Activate(UnitCard c, ActivationInfo info);
     public abstract ActivationCondition Condition{ get; }
 }

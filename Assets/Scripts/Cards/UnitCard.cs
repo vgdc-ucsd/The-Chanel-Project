@@ -18,7 +18,7 @@ public class UnitCard : Card
     [HideInInspector] public BoardCoords Pos;
     [HideInInspector] public bool isSelected = false;
     [HideInInspector] public int BaseDamage = 1; // set in the custom card editor
-    [HideInInspector] public override CardInteractable CardInteractableRef { get {return UnitCardInteractableRef;} }
+    [HideInInspector] public override CardInteractable CardInteractableRef { get {return UnitCardInteractableRef;} set{UnitCardInteractableRef = (UnitCardInteractable)value;} }
     public UnitCardInteractable UnitCardInteractableRef;
 
     public List<Attack> Attacks = new List<Attack>();
@@ -34,9 +34,9 @@ public class UnitCard : Card
         copy.isSelected = false;
         copy.CanMove = this.CanMove;
         copy.Pos = this.Pos;
-        copy.Artwork = null; // maybe
+        copy.Artwork = this.Artwork;
         copy.CurrentTeam = this.CurrentTeam;
-        copy.UnitCardInteractableRef = null;
+        copy.UnitCardInteractableRef = this.UnitCardInteractableRef;
 
         copy.Attacks = new List<Attack>();
         foreach(Attack atk in this.Attacks) {
@@ -64,31 +64,34 @@ public class UnitCard : Card
         return null;
     }
 
-    public void TakeDamage(Board board, int damage, bool mainDuel) {
+    public void TakeDamage(DuelInstance duel, int damage) {
         Health -= damage;
-        ActivationInfo info = new ActivationInfo(mainDuel);
+        ActivationInfo info = new ActivationInfo(duel);
         info.TotalDamage = damage;
         if(Health < 0) info.OverkillDamage = Health*-1;
 
         // On receive damage but still alive
         if (Health > 0) {
+            AnimationManager.Instance.UpdateCardInfoAnimation(duel, this);
             foreach (Ability a in Abilities) {      
-                if(a.Condition == ActivationCondition.OnReceiveDamage) a.Activate(board, this, info);
+                if(a.Condition == ActivationCondition.OnReceiveDamage) a.Activate(this, info);
             }
         }
         // On death
         else {
             foreach(Ability a in Abilities) {
-                if (a.Condition == ActivationCondition.OnDeath) a.Activate(board, this, info);
+                if (a.Condition == ActivationCondition.OnDeath) a.Activate(this, info);
             }
         }
     }
 
-    public void Place(BoardCoords pos)
+    public void Place(BoardCoords pos, DuelInstance duel)
     {
         this.Pos = pos;
         CanMove = true;
-        if( UnitCardInteractableRef != null) UnitCardInteractableRef.PlaceCard(pos);
+        if(CurrentTeam == Team.Enemy) {
+            AnimationManager.Instance.PlaceUnitCardAnimation(duel, this, pos);
+        }
     }
 
     public void SetSelected(bool selected)

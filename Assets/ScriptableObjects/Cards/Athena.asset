@@ -10,20 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba1ad278697cae34da6360ecf631cd87, type: 3}
-  m_Name: Deer
+  m_Name: Athena
   m_EditorClassIdentifier: 
-  Name: Deer
-  ManaCost: 2
+  Name: Athena
+  ManaCost: 4
   Artwork: {fileID: 0}
   CurrentTeam: 2
-  Health: 1
+  Health: 5
   CanMove: 1
   isSelected: 0
-  BaseDamage: 2
+  BaseDamage: 4
   UnitCardInteractableRef: {fileID: 0}
   Attacks:
-  - direction: {x: 0, y: 1}
-    damage: 2
-  - direction: {x: 0, y: -1}
-    damage: 2
-  Abilities: []
+  - direction: {x: -1, y: 1}
+    damage: 4
+  - direction: {x: -1, y: 0}
+    damage: 4
+  - direction: {x: 1, y: 0}
+    damage: 4
+  - direction: {x: 1, y: 1}
+    damage: 4
+  Abilities:
+  - {fileID: 11400000, guid: c3702e5cf5d1cc04782e365feb2f31b5, type: 2}

@@ -7,11 +7,12 @@ using UnityEngine;
 public class TestAbility : Ability
 {
     public override ActivationCondition Condition {
-        get{ return ActivationCondition.OnProcess; }
+        get{ return ActivationCondition.OnPlay; }
     }
     
-    public override void Activate(Board b, UnitCard c, ActivationInfo info) {
-        BoardCoords pos = c.GetTile().location;
+    public override void Activate(UnitCard c, ActivationInfo info) {
+        //BoardCoords pos = c.GetTile().location;
         //Debug.Log(c.Name + " activated ability at (" + pos.x + ", " + pos.y + ")");
+        //Debug.Log("here");
     }
 }

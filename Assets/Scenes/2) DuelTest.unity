@@ -305,7 +305,7 @@ MonoBehaviour:
       StartingHealth: 10
       MaxHealth: 10
       MaxHealthEnabled: 0
-      StartingMana: 1
+      StartingMana: 0
       MaxMana: 4
       MaxManaEnabled: 1
       StartingCards: 4
@@ -316,10 +316,9 @@ MonoBehaviour:
     RestrictPlacement: 0
     UnlimitedMana: 0
     ShowEnemyHand: 0
-  PlayerDeck: {fileID: 11400000, guid: 1b62fd89b8fe4734eb4697de89df34b7, type: 2}
+  PlayerDeck: {fileID: 11400000, guid: d925836930c25ea47a6472a49b1ff310, type: 2}
   EnemyDeck: {fileID: 11400000, guid: 3fee81777dd337d44af028e8dc03f5ee, type: 2}
   UI: {fileID: 37294274}
-  AM: {fileID: 37294275}
 --- !u!114 &37294270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -430,6 +429,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TemplateTile: {fileID: 1579219178362612961, guid: 999dcc045024fe34ea39ab4828116667, type: 3}
   TemplateUnitCard: {fileID: 5529432279168170932, guid: ec86733fc6b76794da6e8b291552bdd7, type: 3}
+  TemplateSpellCard: {fileID: 255992776724812640, guid: 2c9213e4d0b5aad4a853179481f5e8fa, type: 3}
   BoardContainer: {fileID: 1938627644}
   Hand: {fileID: 1419523776}
   EnemyHand: {fileID: 794390335}
@@ -1611,7 +1611,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &794390334
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1628,7 +1628,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 295, y: 57.5}
+  m_AnchoredPosition: {x: 250, y: 150}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: -5.1339855, y: 2.2660568}
 --- !u!114 &794390335

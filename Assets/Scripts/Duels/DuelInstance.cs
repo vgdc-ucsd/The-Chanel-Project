@@ -10,86 +10,64 @@ public enum Team
 
 public class DuelInstance
 {
-    private bool mainDuel;
-    private UIManager ui;
-
-    private Board board;
-    private DuelSettings settings;
-    private PlayerSettings playerSettings, enemySettings;
+    public Board DuelBoard;
     public CharStatus PlayerStatus, EnemyStatus;
-    //private int turnNumber = 1;
+    public Queue<QueueableAnimation> Animations;
+    public Team Winner = Team.Neutral;
 
-    public DuelInstance(CharStatus player, CharStatus enemy, bool mainDuel) {
-        // only use UI if main duel is true
-        this.mainDuel = mainDuel;
-        if(mainDuel) ui = DuelManager.Instance.UI;
-        else ui = null;
-
-        // set settings and status
-        settings = DuelManager.Instance.Settings;
-        playerSettings = settings.Player;
-        enemySettings = settings.Enemy;
+    public DuelInstance(CharStatus player, CharStatus enemy, Board board) {
+        DuelBoard = board;
         PlayerStatus = player;
         EnemyStatus = enemy;
-
-        if(mainDuel) {
-            // initialize
-            PlayerStatus.SetDeck(DuelManager.Instance.PlayerDeck);
-            EnemyStatus.SetDeck(DuelManager.Instance.EnemyDeck);
-
-            // Draw staring cards
-            DrawCards(Team.Player, playerSettings.StartingCards); // TODO remove
-            DrawCards(Team.Enemy, enemySettings.StartingCards);
-        }
+        Animations = new Queue<QueueableAnimation>();
+        Winner = Team.Neutral;
     }
 
     public DuelInstance Clone() {
-        return new DuelInstance(PlayerStatus.Clone(), EnemyStatus.Clone(), false);
+        return new DuelInstance(PlayerStatus.Clone(), EnemyStatus.Clone(), DuelBoard.Clone());
     }
 
-    public void InitBoard(Board board)
-    {
-        this.board = board;
-    }
-
-    public void ProcessBoard(Board board, Team team) {
+    public void ProcessBoard(Team team) {
         // the team is whoever just activated end turn
 
-        this.board = board;
-
         // Process all cards
-        for(int i = 0; i < board.Cols; i++) {
-            for(int j = 0; j < board.Rows; j++) {
+        for(int i = 0; i < DuelBoard.Cols; i++) {
+            for(int j = 0; j < DuelBoard.Rows; j++) {
                 BoardCoords pos = new BoardCoords(i,j);
-                if (board.IsOccupied(pos)) {
-                    ProcessCard(board.GetCard(pos), pos, team);
+                if (DuelBoard.IsOccupied(pos)) {
+                    ProcessCard(DuelBoard.GetCard(pos), team);
                 }
             }
         }
 
         EndTurn(team);
-        
-        // UI
-        if(mainDuel) {
-            DuelEvents.Instance.UpdateUI();
-            if(team == Team.Player) DuelEvents.Instance.UpdateHand();
-        }
     }
 
-    private void ProcessCard(UnitCard card, BoardCoords pos, Team team) {
-        if (card == null) {
-            Debug.LogError("Tried to process null card!");
-            return;
-        }
+    public Queue<QueueableAnimation> DrawStartingCards() {
+        Animations = new Queue<QueueableAnimation>();
 
+        // Player cards
+        DrawCards(Team.Player, DuelManager.Instance.Settings.Player.StartingCards);
+
+        // Enemy Cards
+        if(DuelManager.Instance.Settings.SameSettingsForBothPlayers) {
+            DrawCards(Team.Enemy, DuelManager.Instance.Settings.Player.StartingCards);    
+        }
+        else DrawCards(Team.Enemy, DuelManager.Instance.Settings.Enemy.StartingCards);
+        
+        return Animations;
+    }
+
+    private void ProcessCard(UnitCard card, Team team) {
         // Cards only take actions on their turn
         if (card.CurrentTeam == team) {
+
             // Activate abilities        
-            ActivationInfo info = new ActivationInfo(mainDuel);
+            ActivationInfo info = new ActivationInfo(this);
             foreach(Ability a in card.Abilities) {
                 // Only activate if the activation condition is OnProcess
-                if(a != null && a.Condition == ActivationCondition.OnProcess) {
-                    a.Activate(board, card, info);
+                if(a.Condition == ActivationCondition.OnProcess) {
+                    a.Activate(card, info);
                 }
             }
 
@@ -101,94 +79,73 @@ public class DuelInstance
     }
 
     private void ProcessAttack(UnitCard card, Attack atk) {
-        if (atk == null) {
-            Debug.Log("Tried to process null attack");
-            return;
-        }
-
         BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
 
         // Attack targeting enemy
-        if(board.BeyondEnemyEdge(atkDest) && card.CurrentTeam == Team.Player) {
-            EnemyStatus.TakeDamage(atk.damage);
+        if(DuelBoard.BeyondEnemyEdge(atkDest) && card.CurrentTeam == Team.Player) {
+            Team winner = EnemyStatus.TakeDamage(atk.damage);
+            if(winner != Team.Neutral) Winner = winner;
             return;
         }
 
         // Attack targeting player
-        if(board.BeyondPlayerEdge(atkDest) && card.CurrentTeam == Team.Enemy) {
-            PlayerStatus.TakeDamage(atk.damage);
+        if(DuelBoard.BeyondPlayerEdge(atkDest) && card.CurrentTeam == Team.Enemy) {
+            Team winner = PlayerStatus.TakeDamage(atk.damage);
+            if(winner != Team.Neutral) Winner = winner;
             return;
         }
         
         // Do nothing if attack is out of bounds
-        if(board.IsOutOfBounds(atkDest)) return;
+        if(DuelBoard.IsOutOfBounds(atkDest)) return;
+
         // Do nothing if destination tile is empty
-        if(board.GetCard(atkDest) == null) return;
+        if(DuelBoard.GetCard(atkDest) == null) return;
         
         // Deal damage
-        UnitCard target = board.GetCard(atkDest);
+        UnitCard target = DuelBoard.GetCard(atkDest);
         if(card.CurrentTeam != target.CurrentTeam) {
-            // animation
-            if(mainDuel) {
-                float animDuration = 0.3f;
-                IEnumerator anim = DuelManager.Instance.AM.CardAttack(
-                    card.CardInteractableRef.transform, 
-                    atk.direction,
-                    animDuration
-                );
-                QueueableAnimation qa = new QueueableAnimation(anim, animDuration);
-                DuelManager.Instance.AM.QueueAnimation(qa);
-            }
-
-            ActivationInfo info = new ActivationInfo(mainDuel);
+            // Animation
+            AnimationManager.Instance.AttackAnimation(this, card, atk);
+            
+            // Abilities
+            ActivationInfo info = new ActivationInfo(this);
             info.TotalDamage = atk.damage;
             info.OverkillDamage = DealDamage(target, atk.damage);
             foreach(Ability a in card.Abilities) {
-                if(a.Condition == ActivationCondition.OnDealDamage) a.Activate(board, card, info);
+                if(a.Condition == ActivationCondition.OnDealDamage) a.Activate(card, info);
             }
         }
     }
 
     private void DrawCards(Team team, int count) {
-        Deck deck;
-        CharStatus status;
+        CharStatus status = GetStatus(team);
+        Deck deck = status.Deck;
 
-        if(team == Team.Player) {
-            deck = PlayerStatus.Deck;
-            status = PlayerStatus;
-        }
-        else {
-            deck = EnemyStatus.Deck;
-            status = EnemyStatus;
-        }
-
+        List<Card> drawnCards = new List<Card>();
         for(int i = 0; i < count; i++) {
             // pick a random card, TODO keep track of how many cards are left in deck
             int index = Random.Range(0, deck.CardList.Count);
             Card c = ScriptableObject.Instantiate(deck.CardList[index]);
-
+            c.CurrentTeam = team;
             status.AddCard(c);
-
-            if(mainDuel) {
-                DuelEvents.Instance.DrawCard(c, team); // TODO double check
-            }
+            drawnCards.Add(c);
         }
+
+        AnimationManager.Instance.OrganizeCardsAnimation(this, drawnCards, team);
     }
 
-    public int DealDamage(UnitCard target, int damage)
+    public int DealDamage(UnitCard target, int damage, bool immediate = false)
     {
         int overkillDamage = 0;
-        target.TakeDamage(board, damage, mainDuel);
+        target.TakeDamage(this, damage);
+
+        // On card death
         if (target.Health <= 0)
         {
             overkillDamage = -1*target.Health;
-            board.RemoveCard(target.Pos);
-
-            if(mainDuel) {
-                IEnumerator ie = DuelManager.Instance.AM.CardDeath(target.CardInteractableRef);
-                QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
-                DuelManager.Instance.AM.QueueAnimation(qa);
-            }
+            DuelBoard.RemoveCard(target.Pos);
+            if (immediate && this == DuelManager.Instance.MainDuel) AnimationManager.Instance.CardDeathImmediate(target);
+            else AnimationManager.Instance.DeathAnimation(this, target);
         }
 
         return overkillDamage;
@@ -206,9 +163,16 @@ public class DuelInstance
             oppositeTeam = Team.Player;
             oppositeStatus = PlayerStatus;
         }
-        // TODO increase mana cap
-        oppositeStatus.ResetMana();
-        board.RenewMovement(oppositeTeam);
+
+        // gain 1 mana capacity every turn until it reaches the max then it caps out;
+        oppositeStatus.GiveMana();
+
+        DuelBoard.RenewMovement(oppositeTeam);
         DrawCards(oppositeTeam, 1);
+    }
+
+    public CharStatus GetStatus(Team team) {
+        if(team == Team.Player) return PlayerStatus;
+        else return EnemyStatus;
     }
 }

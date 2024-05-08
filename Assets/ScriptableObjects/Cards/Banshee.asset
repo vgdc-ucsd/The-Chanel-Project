@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba1ad278697cae34da6360ecf631cd87, type: 3}
-  m_Name: Deer
+  m_Name: Banshee
   m_EditorClassIdentifier: 
-  Name: Deer
+  Name: Banshee
   ManaCost: 2
   Artwork: {fileID: 0}
   CurrentTeam: 2
@@ -22,8 +22,10 @@ MonoBehaviour:
   BaseDamage: 2
   UnitCardInteractableRef: {fileID: 0}
   Attacks:
+  - direction: {x: -1, y: 1}
+    damage: 2
   - direction: {x: 0, y: 1}
     damage: 2
-  - direction: {x: 0, y: -1}
+  - direction: {x: 1, y: 1}
     damage: 2
   Abilities: []

@@ -16,7 +16,10 @@ public class Deck : ScriptableObject
         Deck copy = (Deck) ScriptableObject.CreateInstance("Deck");
 
         foreach(Card c in this.CardList) {
+            //Debug.Log(c.name);
+
             copy.CardList.Add(c.Clone());
+            //Debug.Log(uc.name);
         }
 
         return copy;
