@@ -55,7 +55,13 @@ public class CharStatus
         copy.Deck = this.Deck.Clone();
         copy.Cards = new List<Card>();
         foreach(Card c in this.Cards) {
-            copy.Cards.Add(c.Clone());
+            Card cc = c.Clone();
+            if (cc ==  null) 
+            {
+                Debug.LogError("added null clone to CharStatus");
+            }
+            copy.Cards.Add(cc);
+            
         }
         copy.playerSettings = this.playerSettings;
         copy.duelSettings = this.duelSettings;
@@ -73,6 +79,8 @@ public class CharStatus
             }
         }
         Cards.Add(c);
+
+
     }
 
     public void RemoveFromHand(Card card)

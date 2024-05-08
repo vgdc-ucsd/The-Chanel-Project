@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 // Stores information about the state of the board
 public class Board
@@ -95,7 +96,7 @@ public class Board
         foreach(Ability a in card.Abilities) {
             if(a.Condition == ActivationCondition.OnMove) a.Activate(card, info);
         }
-        card.UnitCardInteractableRef.UpdateCardPos();
+        if (duel == DuelManager.Instance.MainDuel) card.UnitCardInteractableRef.UpdateCardPos();
 
     }
 
@@ -162,12 +163,24 @@ public class Board
         return tiles;
     }
 
+
+
     public List<UnitCard> GetCardsInSquare(BoardCoords pos, int size)
     {
         List<UnitCard> cards = new List<UnitCard>();
         foreach (BoardCoords tile in GetSquareTiles(pos, size))
         {
             UnitCard card = GetCard(tile);
+            if (card != null) cards.Add(card);
+        }
+        return cards;
+    }
+
+    public List<UnitCard> GetAllCards()
+    {
+        List<UnitCard> cards = new List<UnitCard>();
+        foreach (UnitCard card in CardSlots)
+        {
             if (card != null) cards.Add(card);
         }
         return cards;
@@ -209,5 +222,18 @@ public class Board
     public bool IsOutOfBounds(BoardCoords atkDest)
     {
         return atkDest.x < 0 || atkDest.x >= Cols || atkDest.y < 0 || atkDest.y >= Rows;
+    }
+
+    public BoardCoords GetRandomTile()
+    {
+        int xTile = Random.Range(0, Cols);
+        int yTile = Random.Range(0, Rows);
+        return new BoardCoords(xTile, yTile);   
+    }
+
+    public UnitCard GetRandomCard()
+    {
+        List<UnitCard> cards = GetAllCards();
+        return cards[Random.Range(0, cards.Count)];
     }
 }
