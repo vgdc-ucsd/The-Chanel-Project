@@ -172,7 +172,12 @@ public class MctsAI
             BoardCoords randomTile = legalTiles[randomTileIndex];
 
             // play card
-            duel.DuelBoard.PlayCard((UnitCard)randomCard, randomTile, status, duel); // TODO support spell cards
+            if (randomCard is UnitCard uc)
+            {
+                duel.DuelBoard.PlayCard(uc, randomTile, status, duel);
+            }
+                
+                // TODO support spell cards
 
             // find legal cards and playable tiles
             playableCards = GetPlayableCards(status);

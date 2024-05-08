@@ -118,13 +118,20 @@ public class AnimationManager : MonoBehaviour
         Destroy(card.CardInteractableRef.gameObject);
     }
 
-    private IEnumerator OrganizeCards(List<Card> cards) {
+
+    public void CardDeathImmediate(UnitCard card)
+    {
+        StartCoroutine(CardDeath(card));
+    }
+
+    private IEnumerator OrganizeCards(List<Card> cards, Team team) {
         foreach(Card c in cards) {
             if(c.CardInteractableRef == null) {
                 c.CardInteractableRef = DuelManager.Instance.UI.GenerateCardInteractable(c);
             }
         }
-        DuelManager.Instance.UI.Hand.OrganizeCards();
+        if (team == Team.Player) DuelManager.Instance.UI.Hand.OrganizeCards();
+        else DuelManager.Instance.UI.EnemyHand.OrganizeCards();
         yield return null;
     }
 
@@ -160,8 +167,8 @@ public class AnimationManager : MonoBehaviour
         duel.Animations.Enqueue(qa);
     }
 
-    public void OrganizeCardsAnimation(DuelInstance duel, List<Card> cards) {
-        IEnumerator ie = OrganizeCards(cards);
+    public void OrganizeCardsAnimation(DuelInstance duel, List<Card> cards, Team team) {
+        IEnumerator ie = OrganizeCards(cards, team);
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
         duel.Animations.Enqueue(qa);
     }

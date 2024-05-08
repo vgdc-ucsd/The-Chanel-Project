@@ -17,7 +17,7 @@ public class DebugTool : MonoBehaviour
         if (board.IsOccupied(new BoardCoords(0, 0)) &&
             board.IsOccupied(new BoardCoords(1, 1)))
         {
-            swapSpell.CastSpell(board.GetCard(0,0),board.GetCard(1,1));
+            swapSpell.CastSpell(DuelManager.Instance.MainDuel, board.GetCard(0,0),board.GetCard(1,1));
             Debug.Log("Swapping");
         }
     }
