@@ -8,8 +8,8 @@ public enum ActivationCondition {
     OnPlay,
     OnMove,
     OnReceiveDamage,
-    OnDealDamage, // triggers once per attack
-    OnFinishAttack, // triggers once after damaging something
+    OnDealDamage, // triggers once after landing each separate attack
+    OnFinishAttack, // triggers once per turn after landing at least one attack
     OnTrigger, // can only be triggered externally
 }
 
