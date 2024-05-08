@@ -51,10 +51,10 @@ public class DuelInstance
 
         // Enemy Cards
         if(DuelManager.Instance.Settings.SameSettingsForBothPlayers) {
-            DrawCards(Team.Enemy, DuelManager.Instance.Settings.Player.StartingCards);    
+            DrawCards(Team.Enemy, DuelManager.Instance.Settings.Player.StartingCards);
         }
         else DrawCards(Team.Enemy, DuelManager.Instance.Settings.Enemy.StartingCards);
-        
+
         return Animations;
     }
 
@@ -62,7 +62,7 @@ public class DuelInstance
         // Cards only take actions on their turn
         if (card.CurrentTeam == team) {
 
-            // Activate abilities        
+            // Activate abilities
             ActivationInfo info = new ActivationInfo(this);
             foreach(Ability a in card.Abilities) {
                 // Only activate if the activation condition is OnProcess
@@ -94,21 +94,22 @@ public class DuelInstance
             if(winner != Team.Neutral) Winner = winner;
             return;
         }
-        
+
         // Do nothing if attack is out of bounds
         if(DuelBoard.IsOutOfBounds(atkDest)) return;
 
         // Do nothing if destination tile is empty
         if(DuelBoard.GetCard(atkDest) == null) return;
-        
+
         // Deal damage
         UnitCard target = DuelBoard.GetCard(atkDest);
         if(card.CurrentTeam != target.CurrentTeam) {
             // Animation
             AnimationManager.Instance.AttackAnimation(this, card, atk);
-            
+
             // Abilities
             ActivationInfo info = new ActivationInfo(this);
+            info.TargetCard = target;
             info.TotalDamage = atk.damage;
             info.OverkillDamage = DealDamage(target, atk.damage);
             foreach(Ability a in card.Abilities) {

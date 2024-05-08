@@ -14,11 +14,13 @@ public enum ActivationCondition {
 public struct ActivationInfo {
     public ActivationInfo(DuelInstance duel) {
         Duel = duel;
+        TargetCard = null;
         OverkillDamage = 0;
         TotalDamage = 0;
     }
 
     public DuelInstance Duel;
+    public UnitCard TargetCard;
     public int OverkillDamage;
     public int TotalDamage;
 }
