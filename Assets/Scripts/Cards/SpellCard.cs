@@ -30,12 +30,16 @@ public abstract class SpellCard : Card
         copy.CurrentTeam = this.CurrentTeam;
         copy.CardInteractableRef = this.CardInteractableRef;
 
+        CloneExtras(copy);
+
         //Debug.LogError("Spell card cloning is WIP!");
         cloneCount++;
 
         if (copy == null) Debug.LogError("copied spell card to null");
         return copy;
     }
+
+    public virtual void CloneExtras(SpellCard copy) { }
 
     protected void FinishCast(DuelInstance duel)
     {

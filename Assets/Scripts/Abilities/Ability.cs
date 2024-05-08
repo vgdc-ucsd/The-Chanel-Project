@@ -2,13 +2,15 @@ using System;
 using UnityEngine;
 
 public enum ActivationCondition {
-    OnProcess,
+    OnProcess, // applies effect every turn
     OnDeath,
     OnDraw,
     OnPlay,
     OnMove,
     OnReceiveDamage,
-    OnDealDamage
+    OnDealDamage, // triggers once per attack
+    OnFinishAttack, // triggers once after damaging something
+    OnTrigger, // can only be triggered externally
 }
 
 public struct ActivationInfo {

@@ -16,6 +16,8 @@ public class UnitCardInteractable : CardInteractable,
     public TextMeshProUGUI CardHealth;
     public TextMeshProUGUI CardAttack;
 
+    private List<GameObject> arrows = new List<GameObject>();
+
     public override void SetCardInfo() {
         if(card == null) {
             Debug.Log("Could not set card info, card is uninitialzied");
@@ -34,6 +36,10 @@ public class UnitCardInteractable : CardInteractable,
     }
 
     public void DrawArrows() {
+        foreach (GameObject obj in arrows)
+        {
+            Destroy(obj);
+        }
         foreach(Attack atk in card.Attacks) {
             GameObject arrow;
             if (card.CurrentTeam == Team.Player) arrow = Instantiate(TemplateArrowPlayer);
@@ -48,6 +54,7 @@ public class UnitCardInteractable : CardInteractable,
                 1
             );
             arrow.SetActive(true);
+            arrows.Add(arrow);
         }
     }
 

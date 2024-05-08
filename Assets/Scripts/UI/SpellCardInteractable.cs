@@ -36,6 +36,11 @@ public class SpellCardInteractable : CardInteractable
         bool success = false;
         if (card is ISpellTypeAny anySpell) success = anySpell.CastSpell(DuelManager.Instance.MainDuel);
         else if (card is ISpellTypeTile tileSpell) success = tileSpell.CastSpell(DuelManager.Instance.MainDuel, pos);
+        else if (card is ISpellTypeUnit unitSpell)
+        {
+            UnitCard card = DuelManager.Instance.MainDuel.DuelBoard.GetCard(pos);
+            if (card != null) unitSpell.CastSpell(DuelManager.Instance.MainDuel, card);
+        }
 
         if (!success) return;
         // destroy the card after successful cast
