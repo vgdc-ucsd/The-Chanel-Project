@@ -32,9 +32,11 @@ public class MapGrid : MonoBehaviour
     public GameObject Boss;
     public GameObject horStairs;
     public GameObject diagStairs;
+    public GameObject lineRenderer;
 
     [Header("Map Settings")]
     public Vector3 OrientingPosition;
+    public Vector3 offsetPosition = new Vector3(-300, -100, 0);
     public int numberOfRooms;
     // Higher pathDensityIndex means more paths are generated
     public int pathDensityIndex;
@@ -52,6 +54,9 @@ public class MapGrid : MonoBehaviour
         // Sets starting position of character
         OrientingPosition = new Vector2(start.GetComponent<RectTransform>().localPosition.x, start.GetComponent<RectTransform>().localPosition.y);
 
+        // Instantiate start node
+        GameObject startObj = Instantiate(start, Vector2.zero, Quaternion.identity, contents.transform);
+        startObj.GetComponent<MapNode>().row = 1;
 
         layers = new(numberOfRooms - 1);
         for (int i = 0; i < layers.Capacity; i++)
@@ -59,7 +64,7 @@ public class MapGrid : MonoBehaviour
             layers.Add(new());
         }
 
-        row1.Add(start);
+        row1.Add(startObj);
 
         // Creates preset nodes for first room/boss and exits
         CreateEncounter(new Vector3(OrientingPosition.x + distanceBetweenNodes, OrientingPosition.y));
@@ -117,14 +122,26 @@ public class MapGrid : MonoBehaviour
         {
             Destroy(node);
         }
+
+        // move all nodes and lines by offset position
+        GameObject[] usedObjects = GameObject.FindGameObjectsWithTag("UsedNodes");
+        foreach (GameObject o in usedObjects)
+        {
+            o.GetComponent<RectTransform>().localPosition += offsetPosition;
+        }
     }
 
     void MoveBossAndExit()
     {
-        exit.transform.position = new Vector3(OrientingPosition.x + (2 * XOffsetDistanceBetweenRows) + distanceBetweenNodes * numberOfRooms, OrientingPosition.y + (2 * heightBetweenRows));
-        Boss.transform.position = new Vector3(OrientingPosition.x + distanceBetweenNodes * numberOfRooms, OrientingPosition.y + (2 * heightBetweenRows));
-        row3.Add(Boss);
-        row3.Add(exit);
+        Vector2 exitPos = new Vector3(OrientingPosition.x + (2 * XOffsetDistanceBetweenRows) + distanceBetweenNodes * numberOfRooms, OrientingPosition.y + (2 * heightBetweenRows));
+        GameObject exitObj = Instantiate(exit, exitPos, Quaternion.identity, contents.transform);
+
+        Vector2 bossPos = new Vector3(OrientingPosition.x + distanceBetweenNodes * numberOfRooms, OrientingPosition.y + (2 * heightBetweenRows));
+        GameObject bossObj = Instantiate(Boss, bossPos, Quaternion.identity, contents.transform);
+
+        row3.Add(bossObj);
+        row3.Add(exitObj);
+        bossObj.tag = "UsedNodes";
         exit.tag = "UsedNodes";
     }
     // Sets exit position based on number of rooms and adds it to row3
@@ -158,15 +175,21 @@ public class MapGrid : MonoBehaviour
     {
         if (point.y == OrientingPosition.y)
         {
-            row1.Add(Instantiate(type, point, transform.rotation, contents.transform));
+            GameObject instantiated = Instantiate(type, point, transform.rotation, contents.transform);
+            row1.Add(instantiated);
+            instantiated.GetComponent<MapNode>().row = 1;
         }
         else if (point.y == OrientingPosition.y + heightBetweenRows)
         {
-            row2.Add(Instantiate(type, point, transform.rotation, contents.transform));
+            GameObject instantiated = Instantiate(type, point, transform.rotation, contents.transform);
+            row2.Add(instantiated);
+            instantiated.GetComponent<MapNode>().row = 2;
         }
         else if (point.y == OrientingPosition.y + (2 * heightBetweenRows))
         {
-            row3.Add(Instantiate(type, point, transform.rotation, contents.transform));
+            GameObject instantiated = Instantiate(type, point, transform.rotation, contents.transform);
+            row3.Add(instantiated);
+            instantiated.GetComponent<MapNode>().row = 3;
         }
     }
     // Sorts nodes into rows to draw lines
@@ -176,15 +199,16 @@ public class MapGrid : MonoBehaviour
         while (repeat == true)
         {
             pathNodes.Clear();
-            pathNodes.Add(start);
+            pathNodes.Add(row1[0]);
             for (int i = 1; i < numberOfRooms + 2; i++)
             {
                 float random = UnityEngine.Random.Range(0f, 1f);
                 GameObject lastNode = pathNodes[i - 1];
-                int lastNodeRow = GetNodeRow(lastNode);
-                if (lastNodeRow == 1)
+                Debug.Log(lastNode);
+                Debug.Log(lastNode.GetComponent<MapNode>().row);
+                if (lastNode.GetComponent<MapNode>().row == 1)
                 {
-                    if (lastNode == start)
+                    if (lastNode == row1[0])
                     {
                         if (random < 0.5 && i < numberOfRooms)
                         {
@@ -199,37 +223,21 @@ public class MapGrid : MonoBehaviour
                     }
                     else
                     {
-                        if (i < (numberOfRooms + 2) / 3)
+                        if (random < 0.6 && i < numberOfRooms)
                         {
-                            if (random < 0.8)
-                            {
-                                pathNodes.Add(row1[i]);
-                                row1[i].tag = KeepTag;
-                            }
-                            else
-                            {
-                                pathNodes.Add(row2[i - 1]);
-                                row2[i - 1].tag = KeepTag;
-                            }
+                            pathNodes.Add(row1[i]);
+                            row1[i].tag = KeepTag;
                         }
                         else
                         {
-                            if (random < 0.6 && i < numberOfRooms)
-                            {
-                                pathNodes.Add(row1[i]);
-                                row1[i].tag = KeepTag;
-                            }
-                            else
-                            {
-                                pathNodes.Add(row2[i - 1]);
-                                row2[i - 1].tag = KeepTag;
-                            }
+                            pathNodes.Add(row2[i - 1]);
+                            row2[i - 1].tag = KeepTag;
                         }
                     }
                 }
-                else if (lastNodeRow == 2)
+                else if (lastNode.GetComponent<MapNode>().row == 2)
                 {
-                    if (random < 0.7 && i < numberOfRooms + 1)
+                    if (random < 0.5f && i < numberOfRooms + 1)
                     {
                         pathNodes.Add(row2[i - 1]);
                         row2[i - 1].tag = KeepTag;
@@ -439,22 +447,6 @@ public class MapGrid : MonoBehaviour
             {
                 Debug.Log("Invalid layer node type for layer: " + (i + 2));
             }
-        }
-    }
-
-    private int GetNodeRow(GameObject node)
-    {
-        if (node.transform.position.y == OrientingPosition.y)
-        {
-            return 1;
-        }
-        else if (node.transform.position.y == OrientingPosition.y + heightBetweenRows)
-        {
-            return 2;
-        }
-        else
-        {
-            return 3;
         }
     }
 }

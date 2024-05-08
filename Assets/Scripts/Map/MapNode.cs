@@ -21,6 +21,7 @@ IPointerExitHandler
     public List<MapNode> prevNodes;
 
     private bool initialized;
+    public int row = 1;
 
     private void Start()
     {
