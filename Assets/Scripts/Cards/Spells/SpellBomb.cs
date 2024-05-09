@@ -14,6 +14,9 @@ public class SpellBomb : SpellCard , ISpellTypeTile
         {
             duel.DealDamage(card, damage, true);
         }
+
+        FinishCast(duel);
         return true;
+
     }
 }

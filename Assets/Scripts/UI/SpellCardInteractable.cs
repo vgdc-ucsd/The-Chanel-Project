@@ -36,19 +36,20 @@ public class SpellCardInteractable : CardInteractable
         bool success = false;
         if (card is ISpellTypeAny anySpell) success = anySpell.CastSpell(DuelManager.Instance.MainDuel);
         else if (card is ISpellTypeTile tileSpell) success = tileSpell.CastSpell(DuelManager.Instance.MainDuel, pos);
+        else if (card is ISpellTypeUnit unitSpell)
+        {
+            UnitCard card = DuelManager.Instance.MainDuel.DuelBoard.GetCard(pos);
+            if (card != null) unitSpell.CastSpell(DuelManager.Instance.MainDuel, card);
+        }
 
-
-        
         if (!success) return;
-
-        DuelManager.Instance.MainDuel.GetStatus(Team.Player).UseMana(card.ManaCost);
-
         // destroy the card after successful cast
 
         if (handInterface != null)
         {
             handInterface.cardObjects.Remove(this);
         }
+        DuelManager.Instance.UI.UpdateStatus(DuelManager.Instance.MainDuel);
         Destroy(gameObject);
     }
 

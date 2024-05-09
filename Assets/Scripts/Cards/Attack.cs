@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -34,4 +35,16 @@ public class Attack
     {
         return base.GetHashCode();
     }
+
+    public static List<Vector2Int> allDirections = new Vector2Int[]
+    {
+        new Vector2Int(0, 1),
+        new Vector2Int(1, 1),
+        new Vector2Int(1, 0),
+        new Vector2Int(1, -1),
+        new Vector2Int(0, -1),
+        new Vector2Int(-1, -1),
+        new Vector2Int(-1, 0),
+        new Vector2Int(-1, 1)
+    }.ToList<Vector2Int>();
 }

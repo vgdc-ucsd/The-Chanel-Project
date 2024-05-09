@@ -13,9 +13,15 @@ public abstract class SpellCard : Card
     [HideInInspector] public override CardInteractable CardInteractableRef { get { return SpellCardInteractableRef; } set { SpellCardInteractableRef = (SpellCardInteractable)value; } }
     public SpellCardInteractable SpellCardInteractableRef;
 
+    public static int cloneCount = 0;
 
     public override Card Clone()
     {
+        /*if (cloneCount > 10000)
+        {
+            Debug.Break();
+            return null;
+        }*/
         SpellCard copy = (SpellCard)ScriptableObject.CreateInstance(this.GetType());
 
         copy.Name = this.Name;
@@ -23,9 +29,22 @@ public abstract class SpellCard : Card
         copy.Artwork = this.Artwork;
         copy.CurrentTeam = this.CurrentTeam;
         copy.CardInteractableRef = this.CardInteractableRef;
-        
+
+        CloneExtras(copy);
+
         //Debug.LogError("Spell card cloning is WIP!");
+        cloneCount++;
+
+        if (copy == null) Debug.LogError("copied spell card to null");
         return copy;
+    }
+
+    public virtual void CloneExtras(SpellCard copy) { }
+
+    protected void FinishCast(DuelInstance duel)
+    {
+        duel.GetStatus(CurrentTeam).UseMana(ManaCost);
+        duel.GetStatus(CurrentTeam).RemoveFromHand(this);
     }
 
 

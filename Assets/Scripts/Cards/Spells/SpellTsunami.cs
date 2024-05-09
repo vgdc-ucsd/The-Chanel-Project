@@ -20,6 +20,9 @@ public class SpellTsunami : SpellCard , ISpellTypeTile
             board.MoveCard(c, c.Pos + push, duel);
 
         }
+
+        FinishCast(duel);
+
         return true;
     }
 }
