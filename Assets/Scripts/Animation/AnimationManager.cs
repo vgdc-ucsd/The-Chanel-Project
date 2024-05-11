@@ -176,6 +176,11 @@ public class AnimationManager : MonoBehaviour
         yield return null;
     }
 
+    public IEnumerator MoveCard(UnitCard uc, Transform targetPos, float speed) {
+        yield return SimpleTranslate(uc.UnitCardInteractableRef.transform, targetPos.position, speed, InterpolationMode.Linear);
+        uc.UnitCardInteractableRef.UpdateCardPos();
+    }
+
     private IEnumerator UpdateCardInfo(Card c) {
         if(c.CardInteractableRef != null) {c.CardInteractableRef.UpdateCardInfo();}
         yield return null;
@@ -215,9 +220,19 @@ public class AnimationManager : MonoBehaviour
         duel.Animations.Enqueue(qa);
     }
 
-    public void UpdateCardInfoAnimation(DuelInstance duel, UnitCard c) {
-        IEnumerator ie = UpdateCardInfo(c);
-        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+    public void MoveCardAnimation(DuelInstance duel, UnitCard uc, BoardCoords targetPos) {
+        float speed = 0.5f;
+        Transform targetTransform = BoardInterface.Instance.GetTile(targetPos).transform;
+        IEnumerator ie = MoveCard(uc, targetTransform, speed);
+        QueueableAnimation qa = new QueueableAnimation(ie, speed);
         duel.Animations.Enqueue(qa);
+    }
+
+    public void UpdateCardInfoAnimation(DuelInstance duel, UnitCard c) {
+        if(c.CurrentTeam == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode) {
+            IEnumerator ie = UpdateCardInfo(c);
+            QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+            duel.Animations.Enqueue(qa);
+        }
     }
 }

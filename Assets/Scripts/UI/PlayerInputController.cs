@@ -106,6 +106,13 @@ public class PlayerInputController: MonoBehaviour
             TileInteractable tile = BoardInterface.Instance.GetTile(pos);
 
             DuelManager.Instance.MainDuel.DuelBoard.MoveCard(selectedCard, pos, DuelManager.Instance.MainDuel);
+
+            // animation
+            float speed = 0.5f;
+            Transform targetTransform = BoardInterface.Instance.GetTile(pos).transform;
+            IEnumerator ie = AnimationManager.Instance.MoveCard(selectedCard, targetTransform, speed);
+            AnimationManager.Instance.Play(ie);
+
             SelectCard(selectedCard, false);
             selectedCard = null;
             SetAction(ControlAction.None);

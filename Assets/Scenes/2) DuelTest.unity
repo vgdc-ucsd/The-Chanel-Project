@@ -313,7 +313,7 @@ MonoBehaviour:
     BoardCols: 4
     EnemyGoesFirst: 0
     EnablePVPMode: 0
-    RestrictPlacement: 0
+    RestrictPlacement: 1
     UnlimitedMana: 0
     ShowEnemyHand: 0
   PlayerDeck: {fileID: 11400000, guid: 1b62fd89b8fe4734eb4697de89df34b7, type: 2}
