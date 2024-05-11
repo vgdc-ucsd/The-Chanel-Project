@@ -31,8 +31,8 @@ public class DuelInstance
         // the team is whoever just activated end turn
 
         // Process all cards
-        for(int i = 0; i < DuelBoard.Rows; i++) {
-            for(int j = 0; j < DuelBoard.Cols; j++) {
+        for(int i = 0; i < DuelBoard.Cols; i++) {
+            for(int j = 0; j < DuelBoard.Rows; j++) {
                 BoardCoords pos = new BoardCoords(i,j);
                 if (DuelBoard.IsOccupied(pos)) {
                     ProcessCard(DuelBoard.GetCard(pos), team);
@@ -51,10 +51,10 @@ public class DuelInstance
 
         // Enemy Cards
         if(DuelManager.Instance.Settings.SameSettingsForBothPlayers) {
-            DrawCards(Team.Enemy, DuelManager.Instance.Settings.Player.StartingCards);    
+            DrawCards(Team.Enemy, DuelManager.Instance.Settings.Player.StartingCards);
         }
         else DrawCards(Team.Enemy, DuelManager.Instance.Settings.Enemy.StartingCards);
-        
+
         return Animations;
     }
 
@@ -62,7 +62,7 @@ public class DuelInstance
         // Cards only take actions on their turn
         if (card.CurrentTeam == team) {
 
-            // Activate abilities        
+            // Activate abilities
             ActivationInfo info = new ActivationInfo(this);
             foreach(Ability a in card.Abilities) {
                 // Only activate if the activation condition is OnProcess
@@ -72,62 +72,50 @@ public class DuelInstance
             }
 
             // Attack
-            bool attackLanded = false;
             foreach(Attack atk in card.Attacks) {
-                if (ProcessAttack(card, atk)) attackLanded = true;
-            }
-
-            if (attackLanded)
-            {
-
-                for (int i = card.Abilities.Count - 1; i >= 0; i--)
-                {
-                    Ability a = card.Abilities[i];
-                    if (a.Condition == ActivationCondition.OnFinishAttack) a.Activate(card, info);
-                }
+                ProcessAttack(card, atk);
             }
         }
     }
 
-    // returns true if damaged something
-    private bool ProcessAttack(UnitCard card, Attack atk) {
+    private void ProcessAttack(UnitCard card, Attack atk) {
         BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
 
         // Attack targeting enemy
         if(DuelBoard.BeyondEnemyEdge(atkDest) && card.CurrentTeam == Team.Player) {
             Team winner = EnemyStatus.TakeDamage(atk.damage);
             if(winner != Team.Neutral) Winner = winner;
-            return false;
+            return;
         }
 
         // Attack targeting player
         if(DuelBoard.BeyondPlayerEdge(atkDest) && card.CurrentTeam == Team.Enemy) {
             Team winner = PlayerStatus.TakeDamage(atk.damage);
             if(winner != Team.Neutral) Winner = winner;
-            return false;
+            return;
         }
-        
+
         // Do nothing if attack is out of bounds
-        if(DuelBoard.IsOutOfBounds(atkDest)) return false;
+        if(DuelBoard.IsOutOfBounds(atkDest)) return;
 
         // Do nothing if destination tile is empty
-        if(DuelBoard.GetCard(atkDest) == null) return false;
-        
+        if(DuelBoard.GetCard(atkDest) == null) return;
+
         // Deal damage
         UnitCard target = DuelBoard.GetCard(atkDest);
         if(card.CurrentTeam != target.CurrentTeam) {
             // Animation
             AnimationManager.Instance.AttackAnimation(this, card, atk);
-            
+
             // Abilities
             ActivationInfo info = new ActivationInfo(this);
+            info.TargetCard = target;
             info.TotalDamage = atk.damage;
             info.OverkillDamage = DealDamage(target, atk.damage);
             foreach(Ability a in card.Abilities) {
                 if(a.Condition == ActivationCondition.OnDealDamage) a.Activate(card, info);
             }
         }
-        return true;
     }
 
     private void DrawCards(Team team, int count) {
@@ -187,30 +175,5 @@ public class DuelInstance
     public CharStatus GetStatus(Team team) {
         if(team == Team.Player) return PlayerStatus;
         else return EnemyStatus;
-    }
-
-    public void DebugBoard() {
-        string result = "";
-        for(int i = 0; i < DuelBoard.Rows; i++) {
-            result += "[";
-            for(int j = 0; j < DuelBoard.Cols; j++) {
-                BoardCoords pos = BoardCoords.FromRowCol(new Vector2Int(i,j));
-                if (DuelBoard.IsOccupied(pos)) {
-                    UnitCard uc = DuelBoard.GetCard(pos);
-                    //result += $"{uc.Name}, ";
-                    if(uc.UnitCardInteractableRef==null) {
-                        result += "null, ";
-                    }
-                    else {
-                        result += $"{uc.UnitCardInteractableRef.GetInstanceID()}, ";
-                    }
-                }
-                else {
-                    result += ",    ";
-                }
-            }
-            result += "]\n";
-        }
-        Debug.Log(result);
     }
 }
