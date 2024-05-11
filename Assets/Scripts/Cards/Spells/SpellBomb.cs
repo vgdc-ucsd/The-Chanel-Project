@@ -2,18 +2,21 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Bomb Spell", menuName = "Cards/BombSpell")]
-public class SpellBomb : Spell , ISpellTypeTile
+[CreateAssetMenu(fileName = "Bomb Spell Card", menuName = "Cards/SpellBomb")]
+public class SpellBomb : SpellCard , ISpellTypeTile
 {
     int damage = 2;
     int area = 2;
-    public void CastSpell(BoardCoords pos)
+    public bool CastSpell(DuelInstance duel, BoardCoords pos)
     {
-        List<UnitCard> damagedCards = DuelManager.Instance.MainDuel.DuelBoard.GetCardsInSquare(pos, area);
-        Debug.Log(damagedCards.ToCommaSeparatedString());
+        List<UnitCard> damagedCards = duel.DuelBoard.GetCardsInSquare(pos, area);
         foreach(UnitCard card in damagedCards)
         {
-            DuelManager.Instance.MainDuel.DealDamage(card, damage);
+            duel.DealDamage(card, damage, true);
         }
+
+        FinishCast(duel);
+        return true;
+
     }
 }

@@ -17,11 +17,9 @@ public class Deck : ScriptableObject
 
         foreach(Card c in this.CardList) {
             //Debug.Log(c.name);
-            if(c is UnitCard) {
-                UnitCard uc = (UnitCard)c;
-                copy.CardList.Add(uc.Clone());
-                //Debug.Log(uc.name);
-            }
+
+            copy.CardList.Add(c.Clone());
+            //Debug.Log(uc.name);
         }
 
         return copy;

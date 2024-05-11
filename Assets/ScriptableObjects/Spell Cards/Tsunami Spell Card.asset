@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e4f42208d8fdd844bd04a2eaf2186b3, type: 3}
-  m_Name: Bomb Card
+  m_Script: {fileID: 11500000, guid: 8178003525d2200409cb64cdf3154a48, type: 3}
+  m_Name: Tsunami Spell Card
   m_EditorClassIdentifier: 
-  Name: Bomb
-  ManaCost: 1
+  Name: Tsunami
+  ManaCost: 2
   Artwork: {fileID: 0}
   CurrentTeam: 2
-  spell: {fileID: 11400000, guid: 8c7da54017624ab4ea2c64f891423225, type: 2}

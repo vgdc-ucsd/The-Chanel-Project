@@ -118,6 +118,12 @@ public class AnimationManager : MonoBehaviour
         Destroy(card.CardInteractableRef.gameObject);
     }
 
+
+    public void CardDeathImmediate(UnitCard card)
+    {
+        StartCoroutine(CardDeath(card));
+    }
+
     private IEnumerator OrganizeCards(List<Card> cards, Team team) {
         foreach(Card c in cards) {
             if(c.CardInteractableRef == null) {

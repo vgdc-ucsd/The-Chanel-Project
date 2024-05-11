@@ -10,7 +10,8 @@ public abstract class CardInteractable : MonoBehaviour,
     IPointerEnterHandler, 
     IPointerExitHandler, 
     IBeginDragHandler, 
-    IDragHandler
+    IDragHandler,
+    IEndDragHandler
 {
     // Reference to the HandInterface
     [HideInInspector] public HandInterface handInterface;

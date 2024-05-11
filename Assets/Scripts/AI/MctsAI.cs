@@ -161,22 +161,45 @@ public class MctsAI
         List<Card> playableCards = GetPlayableCards(status);
         List<BoardCoords> legalTiles = GetLegalTiles(duel.DuelBoard); // TODO behind spawn line
 
+        int loopCount = 0;
         // If any cards can be played, always play them
         while(playableCards.Count > 0 && legalTiles.Count > 0) {
+
             // pick random card
             int randomCardIndex = Random.Range(0, playableCards.Count);
             Card randomCard = playableCards[randomCardIndex].Clone();
             
+
             // pick random tile
             int randomTileIndex = Random.Range(0, legalTiles.Count);
             BoardCoords randomTile = legalTiles[randomTileIndex];
 
             // play card
-            duel.DuelBoard.PlayCard((UnitCard)randomCard, randomTile, status, duel); // TODO support spell cards
+            if (randomCard is UnitCard uc)
+            {
+                duel.DuelBoard.PlayCard(uc, randomTile, status, duel);
+            }
+            else if (randomCard is SpellCard)
+            {
+                if (randomCard is ISpellTypeTile sct)
+                {
+                    sct.CastSpell(duel, duel.DuelBoard.GetRandomTile());
+                }
+                else if (randomCard is ISpellTypeUnit scu)
+                {
+                    scu.CastSpell(duel, duel.DuelBoard.GetRandomCard());
+                }
+            }
 
             // find legal cards and playable tiles
             playableCards = GetPlayableCards(status);
             legalTiles = GetLegalTiles(duel.DuelBoard);
+            loopCount++;
+            if (loopCount > 1000)
+            {
+                UnityEngine.Debug.LogError("Failed to find random move");
+                break;
+            }
         }
     }
 
@@ -222,7 +245,13 @@ public class MctsAI
         List<Card> results = new List<Card>();
         if(status.Mana == 0) return results;
         foreach(Card c in status.Cards) {
-            if(c.ManaCost <= status.Mana) results.Add(c);
+            if (c == null)
+            {
+                UnityEngine.Debug.LogError("card is null");
+            }
+
+            if (c.ManaCost <= status.Mana) results.Add(c);
+            
         }
         return results;
     }

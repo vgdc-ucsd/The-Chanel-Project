@@ -9,9 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f15f282beda789c4686a2671c4e99758, type: 3}
-  m_Name: SpellsOnly
+  m_Script: {fileID: 11500000, guid: c9971f1ea77cf8f4d9a1540cfb5f1e69, type: 3}
+  m_Name: Lotus Flower Ability
   m_EditorClassIdentifier: 
-  CardList:
-  - {fileID: 11400000, guid: eb7d38ae15c928b48a3de6fc238291a2, type: 2}
-  - {fileID: 11400000, guid: 8a266833b02d6d048b380e1fff69867d, type: 2}
