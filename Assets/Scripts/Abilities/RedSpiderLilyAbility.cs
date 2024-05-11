@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using UnityEditor.Playables;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Abilites/LotusFlowerAbility")]
-public class LotusFlowerAbility : StatusEffect
+[CreateAssetMenu(menuName = "Abilites/RedSpiderLilyAbility")]
+public class RedSpiderLilyAbility : StatusEffect
 {
 
     public override ActivationCondition Condition
@@ -17,7 +17,6 @@ public class LotusFlowerAbility : StatusEffect
     public override void Activate(UnitCard c, ActivationInfo info)
     {
         RemoveEffect(c);
-        if (c.UnitCardInteractableRef != null) c.UnitCardInteractableRef.DrawArrows();
     }
 
     public override void AddEffect(UnitCard c)
@@ -29,13 +28,9 @@ public class LotusFlowerAbility : StatusEffect
 
     public override void ReapplyEffect(UnitCard c)
     {
-        foreach (Vector2Int dir in Attack.allDirections)
+        foreach (Attack atk in c.Attacks)
         {
-            if (c.GetAttack(dir) == null)
-            {
-                c.Attacks.Add(new Attack(dir, c.BaseDamage));
-            }
+            atk.damage *= 2;
         }
-        if (c.UnitCardInteractableRef != null) c.UnitCardInteractableRef.DrawArrows();
     }
 }
