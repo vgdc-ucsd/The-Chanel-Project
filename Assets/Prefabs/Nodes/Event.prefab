@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 1497212369034187663}
   m_Layer: 5
   m_Name: Event
-  m_TagString: Untagged
+  m_TagString: NotUsed
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -162,7 +162,7 @@ RectTransform:
   m_GameObject: {fileID: 6478176069062018305}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.35, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3599636000671236740}
@@ -201,7 +201,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -2135585597343286014, guid: dc4024e8885d2f043a6010a57d895179, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0574a83bbcd88024295650ce54cf147f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -232,8 +232,8 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.77254903, g: 0.76490587, b: 0.1490196, a: 1}
-    m_HighlightedColor: {r: 0.43708086, g: 0.44705883, b: 0.074509785, a: 1}
+    m_NormalColor: {r: 0.20264839, g: 0.84276724, b: 0.1934653, a: 1}
+    m_HighlightedColor: {r: 0.080744065, g: 0.44705883, b: 0.074509785, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
