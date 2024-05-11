@@ -14,11 +14,12 @@ public class HydraAbility : Ability
     public override void Activate(UnitCard c, ActivationInfo Info)
     {
         // Add 1 damage to each attack
-        c.BaseDamage++;
-        foreach(Attack atk in c.Attacks) {
+        c.baseStats.baseDamage++;
+        foreach(Attack atk in c.baseStats.attacks) {
             atk.damage++;
         }
 
+        c.RecalculateStats();
         AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, c);
     }
 }

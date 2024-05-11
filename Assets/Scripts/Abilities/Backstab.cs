@@ -11,10 +11,11 @@ public class Backstab : Ability
     {
         Vector2Int backwards = new Vector2Int(0, -1);
 
-        foreach(Attack atk in c.Attacks) {
+        foreach(Attack atk in c.baseStats.attacks) {
             if(atk.direction == backwards) {
                 atk.damage *= 2;
             }
         }
+        c.RecalculateStats();
     }
 }
