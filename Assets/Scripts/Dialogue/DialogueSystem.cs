@@ -41,6 +41,7 @@ public class DialogueSystem : MonoBehaviour
                 dialogueCoroutineRef = StartCoroutine(DialogueCoroutine(currentDialogue));
             }
             else {
+                EventManager.Instance.FinishEvent();
                 gameObject.SetActive(false);
             }
         }
