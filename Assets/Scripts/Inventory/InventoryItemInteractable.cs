@@ -22,18 +22,22 @@ public class InventoryItemInteractable : MonoBehaviour,
     // Inventory Manager Instance
     private InventoryManager inventoryManager;
 
+    // Expanded Info
+    private ExpandedInfo expandedInfo;
+
     private void Awake()
     {
         inventoryManager = FindObjectOfType<InventoryManager>();
         transform.localScale = new Vector3(originalCardSize, originalCardSize, 1f);
+        expandedInfo = FindObjectOfType<InventoryUI>().transform.Find("ExpandedInfo").GetComponent<ExpandedInfo>();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            // TO BE IMPLEMENTED
-            Debug.Log("Show more details");
+            expandedInfo.gameObject.SetActive(true);
+            expandedInfo.SendCardDetails(card);
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
