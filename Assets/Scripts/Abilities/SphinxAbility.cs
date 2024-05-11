@@ -7,7 +7,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Abilites/SphinxAbility")]
 public class SphinxAbility : Ability
 {
-    public override ActivationCondition Condition { get { return ActivationCondition.OnReceiveDamage; } }
+    public override ActivationCondition Condition { get { return ActivationCondition.OnDeath; } }
 
     public override void Activate(UnitCard c, ActivationInfo info)
     {

@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Sphinx
   m_EditorClassIdentifier: 
   Name: Sphinx
-  ManaCost: 3
+  ManaCost: 1
   Artwork: {fileID: 0}
   CurrentTeam: 2
-  Health: 4
+  Health: 1
   CanMove: 1
   isSelected: 0
   BaseDamage: 2
