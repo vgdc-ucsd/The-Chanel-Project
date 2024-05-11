@@ -38,7 +38,7 @@ public class MctsAI
     }
 
     const int MAX_TURNS = 100;
-    const int CHILD_COUNT = 3;
+    const int CHILD_COUNT = 5;
     const int MAX_ITERATIONS = 100;
 
     private List<Node> nodes;
@@ -76,19 +76,7 @@ public class MctsAI
 
         DuelInstance move = FindBestMove(root).State;
 
-        // TODO cleanup
-        for(int i = 0; i < move.DuelBoard.Cols; i++) {
-            for(int j = 0; j < move.DuelBoard.Rows; j++) {
-                BoardCoords pos = new BoardCoords(i,j);
-                if (move.DuelBoard.IsOccupied(pos)) {
-                    Card c = move.DuelBoard.GetCard(pos);
-                    if(c.CardInteractableRef != null) {
-                        UnitCardInteractable uci = (UnitCardInteractable) c.CardInteractableRef;
-                        uci.card = (UnitCard)c;
-                    }
-                }
-            }
-        }
+        UpdateUnitCardInteractableRefs(move);
 
         DuelManager.Instance.EnemyMove(move);
     }
@@ -105,7 +93,6 @@ public class MctsAI
     }
 
     private List<Node> RandomExpand(Node parent) {
-        // determines how many new children will be created
         List<Node> children = new List<Node>();
 
         for(int i = 0; i < CHILD_COUNT; i++) {
@@ -160,40 +147,71 @@ public class MctsAI
         CharStatus status = duel.GetStatus(team);
         List<Card> playableCards = GetPlayableCards(status);
         List<BoardCoords> legalTiles = GetLegalTiles(duel.DuelBoard); // TODO behind spawn line
+        List<UnitCard> moveableCards = GetMovableCards(duel.DuelBoard, team);
+        float movementChance = 0.5f;
 
         int loopCount = 0;
         // If any cards can be played, always play them
-        while(playableCards.Count > 0 && legalTiles.Count > 0) {
-
-            // pick random card
-            int randomCardIndex = Random.Range(0, playableCards.Count);
-            Card randomCard = playableCards[randomCardIndex].Clone();
+        while((playableCards.Count > 0 && legalTiles.Count > 0) || moveableCards.Count > 0) {
             
-
-            // pick random tile
-            int randomTileIndex = Random.Range(0, legalTiles.Count);
-            BoardCoords randomTile = legalTiles[randomTileIndex];
-
-            // play card
-            if (randomCard is UnitCard uc)
-            {
-                duel.DuelBoard.PlayCard(uc, randomTile, status, duel);
+            // remove cards if they are no longer movable
+            for(int i = 0; i < moveableCards.Count; i++) {
+                if(duel.DuelBoard.GetEmptyAdjacentTiles(moveableCards[i].Pos).Count == 0) {
+                    moveableCards.Remove(moveableCards[i]);
+                    i--;
+                }
             }
-            else if (randomCard is SpellCard)
-            {
-                if (randomCard is ISpellTypeTile sct)
-                {
-                    sct.CastSpell(duel, duel.DuelBoard.GetRandomTile());
+
+            if(moveableCards.Count > 0) {
+                // pick random card to move
+                int randomCardIndex = Random.Range(0, moveableCards.Count);
+                UnitCard randomCard = moveableCards[randomCardIndex];
+
+                // decide to move or not
+                if(Random.Range(0.0f, 1.0f) < movementChance) {
+                    // pick random tile
+                    List<BoardCoords> availableTiles = duel.DuelBoard.GetEmptyAdjacentTiles(randomCard.Pos);
+                    int randomTileIndex = Random.Range(0, availableTiles.Count);
+                    BoardCoords randomTile = availableTiles[randomTileIndex];
+
+                    // move to random tile
+                    duel.DuelBoard.MoveCard(randomCard, randomTile, duel);
                 }
-                else if (randomCard is ISpellTypeUnit scu)
-                {
-                    scu.CastSpell(duel, duel.DuelBoard.GetRandomCard());
-                }
+
+                moveableCards.Remove(randomCard);
             }
 
             // find legal cards and playable tiles
             playableCards = GetPlayableCards(status);
             legalTiles = GetLegalTiles(duel.DuelBoard);
+
+            if(playableCards.Count > 0 && legalTiles.Count > 0) {
+                // pick random card to play
+                int randomCardIndex = Random.Range(0, playableCards.Count);
+                Card randomCard = playableCards[randomCardIndex];
+
+                // pick random tile
+                int randomTileIndex = Random.Range(0, legalTiles.Count);
+                BoardCoords randomTile = legalTiles[randomTileIndex];
+
+                // play card
+                if (randomCard is UnitCard uc)
+                {
+                    duel.DuelBoard.PlayCard(uc, randomTile, status, duel);
+                }
+                else if (randomCard is SpellCard)
+                {
+                    if (randomCard is ISpellTypeTile sct)
+                    {
+                        sct.CastSpell(duel, duel.DuelBoard.GetRandomTile());
+                    }
+                    else if (randomCard is ISpellTypeUnit scu)
+                    {
+                        scu.CastSpell(duel, duel.DuelBoard.GetRandomCard());
+                    }
+                }
+            }
+            
             loopCount++;
             if (loopCount > 1000)
             {
@@ -223,15 +241,12 @@ public class MctsAI
     private List<BoardCoords> GetLegalTiles(Board b) {
         List<BoardCoords> legalTiles = new List<BoardCoords>();
 
-        for(int i = 0; i < b.Cols; i++) {
-            for(int j = 0; j < b.Rows; j++) {
-                BoardCoords pos = new BoardCoords(i, j);
+        for(int i = 0; i < b.Rows; i++) {
+            for(int j = 0; j < b.Cols; j++) {
+                BoardCoords pos = BoardCoords.FromRowCol(new Vector2Int(i, j));
                 if (!b.IsOccupied(pos) )
                 { 
-                    if (DuelManager.Instance.Settings.RestrictPlacement && j > 0) { // can't place in row closest to player
-                        legalTiles.Add(pos);
-                    }
-                    else {
+                    if (DuelManager.Instance.Settings.RestrictPlacement && i < 2) { // can't place in two rows closest to player
                         legalTiles.Add(pos);
                     }
                 }
@@ -254,5 +269,26 @@ public class MctsAI
             
         }
         return results;
+    }
+
+    private List<UnitCard> GetMovableCards(Board board, Team team) {
+        List<UnitCard> results = new List<UnitCard>();
+        foreach(UnitCard uc in board.CardSlots) {
+            if (uc != null) {
+                if(uc.CurrentTeam == team && board.GetEmptyAdjacentTiles(uc.Pos).Count > 0) results.Add(uc);
+            }
+        }
+        return results;
+    }
+
+    private void UpdateUnitCardInteractableRefs(DuelInstance move) {
+        // Loops over every card and updates its cardinteractable to reference itself
+
+        foreach(UnitCard uc in move.DuelBoard.CardSlots) {
+            if(uc != null && uc.CardInteractableRef != null) {
+                UnitCardInteractable uci = uc.UnitCardInteractableRef;
+                uci.card = uc;
+            }
+        }
     }
 }

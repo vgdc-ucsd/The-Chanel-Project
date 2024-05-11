@@ -31,8 +31,8 @@ public class DuelInstance
         // the team is whoever just activated end turn
 
         // Process all cards
-        for(int i = 0; i < DuelBoard.Cols; i++) {
-            for(int j = 0; j < DuelBoard.Rows; j++) {
+        for(int i = 0; i < DuelBoard.Rows; i++) {
+            for(int j = 0; j < DuelBoard.Cols; j++) {
                 BoardCoords pos = new BoardCoords(i,j);
                 if (DuelBoard.IsOccupied(pos)) {
                     ProcessCard(DuelBoard.GetCard(pos), team);
@@ -187,5 +187,30 @@ public class DuelInstance
     public CharStatus GetStatus(Team team) {
         if(team == Team.Player) return PlayerStatus;
         else return EnemyStatus;
+    }
+
+    public void DebugBoard() {
+        string result = "";
+        for(int i = 0; i < DuelBoard.Rows; i++) {
+            result += "[";
+            for(int j = 0; j < DuelBoard.Cols; j++) {
+                BoardCoords pos = BoardCoords.FromRowCol(new Vector2Int(i,j));
+                if (DuelBoard.IsOccupied(pos)) {
+                    UnitCard uc = DuelBoard.GetCard(pos);
+                    //result += $"{uc.Name}, ";
+                    if(uc.UnitCardInteractableRef==null) {
+                        result += "null, ";
+                    }
+                    else {
+                        result += $"{uc.UnitCardInteractableRef.GetInstanceID()}, ";
+                    }
+                }
+                else {
+                    result += ",    ";
+                }
+            }
+            result += "]\n";
+        }
+        Debug.Log(result);
     }
 }

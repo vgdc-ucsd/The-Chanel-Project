@@ -20,31 +20,6 @@ public class HandInterface : MonoBehaviour
 
     private List<QueueableAnimation> cardAnimations = new List<QueueableAnimation>(); 
 
-
-    // Depreciated Draw Function
-    public void Draw(Card c, Team team) {
-        if (team == myTeam) {
-            // Draw a random card from the deck (doesn't remove from deck) 
-            c.CurrentTeam = team; // ?
-            CardInteractable ci = DuelManager.Instance.UI.GenerateCardInteractable(c);
-            ci.handInterface = this;
-            ci.transform.localScale = Vector3.one;
-            cardObjects.Add(ci);
-        }
-    }
-
-    public void RemoveFromHand(Card card)
-    {
-        //Debug.Log("here");
-        //cardObjects.Remove(card.CardInteractableRef.gameObject);
-        //foreach(CardInteractable ci in cardObjects) {
-        //    if(ci.card == card) {
-        //        Debug.Log("here");
-        //        cardObjects.Remove(ci);
-        //    }
-        //}
-    }
-
     // Displays cards neatly in the UI
     public void OrganizeCards() {
         cardDistance = 45 * cardObjects.Count;
