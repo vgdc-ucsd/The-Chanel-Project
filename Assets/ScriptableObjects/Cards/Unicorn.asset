@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba1ad278697cae34da6360ecf631cd87, type: 3}
-  m_Name: Sphinx
+  m_Name: Unicorn
   m_EditorClassIdentifier: 
-  Name: Sphinx
-  ManaCost: 3
+  Name: Unicorn
+  ManaCost: 2
   Artwork: {fileID: 0}
   CurrentTeam: 2
-  Health: 4
+  Health: 3
   CanMove: 1
   isSelected: 0
   BaseDamage: 2
@@ -24,5 +24,11 @@ MonoBehaviour:
   Attacks:
   - direction: {x: 0, y: 1}
     damage: 2
+  - direction: {x: -1, y: -1}
+    damage: 2
+  - direction: {x: 0, y: -1}
+    damage: 2
+  - direction: {x: 1, y: -1}
+    damage: 2
   Abilities:
-  - {fileID: 11400000, guid: 7cc5e481715aebf43aa99e8561cc7718, type: 2}
+  - {fileID: 11400000, guid: 42d7c65101470674298116dc52e2251d, type: 2}

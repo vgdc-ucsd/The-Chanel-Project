@@ -4,7 +4,7 @@ using UnityEngine;
 
 // Ability Description:
 // This card can only die if you hit it with the exact amount of damage as health. 
-[CreateAssetMenu(menuName = "Abilities/SphinxAbility")]
+[CreateAssetMenu(menuName = "Abilites/SphinxAbility")]
 public class SphinxAbility : Ability
 {
     public override ActivationCondition Condition { get { return ActivationCondition.OnReceiveDamage; } }
