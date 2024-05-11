@@ -1,27 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 // Stores information about the state of the board
 public class Board
 {
-    [HideInInspector] public Card[,] CardSlots = null;
+    [HideInInspector] public UnitCard[,] CardSlots = null;
     public int Rows;
     public int Cols;
 
     public Board(int rows, int cols) {
-        CardSlots = new Card[rows, cols];
+        CardSlots = new UnitCard[rows, cols];
         Rows = rows;
         Cols = cols;
-        DuelEvents.Instance.OnPlaceCard += PlaceCard;
     }
 
+    public Board Clone() {
+        Board clone = new Board(Rows, Cols);
+        for(int i = 0; i < Rows; i++) {
+            for(int j = 0; j < Cols; j++) {
+                // guarenteed to be a UnitCard
+                if(this.CardSlots[i, j] != null) {
+                    clone.CardSlots[i, j] = (UnitCard) this.CardSlots[i, j].Clone();
+                }
+            }
+        }
+        return clone;
+    }
 
-
-    public Card GetCard(BoardCoords pos)
+    public UnitCard GetCard(BoardCoords pos)
     {
         if (IsOutOfBounds(pos)) return null;
         return CardSlots[pos.ToRowColV2().x,pos.ToRowColV2().y];
+    }
+
+    public UnitCard GetCard(int x, int y) // Should only use BoardCoords
+    {
+        return GetCard(new BoardCoords(x,y));
     }
 
     public bool IsOccupied(BoardCoords pos)
@@ -30,24 +46,35 @@ public class Board
         return !(GetCard(pos) == null);
     }
 
-    private void SetCard(Card card, BoardCoords pos)
+    private void SetCard(UnitCard card, BoardCoords pos)
     {
         CardSlots[pos.ToRowColV2().x, pos.ToRowColV2().y] = card;
     }
 
-    public void PlaceCard(Card card, BoardCoords pos) 
-    {
-        if (IsOutOfBounds(pos)) return;
-        if (GetCard(pos) != null) return; //cannot place card at occupied tile
-        SetCard(card, pos);
-        card.pos = pos;
-        card.Place(pos);
-        return;
-    }
+    // this should only be called on valid placements
+    public void PlayCard(UnitCard card, BoardCoords pos, CharStatus status, DuelInstance duel) {
+        if(IsOutOfBounds(pos)) {
+            Debug.LogWarning("Tried to play card at out of bounds position");
+            return;
+        }
+        if (GetCard(pos) != null) {
+            Debug.LogWarning("Cannot place card at occupied tile");
+            return;
+        }
+        if(status.Mana < card.ManaCost) {
+            Debug.LogWarning("Tried to play card without enough mana");
+            return;
+        }
 
-    public void PlaceCard(Card card, BoardCoords pos, Team team)
-    {
-        PlaceCard(card, pos);
+        card.Place(pos, duel);
+        status.Cards.Remove(card);
+        status.UseMana(card.ManaCost);
+        SetCard(card, pos);
+
+        ActivationInfo info = new ActivationInfo(duel);
+        foreach(Ability a in card.Abilities) {
+            if(a.Condition == ActivationCondition.OnPlay) a.Activate(card, info);
+        }
     }
 
     public void RemoveCard(BoardCoords pos)
@@ -56,17 +83,33 @@ public class Board
         SetCard(null, pos);
     }
 
-    public void MoveCard(Card card, BoardCoords pos)
+    public void MoveCard(UnitCard card, BoardCoords pos, DuelInstance duel)
     {
         // move card and update board and card data
         if (IsOutOfBounds(pos)) return;
         if (GetCard(pos) != null) return;
-        SetCard(null, card.pos);
+        SetCard(null, card.Pos);
         SetCard(card, pos);
-        card.pos = pos;
+        card.Pos = pos;
         card.CanMove = false;
+        ActivationInfo info = new ActivationInfo(duel);
         foreach(Ability a in card.Abilities) {
-            if(a.Condition == ActivationCondition.OnMove) a.Activate(card);
+            if(a.Condition == ActivationCondition.OnMove) a.Activate(card, info);
+        }
+        AnimationManager.Instance.MoveCardAnimation(duel, card, pos);
+        //if (duel == DuelManager.Instance.MainDuel) card.UnitCardInteractableRef.UpdateCardPos();
+
+    }
+
+    public void RenewMovement(Team t) {
+        for(int i = 0; i < Cols; i++) {
+            for(int j = 0; j < Rows; j++) {
+                BoardCoords pos = new BoardCoords(i,j);
+                if (IsOccupied(pos)) {
+                    UnitCard c = GetCard(pos);
+                    if(c.CurrentTeam == t) c.CanMove = true;
+                }
+            }
         }
     }
 
@@ -84,7 +127,18 @@ public class Board
 
         return tiles;
     }
-    
+
+    public List<UnitCard> GetAdjacentCards(BoardCoords pos)
+    {
+        List<UnitCard> cards = new List<UnitCard>();
+        foreach (BoardCoords tile in GetAdjacentTiles(pos))
+        {
+            UnitCard card = GetCard(tile);
+            if (card != null) cards.Add(card);
+        }
+        return cards;
+    }
+
     public List<BoardCoords> GetEmptyAdjacentTiles(BoardCoords pos)
     {
         List<BoardCoords> tiles = GetAdjacentTiles(pos);
@@ -93,6 +147,59 @@ public class Board
             if (IsOccupied(tiles[i])) tiles.RemoveAt(i);
         }
         return tiles;
+    }
+
+    // size 1 = 1x1, size 2 = 3x3
+    public List<BoardCoords> GetSquareTiles(BoardCoords pos, int size)
+    {
+        List<BoardCoords> tiles = new List<BoardCoords>();
+        for (int i = -(size - 1); i <= (size - 1); i++)
+        {
+            for (int j = -(size-1); j <= (size-1); j++)
+            {
+                BoardCoords tile = pos + new BoardCoords(i, j);
+                if (!IsOutOfBounds(tile)) tiles.Add(tile);
+            }
+        }
+        return tiles;
+    }
+
+
+
+    public List<UnitCard> GetCardsInSquare(BoardCoords pos, int size)
+    {
+        List<UnitCard> cards = new List<UnitCard>();
+        foreach (BoardCoords tile in GetSquareTiles(pos, size))
+        {
+            UnitCard card = GetCard(tile);
+            if (card != null) cards.Add(card);
+        }
+        return cards;
+    }
+
+    public List<UnitCard> GetAllCards()
+    {
+        List<UnitCard> cards = new List<UnitCard>();
+        foreach (UnitCard card in CardSlots)
+        {
+            if (card != null) cards.Add(card);
+        }
+        return cards;
+    }
+
+    public List<UnitCard> GetCardsInRow(int y)
+    {
+        if (IsOutOfBounds(new BoardCoords(0,y)))
+        {
+            return null;
+        }
+        List<UnitCard> cards = new List<UnitCard> ();
+        for (int i = 0; i < Cols; i++)
+        {
+            UnitCard card = GetCard(i, y);
+            if (card != null) cards.Add(card);
+        }
+        return cards;
     }
 
     public bool OnEnemyEdge(BoardCoords pos)
@@ -116,5 +223,18 @@ public class Board
     public bool IsOutOfBounds(BoardCoords atkDest)
     {
         return atkDest.x < 0 || atkDest.x >= Cols || atkDest.y < 0 || atkDest.y >= Rows;
+    }
+
+    public BoardCoords GetRandomTile()
+    {
+        int xTile = Random.Range(0, Cols);
+        int yTile = Random.Range(0, Rows);
+        return new BoardCoords(xTile, yTile);   
+    }
+
+    public UnitCard GetRandomCard()
+    {
+        List<UnitCard> cards = GetAllCards();
+        return cards[Random.Range(0, cards.Count)];
     }
 }

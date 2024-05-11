@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,7 +10,9 @@ public class UIManager : MonoBehaviour
 {
     // "Blank" objects that are intantiated many times
     public TileInteractable TemplateTile;
-    public CardInteractable TemplateCard;
+    //public CardInteractable TemplateCard;
+    public UnitCardInteractable TemplateUnitCard;
+    public SpellCardInteractable TemplateSpellCard;
 
     // Interface GameObjects
     public BoardInterface BoardContainer;
@@ -20,20 +23,42 @@ public class UIManager : MonoBehaviour
     public PlayerUI Player;
     public PlayerUI Enemy;
 
-    public void SetupBoard() {
+    public void Initialize() {
         BoardContainer.CreateBoard();
     }
 
-    public void SetupHand() {
-        Hand.TemplateCard = TemplateCard;
-        EnemyHand.TemplateCard = TemplateCard;
+    public void UpdateStatus(DuelInstance state) {
+        Player.UpdateUI(state.PlayerStatus);
+        Enemy.UpdateUI(state.EnemyStatus);
     }
 
     public CardInteractable GenerateCardInteractable(Card c) {
-        CardInteractable ci = Instantiate(TemplateCard);
-        ci.card = c;
-        ci.SetCardInfo();
-        return ci;
+        if(c is UnitCard) {
+            UnitCardInteractable ci = Instantiate(TemplateUnitCard);
+            ci.card = (UnitCard) c;
+            ci.SetCardInfo();
+
+            if(c.CurrentTeam == Team.Player) ci.handInterface = Hand;
+            else ci.handInterface = EnemyHand;
+
+            ci.handInterface.cardObjects.Add(ci);
+            return ci;
+        }
+        else if(c is SpellCard) {
+            SpellCardInteractable ci = Instantiate(TemplateSpellCard);
+            ci.card = (SpellCard)c;
+            ci.SetCardInfo();
+
+            if (c.CurrentTeam == Team.Player) ci.handInterface = Hand;
+            else ci.handInterface = EnemyHand;
+
+            ci.handInterface.cardObjects.Add(ci);
+            return ci;
+        }
+        else {
+            Debug.LogError("Unidentified card type");
+            return null;
+        }
     }
 
     public TileInteractable FindTileInteractable(BoardCoords bc) {
@@ -53,11 +78,11 @@ public class UIManager : MonoBehaviour
             Debug.LogError("Cannot create board, TemplateTile is uninitialized");
             return;
         }
-        if(TemplateCard == null) {
+        if(TemplateUnitCard == null) {
             Debug.LogError("Could not create hand, TemplateCard is uninitialized");
             return;
         }
-        TemplateCard.CheckProperInitialization();
+        TemplateUnitCard.CheckProperInitialization();
 
         if(BoardContainer == null) {
             Debug.LogError("Cannot create board, BoardContainer is uninitialized");

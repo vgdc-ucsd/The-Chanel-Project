@@ -7,8 +7,21 @@ public class Deck : ScriptableObject
 {
     public List<Card> CardList = new List<Card>();
 
-    private void addCard(Card card)
+    private void addCard(UnitCard card)
     {
         CardList.Add(card);
+    }
+
+    public Deck Clone() {
+        Deck copy = (Deck) ScriptableObject.CreateInstance("Deck");
+
+        foreach(Card c in this.CardList) {
+            //Debug.Log(c.name);
+
+            copy.CardList.Add(c.Clone());
+            //Debug.Log(uc.name);
+        }
+
+        return copy;
     }
 }

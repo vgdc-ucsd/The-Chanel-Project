@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: TestCard 1
   m_EditorClassIdentifier: 
   Name: 
+  ManaCost: 0
   Artwork: {fileID: 0}
-  AttackDirections:
-  - {x: 1, y: 1}
+  CurrentTeam: 2
+  Health: 0
+  CanMove: 1
+  isSelected: 0
+  BaseDamage: 1
+  UnitCardInteractableRef: {fileID: 0}
+  Attacks: []
+  Abilities: []
