@@ -225,18 +225,18 @@ public class AnimationManager : MonoBehaviour
     }
 
     public void MoveCardAnimation(DuelInstance duel, UnitCard uc, BoardCoords targetPos) {
-        float speed = 0.5f;
-        Transform targetTransform = BoardInterface.Instance.GetTile(targetPos).transform;
-        IEnumerator ie = MoveCard(uc, targetTransform, speed);
-        QueueableAnimation qa = new QueueableAnimation(ie, speed);
-        duel.Animations.Enqueue(qa);
+        if(uc.CurrentTeam == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode) {
+            float speed = 0.5f;
+            Transform targetTransform = BoardInterface.Instance.GetTile(targetPos).transform;
+            IEnumerator ie = MoveCard(uc, targetTransform, speed);
+            QueueableAnimation qa = new QueueableAnimation(ie, speed);
+            duel.Animations.Enqueue(qa);
+        }
     }
 
     public void UpdateCardInfoAnimation(DuelInstance duel, UnitCard c) {
-        if(c.CurrentTeam == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode) {
-            IEnumerator ie = UpdateCardInfo(c);
-            QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
-            duel.Animations.Enqueue(qa);
-        }
+        IEnumerator ie = UpdateCardInfo(c);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+        duel.Animations.Enqueue(qa);
     }
 }
