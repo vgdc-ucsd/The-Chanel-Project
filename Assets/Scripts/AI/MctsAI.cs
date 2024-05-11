@@ -37,7 +37,7 @@ public class MctsAI
         }
     }
 
-    const int MAX_TURNS = 50;
+    const int MAX_TURNS = 100;
     const int CHILD_COUNT = 5;
     const int MAX_ITERATIONS = 100;
 
@@ -181,6 +181,10 @@ public class MctsAI
                 moveableCards.Remove(randomCard);
             }
 
+            // find legal cards and playable tiles
+            playableCards = GetPlayableCards(status);
+            legalTiles = GetLegalTiles(duel.DuelBoard);
+
             if(playableCards.Count > 0 && legalTiles.Count > 0) {
                 // pick random card to play
                 int randomCardIndex = Random.Range(0, playableCards.Count);
@@ -207,10 +211,6 @@ public class MctsAI
                     }
                 }
             }
-
-            // find legal cards and playable tiles
-            playableCards = GetPlayableCards(status);
-            legalTiles = GetLegalTiles(duel.DuelBoard);
             
             loopCount++;
             if (loopCount > 1000)

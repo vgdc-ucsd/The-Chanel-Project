@@ -45,6 +45,7 @@ public class PlayerInputController: MonoBehaviour
     // Handle any input that involves clicking a card on the board
     public void InteractCard(UnitCard card)
     {
+        if (card.CurrentTeam == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode) return;
         SetAction(ControlAction.None);
         //if (card.team != DuelManager.Instance.DC.GetCurrentTeam())
         //{
@@ -70,6 +71,7 @@ public class PlayerInputController: MonoBehaviour
     public void SelectCard(UnitCard card, bool toggle = true)
     {
         if (card == null) return;
+        if (card.CurrentTeam == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode) return;
         if (toggle && selectedCard != null && selectedCard != card)
         {
             // unselect previous card

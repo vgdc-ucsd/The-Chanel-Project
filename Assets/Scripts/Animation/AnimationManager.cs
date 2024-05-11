@@ -63,6 +63,10 @@ public class AnimationManager : MonoBehaviour
         activelyPlaying = false;
     }
 
+    public bool DonePlaying() {
+        return animations.Count == 0;
+    }
+
     // **************************************************************
     //                 Animation logic (IEnumerator)
     // **************************************************************

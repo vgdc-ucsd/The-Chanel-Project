@@ -83,7 +83,8 @@ public class DuelManager : MonoBehaviour
     }
 
     public void EndTurnPlayer() {
-        // TODO can only end turn if awaitingAI is false
+        if(awaitingAI) return; // await AI
+        if(!AnimationManager.Instance.DonePlaying()) return; // await animations
 
         if(Settings.EnablePVPMode) {
             if (currentTeam == Team.Player) {
