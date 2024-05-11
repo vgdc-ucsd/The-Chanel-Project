@@ -111,36 +111,4 @@ public class PlayerInputController: MonoBehaviour
             SetAction(ControlAction.None);
         }
     }
-
-    public void TryPlaceCard(UnitCard card, BoardCoords pos) {
-        // Check out of bounds
-        if (DuelManager.Instance.MainDuel.DuelBoard.IsOutOfBounds(pos)) return;
-        if (DuelManager.Instance.MainDuel.DuelBoard.IsOccupied(pos)) return;
-
-        // TODO
-        //if (currentTeam != card.team) {
-        //    Debug.Log($"Tried to play {card.team} card while on {currentTeam} turn");
-        //    return;
-        //}
-        CharStatus charStatus;
-        if(card.CurrentTeam == Team.Player) charStatus = DuelManager.Instance.MainDuel.PlayerStatus;
-        else charStatus = DuelManager.Instance.MainDuel.EnemyStatus;
-       
-        if (!charStatus.CanUseMana(card.ManaCost))
-        {
-            Debug.Log("Not enough Mana"); //TODO: UI feedback
-            return;
-        }
-        //if(card.team == Team.Enemy) MirrorAttacks(card); // this should only be called once per enemy card
-
-        UnitCard cardCopy = (UnitCard)card.Clone();
-        //Debug.Log(cardCopy.name);
-        DuelManager.Instance.MainDuel.DuelBoard.PlayCard(cardCopy, pos, charStatus, DuelManager.Instance.MainDuel);
-        if(cardCopy is UnitCard) {
-            IEnumerator ie = AnimationManager.Instance.PlaceUnitCard(cardCopy, pos);
-            AnimationManager.Instance.Play(ie);
-        }
-        DuelManager.Instance.UI.UpdateStatus(DuelManager.Instance.MainDuel);
-    }
-   
 }

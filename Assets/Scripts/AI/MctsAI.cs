@@ -76,19 +76,7 @@ public class MctsAI
 
         DuelInstance move = FindBestMove(root).State;
 
-        // TODO cleanup
-        for(int i = 0; i < move.DuelBoard.Cols; i++) {
-            for(int j = 0; j < move.DuelBoard.Rows; j++) {
-                BoardCoords pos = new BoardCoords(i,j);
-                if (move.DuelBoard.IsOccupied(pos)) {
-                    Card c = move.DuelBoard.GetCard(pos);
-                    if(c.CardInteractableRef != null) {
-                        UnitCardInteractable uci = (UnitCardInteractable) c.CardInteractableRef;
-                        uci.card = (UnitCard)c;
-                    }
-                }
-            }
-        }
+        //UpdateUnitCardInteractableRefs(move);
 
         DuelManager.Instance.EnemyMove(move);
     }
@@ -105,7 +93,6 @@ public class MctsAI
     }
 
     private List<Node> RandomExpand(Node parent) {
-        // determines how many new children will be created
         List<Node> children = new List<Node>();
 
         for(int i = 0; i < CHILD_COUNT; i++) {
@@ -167,8 +154,7 @@ public class MctsAI
 
             // pick random card
             int randomCardIndex = Random.Range(0, playableCards.Count);
-            Card randomCard = playableCards[randomCardIndex].Clone();
-            
+            Card randomCard = playableCards[randomCardIndex];
 
             // pick random tile
             int randomTileIndex = Random.Range(0, legalTiles.Count);
@@ -223,8 +209,8 @@ public class MctsAI
     private List<BoardCoords> GetLegalTiles(Board b) {
         List<BoardCoords> legalTiles = new List<BoardCoords>();
 
-        for(int i = 0; i < b.Cols; i++) {
-            for(int j = 0; j < b.Rows; j++) {
+        for(int i = 0; i < b.Rows; i++) {
+            for(int j = 0; j < b.Cols; j++) {
                 BoardCoords pos = new BoardCoords(i, j);
                 if (!b.IsOccupied(pos) )
                 { 
@@ -254,5 +240,16 @@ public class MctsAI
             
         }
         return results;
+    }
+
+    private void UpdateUnitCardInteractableRefs(DuelInstance move) {
+        // Loops over every card and updates its cardinteractable to reference itself
+
+        foreach(UnitCard uc in move.DuelBoard.CardSlots) {
+            if(uc != null && uc.CardInteractableRef != null) {
+                UnitCardInteractable uci = uc.UnitCardInteractableRef;
+                uci.card = uc;
+            }
+        }
     }
 }

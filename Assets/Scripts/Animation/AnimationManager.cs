@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using FMODUnity;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class AnimationManager : MonoBehaviour
 {
     public static AnimationManager Instance;
+
+    public Transform EnemyHandLocation;
 
     private Queue<QueueableAnimation> animations = new Queue<QueueableAnimation>();
     private bool activelyPlaying = false;
@@ -127,17 +130,49 @@ public class AnimationManager : MonoBehaviour
     private IEnumerator OrganizeCards(List<Card> cards, Team team) {
         foreach(Card c in cards) {
             if(c.CardInteractableRef == null) {
+                //Debug.Log("found null card while organizing");
                 c.CardInteractableRef = DuelManager.Instance.UI.GenerateCardInteractable(c);
             }
         }
         if (team == Team.Player) DuelManager.Instance.UI.Hand.OrganizeCards();
         else DuelManager.Instance.UI.EnemyHand.OrganizeCards();
+
         yield return null;
     }
 
-    public IEnumerator PlaceUnitCard(UnitCard c, BoardCoords pos) {
-        if(c.UnitCardInteractableRef == null) c.UnitCardInteractableRef = (UnitCardInteractable) DuelManager.Instance.UI.GenerateCardInteractable(c); // TODO cleanup
-        c.UnitCardInteractableRef.UIPlaceCard(pos);
+    public IEnumerator PlaceUnitCard(UnitCard c, BoardCoords pos, float speed) {
+        UnitCardInteractable unitRef = c.UnitCardInteractableRef;
+
+        // make a new card interactable if there is none
+        // TODO remove since they should be generated when the enemy draws/organizes the card ?
+        if(unitRef == null) {
+            unitRef = (UnitCardInteractable) DuelManager.Instance.UI.GenerateCardInteractable(c);
+            c.UnitCardInteractableRef = unitRef;
+        }
+
+        // Show card place animation if card belongs to enemy
+        if(!DuelManager.Instance.Settings.EnablePVPMode && c.CurrentTeam == Team.Enemy) {
+            // set card
+            TileInteractable tile = BoardInterface.Instance.GetTile(pos);
+            unitRef.inHand = false;
+            unitRef.transform.localEulerAngles = Vector3.zero;
+            unitRef.transform.localScale = Vector3.one;
+            if(unitRef.handInterface != null) {
+                unitRef.handInterface.cardObjects.Remove(c.CardInteractableRef);
+            } 
+            unitRef.transform.SetParent(tile.transform);
+            unitRef.transform.localScale = Vector3.one;
+            unitRef.DrawArrows(); 
+            unitRef.CardCost.enabled = false;
+            unitRef.transform.position = EnemyHandLocation.position;
+            unitRef.gameObject.SetActive(true);
+
+            // translation animation
+            yield return SimpleTranslate(unitRef.transform, tile.transform.position, speed, InterpolationMode.Linear);
+        }
+        else {
+            c.UnitCardInteractableRef.UIPlaceCard(pos);
+        }
         yield return null;
     }
 
@@ -174,8 +209,9 @@ public class AnimationManager : MonoBehaviour
     }
 
     public void PlaceUnitCardAnimation(DuelInstance duel, UnitCard c, BoardCoords pos) {
-        IEnumerator ie = PlaceUnitCard(c, pos);
-        QueueableAnimation qa = new QueueableAnimation(ie, 0.5f);
+        float speed = 0.5f; // time of animation in seconds
+        IEnumerator ie = PlaceUnitCard(c, pos, speed);
+        QueueableAnimation qa = new QueueableAnimation(ie, speed);
         duel.Animations.Enqueue(qa);
     }
 

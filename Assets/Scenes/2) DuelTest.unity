@@ -447,6 +447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99ed7c26354de3d4a8003a5df80d2017, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EnemyHandLocation: {fileID: 794390334}
 --- !u!1 &40803077
 GameObject:
   m_ObjectHideFlags: 0

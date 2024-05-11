@@ -108,6 +108,7 @@ public class DuelManager : MonoBehaviour
     public void EnemyMove(DuelInstance state) {
         state.ProcessBoard(Team.Enemy);
         MainDuel = state;
+        //state.DebugBoard();
         AnimationManager.Instance.Enqueue(state.Animations);
         UI.UpdateStatus(state);
         awaitingAI = false;
