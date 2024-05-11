@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba1ad278697cae34da6360ecf631cd87, type: 3}
-  m_Name: Crow
+  m_Name: Kappa
   m_EditorClassIdentifier: 
   enableLogging: 0
-  Name: Crow
+  Name: Kappa
   Health: 1
-  AttackDamage: 0
+  AttackDamage: 1
   ManaCost: 1
   isSelected: 0
   CanMove: 1
@@ -24,6 +24,8 @@ MonoBehaviour:
   team: 0
   CardInteractableRef: {fileID: 0}
   AttackDirections:
-  - {x: -1, y: 1}
-  AttackDamages: 01000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+  - {x: 0, y: 1}
+  - {x: -1, y: 0}
+  - {x: 0, y: -1}
+  AttackDamages: ffffffff01000000ffffffff01000000ffffffffffffffff01000000ffffffff
   Abilities: []
