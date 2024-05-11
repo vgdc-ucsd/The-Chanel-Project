@@ -22,7 +22,7 @@ public class ExpandedInfo : MonoBehaviour
     {
     }
 
-    public void SendCardDetails(Card card)
+    public void SendCardDetails(UnitCard card)
     {
         if (cardPos.childCount > 0)
         {
@@ -34,7 +34,7 @@ public class ExpandedInfo : MonoBehaviour
         // Set name, health, attack text appropriately
         cardObject.Find("Name").GetComponent<TextMeshProUGUI>().text = card.name;
         cardObject.Find("Health").GetComponent<TextMeshProUGUI>().text = "Health: " + card.Health.ToString();
-        cardObject.Find("Attack").GetComponent<TextMeshProUGUI>().text = "Attack: " + card.AttackDamage.ToString();
+        cardObject.Find("Attack").GetComponent<TextMeshProUGUI>().text = "Attack: " + card.BaseDamage.ToString();
 
         // Set card info appropriately
         cardObject.GetComponent<InventoryItemInteractable>().card = card;

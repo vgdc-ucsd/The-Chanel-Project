@@ -49,7 +49,7 @@ public class ShopCardInteractable : MonoBehaviour,
         int randomIndex = shopManager.generateNum(collectionSize);
         Card randomCard = cardCollection.CardList[randomIndex];
 
-        display.setDisplay(randomCard);
+        display.setDisplay((UnitCard)randomCard); // TODO support spell cards
         card = randomCard;
     }
 

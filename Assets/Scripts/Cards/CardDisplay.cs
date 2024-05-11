@@ -24,13 +24,13 @@ public class CardDisplay : MonoBehaviour
 
     public Image CardArt;
 
-    public void setDisplay(Card card)
+    public void setDisplay(UnitCard card)
     {
         this.card = card;
 
         CardName.text = card.Name;
         CardHealth.text = card.Health.ToString();
-        CardAttack.text = card.AttackDamage.ToString();
+        CardAttack.text = card.BaseDamage.ToString();
         CardMana.text = card.ManaCost.ToString();
         CardCost.text = card.ShopCost.ToString() + "g";
 
