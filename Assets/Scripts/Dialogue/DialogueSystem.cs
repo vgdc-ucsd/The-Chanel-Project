@@ -5,10 +5,15 @@ using UnityEngine;
 
 public class DialogueSystem : MonoBehaviour
 {
+    
+    public string CharacterName;
+    public string Option1;
+    public string Option2;
     public TextMeshProUGUI Text;
-    public TextMeshProUGUI CharacterName;
-    public int debugNum;
-    public Dialogue[] DialogueText;
+    public TextMeshProUGUI CharacterNameText;
+    public TextMeshProUGUI Option1Text;
+    public TextMeshProUGUI Option2Text;
+    public List<Dialogue> DialogueText;
 
     private Queue<Dialogue> dialogueQueue;    
     private Coroutine dialogueCoroutineRef;
@@ -16,6 +21,13 @@ public class DialogueSystem : MonoBehaviour
     private bool finishedText;
 
     void Start() {
+        CharacterNameText.text = CharacterName;
+        Option1Text.text = Option1;
+        Option2Text.text = Option2;
+
+        Option1Text.transform.parent.gameObject.SetActive(false);
+        Option2Text.transform.parent.gameObject.SetActive(false);
+
         finishedText = true;
         dialogueQueue = new Queue<Dialogue>(DialogueText);
         if(dialogueQueue.Count > 0) AdvanceDialogue();
@@ -36,13 +48,15 @@ public class DialogueSystem : MonoBehaviour
                 Dialogue currentDialogue = dialogueQueue.Dequeue();
                 if(dialogueCoroutineRef != null) StopCoroutine(dialogueCoroutineRef);
                 Text.text = currentDialogue.Line;
-                CharacterName.text = currentDialogue.CharacterName;
+                //CharacterName.text = currentDialogue.CharacterName;
                 Text.maxVisibleCharacters = 0;
                 dialogueCoroutineRef = StartCoroutine(DialogueCoroutine(currentDialogue));
             }
             else {
-                EventManager.Instance.FinishEvent();
-                gameObject.SetActive(false);
+                Option1Text.transform.parent.gameObject.SetActive(true);
+                Option2Text.transform.parent.gameObject.SetActive(true);
+                //EventManager.Instance.FinishEvent();
+                //gameObject.SetActive(false);
             }
         }
         else {
