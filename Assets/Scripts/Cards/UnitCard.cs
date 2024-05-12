@@ -52,6 +52,8 @@ public class UnitCard : Card
         copy.CurrentTeam = this.CurrentTeam;
         copy.UnitCardInteractableRef = this.UnitCardInteractableRef;
         copy.baseStats = this.baseStats;
+        copy.drawStatus = this.drawStatus;
+        copy.id = this.id;
 
         copy.Attacks = new List<Attack>();
         foreach(Attack atk in this.Attacks) {
@@ -97,6 +99,7 @@ public class UnitCard : Card
             foreach(Ability a in Abilities) {
                 if (a.Condition == ActivationCondition.OnDeath) a.Activate(this, info);
             }
+            duel.GetStatus(CurrentTeam).Deck.Discard(this);
         }
     }
 

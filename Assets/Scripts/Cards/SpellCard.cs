@@ -29,6 +29,8 @@ public abstract class SpellCard : Card
         copy.Artwork = this.Artwork;
         copy.CurrentTeam = this.CurrentTeam;
         copy.CardInteractableRef = this.CardInteractableRef;
+        copy.drawStatus = this.drawStatus;
+        copy.id = this.id;
 
         CloneExtras(copy);
 
@@ -45,6 +47,7 @@ public abstract class SpellCard : Card
     {
         duel.GetStatus(CurrentTeam).UseMana(ManaCost);
         duel.GetStatus(CurrentTeam).RemoveFromHand(this);
+        duel.GetStatus(CurrentTeam).Deck.Discard(this);
     }
 
 

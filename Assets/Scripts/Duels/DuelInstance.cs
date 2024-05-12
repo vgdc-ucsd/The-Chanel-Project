@@ -60,6 +60,8 @@ public class DuelInstance
     }
 
     private void ProcessCard(UnitCard card, Team team) {
+
+
         // Cards only take actions on their turn
         if (card.CurrentTeam == team) {
 
@@ -73,7 +75,8 @@ public class DuelInstance
             }
 
             List<Attack> queuedCharAttacks = new List<Attack>();
-            
+
+            bool attackLanded = false;
             // Attack
             foreach(Attack atk in card.Attacks) {
                 
@@ -84,36 +87,46 @@ public class DuelInstance
                      DuelBoard.BeyondPlayerEdge(atkDest) && team == Team.Enemy)
                 {
                     queuedCharAttacks.Add(atk);
+                    continue;
                 }
 
-
-
-                ProcessAttack(card, atk);
+                if (ProcessAttack(card, atk)) attackLanded = true;
             }
 
-            if (queuedCharAttacks.Count == 0) return;
-            Attack maxDmgAtk = queuedCharAttacks[0];
-            foreach(Attack atk in queuedCharAttacks)
+            if (queuedCharAttacks.Count != 0)
             {
-                if (atk.damage > maxDmgAtk.damage) maxDmgAtk = atk;
+                attackLanded = true;
+                Attack maxDmgAtk = queuedCharAttacks[0];
+                foreach (Attack atk in queuedCharAttacks)
+                {
+                    if (atk.damage > maxDmgAtk.damage) maxDmgAtk = atk;
+                }
+                Team winner = GetStatus(CharStatus.OppositeTeam(team)).TakeDamage(maxDmgAtk.damage);
+                if (winner != Team.Neutral) Winner = winner;
             }
-            Team winner = GetStatus(CharStatus.OppositeTeam(team)).TakeDamage(maxDmgAtk.damage);
-            if (winner != Team.Neutral) Winner = winner;
-            return;
+            if (attackLanded)
+            {
+
+                for (int i = card.Abilities.Count - 1; i >= 0; i--)
+                {
+                    Ability a = card.Abilities[i];
+                    if (a.Condition == ActivationCondition.OnFinishAttack) a.Activate(card, info);
+                }
+            }
 
         }
     }
 
-    private void ProcessAttack(UnitCard card, Attack atk) {
+    private bool ProcessAttack(UnitCard card, Attack atk) {
         BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
-
+        
 
 
         // Do nothing if attack is out of bounds
-        if(DuelBoard.IsOutOfBounds(atkDest)) return;
+        if(DuelBoard.IsOutOfBounds(atkDest)) return false;
 
         // Do nothing if destination tile is empty
-        if(DuelBoard.GetCard(atkDest) == null) return;
+        if(DuelBoard.GetCard(atkDest) == null) return false;
 
         // Deal damage
         UnitCard target = DuelBoard.GetCard(atkDest);
@@ -129,7 +142,9 @@ public class DuelInstance
             foreach(Ability a in card.Abilities) {
                 if(a.Condition == ActivationCondition.OnDealDamage) a.Activate(card, info);
             }
+            return true;
         }
+        return false;
     }
 
     private void DrawCards(Team team, int count) {
@@ -137,13 +152,34 @@ public class DuelInstance
         Deck deck = status.Deck;
 
         List<Card> drawnCards = new List<Card>();
-        for(int i = 0; i < count; i++) {
+
+        if (deck.DrawPileIsEmpty())
+        {
+            deck.Refresh();
+        }
+
+        for (int i = 0; i < count; i++) {
             // pick a random card, TODO keep track of how many cards are left in deck
-            int index = Random.Range(0, deck.CardList.Count);
-            Card c = ScriptableObject.Instantiate(deck.CardList[index]);
+
+
+            Card drawnCard = deck.RandomAvailableCard();
+
+
+            if (drawnCard == null) break;
+            
+            drawnCard.drawStatus = DrawStatus.InPlay;
+            deck.numAvailableCards--;
+            // Debug.Log($"Team: {team}, cards: {deck.numAvailableCards}");
+            Card c = ScriptableObject.Instantiate(drawnCard);
             c.CurrentTeam = team;
             status.AddCard(c);
             drawnCards.Add(c);
+
+            if (deck.DrawPileIsEmpty())
+            {
+                deck.Refresh();
+            }
+
         }
 
         AnimationManager.Instance.OrganizeCardsAnimation(this, drawnCards, team);

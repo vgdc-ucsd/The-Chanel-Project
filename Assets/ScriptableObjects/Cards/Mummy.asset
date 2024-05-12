@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Mummy
   ManaCost: 2
+  ShopCost: 0
   Artwork: {fileID: 0}
+  drawStatus: 2
+  id: 3
   CurrentTeam: 2
   Health: 3
   CanMove: 1
@@ -29,3 +32,4 @@ MonoBehaviour:
   - direction: {x: 1, y: 0}
     damage: 1
   Abilities: []
+  StatusEffects: []

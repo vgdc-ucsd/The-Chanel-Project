@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f15f282beda789c4686a2671c4e99758, type: 3}
-  m_Name: MixedDeck
+  m_Name: MixedDeck 1
   m_EditorClassIdentifier: 
   CardList:
   - {fileID: 11400000, guid: a88c7d8913880fd4aa37c9ba6619601b, type: 2}

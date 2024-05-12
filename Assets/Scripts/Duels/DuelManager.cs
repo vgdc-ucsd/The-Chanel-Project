@@ -38,9 +38,13 @@ public class DuelManager : MonoBehaviour
     {
         CheckProperInitialization();
 
+
+
         // DuelInstance Setup
-        CharStatus PlayerStatus = new CharStatus(Team.Player, PlayerDeck);
-        CharStatus EnemyStatus = new CharStatus(Team.Enemy, EnemyDeck);
+        CharStatus PlayerStatus = new CharStatus(Team.Player, ScriptableObject.Instantiate(PlayerDeck));
+        CharStatus EnemyStatus = new CharStatus(Team.Enemy, ScriptableObject.Instantiate(EnemyDeck));
+        PlayerStatus.Deck.Init();
+        EnemyStatus.Deck.Init();
         Board board = new Board(Settings.BoardRows, Settings.BoardCols);
         MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, board);
 
@@ -111,5 +115,10 @@ public class DuelManager : MonoBehaviour
         UIManager.Instance.UpdateStatus(state);
         awaitingAI = false;
         currentTeam = Team.Player;
+
+        Debug.Log($"Player Draw Pile: {MainDuel.PlayerStatus.Deck.DrawPile().ToCommaSeparatedString()}");
+        Debug.Log($"Player Discard Pile: {MainDuel.PlayerStatus.Deck.DiscardPile().ToCommaSeparatedString()}");
+        Debug.Log($"Enemy Draw Pile: {MainDuel.EnemyStatus.Deck.DrawPile().ToCommaSeparatedString()}");
+        Debug.Log($"Enemy Discard Pile: {MainDuel.EnemyStatus.Deck.DiscardPile().ToCommaSeparatedString()}");
     }
 }
