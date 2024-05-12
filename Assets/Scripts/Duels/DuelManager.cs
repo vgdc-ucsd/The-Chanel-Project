@@ -12,26 +12,24 @@ public class DuelManager : MonoBehaviour
     // Singleton
     public static DuelManager Instance;
 
-    // Game Settings
+    // Set through inspector
     public DuelSettings Settings;
-
-    // The decks of cards used in the duel
     public Deck PlayerDeck;
     public Deck EnemyDeck;
-
-    public CharStatus PlayerStatus, EnemyStatus;
-
-    // Script for managing UI
     public UIManager UI;
 
-    // Script that handles logic for the duels
-    public DuelController DC;
-
-    // Animation Manager
-    public AnimationManager AM;
+    // Game Logic
+    public DuelInstance MainDuel;
+    private MctsAI ai;
+    private bool awaitingAI;
+    private Team currentTeam;
 
     void Awake() {
-        if (Instance != null && Instance != this) Destroy(this);
+        // Singleton
+        if (Instance != null && Instance != this) {
+            Debug.LogWarning("Tried to create more than one instance of the DuelManager singleton");
+            Destroy(this);
+        }
         else Instance = this;
     }
 
@@ -39,16 +37,32 @@ public class DuelManager : MonoBehaviour
     void Start()
     {
         CheckProperInitialization();
-        DC = new DuelController(PlayerStatus,EnemyStatus);
-        UI.SetupBoard();
-        UI.SetupHand();
-        DuelEvents.Instance.UpdateUI();
 
+        // DuelInstance Setup
+        CharStatus PlayerStatus = new CharStatus(Team.Player, PlayerDeck);
+        CharStatus EnemyStatus = new CharStatus(Team.Enemy, EnemyDeck);
+        Board board = new Board(Settings.BoardRows, Settings.BoardCols);
+        MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, board);
+
+        // Draw staring cards
+        AnimationManager.Instance.Enqueue(MainDuel.DrawStartingCards());
+
+        // AI setup
+        ai = new MctsAI();
+        awaitingAI = false;
+
+        // Set Starting Team
+        if (Settings.EnemyGoesFirst) currentTeam = Team.Enemy;
+        else currentTeam = Team.Player;
+
+        // UI Setup
+        UI.Initialize();
+        UI.UpdateStatus(MainDuel);
         if (Settings.EnablePVPMode || Settings.ShowEnemyHand) {
             UI.EnemyHand.gameObject.SetActive(true);
         }
-
-        DC.StartDuel();
+        //DuelEvents.Instance.UpdateUI();
+        //DuelEvents.Instance.UpdateHand();
     }
 
     private void CheckProperInitialization() {
@@ -62,17 +76,42 @@ public class DuelManager : MonoBehaviour
             Debug.LogError("Could not start duel, the UIManager is uninitalized");
             return;
         }
-        if(AM == null) {
-            Debug.LogError("Could not start duel, the AnimationManager is uninitalized");
-            return;
-        }
         if(Settings == null) {
-            Debug.LogError("Could not start duel, the DuelSeetings are uninitialized");
+            Debug.LogError("Could not start duel, the DuelSettings are uninitialized");
             return;
         }
     }
 
-    public void EndTurn() {
-        DC.EndTurn();
+    public void EndTurnPlayer() {
+        if(awaitingAI) return; // await AI
+        if(!AnimationManager.Instance.DonePlaying()) return; // await animations
+
+        if(Settings.EnablePVPMode) {
+            if (currentTeam == Team.Player) {
+                MainDuel.ProcessBoard(Team.Player);
+                AnimationManager.Instance.Enqueue(MainDuel.Animations);
+                currentTeam = Team.Enemy;
+            }
+            else {
+                MainDuel.ProcessBoard(Team.Enemy);
+                AnimationManager.Instance.Enqueue(MainDuel.Animations);
+                currentTeam = Team.Player;
+            }
+        }
+        else {
+            MainDuel.ProcessBoard(Team.Player);
+            AnimationManager.Instance.Enqueue(MainDuel.Animations);
+            StartCoroutine(ai.MCTS(MainDuel));
+            awaitingAI = true;
+        }
+    }
+
+    public void EnemyMove(DuelInstance state) {
+        state.ProcessBoard(Team.Enemy);
+        MainDuel = state;
+        //state.DebugBoard();
+        AnimationManager.Instance.Enqueue(state.Animations);
+        UI.UpdateStatus(state);
+        awaitingAI = false;
     }
 }

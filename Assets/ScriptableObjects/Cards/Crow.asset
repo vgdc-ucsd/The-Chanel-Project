@@ -19,7 +19,6 @@ MonoBehaviour:
   ManaCost: 1
   isSelected: 0
   CanMove: 1
-  ShopCost: 2
   isActive: 0
   Artwork: {fileID: 0}
   team: 0

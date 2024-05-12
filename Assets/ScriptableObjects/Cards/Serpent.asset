@@ -12,21 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1ad278697cae34da6360ecf631cd87, type: 3}
   m_Name: Serpent
   m_EditorClassIdentifier: 
-  enableLogging: 0
   Name: Serpent
-  Health: 2
-  AttackDamage: 0
   ManaCost: 3
-  isSelected: 0
-  CanMove: 1
-  ShopCost: 4
-  isActive: 0
   Artwork: {fileID: 0}
-  team: 0
-  CardInteractableRef: {fileID: 0}
-  AttackDirections:
-  - {x: -1, y: 0}
-  - {x: -1, y: -1}
-  - {x: 0, y: -1}
-  AttackDamages: ffffffffffffffffffffffff01000000ffffffff0100000001000000ffffffff
+  CurrentTeam: 2
+  Health: 2
+  CanMove: 1
+  isSelected: 0
+  BaseDamage: 2
+  UnitCardInteractableRef: {fileID: 0}
+  Attacks:
+  - direction: {x: -1, y: 0}
+    damage: 2
+  - direction: {x: 0, y: -1}
+    damage: 2
+  - direction: {x: -1, y: -1}
+    damage: 2
   Abilities: []

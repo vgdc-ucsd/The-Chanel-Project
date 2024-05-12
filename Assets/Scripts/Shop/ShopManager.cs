@@ -61,7 +61,7 @@ public class ShopManager : MonoBehaviour
         if(card.ShopCost <= playerGold)
         {
             //TODO FIX: when changing playerDeck, it permanently affects the ScriptableObject
-            playerDeck.addCard(card);
+            playerDeck.CardList.Add(card); // modified
             playerGold -= card.ShopCost;
             goldText.text = "Gold: " + playerGold.ToString();
             return true;
@@ -82,7 +82,7 @@ public class ShopManager : MonoBehaviour
         GameObject inspectCard = inspectScreen.transform.GetChild(0).gameObject;
 
         CardDisplay display = inspectCard.GetComponent<CardDisplay>();
-        display.setDisplay(card);
+        display.setDisplay((UnitCard)card); // TODO support spell cards
     }
 
     // TODO: Port Function to Inventory

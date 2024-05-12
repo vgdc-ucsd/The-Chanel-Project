@@ -38,7 +38,7 @@ public class InventoryUI : MonoBehaviour
         }
 
         // Add/Instantiate all cards in inventory to the UI
-        foreach (Card card in inventoryManager.cards)
+        foreach (UnitCard card in inventoryManager.cards)
         {
             RectTransform inventorySlotRectTransform = Instantiate(inventoryTemplateCardPrefab, inventoryContainer).GetComponent<RectTransform>();
             inventorySlotRectTransform.gameObject.SetActive(true);
@@ -46,7 +46,7 @@ public class InventoryUI : MonoBehaviour
             // Set name, health, attack text appropriately
             inventorySlotRectTransform.Find("Name").GetComponent<TextMeshProUGUI>().text = card.name;
             inventorySlotRectTransform.Find("Health").GetComponent<TextMeshProUGUI>().text = "Health: " + card.Health.ToString();
-            inventorySlotRectTransform.Find("Attack").GetComponent<TextMeshProUGUI>().text = "Attack: " + card.AttackDamage.ToString();
+            inventorySlotRectTransform.Find("Attack").GetComponent<TextMeshProUGUI>().text = "Attack: " + card.BaseDamage.ToString();
 
             // Set card info appropriately
             inventorySlotRectTransform.GetComponent<InventoryItemInteractable>().card = card;
