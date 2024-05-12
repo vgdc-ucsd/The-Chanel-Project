@@ -3,16 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [Serializable]
 public class PlayerUI : MonoBehaviour
 {
     public TextMeshProUGUI HealthText;
     public TextMeshProUGUI ManaText;
+    public Image[] ManaSprites;
+    public Sprite ManaBlack;
+    public Sprite ManaBlue;
 
     public void UpdateUI(CharStatus status) {
         HealthText.text = status.Health.ToString();
         ManaText.text = status.Mana.ToString();
+
+        for(int i = 0; i < ManaSprites.Length; i++) {
+            if(i < status.ManaCapacity) {
+                ManaSprites[i].sprite = ManaBlue;
+                if(i < status.Mana) {
+                    ManaSprites[i].color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                }
+                else {
+                    ManaSprites[i].color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+                }
+            }
+            else {
+                ManaSprites[i].sprite = ManaBlack;
+                ManaSprites[i].color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+            }
+        }
     }
 
     public void CheckProperInitialization() {

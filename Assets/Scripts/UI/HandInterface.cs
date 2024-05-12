@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.XR;
 
 // Manages the player's and interactions with their hand
 public class HandInterface : MonoBehaviour
 {
-    [HideInInspector] public List<CardInteractable> cardObjects = new List<CardInteractable>();
+    [HideInInspector] public List<GameObject> cardObjects = new List<GameObject>();
     public Team myTeam;
 
     // Determines how much the cards rotate in the player's hand
@@ -39,11 +40,11 @@ public class HandInterface : MonoBehaviour
             if(cardObjects.Count == 1) normalizedIndex = 0;
 
             // arc
-            card.transform.localEulerAngles = new Vector3(0, 0, normalizedIndex * maxRotationDegrees);
             float arcValue = arcIntensity * (1-Mathf.Abs(normalizedIndex)); // Ranges between 0 and arcIntensity
             
             // Target Position
             Vector3 targetPosition = new Vector3(-normalizedIndex * cardDistance, arcValue, 0);
+            targetPosition = Quaternion.Euler(new Vector3(0, 0, transform.localEulerAngles.z)) * targetPosition; // rotate
             targetPosition += transform.position;
 
             // Animation
@@ -52,6 +53,7 @@ public class HandInterface : MonoBehaviour
                 if(card.transform.parent != this.transform) {
                     card.transform.SetParent(this.transform);
                     card.transform.localScale = Vector3.one;
+                    card.transform.localEulerAngles = new Vector3(0, 0, normalizedIndex * maxRotationDegrees);
                     IEnumerator animation = AnimationManager.Instance.SimpleTranslate(
                         card.transform,
                         targetPosition,
@@ -72,9 +74,12 @@ public class HandInterface : MonoBehaviour
                     );
                     QueueableAnimation qa = new QueueableAnimation(animation, 0f);
                     cardAnimations.Add(qa);
-                    AnimationManager.Instance.Play(qa.Animation);
+                    AnimationManager.Instance.Play(qa.Animation); // enqueue?
+                    //AnimationManager.Instance.Enqueue(qa); // enqueue?
                 }   
             }
+
+            //card.transform.position = Vector3.zero;
 
             // Make sure they appear overlayed in the right order
             card.transform.SetAsFirstSibling(); 

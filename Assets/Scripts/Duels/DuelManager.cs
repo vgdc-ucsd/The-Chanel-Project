@@ -111,8 +111,10 @@ public class DuelManager : MonoBehaviour
         state.ProcessBoard(Team.Enemy);
         MainDuel = state;
         //state.DebugBoard();
+        AnimationManager.Instance.OrganizeCardsAnimation(MainDuel, new List<Card>(), Team.Enemy);
         AnimationManager.Instance.Enqueue(state.Animations);
         UIManager.Instance.UpdateStatus(state);
+        
         awaitingAI = false;
         currentTeam = Team.Player;
 
