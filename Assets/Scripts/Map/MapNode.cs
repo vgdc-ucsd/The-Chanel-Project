@@ -88,8 +88,15 @@ IPointerExitHandler
         {
             mapNodeTypeIdx = 5;
         }
+        else if (mapNodeType == MapNodeType.StartOrExit)
+        {
+            mapNodeTypeIdx = -1;
+        }
 
-        FindObjectOfType<ChangeScene>().MoveToScene(mapNodeTypeIdx);
+        if (mapNodeTypeIdx != -1)
+        {
+            FindObjectOfType<ChangeScene>().MoveToScene(mapNodeTypeIdx);
+        }
     }
 
     /// <summary>
@@ -125,5 +132,6 @@ public enum MapNodeType
     Encounter,
     Event,
     Shop,
-    Boss
+    Boss,
+    StartOrExit
 }
