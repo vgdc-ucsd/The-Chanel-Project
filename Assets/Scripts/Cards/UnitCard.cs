@@ -6,15 +6,6 @@ using UnityEditor;
 using UnityEngine;
 
 
-
-
-public struct UnitStats
-{
-    public int baseDamage;
-    public int health;
-    public List<Attack> attacks;
-}
-
 // Allows a card to be created from the menu when right clicking in the inspector
 [CreateAssetMenu(fileName = "New Card", menuName = "Cards/Card")]
 
@@ -30,13 +21,8 @@ public class UnitCard : Card
     [HideInInspector] public override CardInteractable CardInteractableRef { get {return UnitCardInteractableRef;} set{UnitCardInteractableRef = (UnitCardInteractable)value;} }
     public UnitCardInteractable UnitCardInteractableRef;
 
-
     public List<Attack> Attacks = new List<Attack>();
     public List<Ability> Abilities = new List<Ability>();
-
-    public List<StatusEffect> StatusEffects = new List<StatusEffect>(); // for effect stacking calculations, order preserved
-    public UnitStats baseStats = new UnitStats();
-
 
     public override Card Clone() {
         UnitCard copy = (UnitCard) ScriptableObject.CreateInstance("UnitCard");
@@ -51,7 +37,6 @@ public class UnitCard : Card
         copy.Artwork = this.Artwork;
         copy.CurrentTeam = this.CurrentTeam;
         copy.UnitCardInteractableRef = this.UnitCardInteractableRef;
-        copy.baseStats = this.baseStats;
 
         copy.Attacks = new List<Attack>();
         foreach(Attack atk in this.Attacks) {
@@ -104,16 +89,6 @@ public class UnitCard : Card
     {
         this.Pos = pos;
         CanMove = true;
-
-        baseStats.health = this.Health;
-        List<Attack> atkList = new List<Attack>();
-        foreach (Attack atk in Attacks)
-        {
-            atkList.Add(new Attack(atk.direction, atk.damage));
-        }
-        baseStats.attacks = atkList;
-        baseStats.baseDamage = this.BaseDamage;
-
         if(CurrentTeam == Team.Enemy) {
             AnimationManager.Instance.PlaceUnitCardAnimation(duel, this, pos);
         }
@@ -124,21 +99,4 @@ public class UnitCard : Card
         isSelected = selected;
         CardInteractableRef.SetSelected(selected); // TODO
     }
-
-    public void RecalculateStats()
-    {
-        Attacks.Clear();
-        foreach (Attack atk in baseStats.attacks)
-        {
-            Attacks.Add(new Attack(atk.direction, atk.damage));
-        }
-        BaseDamage = baseStats.baseDamage;
-
-        foreach (StatusEffect effect in StatusEffects)
-        {
-            effect.ReapplyEffect(this);
-        }
-
-    }
-    
 }

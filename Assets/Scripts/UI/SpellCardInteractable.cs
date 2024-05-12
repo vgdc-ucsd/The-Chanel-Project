@@ -38,11 +38,8 @@ public class SpellCardInteractable : CardInteractable
         else if (card is ISpellTypeTile tileSpell) success = tileSpell.CastSpell(DuelManager.Instance.MainDuel, pos);
         else if (card is ISpellTypeUnit unitSpell)
         {
-            UnitCard target = DuelManager.Instance.MainDuel.DuelBoard.GetCard(pos);
-            Team targetTeam = Team.Player;
-            if (card is ISpellTypeEnemy) targetTeam = CharStatus.OppositeTeam(card.CurrentTeam);
-            if (card is ISpellTypeAlly) targetTeam = card.CurrentTeam;
-            if (target != null && target.CurrentTeam == targetTeam) success = unitSpell.CastSpell(DuelManager.Instance.MainDuel, target);
+            UnitCard card = DuelManager.Instance.MainDuel.DuelBoard.GetCard(pos);
+            if (card != null) unitSpell.CastSpell(DuelManager.Instance.MainDuel, card);
         }
 
         if (!success) return;

@@ -187,16 +187,6 @@ public class Board
         return cards;
     }
 
-    public List<UnitCard> GetCardsOfTeam(Team team)
-    {
-        List<UnitCard> cards = new List<UnitCard>();
-        foreach (UnitCard card in CardSlots)
-        {
-            if (card != null && card.CurrentTeam == team) cards.Add(card);
-        }
-        return cards;
-    }
-
     public List<UnitCard> GetCardsInRow(int y)
     {
         if (IsOutOfBounds(new BoardCoords(0,y)))
@@ -245,12 +235,6 @@ public class Board
     public UnitCard GetRandomCard()
     {
         List<UnitCard> cards = GetAllCards();
-        return cards[Random.Range(0, cards.Count)];
-    }
-
-    public UnitCard GetRandomCardOfTeam(Team team)
-    {
-        List<UnitCard> cards = GetCardsOfTeam(team);
         return cards[Random.Range(0, cards.Count)];
     }
 }

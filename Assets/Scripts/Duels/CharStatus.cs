@@ -158,17 +158,4 @@ public class CharStatus
         if (manaUsed > Mana) return false;
         return true;
     }
-
-    public static Team OppositeTeam(Team team)
-    {
-        switch (team)
-        {
-            case Team.Player:
-                return Team.Enemy;
-            case Team.Enemy:
-                return Team.Player;
-            default:
-                return Team.Neutral;
-        }
-    }
  }

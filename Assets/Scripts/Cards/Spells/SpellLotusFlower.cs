@@ -3,7 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Lotus Flower Spell Card", menuName = "Cards/SpellLotusFlower")]
-public class SpellLotusFlower : SpellCard , ISpellTypeAlly
+public class SpellLotusFlower : SpellCard , ISpellTypeUnit
 {
     public LotusFlowerAbility abilityTemplate;
 
@@ -21,7 +21,8 @@ public class SpellLotusFlower : SpellCard , ISpellTypeAlly
         if (card.CurrentTeam != CurrentTeam) return false;
 
         LotusFlowerAbility ability = ScriptableObject.Instantiate(abilityTemplate);
-        ability.AddEffect(card);
+        card.Abilities.Add(ability);
+        ability.Init(card);
         
         FinishCast(duel);
         return true;

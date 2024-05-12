@@ -145,7 +145,7 @@ public class MctsAI
 
     private void PickRandomMove(DuelInstance duel, Team team) {
         CharStatus status = duel.GetStatus(team);
-        List<Card> playableCards = GetPlayableCards(duel, status);
+        List<Card> playableCards = GetPlayableCards(status);
         List<BoardCoords> legalTiles = GetLegalTiles(duel.DuelBoard); // TODO behind spawn line
         List<UnitCard> moveableCards = GetMovableCards(duel.DuelBoard, team);
         float movementChance = 0.5f;
@@ -182,7 +182,7 @@ public class MctsAI
             }
 
             // find legal cards and playable tiles
-            playableCards = GetPlayableCards(duel, status);
+            playableCards = GetPlayableCards(status);
             legalTiles = GetLegalTiles(duel.DuelBoard);
 
             if(playableCards.Count > 0 && legalTiles.Count > 0) {
@@ -204,14 +204,6 @@ public class MctsAI
                     if (randomCard is ISpellTypeTile sct)
                     {
                         sct.CastSpell(duel, duel.DuelBoard.GetRandomTile());
-                    }
-                    else if (randomCard is ISpellTypeAlly sca)
-                    {
-                        sca.CastSpell(duel, duel.DuelBoard.GetRandomCardOfTeam(randomCard.CurrentTeam));
-                    }
-                    else if (randomCard is ISpellTypeEnemy sce)
-                    {
-                        sce.CastSpell(duel, duel.DuelBoard.GetRandomCardOfTeam(CharStatus.OppositeTeam(randomCard.CurrentTeam)));
                     }
                     else if (randomCard is ISpellTypeUnit scu)
                     {
@@ -264,7 +256,7 @@ public class MctsAI
         return legalTiles;
     }
 
-    private List<Card> GetPlayableCards(DuelInstance duel, CharStatus status) {
+    private List<Card> GetPlayableCards(CharStatus status) {
         List<Card> results = new List<Card>();
         if(status.Mana == 0) return results;
         foreach(Card c in status.Cards) {
@@ -272,20 +264,6 @@ public class MctsAI
             {
                 UnityEngine.Debug.LogError("card is null");
             }
-
-            if (c is ISpellTypeUnit)
-            { 
-                if (c is ISpellTypeAlly)
-                {
-                    if (duel.DuelBoard.GetCardsOfTeam(c.CurrentTeam).Count == 0) continue;
-                }
-
-                if (c is ISpellTypeEnemy)
-                {
-                    if (duel.DuelBoard.GetCardsOfTeam(CharStatus.OppositeTeam(c.CurrentTeam)).Count == 0) continue;
-                }
-            }
-
 
             if (c.ManaCost <= status.Mana) results.Add(c);
             
