@@ -158,7 +158,6 @@ public class MctsAI
             // On player win
             if (duel.Winner == Team.Player)
             {
-                UnityEngine.Debug.Log("Player Won");
                 return -10000;
             }
 
@@ -169,7 +168,6 @@ public class MctsAI
             // One Enemy win
             if (duel.Winner == Team.Enemy)
             {
-                UnityEngine.Debug.Log("Enemy Won");
                 return 10000;
                 
             }
@@ -194,7 +192,6 @@ public class MctsAI
         score += (originalState.GetStatus(Team.Player).Health - duel.GetStatus(Team.Player).Health) * STATUS_DAMAGE_WEIGHT;
         score -= (originalState.GetStatus(Team.Enemy).Health - duel.GetStatus(Team.Enemy).Health) * STATUS_DAMAGE_WEIGHT;
 
-        UnityEngine.Debug.Log(score);
         return score;
     }
 
