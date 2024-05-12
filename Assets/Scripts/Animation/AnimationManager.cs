@@ -135,11 +135,11 @@ public class AnimationManager : MonoBehaviour
         foreach(Card c in cards) {
             if(c.CardInteractableRef == null) {
                 //Debug.Log("found null card while organizing");
-                c.CardInteractableRef = DuelManager.Instance.UI.GenerateCardInteractable(c);
+                c.CardInteractableRef = UIManager.Instance.GenerateCardInteractable(c);
             }
         }
-        if (team == Team.Player) DuelManager.Instance.UI.Hand.OrganizeCards();
-        else DuelManager.Instance.UI.EnemyHand.OrganizeCards();
+        if (team == Team.Player) UIManager.Instance.Hand.OrganizeCards();
+        else UIManager.Instance.EnemyHand.OrganizeCards();
 
         yield return null;
     }
@@ -150,7 +150,7 @@ public class AnimationManager : MonoBehaviour
         // make a new card interactable if there is none
         // TODO remove since they should be generated when the enemy draws/organizes the card ?
         if(unitRef == null) {
-            unitRef = (UnitCardInteractable) DuelManager.Instance.UI.GenerateCardInteractable(c);
+            unitRef = (UnitCardInteractable) UIManager.Instance.GenerateCardInteractable(c);
             c.UnitCardInteractableRef = unitRef;
         }
 
@@ -225,18 +225,18 @@ public class AnimationManager : MonoBehaviour
     }
 
     public void MoveCardAnimation(DuelInstance duel, UnitCard uc, BoardCoords targetPos) {
-        float speed = 0.5f;
-        Transform targetTransform = BoardInterface.Instance.GetTile(targetPos).transform;
-        IEnumerator ie = MoveCard(uc, targetTransform, speed);
-        QueueableAnimation qa = new QueueableAnimation(ie, speed);
-        duel.Animations.Enqueue(qa);
+        if(uc.CurrentTeam == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode) {
+            float speed = 0.5f;
+            Transform targetTransform = BoardInterface.Instance.GetTile(targetPos).transform;
+            IEnumerator ie = MoveCard(uc, targetTransform, speed);
+            QueueableAnimation qa = new QueueableAnimation(ie, speed);
+            duel.Animations.Enqueue(qa);
+        }
     }
 
     public void UpdateCardInfoAnimation(DuelInstance duel, UnitCard c) {
-        if(c.CurrentTeam == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode) {
-            IEnumerator ie = UpdateCardInfo(c);
-            QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
-            duel.Animations.Enqueue(qa);
-        }
+        IEnumerator ie = UpdateCardInfo(c);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+        duel.Animations.Enqueue(qa);
     }
 }

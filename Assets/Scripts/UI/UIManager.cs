@@ -23,6 +23,19 @@ public class UIManager : MonoBehaviour
     public PlayerUI Player;
     public PlayerUI Enemy;
 
+    public CardInfoPanel InfoPanel;
+
+    public static UIManager Instance;
+
+    void Awake() {
+        // Singleton
+        if (Instance != null && Instance != this) {
+            Debug.LogWarning("Tried to create more than one instance of the UIManager singleton");
+            Destroy(this);
+        }
+        else Instance = this;
+    }
+
     public void Initialize() {
         BoardContainer.CreateBoard();
     }

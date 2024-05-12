@@ -39,14 +39,14 @@ public abstract class CardInteractable : MonoBehaviour,
 
     public void Awake()
     {
-        raycaster = DuelManager.Instance.GetComponent<GraphicRaycaster>();
+        if(DuelManager.Instance != null) raycaster = DuelManager.Instance.GetComponent<GraphicRaycaster>();
     }
 
     // Updates the card's text fields with data from card
     public abstract void SetCardInfo();
     public abstract void UpdateCardInfo();
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public virtual void OnPointerEnter(PointerEventData eventData)
     {
         if(inHand) {
             hoveredCard = this;

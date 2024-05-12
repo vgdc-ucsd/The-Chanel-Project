@@ -16,7 +16,6 @@ public class DuelManager : MonoBehaviour
     public DuelSettings Settings;
     public Deck PlayerDeck;
     public Deck EnemyDeck;
-    public UIManager UI;
 
     // Game Logic
     public DuelInstance MainDuel;
@@ -56,24 +55,20 @@ public class DuelManager : MonoBehaviour
         else currentTeam = Team.Player;
 
         // UI Setup
-        UI.Initialize();
-        UI.UpdateStatus(MainDuel);
+        UIManager.Instance.Initialize();
+        UIManager.Instance.UpdateStatus(MainDuel);
         if (Settings.EnablePVPMode || Settings.ShowEnemyHand) {
-            UI.EnemyHand.gameObject.SetActive(true);
+            UIManager.Instance.EnemyHand.gameObject.SetActive(true);
         }
         //DuelEvents.Instance.UpdateUI();
         //DuelEvents.Instance.UpdateHand();
     }
 
     private void CheckProperInitialization() {
-        UI.CheckProperInitialization();
+        UIManager.Instance.CheckProperInitialization();
 
         if(PlayerDeck == null || EnemyDeck == null) {
             Debug.LogError("Could not start duel, decks are uninitalized");
-            return;
-        }
-        if(UI == null) {
-            Debug.LogError("Could not start duel, the UIManager is uninitalized");
             return;
         }
         if(Settings == null) {
@@ -111,7 +106,7 @@ public class DuelManager : MonoBehaviour
         MainDuel = state;
         //state.DebugBoard();
         AnimationManager.Instance.Enqueue(state.Animations);
-        UI.UpdateStatus(state);
+        UIManager.Instance.UpdateStatus(state);
         awaitingAI = false;
     }
 }

@@ -52,7 +52,7 @@ public class SpellCardInteractable : CardInteractable
         {
             handInterface.cardObjects.Remove(this);
         }
-        DuelManager.Instance.UI.UpdateStatus(DuelManager.Instance.MainDuel);
+        UIManager.Instance.UpdateStatus(DuelManager.Instance.MainDuel);
         Destroy(gameObject);
     }
 
