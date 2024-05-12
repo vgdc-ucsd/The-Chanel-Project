@@ -5,7 +5,7 @@ using UnityEditor.Playables;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Abilites/RedSpiderLilyAbility")]
-public class RedSpiderLilyAbility : StatusEffect
+public class RedSpiderLilyAbility : AttributeModifier
 {
 
     public override ActivationCondition Condition
@@ -31,6 +31,7 @@ public class RedSpiderLilyAbility : StatusEffect
         foreach (Attack atk in c.Attacks)
         {
             atk.damage *= 2;
+            if (DuelManager.Instance.currentTeam == Team.Player) Debug.Log(atk.damage);
         }
     }
 }
