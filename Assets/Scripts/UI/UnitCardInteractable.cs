@@ -117,7 +117,7 @@ public class UnitCardInteractable : CardInteractable,
             DuelManager.Instance.MainDuel.DuelBoard.PlayCard(card, pos, charStatus, DuelManager.Instance.MainDuel);
             IEnumerator ie = AnimationManager.Instance.PlaceUnitCard(card, pos, 0.0f);
             AnimationManager.Instance.Play(ie);
-            DuelManager.Instance.UI.UpdateStatus(DuelManager.Instance.MainDuel);
+            UIManager.Instance.UpdateStatus(DuelManager.Instance.MainDuel);
         }
     }
 
@@ -127,6 +127,11 @@ public class UnitCardInteractable : CardInteractable,
         {
             PlayerInputController.Instance.InteractCard(card);
         }
+    }
+
+    public override void OnPointerEnter(PointerEventData eventData) {
+        base.OnPointerEnter(eventData);
+        UIManager.Instance.InfoPanel.UpdateInfoPanelUnitCard(this.card);
     }
 
     public void CheckProperInitialization() {

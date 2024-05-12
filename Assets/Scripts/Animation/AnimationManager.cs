@@ -135,11 +135,11 @@ public class AnimationManager : MonoBehaviour
         foreach(Card c in cards) {
             if(c.CardInteractableRef == null) {
                 //Debug.Log("found null card while organizing");
-                c.CardInteractableRef = DuelManager.Instance.UI.GenerateCardInteractable(c);
+                c.CardInteractableRef = UIManager.Instance.GenerateCardInteractable(c);
             }
         }
-        if (team == Team.Player) DuelManager.Instance.UI.Hand.OrganizeCards();
-        else DuelManager.Instance.UI.EnemyHand.OrganizeCards();
+        if (team == Team.Player) UIManager.Instance.Hand.OrganizeCards();
+        else UIManager.Instance.EnemyHand.OrganizeCards();
 
         yield return null;
     }
@@ -150,7 +150,7 @@ public class AnimationManager : MonoBehaviour
         // make a new card interactable if there is none
         // TODO remove since they should be generated when the enemy draws/organizes the card ?
         if(unitRef == null) {
-            unitRef = (UnitCardInteractable) DuelManager.Instance.UI.GenerateCardInteractable(c);
+            unitRef = (UnitCardInteractable) UIManager.Instance.GenerateCardInteractable(c);
             c.UnitCardInteractableRef = unitRef;
         }
 

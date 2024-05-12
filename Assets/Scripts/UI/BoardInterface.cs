@@ -26,7 +26,7 @@ public class BoardInterface : MonoBehaviour
 
     public void CreateBoard() {
         DuelSettings settings = DuelManager.Instance.Settings;
-        TileInteractable templateTile = DuelManager.Instance.UI.TemplateTile;
+        TileInteractable templateTile = UIManager.Instance.TemplateTile;
 
         int rows = settings.BoardRows;
         int cols = settings.BoardCols;

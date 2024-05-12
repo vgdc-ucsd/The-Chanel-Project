@@ -46,7 +46,7 @@ public abstract class CardInteractable : MonoBehaviour,
     public abstract void SetCardInfo();
     public abstract void UpdateCardInfo();
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public virtual void OnPointerEnter(PointerEventData eventData)
     {
         if(inHand) {
             hoveredCard = this;
