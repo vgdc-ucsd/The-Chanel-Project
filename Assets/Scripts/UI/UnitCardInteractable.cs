@@ -69,7 +69,7 @@ public class UnitCardInteractable : CardInteractable,
             transform.localScale = Vector3.one;
             transform.position = tile.transform.position;
             if(handInterface != null) {
-                handInterface.cardObjects.Remove(this);
+                handInterface.cardObjects.Remove(this.gameObject);
             } 
             transform.SetParent(tile.transform);
             transform.localScale = Vector3.one;

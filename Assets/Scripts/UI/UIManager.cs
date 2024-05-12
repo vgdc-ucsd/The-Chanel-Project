@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     //public CardInteractable TemplateCard;
     public UnitCardInteractable TemplateUnitCard;
     public SpellCardInteractable TemplateSpellCard;
+    public GameObject TemplateCardBack;
 
     // Interface GameObjects
     public BoardInterface BoardContainer;
@@ -22,6 +23,17 @@ public class UIManager : MonoBehaviour
     // Player UIs
     public PlayerUI Player;
     public PlayerUI Enemy;
+
+    // Card piles
+    public Transform PlayerDraw;
+    public Transform EnemyDraw;
+    public Transform PlayerDiscard;
+    public Transform EnemyDiscard;
+
+    private List<GameObject> PlayerDrawObjects;
+    private List<GameObject> EnemyDrawObjects;
+    private List<GameObject> PlayerDiscardObjects;
+    private List<GameObject> EnemyDiscardObjects;
 
     public CardInfoPanel InfoPanel;
 
@@ -38,6 +50,26 @@ public class UIManager : MonoBehaviour
 
     public void Initialize() {
         BoardContainer.CreateBoard();
+
+        PlayerDrawObjects = new List<GameObject>();
+        PlayerDiscardObjects = new List<GameObject>();
+        EnemyDrawObjects = new List<GameObject>();
+        EnemyDiscardObjects = new List<GameObject>();
+
+        foreach(Card c in DuelManager.Instance.PlayerDeck.CardList) {
+            GameObject cardBack = Instantiate(TemplateCardBack);
+            cardBack.transform.SetParent(PlayerDraw);
+            cardBack.transform.localPosition = Vector3.zero;
+            cardBack.transform.localScale = Vector3.one;
+            PlayerDrawObjects.Add(cardBack);
+        }
+        foreach(Card c in DuelManager.Instance.EnemyDeck.CardList) {
+            GameObject cardBack = Instantiate(TemplateCardBack);
+            cardBack.transform.SetParent(EnemyDraw);
+            cardBack.transform.localPosition = Vector3.zero;
+            cardBack.transform.localScale = Vector3.one;
+            EnemyDrawObjects.Add(cardBack);
+        }
     }
 
     public void UpdateStatus(DuelInstance state) {
@@ -54,7 +86,7 @@ public class UIManager : MonoBehaviour
             if(c.CurrentTeam == Team.Player) ci.handInterface = Hand;
             else ci.handInterface = EnemyHand;
 
-            ci.handInterface.cardObjects.Add(ci);
+            ci.handInterface.cardObjects.Add(ci.gameObject);
             return ci;
         }
         else if(c is SpellCard) {
@@ -65,7 +97,7 @@ public class UIManager : MonoBehaviour
             if (c.CurrentTeam == Team.Player) ci.handInterface = Hand;
             else ci.handInterface = EnemyHand;
 
-            ci.handInterface.cardObjects.Add(ci);
+            ci.handInterface.cardObjects.Add(ci.gameObject);
             return ci;
         }
         else {

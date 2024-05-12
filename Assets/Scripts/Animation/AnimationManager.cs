@@ -125,7 +125,6 @@ public class AnimationManager : MonoBehaviour
         Destroy(card.CardInteractableRef.gameObject);
     }
 
-
     public void CardDeathImmediate(UnitCard card)
     {
         StartCoroutine(CardDeath(card));
@@ -135,9 +134,22 @@ public class AnimationManager : MonoBehaviour
         foreach(Card c in cards) {
             if(c.CardInteractableRef == null) {
                 //Debug.Log("found null card while organizing");
-                c.CardInteractableRef = UIManager.Instance.GenerateCardInteractable(c);
+                if(c.CurrentTeam == Team.Player) {
+                    c.CardInteractableRef = UIManager.Instance.GenerateCardInteractable(c);
+                    c.CardInteractableRef.transform.position = UIManager.Instance.PlayerDraw.position;
+                }
+                else if(c.CurrentTeam == Team.Enemy && DuelManager.Instance.Settings.EnablePVPMode) {
+                    c.CardInteractableRef = UIManager.Instance.GenerateCardInteractable(c);
+                    c.CardInteractableRef.transform.position = UIManager.Instance.EnemyDraw.position;
+                }
+                else {
+                    GameObject cardBack = Instantiate(UIManager.Instance.TemplateCardBack);
+                    cardBack.transform.position = UIManager.Instance.EnemyDraw.position;
+                    UIManager.Instance.EnemyHand.cardObjects.Add(cardBack);
+                }
             }
         }
+
         if (team == Team.Player) UIManager.Instance.Hand.OrganizeCards();
         else UIManager.Instance.EnemyHand.OrganizeCards();
 
@@ -162,22 +174,27 @@ public class AnimationManager : MonoBehaviour
             unitRef.transform.localEulerAngles = Vector3.zero;
             unitRef.transform.localScale = Vector3.one;
             if(unitRef.handInterface != null) {
-                unitRef.handInterface.cardObjects.Remove(c.CardInteractableRef);
-            } 
+                unitRef.handInterface.cardObjects.Remove(unitRef.gameObject);
+            }
             unitRef.transform.SetParent(tile.transform);
             unitRef.transform.localScale = Vector3.one;
             unitRef.DrawArrows(); 
             unitRef.CardCost.enabled = false;
-            unitRef.transform.position = EnemyHandLocation.position;
             unitRef.gameObject.SetActive(true);
+
+            // remove card from hand
+            int randomIndex = Random.Range(0, UIManager.Instance.EnemyHand.cardObjects.Count);
+            GameObject cardBack = UIManager.Instance.EnemyHand.cardObjects[randomIndex];
+            UIManager.Instance.EnemyHand.cardObjects.Remove(cardBack);
+            unitRef.transform.position = cardBack.transform.position;
+            Destroy(cardBack);
 
             // translation animation
             yield return SimpleTranslate(unitRef.transform, tile.transform.position, speed, InterpolationMode.Linear);
         }
         else {
-            c.UnitCardInteractableRef.UIPlaceCard(pos);
+            unitRef.UIPlaceCard(pos);
         }
-        yield return null;
     }
 
     public IEnumerator MoveCard(UnitCard uc, Transform targetPos, float speed) {

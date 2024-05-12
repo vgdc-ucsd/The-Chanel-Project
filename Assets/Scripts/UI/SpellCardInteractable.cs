@@ -50,7 +50,7 @@ public class SpellCardInteractable : CardInteractable
 
         if (handInterface != null)
         {
-            handInterface.cardObjects.Remove(this);
+            handInterface.cardObjects.Remove(this.gameObject);
         }
         UIManager.Instance.UpdateStatus(DuelManager.Instance.MainDuel);
         Destroy(gameObject);
