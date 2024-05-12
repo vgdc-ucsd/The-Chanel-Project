@@ -21,7 +21,8 @@ public class DuelManager : MonoBehaviour
     public DuelInstance MainDuel;
     private MctsAI ai;
     private bool awaitingAI;
-    private Team currentTeam;
+    public Team currentTeam;
+
 
     void Awake() {
         // Singleton
@@ -96,6 +97,7 @@ public class DuelManager : MonoBehaviour
         else {
             MainDuel.ProcessBoard(Team.Player);
             AnimationManager.Instance.Enqueue(MainDuel.Animations);
+            currentTeam = Team.Enemy;
             StartCoroutine(ai.MCTS(MainDuel));
             awaitingAI = true;
         }
@@ -108,5 +110,6 @@ public class DuelManager : MonoBehaviour
         AnimationManager.Instance.Enqueue(state.Animations);
         UIManager.Instance.UpdateStatus(state);
         awaitingAI = false;
+        currentTeam = Team.Player;
     }
 }

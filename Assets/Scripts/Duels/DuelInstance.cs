@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -71,29 +72,42 @@ public class DuelInstance
                 }
             }
 
+            List<Attack> queuedCharAttacks = new List<Attack>();
+            
             // Attack
             foreach(Attack atk in card.Attacks) {
+                
+
+                BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
+
+                if ((DuelBoard.BeyondEnemyEdge(atkDest) && team == Team.Player) ||
+                     DuelBoard.BeyondPlayerEdge(atkDest) && team == Team.Enemy)
+                {
+                    queuedCharAttacks.Add(atk);
+                }
+
+
+
                 ProcessAttack(card, atk);
             }
+
+            if (queuedCharAttacks.Count == 0) return;
+            Attack maxDmgAtk = queuedCharAttacks[0];
+            foreach(Attack atk in queuedCharAttacks)
+            {
+                if (atk.damage > maxDmgAtk.damage) maxDmgAtk = atk;
+            }
+            Team winner = GetStatus(CharStatus.OppositeTeam(team)).TakeDamage(maxDmgAtk.damage);
+            if (winner != Team.Neutral) Winner = winner;
+            return;
+
         }
     }
 
     private void ProcessAttack(UnitCard card, Attack atk) {
         BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
 
-        // Attack targeting enemy
-        if(DuelBoard.BeyondEnemyEdge(atkDest) && card.CurrentTeam == Team.Player) {
-            Team winner = EnemyStatus.TakeDamage(atk.damage);
-            if(winner != Team.Neutral) Winner = winner;
-            return;
-        }
 
-        // Attack targeting player
-        if(DuelBoard.BeyondPlayerEdge(atkDest) && card.CurrentTeam == Team.Enemy) {
-            Team winner = PlayerStatus.TakeDamage(atk.damage);
-            if(winner != Team.Neutral) Winner = winner;
-            return;
-        }
 
         // Do nothing if attack is out of bounds
         if(DuelBoard.IsOutOfBounds(atkDest)) return;
