@@ -338,11 +338,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8635401710887845861, guid: 05b90e52c005f6348931e6f58b78067d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 43.5
+      value: 65.25
       objectReference: {fileID: 0}
     - target: {fileID: 8635401710887845861, guid: 05b90e52c005f6348931e6f58b78067d, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 48
+      value: 64.8
       objectReference: {fileID: 0}
     - target: {fileID: 8635401710887845861, guid: 05b90e52c005f6348931e6f58b78067d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -452,11 +452,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Points: []
-  StairsPoints: []
-  stairDirections: []
   row1: []
   row2: []
   row3: []
+  allNodes: []
   contents: {fileID: 1743649444}
   start: {fileID: 5707002247015326414, guid: eeb5a59c9fb148b4f8e2ab914c0758ef, type: 3}
   exit: {fileID: 3899294230495701110, guid: 6e008a9e73ded844ea44bb95c423cbed, type: 3}
@@ -464,14 +463,17 @@ MonoBehaviour:
   Shop: {fileID: 1152119393304664273, guid: e8f592762a0f63442b1c72c14e93c6c7, type: 3}
   Event: {fileID: 6478176069062018305, guid: f587ee085a825b94fb338a22b2526d9e, type: 3}
   Boss: {fileID: 1678602953}
-  horStairs: {fileID: 1801152460}
-  diagStairs: {fileID: 8029576115165412722}
-  lineRenderer: {fileID: 0}
+  stair: {fileID: 2255414029196402337, guid: 2bcd690f26699664f9df1df85e7b99f6, type: 3}
   OrientingPosition: {x: 0, y: 0, z: 0}
   offsetPosition: {x: -300, y: -100, z: 0}
+  horStairOffset: {x: 57, y: 0, z: 0}
+  diagStairOffset: {x: 28, y: 49, z: 0}
   numberOfRooms: 10
   pathDensityIndex: 7
   KeepTag: UsedNodes
+  heightBetweenRows: 86.6
+  distanceBetweenNodes: 100
+  XOffsetDistanceBetweenRows: 50
   layerOptions:
   - mapNodeType: 0
     randomization: 0
@@ -491,9 +493,6 @@ MonoBehaviour:
     randomization: 0.418
   - mapNodeType: 0
     randomization: 0
-  heightBetweenRows: 86.6
-  distanceBetweenNodes: 100
-  XOffsetDistanceBetweenRows: 50
 --- !u!1 &1743649444
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,7 +608,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1747339429}
   - component: {fileID: 1747339428}
-  - component: {fileID: 1747339430}
+  - component: {fileID: 1747339427}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -617,6 +616,14 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!81 &1747339427
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747339426}
+  m_Enabled: 1
 --- !u!20 &1747339428
 Camera:
   m_ObjectHideFlags: 0
@@ -687,24 +694,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1747339430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1747339426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attenuationObject: {fileID: 0}
---- !u!1 &1801152460 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 981397118696945751, guid: 0ffcfaf9f0206bb43a6cb12cba3c6725, type: 3}
-  m_PrefabInstance: {fileID: 7437716890670681411}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1801152461 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8375216437030798952, guid: 0ffcfaf9f0206bb43a6cb12cba3c6725, type: 3}
@@ -916,11 +905,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ffcfaf9f0206bb43a6cb12cba3c6725, type: 3}
---- !u!1 &8029576115165412722 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4491436259627104889, guid: 273548cde6172604fb292323efaf621d, type: 3}
-  m_PrefabInstance: {fileID: 8855200327213277662}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8855200327213277662
 PrefabInstance:
   m_ObjectHideFlags: 0
