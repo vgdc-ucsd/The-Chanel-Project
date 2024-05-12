@@ -34,7 +34,7 @@ public class UnitCard : Card
     public List<Attack> Attacks = new List<Attack>();
     public List<Ability> Abilities = new List<Ability>();
 
-    public List<StatusEffect> StatusEffects = new List<StatusEffect>(); // for effect stacking calculations, order preserved
+    public List<AttributeModifier> StatusEffects = new List<AttributeModifier>(); // for effect stacking calculations, order preserved
     public UnitStats baseStats = new UnitStats();
 
 
@@ -134,7 +134,7 @@ public class UnitCard : Card
         }
         BaseDamage = baseStats.baseDamage;
 
-        foreach (StatusEffect effect in StatusEffects)
+        foreach (AttributeModifier effect in StatusEffects)
         {
             effect.ReapplyEffect(this);
         }

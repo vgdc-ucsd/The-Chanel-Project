@@ -34,7 +34,7 @@ public abstract class Ability : ScriptableObject
 }
 
 
-public abstract class StatusEffect : Ability
+public abstract class AttributeModifier : Ability
 {
     public virtual void AddEffect(UnitCard c)
     {

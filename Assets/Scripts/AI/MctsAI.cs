@@ -52,8 +52,8 @@ public class MctsAI
 
         while(iterations < MAX_ITERATIONS) {
             // Advance to next frame if taking too long
-            startTime = Time.time;
-            while(Time.time - startTime < maxTime) {
+            startTime = Time.realtimeSinceStartup;
+            while(Time.realtimeSinceStartup - startTime < maxTime) {
                 // Selection
                 Node selection = GreedySelection(root);
 
@@ -194,6 +194,8 @@ public class MctsAI
                 int randomTileIndex = Random.Range(0, legalTiles.Count);
                 BoardCoords randomTile = legalTiles[randomTileIndex];
 
+                
+
                 // play card
                 if (randomCard is UnitCard uc)
                 {
@@ -201,22 +203,25 @@ public class MctsAI
                 }
                 else if (randomCard is SpellCard)
                 {
+                    bool success = false;
                     if (randomCard is ISpellTypeTile sct)
                     {
-                        sct.CastSpell(duel, duel.DuelBoard.GetRandomTile());
+                        success = sct.CastSpell(duel, duel.DuelBoard.GetRandomTile());
                     }
                     else if (randomCard is ISpellTypeAlly sca)
                     {
-                        sca.CastSpell(duel, duel.DuelBoard.GetRandomCardOfTeam(randomCard.CurrentTeam));
+                        success = sca.CastSpell(duel, duel.DuelBoard.GetRandomCardOfTeam(randomCard.CurrentTeam));
                     }
                     else if (randomCard is ISpellTypeEnemy sce)
                     {
-                        sce.CastSpell(duel, duel.DuelBoard.GetRandomCardOfTeam(CharStatus.OppositeTeam(randomCard.CurrentTeam)));
+                        success = sce.CastSpell(duel, duel.DuelBoard.GetRandomCardOfTeam(CharStatus.OppositeTeam(randomCard.CurrentTeam)));
                     }
                     else if (randomCard is ISpellTypeUnit scu)
                     {
-                        scu.CastSpell(duel, duel.DuelBoard.GetRandomCard());
+                        success = scu.CastSpell(duel, duel.DuelBoard.GetRandomCard());
                     }
+
+
                 }
             }
             

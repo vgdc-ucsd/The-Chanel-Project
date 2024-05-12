@@ -316,7 +316,7 @@ MonoBehaviour:
     RestrictPlacement: 1
     UnlimitedMana: 0
     ShowEnemyHand: 0
-  PlayerDeck: {fileID: 11400000, guid: 1b62fd89b8fe4734eb4697de89df34b7, type: 2}
+  PlayerDeck: {fileID: 11400000, guid: d925836930c25ea47a6472a49b1ff310, type: 2}
   EnemyDeck: {fileID: 11400000, guid: 3fee81777dd337d44af028e8dc03f5ee, type: 2}
   UI: {fileID: 37294274}
 --- !u!114 &37294270

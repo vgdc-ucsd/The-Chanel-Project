@@ -5,7 +5,7 @@ using UnityEditor.Playables;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Abilites/RedSpiderLilyAbility")]
-public class RedSpiderLilyAbility : StatusEffect
+public class RedSpiderLilyAbility : AttributeModifier
 {
 
     public override ActivationCondition Condition

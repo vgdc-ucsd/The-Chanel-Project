@@ -5,7 +5,7 @@ using UnityEditor.Playables;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Abilites/LotusFlowerAbility")]
-public class LotusFlowerAbility : StatusEffect
+public class LotusFlowerAbility : AttributeModifier
 {
 
     public override ActivationCondition Condition
