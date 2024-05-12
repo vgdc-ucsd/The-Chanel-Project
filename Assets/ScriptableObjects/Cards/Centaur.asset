@@ -23,3 +23,4 @@ MonoBehaviour:
   UnitCardInteractableRef: {fileID: 0}
   Attacks: []
   Abilities: []
+  StatusEffects: []

@@ -26,20 +26,30 @@ public class MctsAI
 
             TotalGames++;
             NumWins += win;
-            if(parent != null) {
+            if (parent != null) {
                 parent.BackProp(win);
             }
         }
 
         public float Score() {
-            if(TotalGames != 0) return (float)NumWins / TotalGames;
+            if (TotalGames != 0) return (float)NumWins / TotalGames;
             else return 0;
         }
     }
 
     const int MAX_TURNS = 100;
-    const int CHILD_COUNT = 5;
-    const int MAX_ITERATIONS = 100;
+    const int CHILD_COUNT = 6;
+    const int MAX_ITERATIONS = 120;
+
+    const int WEIGHTED_MAX_TURNS = 10;
+
+    // how much the AI likes enemy/player cards positioned at corresponding y value
+    // multiplied by mana cost of card
+    static float[] ENEMY_CARD_POSITIONING_WEIGHTS = { 30, 20, 3, 2 };
+    static float[] PLAYER_CARD_POSITIONING_WEIGHTS = { -8, -10, -20, -50 };
+
+    const float STATUS_DAMAGE_WEIGHT = 50; // weight bias/penalty per pt of damage taken by player/enemy
+
 
     private List<Node> nodes;
 
@@ -62,8 +72,8 @@ public class MctsAI
 
                 // Simulation
                 foreach(Node child in selection.Children) {
-                    int result = RandomRollout(child);
-                    
+                    //int result = RandomRollout(child);
+                    int result = (int)WeightedRollout(child);
                     // Backpropagation
                     child.BackProp(result);
                 }
@@ -84,9 +94,16 @@ public class MctsAI
     private Node GreedySelection(Node root) {
         Node parent = root;
         Node selection = root;
+        
+
+
 
         while(parent.Children.Count != 0) {
             parent = FindBestMove(parent);
+            if (parent == null || parent.Children == null)
+            {
+                UnityEngine.Debug.LogError("null node");
+            }
         }
 
         return selection;
@@ -129,9 +146,61 @@ public class MctsAI
         return 0; // Tie
     }
 
+    private float WeightedRollout(Node n)
+    {
+        DuelInstance duel = n.State.Clone();
+        for (int i = 0; i < WEIGHTED_MAX_TURNS; i++)
+        {
+            // Player move
+            PickRandomMove(duel, Team.Player);
+            duel.ProcessBoard(Team.Player);
+
+            // On player win
+            if (duel.Winner == Team.Player)
+            {
+                UnityEngine.Debug.Log("Player Won");
+                return -10000;
+            }
+
+            // Enemy move
+            PickRandomMove(duel, Team.Enemy);
+            duel.ProcessBoard(Team.Enemy);
+
+            // One Enemy win
+            if (duel.Winner == Team.Enemy)
+            {
+                UnityEngine.Debug.Log("Enemy Won");
+                return 10000;
+                
+            }
+        }
+
+
+
+
+        return EvaluatePosition(duel, n.State); // Tie
+    }
+
+    private float EvaluatePosition(DuelInstance duel, DuelInstance originalState)
+    {
+        float score = 0f;
+        foreach (UnitCard card in duel.DuelBoard.GetAllCards())
+        {
+            if (card.CurrentTeam == Team.Player) 
+                score += PLAYER_CARD_POSITIONING_WEIGHTS[card.Pos.y] * card.ManaCost * card.Health;
+            else if (card.CurrentTeam == Team.Enemy) 
+                score += ENEMY_CARD_POSITIONING_WEIGHTS[card.Pos.y] * card.ManaCost * card.Health;
+        }
+        score += (originalState.GetStatus(Team.Player).Health - duel.GetStatus(Team.Player).Health) * STATUS_DAMAGE_WEIGHT;
+        score -= (originalState.GetStatus(Team.Enemy).Health - duel.GetStatus(Team.Enemy).Health) * STATUS_DAMAGE_WEIGHT;
+
+        UnityEngine.Debug.Log(score);
+        return score;
+    }
+
     private Node FindBestMove(Node parent) {
         Node selection = null;
-        float max = -2;
+        float max = float.MinValue;
         
         foreach(Node child in parent.Children) {
             if(child.Score() > max) {
@@ -148,7 +217,8 @@ public class MctsAI
         List<Card> playableCards = GetPlayableCards(duel, status);
         List<BoardCoords> legalTiles = GetLegalTiles(duel.DuelBoard); // TODO behind spawn line
         List<UnitCard> moveableCards = GetMovableCards(duel.DuelBoard, team);
-        float movementChance = 0.5f;
+        float movementChance = 0.3f;
+        float pushChance = 0.7f;
 
         int loopCount = 0;
         // If any cards can be played, always play them
@@ -167,8 +237,18 @@ public class MctsAI
                 int randomCardIndex = Random.Range(0, moveableCards.Count);
                 UnitCard randomCard = moveableCards[randomCardIndex];
 
+
                 // decide to move or not
-                if(Random.Range(0.0f, 1.0f) < movementChance) {
+
+                if (Random.Range(0.0f, 1.0f) < pushChance)
+                {
+                    if (!duel.DuelBoard.IsOccupied(randomCard.Pos + new BoardCoords(0, -1)))
+                    {
+                        duel.DuelBoard.MoveCard(randomCard, randomCard.Pos + new BoardCoords(0, -1), duel);
+                    }
+                }
+
+                else if (Random.Range(0.0f, 1.0f) < movementChance) {
                     // pick random tile
                     List<BoardCoords> availableTiles = duel.DuelBoard.GetEmptyAdjacentTiles(randomCard.Pos);
                     int randomTileIndex = Random.Range(0, availableTiles.Count);
@@ -177,6 +257,8 @@ public class MctsAI
                     // move to random tile
                     duel.DuelBoard.MoveCard(randomCard, randomTile, duel);
                 }
+
+                
 
                 moveableCards.Remove(randomCard);
             }
