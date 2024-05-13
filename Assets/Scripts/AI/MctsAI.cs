@@ -148,6 +148,7 @@ public class MctsAI
 
     private float WeightedRollout(Node n)
     {
+        float score = 0;
         DuelInstance duel = n.State.Clone();
         for (int i = 0; i < WEIGHTED_MAX_TURNS; i++)
         {
@@ -158,7 +159,7 @@ public class MctsAI
             // On player win
             if (duel.Winner == Team.Player)
             {
-                return -10000;
+                score -= 10000;
             }
 
             // Enemy move
@@ -168,15 +169,15 @@ public class MctsAI
             // One Enemy win
             if (duel.Winner == Team.Enemy)
             {
-                return 10000;
+                score += 10000;
                 
             }
         }
 
+        score += EvaluatePosition(duel, n.State);
 
 
-
-        return EvaluatePosition(duel, n.State); // Tie
+        return score; // Tie
     }
 
     private float EvaluatePosition(DuelInstance duel, DuelInstance originalState)
@@ -214,8 +215,8 @@ public class MctsAI
         List<Card> playableCards = GetPlayableCards(duel, status);
         List<BoardCoords> legalTiles = GetLegalTiles(duel.DuelBoard); // TODO behind spawn line
         List<UnitCard> moveableCards = GetMovableCards(duel.DuelBoard, team);
-        float movementChance = 0.3f;
-        float pushChance = 0.7f;
+        float movementChance = 0.4f;
+        float pushChance = 0.5f;
 
         int loopCount = 0;
         // If any cards can be played, always play them

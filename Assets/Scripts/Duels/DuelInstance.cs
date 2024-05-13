@@ -74,46 +74,53 @@ public class DuelInstance
                 }
             }
 
-            List<Attack> queuedCharAttacks = new List<Attack>();
-
-            bool attackLanded = false;
             // Attack
-            foreach(Attack atk in card.Attacks) {
+            if (card.CanAttack)
+            {
+                List<Attack> queuedCharAttacks = new List<Attack>();
+
+                bool attackLanded = false;
+
+                foreach (Attack atk in card.Attacks)
+                {
+
+
+                    BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
+
+                    if ((DuelBoard.BeyondEnemyEdge(atkDest) && team == Team.Player) ||
+                         DuelBoard.BeyondPlayerEdge(atkDest) && team == Team.Enemy)
+                    {
+                        queuedCharAttacks.Add(atk);
+                        continue;
+                    }
+
+                    if (ProcessAttack(card, atk)) attackLanded = true;
+                }
+
+                if (queuedCharAttacks.Count != 0)
+                {
+                    attackLanded = true;
+                    Attack maxDmgAtk = queuedCharAttacks[0];
+                    foreach (Attack atk in queuedCharAttacks)
+                    {
+                        if (atk.damage > maxDmgAtk.damage) maxDmgAtk = atk;
+                    }
+                    Team winner = GetStatus(CharStatus.OppositeTeam(team)).TakeDamage(maxDmgAtk.damage);
+                    if (winner != Team.Neutral) Winner = winner;
+                }
+                if (attackLanded)
+                {
+
+                    for (int i = card.Abilities.Count - 1; i >= 0; i--)
+                    {
+                        Ability a = card.Abilities[i];
+                        if (a.Condition == ActivationCondition.OnFinishAttack) a.Activate(card, info);
+                    }
+                }
+
                 
-
-                BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
-
-                if ((DuelBoard.BeyondEnemyEdge(atkDest) && team == Team.Player) ||
-                     DuelBoard.BeyondPlayerEdge(atkDest) && team == Team.Enemy)
-                {
-                    queuedCharAttacks.Add(atk);
-                    continue;
-                }
-
-                if (ProcessAttack(card, atk)) attackLanded = true;
             }
-
-            if (queuedCharAttacks.Count != 0)
-            {
-                attackLanded = true;
-                Attack maxDmgAtk = queuedCharAttacks[0];
-                foreach (Attack atk in queuedCharAttacks)
-                {
-                    if (atk.damage > maxDmgAtk.damage) maxDmgAtk = atk;
-                }
-                Team winner = GetStatus(CharStatus.OppositeTeam(team)).TakeDamage(maxDmgAtk.damage);
-                if (winner != Team.Neutral) Winner = winner;
-            }
-            if (attackLanded)
-            {
-
-                for (int i = card.Abilities.Count - 1; i >= 0; i--)
-                {
-                    Ability a = card.Abilities[i];
-                    if (a.Condition == ActivationCondition.OnFinishAttack) a.Activate(card, info);
-                }
-            }
-
+            card.CanAttack = true;
         }
     }
 

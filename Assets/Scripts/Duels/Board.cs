@@ -96,6 +96,7 @@ public class Board
         foreach(Ability a in card.Abilities) {
             if(a.Condition == ActivationCondition.OnMove) a.Activate(card, info);
         }
+
         AnimationManager.Instance.MoveCardAnimation(duel, card, pos);
         //if (duel == DuelManager.Instance.MainDuel) card.UnitCardInteractableRef.UpdateCardPos();
 
