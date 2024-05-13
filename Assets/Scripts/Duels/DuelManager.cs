@@ -36,9 +36,15 @@ public class DuelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(MenuScript.Instance == null) {
+            Debug.LogWarning("Could not load encounter data");
+        }
+        else {
+            Debug.Log("here");
+            Settings = MenuScript.Instance.CurrentEncounter.Settings;
+        }
+
         CheckProperInitialization();
-
-
 
         // DuelInstance Setup
         CharStatus PlayerStatus = new CharStatus(Team.Player, ScriptableObject.Instantiate(PlayerDeck));

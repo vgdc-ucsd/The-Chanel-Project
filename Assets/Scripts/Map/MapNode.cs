@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Vector3 = UnityEngine.Vector3;
 
@@ -74,6 +75,8 @@ IPointerExitHandler
         int mapNodeTypeIdx = -1;
         if (mapNodeType == MapNodeType.Encounter)
         {
+            int randomIndex = UnityEngine.Random.Range(0, EncounterManager.Instance.Encounters.Count);
+            MenuScript.Instance.CurrentEncounter = EncounterManager.Instance.Encounters[randomIndex];
             mapNodeTypeIdx = 2;
         }
         else if (mapNodeType == MapNodeType.Shop)
