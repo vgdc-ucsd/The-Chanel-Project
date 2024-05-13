@@ -23,4 +23,5 @@ public class DuelSettings
     public bool RestrictPlacement = true;
     public bool UnlimitedMana = false;
     public bool ShowEnemyHand = false;
+    public bool DisableWinning = false;
 }

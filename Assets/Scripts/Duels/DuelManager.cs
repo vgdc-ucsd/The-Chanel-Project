@@ -54,9 +54,6 @@ public class DuelManager : MonoBehaviour
         Board board = new Board(Settings.BoardRows, Settings.BoardCols);
         MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, board);
 
-        // Draw staring cards
-        AnimationManager.Instance.Enqueue(MainDuel.DrawStartingCards());
-
         // AI setup
         ai = new MctsAI();
         awaitingAI = false;
@@ -71,8 +68,9 @@ public class DuelManager : MonoBehaviour
         if (Settings.EnablePVPMode || Settings.ShowEnemyHand) {
             UIManager.Instance.EnemyHand.gameObject.SetActive(true);
         }
-        //DuelEvents.Instance.UpdateUI();
-        //DuelEvents.Instance.UpdateHand();
+
+        // Draw staring cards
+        AnimationManager.Instance.Enqueue(MainDuel.DrawStartingCards());
     }
 
     private void CheckProperInitialization() {

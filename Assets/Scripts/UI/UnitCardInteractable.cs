@@ -9,6 +9,7 @@ public class UnitCardInteractable : CardInteractable,
     IPointerDownHandler
 {
     public UnitCard card;
+    public bool CanInteract = true;
 
     public GameObject TemplateArrowPlayer;
     public GameObject TemplateArrowEnemy;
