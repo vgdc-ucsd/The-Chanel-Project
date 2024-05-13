@@ -62,8 +62,8 @@ MonoBehaviour:
   - {fileID: 2456034266781523351}
   - {fileID: 8194808396507234419}
   - {fileID: 2615323074629237628}
-  ManaBlack: {fileID: 21300000, guid: 8d26c8d0cd65f024c8dabf0490a0e707, type: 3}
-  ManaBlue: {fileID: 21300000, guid: 7ff05d062c91b844e9290abfa2020216, type: 3}
+  ManaBlack: {fileID: 21300000, guid: ff831580264928341ac5674b0aa4e0ba, type: 3}
+  ManaBlue: {fileID: 21300000, guid: 7fbc0e2623e29e64c9adc12e8805134c, type: 3}
 --- !u!1 &464755121659693611
 GameObject:
   m_ObjectHideFlags: 0
