@@ -43,6 +43,10 @@ public class AnimationManager : MonoBehaviour
         while(qa.Count > 0) animations.Enqueue(qa.Dequeue());
     }
 
+    public void ClearQueue() {
+        animations.Clear();
+    }
+
     private IEnumerator PlayAnimations() {
         activelyPlaying = true;
         

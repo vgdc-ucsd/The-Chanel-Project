@@ -273,7 +273,7 @@ MonoBehaviour:
   Text: {fileID: 4493026480484674207}
   CharacterNameText: {fileID: 6082291740685966637}
   Option1Text: {fileID: 4511271392533854370}
-  Option2Text: {fileID: 1635169672397846428}
+  Option2Text: {fileID: 5636146680855384424}
   DialogueText:
   - Line: Deep, ground-shaking footsteps echo ahead of you. A towering world turtle
       rounds the corner, but something is off. Its usual serenity is long gone, with
@@ -294,8 +294,13 @@ MonoBehaviour:
   - Line: "With a thunderous groan, the turtle slowly kneels, bringing its rider
       within closer view. \u201CWhy, I\u2019ll even help you out! I\u2019m sure you\u2019re
       terribly lacking in cards right now.\u201D Something falls out of his palm
-      onto the ground in front of you. \u201CGo on. Take it.\u201D"
+      onto the ground in front of you."
     TextSpeed: 20
+  - Line: "\u201CGo on. Take it.\u201D"
+    TextSpeed: 20
+  DialogueScrollNormal: {fileID: 21300000, guid: 316b9e1a0e51fd547b5eebb68afae74b, type: 3}
+  DialogueScrollRipped: {fileID: 21300000, guid: 4c35d22a39a37234db205cbb03de9180, type: 3}
+  DialogueScroll: {fileID: 8063209499263999006}
 --- !u!114 &1057613929408326508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -503,17 +508,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4332536210127845989, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
   m_PrefabInstance: {fileID: 3512357275626803743}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1635169672397846428 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2742459568230327683, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
-  m_PrefabInstance: {fileID: 3512357275626803743}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4493026480484674207 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1072993135472736384, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
@@ -536,6 +530,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5636146680855384424 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9118095852959646583, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
+  m_PrefabInstance: {fileID: 3512357275626803743}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6082291740685966637 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7266208671458103090, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
@@ -545,5 +550,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8063209499263999006 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6870276435669487105, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
+  m_PrefabInstance: {fileID: 3512357275626803743}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -40,8 +40,8 @@ public class DuelManager : MonoBehaviour
             Debug.LogWarning("Could not load encounter data");
         }
         else {
-            Debug.Log("here");
             Settings = MenuScript.Instance.CurrentEncounter.Settings;
+            EnemyDeck = MenuScript.Instance.CurrentEncounter.EnemyDeck;
         }
 
         CheckProperInitialization();

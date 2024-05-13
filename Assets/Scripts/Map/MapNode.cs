@@ -75,8 +75,11 @@ IPointerExitHandler
         int mapNodeTypeIdx = -1;
         if (mapNodeType == MapNodeType.Encounter)
         {
-            int randomIndex = UnityEngine.Random.Range(0, EncounterManager.Instance.Encounters.Count);
-            MenuScript.Instance.CurrentEncounter = EncounterManager.Instance.Encounters[randomIndex];
+            if(MenuScript.Instance != null) {
+                int randomIndex = UnityEngine.Random.Range(0, EncounterManager.Instance.Encounters.Count);
+                MenuScript.Instance.CurrentEncounter = EncounterManager.Instance.Encounters[randomIndex];
+            }
+            
             mapNodeTypeIdx = 2;
         }
         else if (mapNodeType == MapNodeType.Shop)

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,6 +33,14 @@ public class PlayerUI : MonoBehaviour
                 ManaSprites[i].sprite = ManaBlack;
                 ManaSprites[i].color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
             }
+        }
+
+        
+        if(status.Health <= 0) {
+            if(status.CharTeam == Team.Player) UIManager.Instance.PlayerWin();
+            else UIManager.Instance.PlayerLose();
+
+            AnimationManager.Instance.ClearQueue();
         }
     }
 

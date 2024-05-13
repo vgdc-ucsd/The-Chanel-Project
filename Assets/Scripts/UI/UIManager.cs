@@ -118,6 +118,14 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void PlayerWin() {
+
+    }
+
+    public void PlayerLose() {
+
+    }
+
     public void CheckProperInitialization() {
         if(TemplateTile == null) {
             Debug.LogError("Cannot create board, TemplateTile is uninitialized");

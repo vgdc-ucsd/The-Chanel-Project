@@ -38,5 +38,9 @@ MonoBehaviour:
     UnlimitedMana: 0
     ShowEnemyHand: 0
   EnemyArt: {fileID: 0}
+  EnemyDeck: {fileID: 11400000, guid: 3fee81777dd337d44af028e8dc03f5ee, type: 2}
   RewardGold: 0
-  CardOffers: []
+  CardOffers:
+  - {fileID: 11400000, guid: ec5f0323c276dc141bf415a48ede4a84, type: 2}
+  - {fileID: 11400000, guid: 11541f7e19554f049a10dcf181f0486a, type: 2}
+  - {fileID: 11400000, guid: eb7d38ae15c928b48a3de6fc238291a2, type: 2}
