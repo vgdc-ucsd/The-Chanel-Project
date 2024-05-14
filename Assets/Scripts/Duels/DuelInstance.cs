@@ -1,6 +1,8 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -74,46 +76,53 @@ public class DuelInstance
                 }
             }
 
-            List<Attack> queuedCharAttacks = new List<Attack>();
-
-            bool attackLanded = false;
             // Attack
-            foreach(Attack atk in card.Attacks) {
+            if (card.CanAttack)
+            {
+                List<Attack> queuedCharAttacks = new List<Attack>();
+
+                bool attackLanded = false;
+
+                foreach (Attack atk in card.Attacks)
+                {
+
+
+                    BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
+
+                    if ((DuelBoard.BeyondEnemyEdge(atkDest) && team == Team.Player) ||
+                         DuelBoard.BeyondPlayerEdge(atkDest) && team == Team.Enemy)
+                    {
+                        queuedCharAttacks.Add(atk);
+                        continue;
+                    }
+
+                    if (ProcessAttack(card, atk)) attackLanded = true;
+                }
+
+                if (queuedCharAttacks.Count != 0)
+                {
+                    attackLanded = true;
+                    Attack maxDmgAtk = queuedCharAttacks[0];
+                    foreach (Attack atk in queuedCharAttacks)
+                    {
+                        if (atk.damage > maxDmgAtk.damage) maxDmgAtk = atk;
+                    }
+                    Team winner = GetStatus(CharStatus.OppositeTeam(team)).TakeDamage(maxDmgAtk.damage);
+                    if (winner != Team.Neutral) Winner = winner;
+                }
+                if (attackLanded)
+                {
+
+                    for (int i = card.Abilities.Count - 1; i >= 0; i--)
+                    {
+                        Ability a = card.Abilities[i];
+                        if (a.Condition == ActivationCondition.OnFinishAttack) a.Activate(card, info);
+                    }
+                }
+
                 
-
-                BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
-
-                if ((DuelBoard.BeyondEnemyEdge(atkDest) && team == Team.Player) ||
-                     DuelBoard.BeyondPlayerEdge(atkDest) && team == Team.Enemy)
-                {
-                    queuedCharAttacks.Add(atk);
-                    continue;
-                }
-
-                if (ProcessAttack(card, atk)) attackLanded = true;
             }
-
-            if (queuedCharAttacks.Count != 0)
-            {
-                attackLanded = true;
-                Attack maxDmgAtk = queuedCharAttacks[0];
-                foreach (Attack atk in queuedCharAttacks)
-                {
-                    if (atk.damage > maxDmgAtk.damage) maxDmgAtk = atk;
-                }
-                Team winner = GetStatus(CharStatus.OppositeTeam(team)).TakeDamage(maxDmgAtk.damage);
-                if (winner != Team.Neutral) Winner = winner;
-            }
-            if (attackLanded)
-            {
-
-                for (int i = card.Abilities.Count - 1; i >= 0; i--)
-                {
-                    Ability a = card.Abilities[i];
-                    if (a.Condition == ActivationCondition.OnFinishAttack) a.Activate(card, info);
-                }
-            }
-
+            card.CanAttack = true;
         }
     }
 
@@ -147,9 +156,32 @@ public class DuelInstance
         return false;
     }
 
-    private void DrawCards(Team team, int count) {
+
+
+    public void DrawCardWithMana(Team team)
+    {
         CharStatus status = GetStatus(team);
         Deck deck = status.Deck;
+
+        if (deck.DrawPileIsEmpty())
+        {
+            Debug.Log("Cannot draw card, no cards remaining");
+            return;
+        }
+        if (!status.CanUseMana(DuelManager.Instance.Settings.DrawCardManaCost))
+        {
+            Debug.Log("Cannot draw card, not enough mana");
+            return;
+        }
+
+        status.UseMana(DuelManager.Instance.Settings.DrawCardManaCost);
+        DrawCards(team, 1, true);
+    }
+
+    private void DrawCards(Team team, int count, bool immediate = false) {
+        CharStatus status = GetStatus(team);
+        Deck deck = status.Deck;
+
 
         List<Card> drawnCards = new List<Card>();
 
@@ -164,14 +196,16 @@ public class DuelInstance
 
             Card drawnCard = deck.RandomAvailableCard();
 
-
-            if (drawnCard == null) break;
             
+            if (drawnCard == null) break;
+
             drawnCard.drawStatus = DrawStatus.InPlay;
             deck.numAvailableCards--;
             // Debug.Log($"Team: {team}, cards: {deck.numAvailableCards}");
-            Card c = ScriptableObject.Instantiate(drawnCard);
+            Card c = drawnCard.Clone();
             c.CurrentTeam = team;
+
+
             status.AddCard(c);
             drawnCards.Add(c);
 
@@ -182,7 +216,11 @@ public class DuelInstance
 
         }
 
-        AnimationManager.Instance.OrganizeCardsAnimation(this, drawnCards, team);
+
+        if (immediate)
+            AnimationManager.Instance.Play(AnimationManager.Instance.OrganizeCards(drawnCards, team));
+        else
+            AnimationManager.Instance.OrganizeCardsAnimation(this, drawnCards, team);
     }
 
     public int DealDamage(UnitCard target, int damage, bool immediate = false)

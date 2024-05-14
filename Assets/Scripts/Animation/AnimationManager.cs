@@ -154,7 +154,7 @@ public class AnimationManager : MonoBehaviour
         StartCoroutine(CardDeath(card));
     }
 
-    private IEnumerator OrganizeCards(List<Card> cards, Team team) {
+    public IEnumerator OrganizeCards(List<Card> cards, Team team) {
         int drawPileCount = -1; // this is necessary because drawPile.childCount only updates once per frame
         int childIndex = 0;
 

@@ -67,7 +67,7 @@ public class Board
         }
 
         card.Place(pos, duel);
-        status.Cards.Remove(card);
+        if (!status.Cards.Remove(card)) Debug.LogError("Failed to remove card");
         status.UseMana(card.ManaCost);
         SetCard(card, pos);
 
@@ -96,6 +96,7 @@ public class Board
         foreach(Ability a in card.Abilities) {
             if(a.Condition == ActivationCondition.OnMove) a.Activate(card, info);
         }
+
         AnimationManager.Instance.MoveCardAnimation(duel, card, pos);
         //if (duel == DuelManager.Instance.MainDuel) card.UnitCardInteractableRef.UpdateCardPos();
 
