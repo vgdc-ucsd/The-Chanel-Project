@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -75,6 +76,11 @@ public class DuelManager : MonoBehaviour
         //DuelEvents.Instance.UpdateHand();
     }
 
+    private void Update()
+    {
+        //Debug.Log($"Current cards: {MainDuel.PlayerStatus.Cards.ToCommaSeparatedString()}");
+    }
+
     private void CheckProperInitialization() {
         UIManager.Instance.CheckProperInitialization();
 
@@ -88,6 +94,18 @@ public class DuelManager : MonoBehaviour
         }
     }
 
+    // triggered by button
+    public void DrawCardPlayer()
+    {
+        if (Settings.EnablePVPMode)
+            throw new System.NotImplementedException();
+
+        MainDuel.DrawCardWithMana(Team.Player);
+        AnimationManager.Instance.Play(AnimationManager.Instance.OrganizeCards(MainDuel.GetStatus(Team.Player).Cards, Team.Player));
+        UIManager.Instance.UpdateStatus(MainDuel);
+    }
+
+    // triggered by button
     public void EndTurnPlayer() {
         if(awaitingAI) return; // await AI
         if(!AnimationManager.Instance.DonePlaying()) return; // await animations
@@ -113,6 +131,7 @@ public class DuelManager : MonoBehaviour
         }
     }
 
+
     public void EnemyMove(DuelInstance state) {
         state.ProcessBoard(Team.Enemy);
         MainDuel = state;
@@ -124,9 +143,24 @@ public class DuelManager : MonoBehaviour
         awaitingAI = false;
         currentTeam = Team.Player;
 
+        foreach (CharStatus status in new CharStatus[] { state.EnemyStatus, state.PlayerStatus })
+        {
+            foreach (Card c in status.Cards)
+            {
+                if (c is UnitCard uc && uc.UnitCardInteractableRef != null)
+                    uc.UnitCardInteractableRef.card = uc;
+                else if (c is SpellCard sc && sc.SpellCardInteractableRef != null)
+                    sc.SpellCardInteractableRef.card = sc;
+            }
+        }
+
+
+
+        /*
         Debug.Log($"Player Draw Pile: {MainDuel.PlayerStatus.Deck.DrawPile().ToCommaSeparatedString()}");
         Debug.Log($"Player Discard Pile: {MainDuel.PlayerStatus.Deck.DiscardPile().ToCommaSeparatedString()}");
         Debug.Log($"Enemy Draw Pile: {MainDuel.EnemyStatus.Deck.DrawPile().ToCommaSeparatedString()}");
         Debug.Log($"Enemy Discard Pile: {MainDuel.EnemyStatus.Deck.DiscardPile().ToCommaSeparatedString()}");
+        */
     }
 }

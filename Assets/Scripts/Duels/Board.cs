@@ -67,7 +67,7 @@ public class Board
         }
 
         card.Place(pos, duel);
-        status.Cards.Remove(card);
+        if (!status.Cards.Remove(card)) Debug.LogError("Failed to remove card");
         status.UseMana(card.ManaCost);
         SetCard(card, pos);
 

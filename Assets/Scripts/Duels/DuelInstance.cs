@@ -1,6 +1,8 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -154,9 +156,32 @@ public class DuelInstance
         return false;
     }
 
-    private void DrawCards(Team team, int count) {
+
+
+    public void DrawCardWithMana(Team team)
+    {
         CharStatus status = GetStatus(team);
         Deck deck = status.Deck;
+
+        if (deck.DrawPileIsEmpty())
+        {
+            Debug.Log("Cannot draw card, no cards remaining");
+            return;
+        }
+        if (!status.CanUseMana(DuelManager.Instance.Settings.DrawCardManaCost))
+        {
+            Debug.Log("Cannot draw card, not enough mana");
+            return;
+        }
+
+        status.UseMana(DuelManager.Instance.Settings.DrawCardManaCost);
+        DrawCards(team, 1, true);
+    }
+
+    private void DrawCards(Team team, int count, bool immediate = false) {
+        CharStatus status = GetStatus(team);
+        Deck deck = status.Deck;
+
 
         List<Card> drawnCards = new List<Card>();
 
@@ -171,14 +196,16 @@ public class DuelInstance
 
             Card drawnCard = deck.RandomAvailableCard();
 
-
-            if (drawnCard == null) break;
             
+            if (drawnCard == null) break;
+
             drawnCard.drawStatus = DrawStatus.InPlay;
             deck.numAvailableCards--;
             // Debug.Log($"Team: {team}, cards: {deck.numAvailableCards}");
-            Card c = ScriptableObject.Instantiate(drawnCard);
+            Card c = drawnCard.Clone();
             c.CurrentTeam = team;
+
+
             status.AddCard(c);
             drawnCards.Add(c);
 
@@ -189,7 +216,11 @@ public class DuelInstance
 
         }
 
-        AnimationManager.Instance.OrganizeCardsAnimation(this, drawnCards, team);
+
+        if (immediate)
+            AnimationManager.Instance.Play(AnimationManager.Instance.OrganizeCards(drawnCards, team));
+        else
+            AnimationManager.Instance.OrganizeCardsAnimation(this, drawnCards, team);
     }
 
     public int DealDamage(UnitCard target, int damage, bool immediate = false)
