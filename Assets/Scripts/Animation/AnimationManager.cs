@@ -134,7 +134,7 @@ public class AnimationManager : MonoBehaviour
         StartCoroutine(CardDeath(card));
     }
 
-    private IEnumerator OrganizeCards(List<Card> cards, Team team) {
+    public IEnumerator OrganizeCards(List<Card> cards, Team team) {
         foreach(Card c in cards) {
             if(c.CardInteractableRef == null) {
                 //Debug.Log("found null card while organizing");

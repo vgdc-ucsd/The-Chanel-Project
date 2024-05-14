@@ -17,6 +17,7 @@ public class DuelSettings
 
     // Misc
     public bool EnemyGoesFirst = false;
+    public int DrawCardManaCost = 2;
 
     // Dev/Debug settings
     public bool EnablePVPMode = false;

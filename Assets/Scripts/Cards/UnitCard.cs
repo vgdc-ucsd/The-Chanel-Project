@@ -23,7 +23,8 @@ public class UnitCard : Card
 {
     public int Health;
     
-    [HideInInspector] public bool CanMove = true;
+    [HideInInspector] public bool CanMove = false;
+    [HideInInspector] public bool CanAttack = false;
     [HideInInspector] public BoardCoords Pos;
     [HideInInspector] public bool isSelected = false;
     [HideInInspector] public int BaseDamage = 1; // set in the custom card editor
@@ -47,6 +48,7 @@ public class UnitCard : Card
         copy.ManaCost = this.ManaCost;
         copy.isSelected = false;
         copy.CanMove = this.CanMove;
+        copy.CanAttack = this.CanAttack;
         copy.Pos = this.Pos;
         copy.Artwork = this.Artwork;
         copy.CurrentTeam = this.CurrentTeam;
@@ -106,7 +108,8 @@ public class UnitCard : Card
     public void Place(BoardCoords pos, DuelInstance duel)
     {
         this.Pos = pos;
-        CanMove = true;
+        CanMove = false;
+        CanAttack = false;
 
         baseStats.health = this.Health;
         List<Attack> atkList = new List<Attack>();
