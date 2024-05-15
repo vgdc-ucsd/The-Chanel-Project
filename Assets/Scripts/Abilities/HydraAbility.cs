@@ -19,7 +19,7 @@ public class HydraAbility : Ability
             atk.damage++;
         }
 
-        c.RecalculateStats();
+        c.RecalculateStats(Info);
         AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, c);
     }
 }

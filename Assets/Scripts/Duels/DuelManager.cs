@@ -78,7 +78,10 @@ public class DuelManager : MonoBehaviour
 
     private void Update()
     {
-        //Debug.Log($"Current cards: {MainDuel.PlayerStatus.Cards.ToCommaSeparatedString()}");
+        if(MainDuel.Animations.Count != 0) {
+            AnimationManager.Instance.Enqueue(MainDuel.Animations);
+            MainDuel.Animations.Clear();
+        }
     }
 
     private void CheckProperInitialization() {
@@ -113,18 +116,15 @@ public class DuelManager : MonoBehaviour
         if(Settings.EnablePVPMode) {
             if (currentTeam == Team.Player) {
                 MainDuel.ProcessBoard(Team.Player);
-                AnimationManager.Instance.Enqueue(MainDuel.Animations);
                 currentTeam = Team.Enemy;
             }
             else {
                 MainDuel.ProcessBoard(Team.Enemy);
-                AnimationManager.Instance.Enqueue(MainDuel.Animations);
                 currentTeam = Team.Player;
             }
         }
         else {
             MainDuel.ProcessBoard(Team.Player);
-            AnimationManager.Instance.Enqueue(MainDuel.Animations);
             currentTeam = Team.Enemy;
             StartCoroutine(ai.MCTS(MainDuel));
             awaitingAI = true;
@@ -137,7 +137,6 @@ public class DuelManager : MonoBehaviour
         MainDuel = state;
         //state.DebugBoard();
         AnimationManager.Instance.OrganizeCardsAnimation(MainDuel, new List<Card>(), Team.Enemy);
-        AnimationManager.Instance.Enqueue(state.Animations);
         UIManager.Instance.UpdateStatus(state);
         
         awaitingAI = false;
@@ -153,8 +152,6 @@ public class DuelManager : MonoBehaviour
                     sc.SpellCardInteractableRef.card = sc;
             }
         }
-
-
 
         /*
         Debug.Log($"Player Draw Pile: {MainDuel.PlayerStatus.Deck.DrawPile().ToCommaSeparatedString()}");
