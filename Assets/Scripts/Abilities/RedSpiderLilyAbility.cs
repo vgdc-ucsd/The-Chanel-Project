@@ -16,17 +16,17 @@ public class RedSpiderLilyAbility : AttributeModifier
     // "Activate" is actually the finish condition, removes the extra attacks
     public override void Activate(UnitCard c, ActivationInfo info)
     {
-        RemoveEffect(c);
+        RemoveEffect(c, info);
     }
 
-    public override void AddEffect(UnitCard c)
+    public override void AddEffect(UnitCard c, ActivationInfo info)
     {
-        base.AddEffect(c);
+        base.AddEffect(c, info);
 
-        ReapplyEffect(c);
+        ReapplyEffect(c, info);
     }
 
-    public override void ReapplyEffect(UnitCard c)
+    public override void ReapplyEffect(UnitCard c, ActivationInfo info)
     {
         foreach (Attack atk in c.Attacks)
         {

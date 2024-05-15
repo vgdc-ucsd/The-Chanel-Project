@@ -38,20 +38,20 @@ public abstract class Ability : ScriptableObject
 
 public abstract class AttributeModifier : Ability
 {
-    public virtual void AddEffect(UnitCard c)
+    public virtual void AddEffect(UnitCard c, ActivationInfo info)
     {
         c.Abilities.Add(this);
         c.StatusEffects.Add(this);
     }
 
 
-    public void RemoveEffect(UnitCard c)
+    public void RemoveEffect(UnitCard c, ActivationInfo info)
     {
         c.Abilities.Remove(this);
         c.StatusEffects.Remove(this);
 
-        c.RecalculateStats(); // very poorly optimized, consider recalculating stats once per turn
+        c.RecalculateStats(info); // very poorly optimized, consider recalculating stats once per turn
     }
 
-    public abstract void ReapplyEffect(UnitCard c);
+    public abstract void ReapplyEffect(UnitCard c, ActivationInfo info);
 }

@@ -131,7 +131,7 @@ public class UnitCard : Card
         CardInteractableRef.SetSelected(selected); // TODO
     }
 
-    public void RecalculateStats()
+    public void RecalculateStats(ActivationInfo info)
     {
         Attacks.Clear();
         foreach (Attack atk in baseStats.attacks)
@@ -142,7 +142,7 @@ public class UnitCard : Card
 
         foreach (AttributeModifier effect in StatusEffects)
         {
-            effect.ReapplyEffect(this);
+            effect.ReapplyEffect(this, info);
         }
 
     }

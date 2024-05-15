@@ -259,6 +259,11 @@ public class AnimationManager : MonoBehaviour
         yield return null;
     }
 
+    private IEnumerator DrawArrows(UnitCardInteractable uci) {
+        uci.DrawArrows();
+        yield return null;
+    }
+
     // **************************************************************
     //              public animation methods (void)
     // **************************************************************
@@ -324,5 +329,13 @@ public class AnimationManager : MonoBehaviour
         IEnumerator ie = UpdateCardInfo(c);
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
         duel.Animations.Enqueue(qa);
+    }
+
+    public void DrawArrowsAnimation(DuelInstance duel, UnitCard uc) {
+        if(uc.UnitCardInteractableRef != null) {
+            IEnumerator ie = DrawArrows(uc.UnitCardInteractableRef);
+            QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+            duel.Animations.Enqueue(qa);
+        }
     }
 }

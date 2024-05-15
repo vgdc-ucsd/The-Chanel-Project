@@ -16,18 +16,18 @@ public class LotusFlowerAbility : AttributeModifier
     // "Activate" is actually the finish condition, removes the extra attacks
     public override void Activate(UnitCard c, ActivationInfo info)
     {
-        RemoveEffect(c);
-        if (c.UnitCardInteractableRef != null) c.UnitCardInteractableRef.DrawArrows();
+        RemoveEffect(c, info);
+        AnimationManager.Instance.DrawArrowsAnimation(info.Duel, c);
     }
 
-    public override void AddEffect(UnitCard c)
+    public override void AddEffect(UnitCard c, ActivationInfo info)
     {
-        base.AddEffect(c);
+        base.AddEffect(c, info);
 
-        ReapplyEffect(c);
+        ReapplyEffect(c, info);
     }
 
-    public override void ReapplyEffect(UnitCard c)
+    public override void ReapplyEffect(UnitCard c, ActivationInfo info)
     {
         foreach (Vector2Int dir in Attack.allDirections)
         {
@@ -36,6 +36,6 @@ public class LotusFlowerAbility : AttributeModifier
                 c.Attacks.Add(new Attack(dir, c.BaseDamage));
             }
         }
-        if (c.UnitCardInteractableRef != null) c.UnitCardInteractableRef.DrawArrows();
+        AnimationManager.Instance.DrawArrowsAnimation(info.Duel, c);
     }
 }
