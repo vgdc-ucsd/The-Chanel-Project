@@ -43,6 +43,16 @@ public class MctsAI
 
     const int WEIGHTED_MAX_TURNS = 10;
 
+    // probability that the AI will consider these actions
+    float aiMovementChance = 0.4f;
+    float aiPushChance = 0.7f;
+    float aiDrawChance = 0.15f;
+
+    // probability that the AI will anticipate the player doing these actions
+    float playerMovementChance = 0.4f;
+    float playerPushChance = 0.5f;
+    float playerDrawChance = 0.15f;
+
     // how much the AI likes enemy/player cards positioned at corresponding y value
     // multiplied by mana cost of card
     static float[] ENEMY_CARD_POSITIONING_WEIGHTS = { 30, 20, 3, 2 };
@@ -215,13 +225,33 @@ public class MctsAI
         List<Card> playableCards = GetPlayableCards(duel, status);
         List<BoardCoords> legalTiles = GetLegalTiles(duel.DuelBoard); // TODO behind spawn line
         List<UnitCard> moveableCards = GetMovableCards(duel.DuelBoard, team);
-        float movementChance = 0.4f;
-        float pushChance = 0.5f;
+
+        float movementChance, pushChance, drawChance;
+
+        if (team == Team.Enemy)
+        {
+            movementChance = aiMovementChance;
+            pushChance = aiPushChance;
+            drawChance = aiDrawChance;
+        }
+        else
+        {
+            movementChance = playerMovementChance;
+            pushChance = playerPushChance;
+            drawChance = playerDrawChance;
+        }
+
 
         int loopCount = 0;
         // If any cards can be played, always play them
         while((playableCards.Count > 0 && legalTiles.Count > 0) || moveableCards.Count > 0) {
             
+            // roll to draw a card after every action
+            if (status.CanDrawCard() && Random.value < drawChance)
+            {
+                duel.DrawCardWithMana(team);
+            }
+
             // remove cards if they are no longer movable
             for(int i = 0; i < moveableCards.Count; i++) {
                 if(duel.DuelBoard.GetEmptyAdjacentTiles(moveableCards[i].Pos).Count == 0) {
@@ -305,6 +335,14 @@ public class MctsAI
                 }
             }
             
+            // if out of legal playable cards, use all mana to draw cards
+
+            while (playableCards.Count == 0 && status.CanDrawCard() )
+            {
+                duel.DrawCardWithMana(team);
+            }
+
+
             loopCount++;
             if (loopCount > 1000)
             {
