@@ -634,6 +634,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4360430246957213193, guid: 0a98d5dba78568a4fbf88861b29d4791, type: 3}
+      propertyPath: IsEnemy
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4824474834117916277, guid: 0a98d5dba78568a4fbf88861b29d4791, type: 3}
       propertyPath: m_Pivot.x
       value: 0
