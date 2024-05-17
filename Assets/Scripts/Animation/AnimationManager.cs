@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using FMODUnity;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -328,6 +329,45 @@ public class AnimationManager : MonoBehaviour
         yield return null;
     }
 
+    private IEnumerator DamageFlash(UnitCard c, float duration) {
+        float damageTime = duration * 0.25f;
+        float restoreTime = duration * 0.75f;
+
+        InterpolationMode mode = InterpolationMode.Linear;
+        float startTime = Time.time;
+        float elapsedTime = Time.time - startTime;
+
+        TextMeshProUGUI text = c.UnitCardInteractableRef.CardHealth;
+
+        // black to red
+        Color from = Color.black;
+        Color to = Color.red;
+        while(elapsedTime < damageTime) {
+            if(text == null) break;
+            float t = elapsedTime / duration;
+            elapsedTime = Time.time - startTime;
+            Color col = Interpolation.Interpolate(from, to, t, mode);
+            text.color = col;
+            yield return null;
+        }
+
+        // red to black
+        startTime = Time.time;
+        elapsedTime = Time.time - startTime;
+        from = Color.red;
+        to = Color.black;
+        while(elapsedTime < restoreTime) {
+            if(text == null) break;
+            float t = elapsedTime / duration;
+            elapsedTime = Time.time - startTime;
+            Color col = Interpolation.Interpolate(from, to, t, mode);
+            text.color = col;
+            yield return null;
+        }
+
+        text.color = Color.black;
+    }
+
     private IEnumerator DrawArrows(UnitCardInteractable uci) {
         uci.DrawArrows();
         yield return null;
@@ -405,6 +445,13 @@ public class AnimationManager : MonoBehaviour
     public void UpdateCardInfoAnimation(DuelInstance duel, UnitCard c) {
         IEnumerator ie = UpdateCardInfo(c);
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+        duel.Animations.Enqueue(qa);
+    }
+
+    public void DamageCardAnimation(DuelInstance duel, UnitCard c) {
+        float duration = 0.75f;
+        IEnumerator ie = DamageFlash(c, duration);
+        QueueableAnimation qa = new QueueableAnimation(ie, duration);
         duel.Animations.Enqueue(qa);
     }
 
