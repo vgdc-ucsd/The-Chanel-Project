@@ -140,6 +140,7 @@ public class UnitCardInteractable : CardInteractable,
     public override void OnPointerEnter(PointerEventData eventData) {
         base.OnPointerEnter(eventData);
         UIManager.Instance.InfoPanel.UpdateInfoPanelUnitCard(this.card);
+        if(!CanInteract) return;
         AnimationManager.Instance.StartManaHover(card.ManaCost, card.CurrentTeam);
     }
 

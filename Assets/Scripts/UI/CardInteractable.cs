@@ -51,7 +51,7 @@ public abstract class CardInteractable : MonoBehaviour,
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        if(inHand) {
+        if(inHand && CanInteract) {
             hoveredCard = this;
             hoveredCardIndex = transform.GetSiblingIndex();
             hoveredCard.transform.SetAsLastSibling();
@@ -75,20 +75,21 @@ public abstract class CardInteractable : MonoBehaviour,
 
     public void OnDrag(PointerEventData eventData)
     {
-        if(inHand) {
+        if(inHand && CanInteract) {
             transform.position = eventData.position;
         }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if(inHand) {
+        if(inHand && CanInteract) {
             transform.localEulerAngles = Vector3.zero;
         }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if(!CanInteract) return;
         if (inHand)
         {
             // Check if the drag ended over a TileInteractable using a raycast

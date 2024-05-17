@@ -344,7 +344,7 @@ public class AnimationManager : MonoBehaviour
         Color to = Color.red;
         while(elapsedTime < damageTime) {
             if(text == null) break;
-            float t = elapsedTime / duration;
+            float t = elapsedTime / damageTime;
             elapsedTime = Time.time - startTime;
             Color col = Interpolation.Interpolate(from, to, t, mode);
             text.color = col;
@@ -358,7 +358,7 @@ public class AnimationManager : MonoBehaviour
         to = Color.black;
         while(elapsedTime < restoreTime) {
             if(text == null) break;
-            float t = elapsedTime / duration;
+            float t = elapsedTime / restoreTime;
             elapsedTime = Time.time - startTime;
             Color col = Interpolation.Interpolate(from, to, t, mode);
             text.color = col;
@@ -371,6 +371,44 @@ public class AnimationManager : MonoBehaviour
     private IEnumerator DrawArrows(UnitCardInteractable uci) {
         uci.DrawArrows();
         yield return null;
+    }
+
+    private IEnumerator BounceScale(Transform obj, float from, float to, float duration) {
+        float bounceTime = duration * 0.8f;
+        float restoreTime = duration * 0.2f;
+        float bounceFactor = 1.05f;
+
+        InterpolationMode mode = InterpolationMode.Linear;
+        float startTime = Time.time;
+        float elapsedTime = Time.time - startTime;
+
+        obj.localScale = new Vector3(from, from, 1);
+        Vector3 startScale = new Vector3(from, from, 1);
+        Vector3 endScale = new Vector3(to*bounceFactor, to*bounceFactor, 1);
+
+        // bounce up
+        while(elapsedTime < bounceTime) {
+            if(obj == null) break;
+            float t = elapsedTime / bounceTime;
+            elapsedTime = Time.time - startTime;
+            obj.localScale = Interpolation.Interpolate(startScale, endScale, t, mode);
+            yield return null;
+        }
+
+        // bounce down
+        startTime = Time.time;
+        elapsedTime = Time.time - startTime;
+        startScale = endScale;
+        endScale = new Vector3(to, to, 1);
+        while(elapsedTime < restoreTime) {
+            if(obj == null) break;
+            float t = elapsedTime / restoreTime;
+            elapsedTime = Time.time - startTime;
+            obj.localScale = Interpolation.Interpolate(startScale, endScale, t, mode);
+            yield return null;
+        }
+
+        obj.localScale = endScale;
     }
 
     // **************************************************************
@@ -473,5 +511,11 @@ public class AnimationManager : MonoBehaviour
         if(team == Team.Player) {
             UIManager.Instance.Player.UnhoverMana(DuelManager.Instance.MainDuel.GetStatus(Team.Player));
         }
+    }
+
+    public void BounceScaleAnimation(DuelInstance duel, Transform t, float from, float to, float duration) {
+        IEnumerator ie = BounceScale(t, from, to, duration);
+        QueueableAnimation qa = new QueueableAnimation(ie, duration/4f);
+        duel.Animations.Enqueue(qa);
     }
 }
