@@ -59,6 +59,17 @@ public class SpellCardInteractable : CardInteractable
         Destroy(gameObject); */
     }
 
+    public override void OnPointerEnter(PointerEventData eventData) {
+        base.OnPointerEnter(eventData);
+        //UIManager.Instance.InfoPanel.UpdateInfoPanelUnitCard(this.card);
+        AnimationManager.Instance.StartManaHover(card.ManaCost, card.CurrentTeam);
+    }
+
+    public override void OnPointerExit(PointerEventData eventData) {
+        base.OnPointerExit(eventData);
+        AnimationManager.Instance.StopManaHover(card.CurrentTeam);
+    }
+
     public override void UpdateCardInfo()
     {
         CardCost.text = "Mana Cost: " + card.ManaCost;

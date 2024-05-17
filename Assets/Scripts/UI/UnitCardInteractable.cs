@@ -132,6 +132,12 @@ public class UnitCardInteractable : CardInteractable,
     public override void OnPointerEnter(PointerEventData eventData) {
         base.OnPointerEnter(eventData);
         UIManager.Instance.InfoPanel.UpdateInfoPanelUnitCard(this.card);
+        AnimationManager.Instance.StartManaHover(card.ManaCost, card.CurrentTeam);
+    }
+
+    public override void OnPointerExit(PointerEventData eventData) {
+        base.OnPointerExit(eventData);
+        AnimationManager.Instance.StopManaHover(card.CurrentTeam);
     }
 
     public void CheckProperInitialization() {

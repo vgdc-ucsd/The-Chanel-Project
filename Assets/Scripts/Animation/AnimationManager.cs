@@ -404,4 +404,16 @@ public class AnimationManager : MonoBehaviour
             duel.Animations.Enqueue(qa);
         }
     }
+
+    public void StartManaHover(int cost, Team team) {
+        if(team == Team.Player) {
+            UIManager.Instance.Player.HoverMana(cost, DuelManager.Instance.MainDuel.GetStatus(Team.Player));
+        }
+    }
+
+    public void StopManaHover(Team team) {
+        if(team == Team.Player) {
+            UIManager.Instance.Player.UnhoverMana(DuelManager.Instance.MainDuel.GetStatus(Team.Player));
+        }
+    }
 }

@@ -14,6 +14,7 @@ public class PlayerUI : MonoBehaviour
     public Image[] ManaSprites;
     public Sprite ManaBlack;
     public Sprite ManaBlue;
+    public Sprite Highlighted;
 
     public void UpdateUI(CharStatus status) {
         HealthText.text = status.Health.ToString();
@@ -52,6 +53,20 @@ public class PlayerUI : MonoBehaviour
         if(ManaText == null) {
             Debug.LogError("PlayerUIError, ManaText is uninitialized");
             return;
+        }
+    }
+
+    public void HoverMana(int cost, CharStatus status) {
+        if(cost <= status.Mana) {
+            for(int i = 0; i < cost; i++) {
+                ManaSprites[i].sprite = Highlighted;
+            }
+        }
+    }
+
+    public void UnhoverMana(CharStatus status) {
+        for(int i = 0; i < status.Mana; i++) {
+            ManaSprites[i].sprite = ManaBlue;
         }
     }
 }
