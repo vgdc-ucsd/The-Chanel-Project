@@ -81,7 +81,7 @@ public class DuelManager : MonoBehaviour
             MainDuel.Animations.Clear();
         }
 
-        Debug.Log(MainDuel.PlayerStatus.Cards.ToCommaSeparatedString());
+        //Debug.Log(MainDuel.PlayerStatus.Cards.ToCommaSeparatedString());
     }
 
     private void CheckProperInitialization() {
