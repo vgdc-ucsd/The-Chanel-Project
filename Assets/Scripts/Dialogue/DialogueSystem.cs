@@ -2,13 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DialogueSystem : MonoBehaviour
 {
+    
+    public string CharacterName;
+    public string Option1;
+    public string Option2;
     public TextMeshProUGUI Text;
-    public TextMeshProUGUI CharacterName;
-    public int debugNum;
-    public Dialogue[] DialogueText;
+    public TextMeshProUGUI CharacterNameText;
+    public TextMeshProUGUI Option1Text;
+    public TextMeshProUGUI Option2Text;
+    public List<Dialogue> DialogueText;
+    public Sprite DialogueScrollNormal;
+    public Sprite DialogueScrollRipped;
+    public Image DialogueScroll;
 
     private Queue<Dialogue> dialogueQueue;    
     private Coroutine dialogueCoroutineRef;
@@ -16,6 +25,14 @@ public class DialogueSystem : MonoBehaviour
     private bool finishedText;
 
     void Start() {
+        CharacterNameText.text = CharacterName;
+        Option1Text.text = Option1;
+        Option2Text.text = Option2;
+        DialogueScroll.sprite = DialogueScrollNormal;
+
+        Option1Text.transform.parent.gameObject.SetActive(false);
+        Option2Text.transform.parent.gameObject.SetActive(false);
+
         finishedText = true;
         dialogueQueue = new Queue<Dialogue>(DialogueText);
         if(dialogueQueue.Count > 0) AdvanceDialogue();
@@ -36,13 +53,17 @@ public class DialogueSystem : MonoBehaviour
                 Dialogue currentDialogue = dialogueQueue.Dequeue();
                 if(dialogueCoroutineRef != null) StopCoroutine(dialogueCoroutineRef);
                 Text.text = currentDialogue.Line;
-                CharacterName.text = currentDialogue.CharacterName;
+                //CharacterName.text = currentDialogue.CharacterName;
                 Text.maxVisibleCharacters = 0;
                 dialogueCoroutineRef = StartCoroutine(DialogueCoroutine(currentDialogue));
             }
             else {
-                EventManager.Instance.FinishEvent();
-                gameObject.SetActive(false);
+                // last dialogue
+                DialogueScroll.sprite = DialogueScrollRipped;
+                Option1Text.transform.parent.gameObject.SetActive(true);
+                Option2Text.transform.parent.gameObject.SetActive(true);
+                //EventManager.Instance.FinishEvent();
+                //gameObject.SetActive(false);
             }
         }
         else {

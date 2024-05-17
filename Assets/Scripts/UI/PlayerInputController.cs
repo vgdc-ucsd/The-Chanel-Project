@@ -45,7 +45,7 @@ public class PlayerInputController: MonoBehaviour
     // Handle any input that involves clicking a card on the board
     public void InteractCard(UnitCard card)
     {
-        if (card.CurrentTeam == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode) return;
+        if (!card.UnitCardInteractableRef.CanInteract || (card.CurrentTeam == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode)) return;
         SetAction(ControlAction.None);
         //if (card.team != DuelManager.Instance.DC.GetCurrentTeam())
         //{

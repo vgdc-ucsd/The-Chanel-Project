@@ -80,7 +80,6 @@ public class CharStatus
         }
         Cards.Add(c);
 
-
     }
 
     public void RemoveFromHand(Card card)
@@ -159,6 +158,11 @@ public class CharStatus
         return true;
     }
 
+    // can expend mana to draw a card
+    public bool CanDrawCard()
+    {
+        return (!Deck.DrawPileIsEmpty() && CanUseMana(duelSettings.DrawCardManaCost));
+    }
     public static Team OppositeTeam(Team team)
     {
         switch (team)

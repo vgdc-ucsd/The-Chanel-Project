@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using FMODUnity;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -41,6 +42,10 @@ public class AnimationManager : MonoBehaviour
     }
     public void Enqueue(Queue<QueueableAnimation> qa) {
         while(qa.Count > 0) animations.Enqueue(qa.Dequeue());
+    }
+
+    public void ClearQueue() {
+        animations.Clear();
     }
 
     private IEnumerator PlayAnimations() {
@@ -121,27 +126,156 @@ public class AnimationManager : MonoBehaviour
     }
 
     private IEnumerator CardDeath(UnitCard card) {
-        yield return null;
-        Destroy(card.CardInteractableRef.gameObject);
+        Transform cardTransform = card.UnitCardInteractableRef.transform;
+        Transform drawPile;
+        Transform discardPile;
+
+        if(card.CurrentTeam == Team.Player) {
+            drawPile = UIManager.Instance.PlayerDraw;
+            discardPile = UIManager.Instance.PlayerDiscard;
+        }
+        else {
+            drawPile = UIManager.Instance.EnemyDraw;
+            discardPile = UIManager.Instance.EnemyDiscard;
+        }
+
+        card.UnitCardInteractableRef.CanInteract = false;
+        cardTransform.SetParent(discardPile);
+
+        // Reset stats
+        card.ResetStats();
+        card.UnitCardInteractableRef.UpdateCardInfo();
+
+        // Hide arrows
+        for (int i = 0; i < card.UnitCardInteractableRef.transform.childCount; i++)
+        {
+            if (card.UnitCardInteractableRef.transform.GetChild(i).name.Contains("Arrow"))
+            {
+                card.UnitCardInteractableRef.transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+
+        yield return SimpleTranslate(cardTransform, discardPile.position, 0.5f, InterpolationMode.Linear);
     }
 
+    private IEnumerator SpellDiscard(SpellCard card) {
+        Transform cardTransform = card.SpellCardInteractableRef.transform;
+        Transform drawPile;
+        Transform discardPile;
+
+        if(card.CurrentTeam == Team.Player) {
+            drawPile = UIManager.Instance.PlayerDraw;
+            discardPile = UIManager.Instance.PlayerDiscard;
+        }
+        else {
+            drawPile = UIManager.Instance.EnemyDraw;
+            discardPile = UIManager.Instance.EnemyDiscard;
+        }
+
+        card.SpellCardInteractableRef.CanInteract = false;
+        cardTransform.SetParent(discardPile);
+        yield return SimpleTranslate(cardTransform, discardPile.position, 0.5f, InterpolationMode.Linear);
+    }
 
     public void CardDeathImmediate(UnitCard card)
     {
         StartCoroutine(CardDeath(card));
     }
 
-    private IEnumerator OrganizeCards(List<Card> cards, Team team) {
-        foreach(Card c in cards) {
-            if(c.CardInteractableRef == null) {
-                //Debug.Log("found null card while organizing");
-                c.CardInteractableRef = DuelManager.Instance.UI.GenerateCardInteractable(c);
-            }
-        }
-        if (team == Team.Player) DuelManager.Instance.UI.Hand.OrganizeCards();
-        else DuelManager.Instance.UI.EnemyHand.OrganizeCards();
+    public IEnumerator OrganizeCards(Team team) {
+        if (team == Team.Player) UIManager.Instance.Hand.OrganizeCards();
+        else UIManager.Instance.EnemyHand.OrganizeCards();
 
         yield return null;
+    }
+
+    private IEnumerator DrawCards(List<Card> cards, Team team) {
+        int childIndex = 0;
+
+        Transform drawPile;
+        Transform discardPile;
+
+        if(team == Team.Player) {
+            drawPile = UIManager.Instance.PlayerDraw;
+            discardPile = UIManager.Instance.PlayerDiscard;
+        }
+        else {
+            drawPile = UIManager.Instance.EnemyDraw;
+            discardPile = UIManager.Instance.EnemyDiscard;
+        }
+
+        if(discardPile.childCount>=1 && drawPile.childCount==0) {
+            ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
+            yield return null;
+        }
+
+        // draw all cards
+        if(drawPile.childCount >= cards.Count) {
+            
+            foreach(Card c in cards) {
+                GameObject cardObject;
+                // Draw hidden enemy card
+                if(team == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode) {
+                    cardObject = Instantiate(UIManager.Instance.TemplateCardBack);
+                    UIManager.Instance.EnemyHand.cardObjects.Add(cardObject); // need to do manually since not generating interactable
+                }
+                // Draw visible card
+                else {
+                    c.CardInteractableRef = UIManager.Instance.GenerateCardInteractable(c);
+                    cardObject = c.CardInteractableRef.gameObject;
+                }
+                cardObject.transform.position = drawPile.position;
+                Destroy(drawPile.GetChild(childIndex).gameObject);
+                childIndex++;
+            }
+        }
+        // draw then shuffle then draw
+        else if(drawPile.childCount < cards.Count && drawPile.childCount+discardPile.childCount >= cards.Count) {
+            int initalCount = drawPile.childCount;
+            int afterCount = cards.Count-initalCount;
+            for(int i = 0; i < initalCount; i++) {
+                Card c = cards[i];
+                GameObject cardObject;
+                // Draw hidden enemy card
+                if(team == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode) {
+                    cardObject = Instantiate(UIManager.Instance.TemplateCardBack);
+                    UIManager.Instance.EnemyHand.cardObjects.Add(cardObject); // need to do manually since not generating interactable
+                }
+                // Draw visible card
+                else {
+                    c.CardInteractableRef = UIManager.Instance.GenerateCardInteractable(c);
+                    cardObject = c.CardInteractableRef.gameObject;
+                }
+                cardObject.transform.position = drawPile.position;
+                Destroy(drawPile.GetChild(childIndex).gameObject);
+                childIndex++;
+            }
+
+            ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
+
+            childIndex = 0;
+            for(int i = 0; i < afterCount; i++) {
+                Card c = cards[i];
+                GameObject cardObject;
+                // Draw hidden enemy card
+                if(team == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode) {
+                    cardObject = Instantiate(UIManager.Instance.TemplateCardBack);
+                    UIManager.Instance.EnemyHand.cardObjects.Add(cardObject); // need to do manually since not generating interactable
+                }
+                // Draw visible card
+                else {
+                    c.CardInteractableRef = UIManager.Instance.GenerateCardInteractable(c);
+                    cardObject = c.CardInteractableRef.gameObject;
+                }
+                cardObject.transform.position = drawPile.position;
+                Destroy(drawPile.GetChild(childIndex).gameObject);
+                childIndex++;
+            }
+        }
+        // no draw
+        else {
+            Debug.LogError("trying to draw too many cards " + team + " " + cards.Count);
+        }
     }
 
     public IEnumerator PlaceUnitCard(UnitCard c, BoardCoords pos, float speed) {
@@ -150,7 +284,7 @@ public class AnimationManager : MonoBehaviour
         // make a new card interactable if there is none
         // TODO remove since they should be generated when the enemy draws/organizes the card ?
         if(unitRef == null) {
-            unitRef = (UnitCardInteractable) DuelManager.Instance.UI.GenerateCardInteractable(c);
+            unitRef = (UnitCardInteractable) UIManager.Instance.GenerateCardInteractable(c);
             c.UnitCardInteractableRef = unitRef;
         }
 
@@ -162,22 +296,27 @@ public class AnimationManager : MonoBehaviour
             unitRef.transform.localEulerAngles = Vector3.zero;
             unitRef.transform.localScale = Vector3.one;
             if(unitRef.handInterface != null) {
-                unitRef.handInterface.cardObjects.Remove(c.CardInteractableRef);
-            } 
+                unitRef.handInterface.cardObjects.Remove(unitRef.gameObject);
+            }
             unitRef.transform.SetParent(tile.transform);
             unitRef.transform.localScale = Vector3.one;
             unitRef.DrawArrows(); 
             unitRef.CardCost.enabled = false;
-            unitRef.transform.position = EnemyHandLocation.position;
             unitRef.gameObject.SetActive(true);
+
+            // remove card from hand
+            int randomIndex = Random.Range(0, UIManager.Instance.EnemyHand.cardObjects.Count);
+            GameObject cardBack = UIManager.Instance.EnemyHand.cardObjects[randomIndex];
+            UIManager.Instance.EnemyHand.cardObjects.Remove(cardBack);
+            unitRef.transform.position = cardBack.transform.position;
+            Destroy(cardBack);
 
             // translation animation
             yield return SimpleTranslate(unitRef.transform, tile.transform.position, speed, InterpolationMode.Linear);
         }
         else {
-            c.UnitCardInteractableRef.UIPlaceCard(pos);
+            unitRef.UIPlaceCard(pos);
         }
-        yield return null;
     }
 
     public IEnumerator MoveCard(UnitCard uc, Transform targetPos, float speed) {
@@ -187,6 +326,50 @@ public class AnimationManager : MonoBehaviour
 
     private IEnumerator UpdateCardInfo(Card c) {
         if(c.CardInteractableRef != null) {c.CardInteractableRef.UpdateCardInfo();}
+        yield return null;
+    }
+
+    private IEnumerator DamageFlash(UnitCard c, float duration) {
+        float damageTime = duration * 0.25f;
+        float restoreTime = duration * 0.75f;
+
+        InterpolationMode mode = InterpolationMode.Linear;
+        float startTime = Time.time;
+        float elapsedTime = Time.time - startTime;
+
+        TextMeshProUGUI text = c.UnitCardInteractableRef.CardHealth;
+
+        // black to red
+        Color from = Color.black;
+        Color to = Color.red;
+        while(elapsedTime < damageTime) {
+            if(text == null) break;
+            float t = elapsedTime / duration;
+            elapsedTime = Time.time - startTime;
+            Color col = Interpolation.Interpolate(from, to, t, mode);
+            text.color = col;
+            yield return null;
+        }
+
+        // red to black
+        startTime = Time.time;
+        elapsedTime = Time.time - startTime;
+        from = Color.red;
+        to = Color.black;
+        while(elapsedTime < restoreTime) {
+            if(text == null) break;
+            float t = elapsedTime / duration;
+            elapsedTime = Time.time - startTime;
+            Color col = Interpolation.Interpolate(from, to, t, mode);
+            text.color = col;
+            yield return null;
+        }
+
+        text.color = Color.black;
+    }
+
+    private IEnumerator DrawArrows(UnitCardInteractable uci) {
+        uci.DrawArrows();
         yield return null;
     }
 
@@ -211,8 +394,18 @@ public class AnimationManager : MonoBehaviour
         duel.Animations.Enqueue(qa);
     }
 
-    public void OrganizeCardsAnimation(DuelInstance duel, List<Card> cards, Team team) {
-        IEnumerator ie = OrganizeCards(cards, team);
+    public void SpellDiscardAnimation(DuelInstance duel, SpellCard card) {
+        IEnumerator ie = SpellDiscard(card);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+        duel.Animations.Enqueue(qa);
+    }
+
+    public void DrawCardsAnimation(DuelInstance duel, List<Card> cards, Team team) {
+        IEnumerator draw = DrawCards(cards, team);
+        QueueableAnimation drawAnim = new QueueableAnimation(draw, 0.0f);
+        duel.Animations.Enqueue(drawAnim);
+
+        IEnumerator ie = OrganizeCards(team);
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
         duel.Animations.Enqueue(qa);
     }
@@ -222,6 +415,21 @@ public class AnimationManager : MonoBehaviour
         IEnumerator ie = PlaceUnitCard(c, pos, speed);
         QueueableAnimation qa = new QueueableAnimation(ie, speed);
         duel.Animations.Enqueue(qa);
+    }
+
+    private void ShuffleDiscardIntoDeckAnimation(Transform discard, Transform draw) { // only call from other coroutines in this script
+        foreach(Transform t in discard) {
+            GameObject cardBack = Instantiate(UIManager.Instance.TemplateCardBack);
+            cardBack.transform.position = t.position;
+            cardBack.transform.SetParent(draw);
+            cardBack.transform.localScale = Vector3.one;
+            Destroy(t.gameObject);
+            IEnumerator ie = SimpleTranslate(cardBack.transform, draw.position, 0.2f, InterpolationMode.Linear);
+            QueueableAnimation qa = new QueueableAnimation(ie, 1f);
+            animations.Enqueue(qa);
+            //Debug.Log(cardBack.transform.parent.name);
+            // TODO shows one less card
+        }
     }
 
     public void MoveCardAnimation(DuelInstance duel, UnitCard uc, BoardCoords targetPos) {
@@ -238,5 +446,32 @@ public class AnimationManager : MonoBehaviour
         IEnumerator ie = UpdateCardInfo(c);
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
         duel.Animations.Enqueue(qa);
+    }
+
+    public void DamageCardAnimation(DuelInstance duel, UnitCard c) {
+        float duration = 0.75f;
+        IEnumerator ie = DamageFlash(c, duration);
+        QueueableAnimation qa = new QueueableAnimation(ie, duration);
+        duel.Animations.Enqueue(qa);
+    }
+
+    public void DrawArrowsAnimation(DuelInstance duel, UnitCard uc) {
+        if(uc.UnitCardInteractableRef != null) {
+            IEnumerator ie = DrawArrows(uc.UnitCardInteractableRef);
+            QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+            duel.Animations.Enqueue(qa);
+        }
+    }
+
+    public void StartManaHover(int cost, Team team) {
+        if(team == Team.Player) {
+            UIManager.Instance.Player.HoverMana(cost, DuelManager.Instance.MainDuel.GetStatus(Team.Player));
+        }
+    }
+
+    public void StopManaHover(Team team) {
+        if(team == Team.Player) {
+            UIManager.Instance.Player.UnhoverMana(DuelManager.Instance.MainDuel.GetStatus(Team.Player));
+        }
     }
 }

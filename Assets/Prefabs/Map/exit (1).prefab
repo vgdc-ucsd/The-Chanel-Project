@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3978797309825805018}
   - component: {fileID: 4875820179865913861}
   - component: {fileID: 6526498930656038144}
+  - component: {fileID: -3056327477249450791}
   m_Layer: 0
   m_Name: exit (1)
   m_TagString: UsedNodes
@@ -75,3 +76,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-3056327477249450791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3899294230495701110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a611f26dbe5fc447846fce99027751c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visited: 0
+  locked: 1
+  mapNodeType: 4
+  nextNodes: []
+  prevNodes: []
+  row: 3

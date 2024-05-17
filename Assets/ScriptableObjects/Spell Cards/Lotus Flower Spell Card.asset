@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Lotus Flower
   ManaCost: 2
+  ShopCost: 0
   Artwork: {fileID: 0}
+  drawStatus: 0
+  id: 0
   CurrentTeam: 2
   SpellCardInteractableRef: {fileID: 0}
   abilityTemplate: {fileID: 11400000, guid: a8f1495961ba6274ca0115c00088af80, type: 2}

@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Vector3 = UnityEngine.Vector3;
 
@@ -22,11 +23,13 @@ IPointerExitHandler
 
     private bool initialized;
     public int row = 1;
+    private MapGrid mapGrid;
 
     private void Start()
     {
         // Set locked to true initially
         locked = true;
+        mapGrid = FindObjectOfType<MapGrid>();
     }
 
     private void Update()
@@ -34,7 +37,7 @@ IPointerExitHandler
         // Initialize here because it is called after Start
         if (!initialized)
         {
-            visited = gameObject.name == "start";
+            visited = gameObject == mapGrid.row1[0];
             if (visited == true)
             {
                 foreach (var node in nextNodes)
@@ -72,6 +75,11 @@ IPointerExitHandler
         int mapNodeTypeIdx = -1;
         if (mapNodeType == MapNodeType.Encounter)
         {
+            if(MenuScript.Instance != null) {
+                int randomIndex = UnityEngine.Random.Range(0, EncounterManager.Instance.Encounters.Count);
+                MenuScript.Instance.CurrentEncounter = EncounterManager.Instance.Encounters[randomIndex];
+            }
+            
             mapNodeTypeIdx = 2;
         }
         else if (mapNodeType == MapNodeType.Shop)
@@ -86,8 +94,15 @@ IPointerExitHandler
         {
             mapNodeTypeIdx = 5;
         }
+        else if (mapNodeType == MapNodeType.StartOrExit)
+        {
+            mapNodeTypeIdx = -1;
+        }
 
-        FindObjectOfType<ChangeScene>().MoveToScene(mapNodeTypeIdx);
+        if (mapNodeTypeIdx != -1)
+        {
+            FindObjectOfType<ChangeScene>().MoveToScene(mapNodeTypeIdx);
+        }
     }
 
     /// <summary>
@@ -123,5 +138,6 @@ public enum MapNodeType
     Encounter,
     Event,
     Shop,
-    Boss
+    Boss,
+    StartOrExit
 }

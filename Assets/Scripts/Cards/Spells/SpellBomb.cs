@@ -13,6 +13,7 @@ public class SpellBomb : SpellCard , ISpellTypeTile
         foreach(UnitCard card in damagedCards)
         {
             duel.DealDamage(card, damage, true);
+            AnimationManager.Instance.UpdateCardInfoAnimation(duel, card);
         }
 
         FinishCast(duel);

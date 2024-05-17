@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f15f282beda789c4686a2671c4e99758, type: 3}
+  m_Name: MixedDeck 1
+  m_EditorClassIdentifier: 
+  CardList:
+  - {fileID: 11400000, guid: a88c7d8913880fd4aa37c9ba6619601b, type: 2}
+  - {fileID: 11400000, guid: eb7d38ae15c928b48a3de6fc238291a2, type: 2}
+  - {fileID: 11400000, guid: 34690e13dc6b06544aceb4d763edda1c, type: 2}
+  - {fileID: 11400000, guid: 3140f3a6a1ea936499c7203083f2c746, type: 2}
+  - {fileID: 11400000, guid: 0fbf928ca99cf444d86b6bc34fb185af, type: 2}
+  - {fileID: 11400000, guid: bca5dcb3c747b704697a0cf8447dd5ae, type: 2}
+  - {fileID: 11400000, guid: 8c7da54017624ab4ea2c64f891423225, type: 2}
+  numAvailableCards: 7

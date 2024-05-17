@@ -17,6 +17,13 @@ public class UnitCardInteractable : CardInteractable,
     public TextMeshProUGUI CardAttack;
 
     private List<GameObject> arrows = new List<GameObject>();
+    public StatusIconManager icons;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        icons.ci = this;
+    }
 
     public override void SetCardInfo() {
         if(card == null) {
@@ -33,6 +40,7 @@ public class UnitCardInteractable : CardInteractable,
         CardAttack.text = "Attack: " + card.BaseDamage;
         CardHealth.text = "Health: " + card.Health;
         if (inHand) CardCost.text = "Mana Cost: " + card.ManaCost;
+        icons.RefreshIcons();
     }
 
     public void DrawArrows() {
@@ -69,7 +77,7 @@ public class UnitCardInteractable : CardInteractable,
             transform.localScale = Vector3.one;
             transform.position = tile.transform.position;
             if(handInterface != null) {
-                handInterface.cardObjects.Remove(this);
+                handInterface.cardObjects.Remove(this.gameObject);
             } 
             transform.SetParent(tile.transform);
             transform.localScale = Vector3.one;
@@ -117,7 +125,7 @@ public class UnitCardInteractable : CardInteractable,
             DuelManager.Instance.MainDuel.DuelBoard.PlayCard(card, pos, charStatus, DuelManager.Instance.MainDuel);
             IEnumerator ie = AnimationManager.Instance.PlaceUnitCard(card, pos, 0.0f);
             AnimationManager.Instance.Play(ie);
-            DuelManager.Instance.UI.UpdateStatus(DuelManager.Instance.MainDuel);
+            UIManager.Instance.UpdateStatus(DuelManager.Instance.MainDuel);
         }
     }
 
@@ -127,6 +135,17 @@ public class UnitCardInteractable : CardInteractable,
         {
             PlayerInputController.Instance.InteractCard(card);
         }
+    }
+
+    public override void OnPointerEnter(PointerEventData eventData) {
+        base.OnPointerEnter(eventData);
+        UIManager.Instance.InfoPanel.UpdateInfoPanelUnitCard(this.card);
+        AnimationManager.Instance.StartManaHover(card.ManaCost, card.CurrentTeam);
+    }
+
+    public override void OnPointerExit(PointerEventData eventData) {
+        base.OnPointerExit(eventData);
+        AnimationManager.Instance.StopManaHover(card.CurrentTeam);
     }
 
     public void CheckProperInitialization() {
