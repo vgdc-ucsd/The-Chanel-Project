@@ -102,7 +102,7 @@ public class DuelManager : MonoBehaviour
             throw new System.NotImplementedException();
 
         MainDuel.DrawCardWithMana(Team.Player);
-        AnimationManager.Instance.Play(AnimationManager.Instance.OrganizeCards(MainDuel.GetStatus(Team.Player).Cards, Team.Player));
+        AnimationManager.Instance.DrawCardsAnimation(MainDuel, MainDuel.GetStatus(Team.Player).Cards, Team.Player);
         UIManager.Instance.UpdateStatus(MainDuel);
     }
 
@@ -134,7 +134,7 @@ public class DuelManager : MonoBehaviour
         state.ProcessBoard(Team.Enemy);
         MainDuel = state;
         //state.DebugBoard();
-        AnimationManager.Instance.OrganizeCardsAnimation(MainDuel, new List<Card>(), Team.Enemy);
+        AnimationManager.Instance.DrawCardsAnimation(MainDuel, new List<Card>(), Team.Enemy);
         UIManager.Instance.UpdateStatus(state);
         
         awaitingAI = false;
