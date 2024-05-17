@@ -62,6 +62,9 @@ public class PlayerUI : MonoBehaviour
                 ManaSprites[i].sprite = Highlighted;
             }
         }
+        else {
+            // TODO swap out sprites for not-enough-mana sprite
+        }
     }
 
     public void UnhoverMana(CharStatus status) {

@@ -478,7 +478,7 @@ RectTransform:
   m_GameObject: {fileID: 209123318}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
+  m_LocalScale: {x: 0.4166666, y: 0.41666004, z: 0.41666004}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1721334445}
@@ -508,7 +508,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4083ecfe051dac943bffc777fe2331e4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9db500e15530d6242a7b4616880e3cfc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1394,7 +1394,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1270436024
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1666,7 +1666,7 @@ RectTransform:
   m_GameObject: {fileID: 1721334444}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.15, y: 1.15, z: 1.15}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 209123319}
