@@ -140,8 +140,20 @@ public class AnimationManager : MonoBehaviour
 
         card.UnitCardInteractableRef.CanInteract = false;
         cardTransform.SetParent(discardPile);
-        // TODO reset health and attack to card default
-        // TODO hide arrows
+
+        // Reset stats
+        card.ResetStats();
+        card.UnitCardInteractableRef.UpdateCardInfo();
+
+        // Hide arrows
+        for (int i = 0; i < card.UnitCardInteractableRef.transform.childCount; i++)
+        {
+            if (card.UnitCardInteractableRef.transform.GetChild(i).name.Contains("Arrow"))
+            {
+                card.UnitCardInteractableRef.transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+
         yield return SimpleTranslate(cardTransform, discardPile.position, 0.5f, InterpolationMode.Linear);
     }
 
@@ -192,7 +204,6 @@ public class AnimationManager : MonoBehaviour
         }
 
         if(discardPile.childCount>=1 && drawPile.childCount==0) {
-            Debug.Log("here");
             ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
             yield return null;
         }
