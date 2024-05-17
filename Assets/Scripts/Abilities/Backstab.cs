@@ -16,6 +16,6 @@ public class Backstab : Ability
                 atk.damage *= 2;
             }
         }
-        c.RecalculateStats();
+        c.RecalculateStats(info);
     }
 }

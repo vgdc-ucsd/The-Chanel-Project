@@ -55,9 +55,6 @@ public class DuelManager : MonoBehaviour
         Board board = new Board(Settings.BoardRows, Settings.BoardCols);
         MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, board);
 
-        // Draw staring cards
-        AnimationManager.Instance.Enqueue(MainDuel.DrawStartingCards());
-
         // AI setup
         ai = new MctsAI();
         awaitingAI = false;
@@ -72,13 +69,17 @@ public class DuelManager : MonoBehaviour
         if (Settings.EnablePVPMode || Settings.ShowEnemyHand) {
             UIManager.Instance.EnemyHand.gameObject.SetActive(true);
         }
-        //DuelEvents.Instance.UpdateUI();
-        //DuelEvents.Instance.UpdateHand();
+
+        // Draw staring cards
+        AnimationManager.Instance.Enqueue(MainDuel.DrawStartingCards());
     }
 
     private void Update()
     {
-        //Debug.Log($"Current cards: {MainDuel.PlayerStatus.Cards.ToCommaSeparatedString()}");
+        if(MainDuel.Animations.Count != 0) {
+            AnimationManager.Instance.Enqueue(MainDuel.Animations);
+            MainDuel.Animations.Clear();
+        }
     }
 
     private void CheckProperInitialization() {
@@ -101,7 +102,7 @@ public class DuelManager : MonoBehaviour
             throw new System.NotImplementedException();
 
         MainDuel.DrawCardWithMana(Team.Player);
-        AnimationManager.Instance.Play(AnimationManager.Instance.OrganizeCards(MainDuel.GetStatus(Team.Player).Cards, Team.Player));
+        AnimationManager.Instance.DrawCardsAnimation(MainDuel, MainDuel.GetStatus(Team.Player).Cards, Team.Player);
         UIManager.Instance.UpdateStatus(MainDuel);
     }
 
@@ -113,18 +114,15 @@ public class DuelManager : MonoBehaviour
         if(Settings.EnablePVPMode) {
             if (currentTeam == Team.Player) {
                 MainDuel.ProcessBoard(Team.Player);
-                AnimationManager.Instance.Enqueue(MainDuel.Animations);
                 currentTeam = Team.Enemy;
             }
             else {
                 MainDuel.ProcessBoard(Team.Enemy);
-                AnimationManager.Instance.Enqueue(MainDuel.Animations);
                 currentTeam = Team.Player;
             }
         }
         else {
             MainDuel.ProcessBoard(Team.Player);
-            AnimationManager.Instance.Enqueue(MainDuel.Animations);
             currentTeam = Team.Enemy;
             StartCoroutine(ai.MCTS(MainDuel));
             awaitingAI = true;
@@ -136,8 +134,7 @@ public class DuelManager : MonoBehaviour
         state.ProcessBoard(Team.Enemy);
         MainDuel = state;
         //state.DebugBoard();
-        AnimationManager.Instance.OrganizeCardsAnimation(MainDuel, new List<Card>(), Team.Enemy);
-        AnimationManager.Instance.Enqueue(state.Animations);
+        AnimationManager.Instance.DrawCardsAnimation(MainDuel, new List<Card>(), Team.Enemy);
         UIManager.Instance.UpdateStatus(state);
         
         awaitingAI = false;
@@ -153,8 +150,6 @@ public class DuelManager : MonoBehaviour
                     sc.SpellCardInteractableRef.card = sc;
             }
         }
-
-
 
         /*
         Debug.Log($"Player Draw Pile: {MainDuel.PlayerStatus.Deck.DrawPile().ToCommaSeparatedString()}");

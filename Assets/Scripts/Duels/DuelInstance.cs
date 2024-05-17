@@ -216,11 +216,7 @@ public class DuelInstance
 
         }
 
-
-        if (immediate)
-            AnimationManager.Instance.Play(AnimationManager.Instance.OrganizeCards(drawnCards, team));
-        else
-            AnimationManager.Instance.OrganizeCardsAnimation(this, drawnCards, team);
+        AnimationManager.Instance.DrawCardsAnimation(this, drawnCards, team);
     }
 
     public int DealDamage(UnitCard target, int damage, bool immediate = false)

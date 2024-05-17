@@ -21,7 +21,8 @@ public class SpellLotusFlower : SpellCard , ISpellTypeAlly
         if (card.CurrentTeam != CurrentTeam) return false;
 
         LotusFlowerAbility ability = ScriptableObject.Instantiate(abilityTemplate);
-        ability.AddEffect(card);
+        ActivationInfo info = new ActivationInfo(duel);
+        ability.AddEffect(card, info);
         
         FinishCast(duel);
         return true;

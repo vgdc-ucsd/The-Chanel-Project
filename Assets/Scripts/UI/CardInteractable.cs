@@ -36,6 +36,7 @@ public abstract class CardInteractable : MonoBehaviour,
     // Determines if a card is able to be played
     // Not hidden for debugging purposes
     public bool inHand = true;
+    public bool CanInteract = true;
 
     public void Awake()
     {
