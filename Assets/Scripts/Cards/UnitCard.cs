@@ -105,6 +105,10 @@ public class UnitCard : Card
         }
     }
 
+    public void ResetStats(){
+        Health = baseStats.health;
+    }
+
     public void Place(BoardCoords pos, DuelInstance duel)
     {
         this.Pos = pos;
