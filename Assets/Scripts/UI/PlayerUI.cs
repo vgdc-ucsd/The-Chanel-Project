@@ -15,6 +15,22 @@ public class PlayerUI : MonoBehaviour
     public Sprite ManaBlack;
     public Sprite ManaBlue;
     public Sprite Highlighted;
+    public RectTransform HealthIndicator;
+    public bool IsEnemy = false;
+
+    void Start() {
+        float distance = 90f;
+        if(IsEnemy) HealthIndicator.localPosition = new Vector3(
+            distance,
+            HealthIndicator.localPosition.y,
+            HealthIndicator.localPosition.z
+        );
+        else HealthIndicator.localPosition = new Vector3(
+            -distance,
+            HealthIndicator.localPosition.y,
+            HealthIndicator.localPosition.z
+        );
+    }
 
     public void UpdateUI(CharStatus status) {
         HealthText.text = status.Health.ToString();
