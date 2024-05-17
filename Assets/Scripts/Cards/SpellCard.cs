@@ -25,6 +25,7 @@ public abstract class SpellCard : Card
         SpellCard copy = (SpellCard)ScriptableObject.CreateInstance(this.GetType());
 
         copy.Name = this.Name;
+        copy.description = this.description;
         copy.ManaCost = this.ManaCost;
         copy.Artwork = this.Artwork;
         copy.CurrentTeam = this.CurrentTeam;

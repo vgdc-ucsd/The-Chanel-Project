@@ -11,7 +11,7 @@ public abstract class Card: ScriptableObject
     public DrawStatus drawStatus = DrawStatus.Available;
     public int id;
 
-
+    public string description;
 
     [HideInInspector] public Team CurrentTeam = Team.Neutral;
     [HideInInspector] public abstract CardInteractable CardInteractableRef { get; set; }

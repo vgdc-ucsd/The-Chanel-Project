@@ -40,7 +40,7 @@ public abstract class CardInteractable : MonoBehaviour,
     public bool inHand = true;
     public bool CanInteract = true;
 
-    public void Awake()
+    protected virtual void Awake()
     {
         if(DuelManager.Instance != null) raycaster = DuelManager.Instance.GetComponent<GraphicRaycaster>();
     }

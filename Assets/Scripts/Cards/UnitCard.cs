@@ -35,7 +35,7 @@ public class UnitCard : Card
     public List<Attack> Attacks = new List<Attack>();
     public List<Ability> Abilities = new List<Ability>();
 
-    public List<AttributeModifier> StatusEffects = new List<AttributeModifier>(); // for effect stacking calculations, order preserved
+    public List<StatusEffect> StatusEffects = new List<StatusEffect>(); // for effect stacking calculations, order preserved
     public UnitStats baseStats = new UnitStats();
 
 
@@ -43,6 +43,7 @@ public class UnitCard : Card
         UnitCard copy = (UnitCard) ScriptableObject.CreateInstance("UnitCard");
 
         copy.Name = this.Name;
+        copy.description = this.description;
         copy.BaseDamage = this.BaseDamage;
         copy.Health = this.Health;
         copy.ManaCost = this.ManaCost;
@@ -62,9 +63,19 @@ public class UnitCard : Card
             copy.Attacks.Add(new Attack(atk.direction, atk.damage));
         }
         copy.Abilities = new List<Ability>();
-        foreach(Ability ab in this.Abilities) {
-            copy.Abilities.Add(ab);
+        copy.StatusEffects = new List<StatusEffect>();
+        foreach (Ability ab in this.Abilities) {
+            if (ab is StatusEffect s)
+            {
+                StatusEffect newEffect = s.Clone(); 
+                copy.Abilities.Add(newEffect);
+                copy.StatusEffects.Add(newEffect);
+            }
+            else
+                copy.Abilities.Add(ab);
         }
+
+        
 
         return copy;
     }
@@ -146,7 +157,7 @@ public class UnitCard : Card
         }
         BaseDamage = baseStats.baseDamage;
 
-        foreach (AttributeModifier effect in StatusEffects)
+        foreach (StatusEffect effect in StatusEffects)
         {
             effect.ReapplyEffect(this, info);
         }

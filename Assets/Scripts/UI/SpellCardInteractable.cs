@@ -61,7 +61,7 @@ public class SpellCardInteractable : CardInteractable
 
     public override void OnPointerEnter(PointerEventData eventData) {
         base.OnPointerEnter(eventData);
-        //UIManager.Instance.InfoPanel.UpdateInfoPanelUnitCard(this.card);
+        UIManager.Instance.InfoPanel.UpdateInfoPanelSpellCard(this.card);
         AnimationManager.Instance.StartManaHover(card.ManaCost, card.CurrentTeam);
     }
 

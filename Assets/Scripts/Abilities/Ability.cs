@@ -36,12 +36,24 @@ public abstract class Ability : ScriptableObject
 }
 
 
-public abstract class AttributeModifier : Ability
+public abstract class StatusEffect : Ability
 {
+    public int duration;
+    public Sprite icon;
+
+    public StatusEffect Clone()
+    {
+        StatusEffect copy = ScriptableObject.Instantiate(this);
+        copy.duration = duration;
+        copy.icon = icon;
+        return copy;
+    }
+
     public virtual void AddEffect(UnitCard c, ActivationInfo info)
     {
         c.Abilities.Add(this);
         c.StatusEffects.Add(this);
+        AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
     }
 
 
@@ -50,8 +62,10 @@ public abstract class AttributeModifier : Ability
         c.Abilities.Remove(this);
         c.StatusEffects.Remove(this);
 
+        AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
         c.RecalculateStats(info); // very poorly optimized, consider recalculating stats once per turn
     }
 
     public abstract void ReapplyEffect(UnitCard c, ActivationInfo info);
+
 }

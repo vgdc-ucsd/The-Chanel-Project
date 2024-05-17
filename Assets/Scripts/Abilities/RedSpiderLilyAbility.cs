@@ -5,7 +5,7 @@ using UnityEditor.Playables;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Abilites/RedSpiderLilyAbility")]
-public class RedSpiderLilyAbility : AttributeModifier
+public class RedSpiderLilyAbility : StatusEffect
 {
 
     public override ActivationCondition Condition
@@ -22,6 +22,8 @@ public class RedSpiderLilyAbility : AttributeModifier
     public override void AddEffect(UnitCard c, ActivationInfo info)
     {
         base.AddEffect(c, info);
+        duration = -1;
+
 
         ReapplyEffect(c, info);
     }

@@ -17,6 +17,13 @@ public class UnitCardInteractable : CardInteractable,
     public TextMeshProUGUI CardAttack;
 
     private List<GameObject> arrows = new List<GameObject>();
+    public StatusIconManager icons;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        icons.ci = this;
+    }
 
     public override void SetCardInfo() {
         if(card == null) {
@@ -33,6 +40,7 @@ public class UnitCardInteractable : CardInteractable,
         CardAttack.text = "Attack: " + card.BaseDamage;
         CardHealth.text = "Health: " + card.Health;
         if (inHand) CardCost.text = "Mana Cost: " + card.ManaCost;
+        icons.RefreshIcons();
     }
 
     public void DrawArrows() {
