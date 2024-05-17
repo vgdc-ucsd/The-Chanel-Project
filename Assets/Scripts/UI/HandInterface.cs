@@ -13,17 +13,17 @@ public class HandInterface : MonoBehaviour
     public Team myTeam;
 
     // Determines how much the cards rotate in the player's hand
-    private float maxRotationDegrees = 15;
+    private float maxRotationDegrees = 0;
     // Determines how much space is between the cards in the player's hand
     private float cardDistance = 0f;
     // Determines how tall the arch of the cards is in the player's hand
-    private float arcIntensity = 30f;
+    private float arcIntensity = 0f;
 
     private List<QueueableAnimation> cardAnimations = new List<QueueableAnimation>(); 
 
     // Displays cards neatly in the UI
     public void OrganizeCards() {
-        cardDistance = 45 * cardObjects.Count;
+        cardDistance = 20 * cardObjects.Count * UIManager.Instance.MainCanvas.scaleFactor;
 
         // clear old animations
         foreach(QueueableAnimation qa in cardAnimations) {

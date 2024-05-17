@@ -31,6 +31,7 @@ public abstract class CardInteractable : MonoBehaviour,
     private float scaleFactor = 1.1f;
 
     private static int hoveredCardIndex;
+    private Vector3 basePosition;
     private static CardInteractable hoveredCard;
 
     // Determines if a card is able to be played
@@ -53,6 +54,8 @@ public abstract class CardInteractable : MonoBehaviour,
             hoveredCard = this;
             hoveredCardIndex = transform.GetSiblingIndex();
             hoveredCard.transform.SetAsLastSibling();
+            basePosition = transform.position;
+            hoveredCard.transform.position = hoverPosition();
             transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
         }
     }
@@ -61,6 +64,7 @@ public abstract class CardInteractable : MonoBehaviour,
     {
         if(inHand) {
             if(this == hoveredCard) {
+                transform.position = basePosition;
                 hoveredCard.transform.SetSiblingIndex(hoveredCardIndex);
                 hoveredCard = null;
             }
@@ -127,5 +131,13 @@ public abstract class CardInteractable : MonoBehaviour,
         {
             image.color = defaultColor;
         }
+    }
+
+    private Vector3 hoverPosition() {
+        return new Vector3(
+            transform.position.x, 
+            transform.position.y+(50f*UIManager.Instance.MainCanvas.scaleFactor), 
+            transform.position.z
+        );
     }
 }
