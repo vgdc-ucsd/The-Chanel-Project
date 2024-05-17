@@ -9,6 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f466bab1020aa14099e19b226a0459e, type: 3}
-  m_Name: New Red Spider Lily Ability
+  m_Script: {fileID: 11500000, guid: 4b69034224e10614bb351a676339714b, type: 3}
+  m_Name: Fire Effect
   m_EditorClassIdentifier: 
+  duration: 2
+  icon: {fileID: 0}

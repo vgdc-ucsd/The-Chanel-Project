@@ -76,6 +76,8 @@ public class DuelInstance
                 }
             }
 
+            if (card.drawStatus != DrawStatus.InPlay) return;
+
             // Attack
             if (card.CanAttack)
             {
@@ -251,6 +253,19 @@ public class DuelInstance
 
         // gain 1 mana capacity every turn until it reaches the max then it caps out;
         oppositeStatus.GiveMana();
+
+        ActivationInfo info = new ActivationInfo(this);
+        foreach (UnitCard card in DuelBoard.GetCardsOfTeam(oppositeTeam))
+        {
+            for (int i = card.Abilities.Count - 1; i >= 0; i--)
+            {
+                Ability ability = card.Abilities[i];
+                if (ability.Condition == ActivationCondition.OnBeginTurn)
+                {
+                    ability.Activate(card, info);
+                }
+            }
+        }
 
         DuelBoard.RenewMovement(oppositeTeam);
         DrawCards(oppositeTeam, 1);

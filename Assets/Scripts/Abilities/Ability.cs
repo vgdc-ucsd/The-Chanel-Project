@@ -3,7 +3,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public enum ActivationCondition {
-    OnProcess, // applies effect every turn
+    OnProcess, // applies effect every turn during attack phase
+    OnBeginTurn, // applies effect at start of every turn of the card's team
     OnDeath,
     OnDraw,
     OnPlay,
@@ -46,8 +47,11 @@ public abstract class StatusEffect : Ability
         StatusEffect copy = ScriptableObject.Instantiate(this);
         copy.duration = duration;
         copy.icon = icon;
+        CloneExtras(copy);
         return copy;
     }
+
+    protected virtual void CloneExtras(StatusEffect copy) { }
 
     public virtual void AddEffect(UnitCard c, ActivationInfo info)
     {
