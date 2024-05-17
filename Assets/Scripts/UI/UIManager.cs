@@ -36,6 +36,7 @@ public class UIManager : MonoBehaviour
     private List<GameObject> EnemyDiscardObjects;
 
     public CardInfoPanel InfoPanel;
+    public Canvas MainCanvas;
 
     public static UIManager Instance;
 
