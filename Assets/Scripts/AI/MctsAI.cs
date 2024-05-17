@@ -350,6 +350,11 @@ public class MctsAI
                 break;
             }
         }
+
+        while (playableCards.Count == 0 && status.CanDrawCard())
+        {
+            duel.DrawCardWithMana(team);
+        }
     }
 
     private void testCloneSpeed(DuelInstance di) {

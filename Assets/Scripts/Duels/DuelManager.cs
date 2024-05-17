@@ -80,6 +80,8 @@ public class DuelManager : MonoBehaviour
             AnimationManager.Instance.Enqueue(MainDuel.Animations);
             MainDuel.Animations.Clear();
         }
+
+        Debug.Log(MainDuel.PlayerStatus.Cards.ToCommaSeparatedString());
     }
 
     private void CheckProperInitialization() {
@@ -102,7 +104,7 @@ public class DuelManager : MonoBehaviour
             throw new System.NotImplementedException();
 
         MainDuel.DrawCardWithMana(Team.Player);
-        AnimationManager.Instance.DrawCardsAnimation(MainDuel, MainDuel.GetStatus(Team.Player).Cards, Team.Player);
+        
         UIManager.Instance.UpdateStatus(MainDuel);
     }
 
