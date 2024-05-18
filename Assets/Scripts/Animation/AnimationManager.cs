@@ -190,6 +190,10 @@ public class AnimationManager : MonoBehaviour
     }
 
     private IEnumerator DrawCards(List<Card> cards, Team team) {
+        // Print cards
+        foreach(Card c in cards) {
+            Debug.Log(c.ToString());
+        }
         int childIndex = 0;
 
         Transform drawPile;
@@ -204,9 +208,8 @@ public class AnimationManager : MonoBehaviour
             discardPile = UIManager.Instance.EnemyDiscard;
         }
 
-        if(discardPile.childCount>=1 && drawPile.childCount==0) {
-            ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
-            yield return null;
+        if (cards.Count > 1){
+            Debug.Log("Drawing " + cards.Count + " cards for " + team);
         }
 
         // draw all cards
@@ -251,7 +254,7 @@ public class AnimationManager : MonoBehaviour
                 childIndex++;
             }
 
-            ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
+            // ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
 
             childIndex = 0;
             for(int i = 0; i < afterCount; i++) {
@@ -276,6 +279,7 @@ public class AnimationManager : MonoBehaviour
         else {
             Debug.LogError("trying to draw too many cards " + team + " " + cards.Count);
         }
+        yield return null;
     }
 
     public IEnumerator PlaceUnitCard(UnitCard c, BoardCoords pos, float speed) {
@@ -439,6 +443,23 @@ public class AnimationManager : MonoBehaviour
     }
 
     public void DrawCardsAnimation(DuelInstance duel, List<Card> cards, Team team) {
+        Transform drawPile;
+        Transform discardPile;
+
+        if(team == Team.Player) {
+            drawPile = UIManager.Instance.PlayerDraw;
+            discardPile = UIManager.Instance.PlayerDiscard;
+        }
+        else {
+            drawPile = UIManager.Instance.EnemyDraw;
+            discardPile = UIManager.Instance.EnemyDiscard;
+        }
+
+        if(discardPile.childCount>=1 && drawPile.childCount==0) {
+            Debug.Log("Shuffling " + team + " discard into draw");
+            ShuffleDiscardIntoDeckAnimation2(duel, discardPile, drawPile);
+        }
+
         IEnumerator draw = DrawCards(cards, team);
         QueueableAnimation drawAnim = new QueueableAnimation(draw, 0.0f);
         duel.Animations.Enqueue(drawAnim);
@@ -455,17 +476,39 @@ public class AnimationManager : MonoBehaviour
         duel.Animations.Enqueue(qa);
     }
 
-    private void ShuffleDiscardIntoDeckAnimation(Transform discard, Transform draw) { // only call from other coroutines in this script
+    private void ShuffleDiscardIntoDeckAnimation2(DuelInstance duel, Transform discard, Transform draw) { // only call from other coroutines in this script
+        foreach(Transform t in discard) {
+            IEnumerator ie2 = SimpleTranslate(t, draw.position, 0.2f, InterpolationMode.Linear);
+            QueueableAnimation qa2 = new QueueableAnimation(ie2, 1f);
+            duel.Animations.Enqueue(qa2);
+
+            IEnumerator ie = ChangeDrawIntoCardBack(t, draw);
+            QueueableAnimation qa = new QueueableAnimation(ie, 1f);
+            duel.Animations.Enqueue(qa);
+        }
+    }
+
+    private IEnumerator ChangeDrawIntoCardBack(Transform original, Transform draw){
+        GameObject cardBack = Instantiate(UIManager.Instance.TemplateCardBack);
+        cardBack.transform.position = original.position;
+        cardBack.transform.SetParent(draw);
+        cardBack.transform.localScale = Vector3.one;
+        Destroy(original.gameObject);
+        yield return null;
+    }
+
+    private void ShuffleDiscardIntoDeckAnimation(DuelInstance duel, Transform discard, Transform draw) { // only call from other coroutines in this script
         foreach(Transform t in discard) {
             GameObject cardBack = Instantiate(UIManager.Instance.TemplateCardBack);
             cardBack.transform.position = t.position;
             cardBack.transform.SetParent(draw);
             cardBack.transform.localScale = Vector3.one;
+            Debug.Log(t.gameObject.ToString());
             Destroy(t.gameObject);
             IEnumerator ie = SimpleTranslate(cardBack.transform, draw.position, 0.2f, InterpolationMode.Linear);
             QueueableAnimation qa = new QueueableAnimation(ie, 1f);
-            animations.Enqueue(qa);
-            //Debug.Log(cardBack.transform.parent.name);
+            duel.Animations.Enqueue(qa);
+            Debug.Log(cardBack.transform.parent.name);
             // TODO shows one less card
         }
     }
