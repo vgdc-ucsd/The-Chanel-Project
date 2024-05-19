@@ -15,7 +15,7 @@ public enum DrawStatus
 public class Deck : ScriptableObject
 {
     public List<Card> CardList = new List<Card>();
-    public int numAvailableCards = 0;
+    [HideInInspector] public int numAvailableCards = 0;
 
     private void addCard(UnitCard card)
     {
