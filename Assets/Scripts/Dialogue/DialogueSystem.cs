@@ -9,15 +9,17 @@ public class DialogueSystem : MonoBehaviour
     
     public string CharacterName;
     public string Option1;
+    public string Option1HighlightText;
     public string Option2;
+    public string Option2HighlightText;
     public TextMeshProUGUI Text;
     public TextMeshProUGUI CharacterNameText;
-    public TextMeshProUGUI Option1Text;
-    public TextMeshProUGUI Option2Text;
     public List<Dialogue> DialogueText;
     public Sprite DialogueScrollNormal;
     public Sprite DialogueScrollRipped;
     public Image DialogueScroll;
+    public DialogueButton Option1Button;
+    public DialogueButton Option2Button;
 
     private Queue<Dialogue> dialogueQueue;    
     private Coroutine dialogueCoroutineRef;
@@ -26,12 +28,14 @@ public class DialogueSystem : MonoBehaviour
 
     void Start() {
         CharacterNameText.text = CharacterName;
-        Option1Text.text = Option1;
-        Option2Text.text = Option2;
+        Option1Button.TMP.text = Option1;
+        Option1Button.HighlightTMP.text = Option1HighlightText;
+        Option2Button.TMP.text = Option2;
+        Option2Button.HighlightTMP.text = Option2HighlightText;
         DialogueScroll.sprite = DialogueScrollNormal;
 
-        Option1Text.transform.parent.gameObject.SetActive(false);
-        Option2Text.transform.parent.gameObject.SetActive(false);
+        Option1Button.gameObject.SetActive(false);
+        Option2Button.gameObject.SetActive(false);
 
         finishedText = true;
         dialogueQueue = new Queue<Dialogue>(DialogueText);
@@ -60,8 +64,8 @@ public class DialogueSystem : MonoBehaviour
             else {
                 // last dialogue
                 DialogueScroll.sprite = DialogueScrollRipped;
-                Option1Text.transform.parent.gameObject.SetActive(true);
-                Option2Text.transform.parent.gameObject.SetActive(true);
+                Option1Button.gameObject.SetActive(true);
+                Option2Button.gameObject.SetActive(true);
                 //EventManager.Instance.FinishEvent();
                 //gameObject.SetActive(false);
             }
