@@ -10,11 +10,11 @@ public class ScrollMap : MonoBehaviour
     [SerializeField] float sidePadding;
 
     private List<RectTransform> children = new();
-    private MapGrid mapGridRef;
+    private MapGenerator mapGridRef;
     void Start()
     {
         Invoke("Init", 0.1f);
-        mapGridRef = FindObjectOfType<MapGrid>();
+        mapGridRef = FindObjectOfType<MapGenerator>();
     }
 
     private void Init()

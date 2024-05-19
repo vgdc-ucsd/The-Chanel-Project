@@ -10,9 +10,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using static UnityEditor.PlayerSettings;
 
-public class MapGrid : MonoBehaviour
+public class MapGenerator : MonoBehaviour
 {
     [Header("Debugging Info")]
+    [SerializeField] MapInfo mapInfo;
     public List<Vector3> Points;
     // public List<Vector3> StairsPoints = new();
     // public List<GameObject> stairDirections;
@@ -51,8 +52,12 @@ public class MapGrid : MonoBehaviour
 
     private List<List<Vector3>> layers;
 
-    // Start is called before the first frame update
     void Start()
+    {
+        GenerateMap();
+    }
+
+    public void GenerateMap()
     {
         // Sets starting position of character
         OrientingPosition = new Vector2(start.GetComponent<RectTransform>().localPosition.x, start.GetComponent<RectTransform>().localPosition.y);
@@ -134,6 +139,25 @@ public class MapGrid : MonoBehaviour
         {
             o.GetComponent<RectTransform>().localPosition += offsetPosition;
         }
+
+        // MapInfo mapInfo = ScriptableObject.CreateInstance<MapInfo>();
+        List<MapNodeType> allMapNodes = new();
+        List<int> mapNodeRows = new();
+        for (int i = 0; i < allNodes.Count; i++)
+        {
+            if (allNodes[i].GetComponent<MapNode>() != null)
+            {
+                allMapNodes.Add(allNodes[i].GetComponent<MapNode>().mapNodeType);
+                mapNodeRows.Add(allNodes[i].GetComponent<MapNode>().row);
+            }
+        }
+
+        mapInfo.allNodes = allMapNodes;
+        mapInfo.nodeRows = mapNodeRows;
+    }
+
+    public void LoadMap(MapInfo mapInfo)
+    {
     }
 
     void InitializeAllNodesList()

@@ -22,13 +22,13 @@ IPointerExitHandler
 
     private bool initialized;
     public int row = 1;
-    private MapGrid mapGrid;
+    private MapGenerator mapGenerator;
 
     private void Start()
     {
         // Set locked to true initially
         locked = true;
-        mapGrid = FindObjectOfType<MapGrid>();
+        mapGenerator = FindObjectOfType<MapGenerator>();
     }
 
     private void Update()
@@ -36,7 +36,7 @@ IPointerExitHandler
         // Initialize here because it is called after Start
         if (!initialized)
         {
-            visited = gameObject == mapGrid.row1[0];
+            visited = gameObject == mapGenerator.row1[0];
             if (visited == true)
             {
                 foreach (var node in nextNodes)
@@ -62,7 +62,7 @@ IPointerExitHandler
         // This can be done by doing a either a sprite swap or instantiate a 'X' on it
 
         // Lock all other nodes
-        FindObjectOfType<MapGrid>().LockSiblingNodes();
+        FindObjectOfType<MapGenerator>().LockSiblingNodes();
 
         // Unlock all of its nextNodes
         foreach (var node in nextNodes)
