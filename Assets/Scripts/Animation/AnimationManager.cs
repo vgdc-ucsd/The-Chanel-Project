@@ -20,7 +20,7 @@ public class AnimationManager : MonoBehaviour
         }
         else Instance = this;
     }
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -48,7 +48,7 @@ public class AnimationManager : MonoBehaviour
 
     private IEnumerator PlayAnimations() {
         activelyPlaying = true;
-        
+
         // While the animation queue is not empty
         while(animations.Count > 0) {
             float startTime = Time.time;
@@ -64,6 +64,7 @@ public class AnimationManager : MonoBehaviour
             }
         }
         activelyPlaying = false;
+        DuelManager.Instance.EnablePlayerControl(true);
     }
 
     public bool DonePlaying() {
@@ -213,7 +214,7 @@ public class AnimationManager : MonoBehaviour
 
         // draw all cards
         if(drawPile.childCount >= cards.Count) {
-            
+
             foreach(Card c in cards) {
                 GameObject cardObject;
                 // Draw hidden enemy card
@@ -302,7 +303,7 @@ public class AnimationManager : MonoBehaviour
             }
             unitRef.transform.SetParent(tile.transform);
             unitRef.transform.localScale = Vector3.one;
-            unitRef.DrawArrows(); 
+            unitRef.DrawArrows();
             unitRef.CardCost.enabled = false;
             unitRef.gameObject.SetActive(true);
 
@@ -503,7 +504,7 @@ public class AnimationManager : MonoBehaviour
     public void AttackAnimation(DuelInstance duel, UnitCard card, Attack atk) {
         float animDuration = 0.3f;
         IEnumerator anim = CardAttack(
-            card, 
+            card,
             atk.direction,
             animDuration
         );

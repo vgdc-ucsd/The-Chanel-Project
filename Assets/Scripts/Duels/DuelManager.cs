@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.VisualScripting;
@@ -104,7 +105,7 @@ public class DuelManager : MonoBehaviour
             throw new System.NotImplementedException();
 
         MainDuel.DrawCardWithMana(Team.Player);
-        
+
         AnimationManager.Instance.UpdateUIAnimation(MainDuel);
     }
 
@@ -124,6 +125,7 @@ public class DuelManager : MonoBehaviour
             }
         }
         else {
+            EnablePlayerControl(false);
             MainDuel.ProcessBoard(Team.Player);
             currentTeam = Team.Enemy;
             AnimationManager.Instance.UpdateUIAnimation(MainDuel);
@@ -139,7 +141,8 @@ public class DuelManager : MonoBehaviour
         //state.DebugBoard();
         AnimationManager.Instance.DrawCardsAnimation(MainDuel, new List<Card>(), Team.Enemy);
         AnimationManager.Instance.UpdateUIAnimation(MainDuel);
-        
+        EnablePlayerControl(false);
+
         awaitingAI = false;
         currentTeam = Team.Player;
 
@@ -160,5 +163,17 @@ public class DuelManager : MonoBehaviour
         Debug.Log($"Enemy Draw Pile: {MainDuel.EnemyStatus.Deck.DrawPile().ToCommaSeparatedString()}");
         Debug.Log($"Enemy Discard Pile: {MainDuel.EnemyStatus.Deck.DiscardPile().ToCommaSeparatedString()}");
         */
+    }
+
+    public void EnablePlayerControl(bool enable) {
+        List<Card> cards = new List<Card>();
+        cards.AddRange(MainDuel.GetStatus(Team.Player).Cards);
+        cards.AddRange(MainDuel.DuelBoard.CardSlots);
+
+        foreach (Card card in cards) {
+            if (card != null && card.CardInteractableRef != null) {
+                card.CardInteractableRef.CanInteract = enable;
+            }
+        }
     }
 }
