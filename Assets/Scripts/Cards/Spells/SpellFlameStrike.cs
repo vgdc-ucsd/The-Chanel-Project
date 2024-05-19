@@ -11,7 +11,9 @@ public class SpellFlameStrike : SpellCard , ISpellTypeTile
         List<UnitCard> damagedCards = duel.DuelBoard.GetCardsInRow(pos.y);
         foreach(UnitCard card in damagedCards)
         {
-            duel.DealDamage(card, damage, true);
+            ActivationInfo info = new ActivationInfo(duel);
+            FireEffect effect = ScriptableObject.Instantiate(GameData.Instance.FireEffectTemplate);
+            effect.AddEffect(card, info);
             AnimationManager.Instance.UpdateCardInfoAnimation(duel,card);
         }
 
