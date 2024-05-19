@@ -6,20 +6,21 @@ using UnityEngine.UI;
 
 public class DialogueSystem : MonoBehaviour
 {
-    
+    public Sprite CharacterArt;
     public string CharacterName;
     public string Option1;
     public string Option1HighlightText;
     public string Option2;
     public string Option2HighlightText;
-    public TextMeshProUGUI Text;
-    public TextMeshProUGUI CharacterNameText;
     public List<Dialogue> DialogueText;
     public Sprite DialogueScrollNormal;
     public Sprite DialogueScrollRipped;
     public Image DialogueScroll;
     public DialogueButton Option1Button;
     public DialogueButton Option2Button;
+    public TextMeshProUGUI Text;
+    public TextMeshProUGUI CharacterNameText;
+    public Image CharacterImage;
 
     private Queue<Dialogue> dialogueQueue;    
     private Coroutine dialogueCoroutineRef;
@@ -27,6 +28,7 @@ public class DialogueSystem : MonoBehaviour
     private bool finishedText;
 
     void Start() {
+        if(CharacterArt != null) CharacterImage.sprite = CharacterArt;
         CharacterNameText.text = CharacterName;
         Option1Button.TMP.text = Option1;
         Option1Button.HighlightTMP.text = Option1HighlightText;
