@@ -368,7 +368,7 @@ public class AnimationManager : MonoBehaviour
         text.color = Color.black;
     }
 
-    private IEnumerator DamageFlashPlayer(PlayerUI status, float duration) {
+    private IEnumerator DamageFlashPlayer(PlayerUI status, int newHealth, float duration) {
         float damageTime = duration * 0.25f;
         float restoreTime = duration * 0.75f;
 
@@ -389,6 +389,8 @@ public class AnimationManager : MonoBehaviour
             text.color = col;
             yield return null;
         }
+
+        status.HealthText.text = newHealth.ToString();
 
         // red to black
         startTime = Time.time;
@@ -547,11 +549,7 @@ public class AnimationManager : MonoBehaviour
             ui = UIManager.Instance.Enemy;
         }
 
-        IEnumerator uiEnum = UpdateUI(duel);
-        QueueableAnimation uiAnim = new QueueableAnimation(uiEnum, 0.0f);
-        duel.Animations.Enqueue(uiAnim);
-
-        IEnumerator ie = DamageFlashPlayer(ui, duration);
+        IEnumerator ie = DamageFlashPlayer(ui, status.Health, duration);
         QueueableAnimation qa = new QueueableAnimation(ie, duration);
         duel.Animations.Enqueue(qa);
     }

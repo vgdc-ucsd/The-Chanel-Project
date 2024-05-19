@@ -101,7 +101,7 @@ public class UIManager : MonoBehaviour
             ci.SetCardInfo();
 
             if(c.CurrentTeam == Team.Player) ci.handInterface = Hand;
-            else if (c.CurrentTeam == Team.Player) ci.handInterface = EnemyHand;
+            else if (c.CurrentTeam == Team.Enemy) ci.handInterface = EnemyHand;
             else return ci;
 
             ci.handInterface.cardObjects.Add(ci.gameObject);

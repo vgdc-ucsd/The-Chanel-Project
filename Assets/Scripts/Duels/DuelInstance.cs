@@ -233,8 +233,7 @@ public class DuelInstance
         {
             overkillDamage = -1*target.Health;
             DuelBoard.RemoveCard(target.Pos);
-            if (immediate && this == DuelManager.Instance.MainDuel) AnimationManager.Instance.CardDeathImmediate(target);
-            else AnimationManager.Instance.DeathAnimation(this, target);
+            AnimationManager.Instance.DeathAnimation(this, target);
         }
 
         return overkillDamage;
