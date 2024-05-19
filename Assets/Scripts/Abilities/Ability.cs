@@ -5,6 +5,7 @@ using UnityEngine;
 public enum ActivationCondition {
     OnProcess, // applies effect every turn during attack phase
     OnBeginTurn, // applies effect at start of every turn of the card's team
+    OnEndTurn, // applies after process
     OnDeath,
     OnDraw,
     OnPlay,

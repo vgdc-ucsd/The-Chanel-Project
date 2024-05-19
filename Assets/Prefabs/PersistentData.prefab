@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UCITemplate: {fileID: 5529432279168170932, guid: ec86733fc6b76794da6e8b291552bdd7, type: 3}
   SCITemplate: {fileID: 255992776724812640, guid: 2c9213e4d0b5aad4a853179481f5e8fa, type: 3}
+  FireEffectTemplate: {fileID: 11400000, guid: 162224b0944ce7c47a29789f46383e04, type: 2}
 --- !u!1 &8074719806751530725
 GameObject:
   m_ObjectHideFlags: 0
@@ -99,7 +100,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 34690e13dc6b06544aceb4d763edda1c, type: 2}
     ActiveCards: []
   DebugImportCards: {fileID: 11400000, guid: 22819085b6b6e9847970a66ba359bb83, type: 2}
-  CurrentEncounter: {fileID: 0}
+  CurrentEncounter: {fileID: 11400000, guid: a92bed907e362f04f81c42e688defbb9, type: 2}
 --- !u!114 &5186411577442620811
 MonoBehaviour:
   m_ObjectHideFlags: 0
