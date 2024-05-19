@@ -5,6 +5,17 @@ using UnityEngine.SceneManagement;
 
 public class NavButtons : MonoBehaviour
 {
+    public void PlayGame()
+    {
+        SceneManager.LoadScene(1);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+
     public void LoadMap()
     {
         SceneManager.LoadScene(MenuScript.MAP_INDEX);

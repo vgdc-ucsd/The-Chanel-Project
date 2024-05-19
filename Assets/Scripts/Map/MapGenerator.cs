@@ -10,19 +10,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using static UnityEditor.PlayerSettings;
 
-public class MapGrid : MonoBehaviour
+public class MapGenerator : MonoBehaviour
 {
     [Header("Debugging Info")]
+    public MapInfo mapInfo;
     public List<Vector3> Points;
-    // public List<Vector3> StairsPoints = new();
-    // public List<GameObject> stairDirections;
-
     public List<GameObject> row1;
     public List<GameObject> row2;
     public List<GameObject> row3;
     public List<GameObject> allNodes = new();
     public List<List<GameObject>> paths = new();
-    [SerializeField] GameObject contents;
+    public GameObject contents;
 
     [Header("Prefabs")]
     public GameObject start;
@@ -50,16 +48,33 @@ public class MapGrid : MonoBehaviour
     public List<MapLayerOptions> layerOptions;
 
     private List<List<Vector3>> layers;
+    [HideInInspector] public GameObject startInstace;
+    [HideInInspector] public GameObject exitInstace;
+    [HideInInspector] public MapNode lastVisitedNode;
 
-    // Start is called before the first frame update
     void Start()
+    {
+        Debug.Log(PersistentData.Instance);
+        if (PersistentData.Instance != null)
+        {
+            LoadMap(mapInfo);
+        }
+        else
+        {
+            GenerateMap();
+        }
+    }
+
+    public void GenerateMap()
     {
         // Sets starting position of character
         OrientingPosition = new Vector2(start.GetComponent<RectTransform>().localPosition.x, start.GetComponent<RectTransform>().localPosition.y);
 
         // Instantiate start node
         GameObject startObj = Instantiate(start, Vector2.zero, Quaternion.identity, contents.transform);
-        startObj.GetComponent<MapNode>().row = 1;
+        startObj.GetComponent<MapNode>().point = new Point(0, 0);
+        startInstace = startObj;
+        lastVisitedNode = startObj.GetComponent<MapNode>();
 
         layers = new(numberOfRooms - 1);
         for (int i = 0; i < layers.Capacity; i++)
@@ -119,6 +134,8 @@ public class MapGrid : MonoBehaviour
         // Store all nodes in one list
         InitializeAllNodesList();
 
+        LockSiblingNodes(lastVisitedNode);
+
         InstantiateStairs();
 
         // removes any unused nodes generated
@@ -134,6 +151,113 @@ public class MapGrid : MonoBehaviour
         {
             o.GetComponent<RectTransform>().localPosition += offsetPosition;
         }
+
+        // MapInfo mapInfo = ScriptableObject.CreateInstance<MapInfo>();
+        SaveMap();
+    }
+
+    public void SaveMap()
+    {
+        List<MapNodeType> nodeTypes = new();
+        List<Point> nodePoints = new();
+        List<ConnectionsList> nodeConnections = new();
+        for (int i = 0; i < allNodes.Count; i++)
+        {
+            MapNode curNode = allNodes[i].GetComponent<MapNode>();
+            ConnectionsList connectionsList = new();
+            if (curNode != null)
+            {
+                nodeTypes.Add(curNode.mapNodeType);
+                nodePoints.Add(curNode.point);
+                connectionsList.connections = curNode.connections;
+                nodeConnections.Add(connectionsList);
+            }
+        }
+
+        mapInfo.nodeTypes = nodeTypes;
+        mapInfo.nodePoints = nodePoints;
+        mapInfo.nodeConnections = nodeConnections;
+        mapInfo.lastVisitedNode = lastVisitedNode.point;
+        Debug.Log(allNodes.Count);
+    }
+
+    public void LoadMap(MapInfo mapInfo)
+    {
+        for (int i = 0; i < mapInfo.nodePoints.Count; i++)
+        {
+            Point point = mapInfo.nodePoints[i];
+            Vector2 pos = new Vector2(OrientingPosition.x + (point.col * distanceBetweenNodes) + (point.row * XOffsetDistanceBetweenRows), OrientingPosition.y + (point.row * heightBetweenRows));
+            GameObject mapTypePrefab = null;
+            switch (mapInfo.nodeTypes[i])
+            {
+                case MapNodeType.StartOrExit:
+                    if (point.row == 0) mapTypePrefab = start;
+                    if (point.row == 2) mapTypePrefab = exit;
+                    break;
+                case MapNodeType.Encounter:
+                    mapTypePrefab = Encounter;
+                    break;
+                case MapNodeType.Event:
+                    mapTypePrefab = Event;
+                    break;
+                case MapNodeType.Shop:
+                    mapTypePrefab = Shop;
+                    break;
+                case MapNodeType.Boss:
+                    mapTypePrefab = Boss;
+                    break;
+            }
+
+            if (mapTypePrefab == null)
+            {
+                Debug.Log("MapTypePrefab is null in LoadMap()");
+            }
+
+            GameObject instantiated = Instantiate(mapTypePrefab, pos, transform.rotation, contents.transform);
+            MapNode instantiatedMapNode = instantiated.GetComponent<MapNode>();
+
+            if (point.row == 0) row1.Add(instantiated);
+            else if (point.row == 1) row2.Add(instantiated);
+            else if (point.row == 2) row3.Add(instantiated);
+
+            allNodes.Add(instantiated);
+
+            if (mapTypePrefab == start) startInstace = instantiated;
+            if (mapTypePrefab == exit) exitInstace = instantiated;
+
+            instantiatedMapNode.point = point;
+            instantiatedMapNode.connections = mapInfo.nodeConnections[i].connections;
+            // instantiatedMapNode.visited = mapInfo.nodeVisited[i];
+            // instantiatedMapNode.locked = mapInfo.nodeLocked[i];
+            instantiatedMapNode.initialized = true;
+            instantiated.tag = "UsedNodes";
+
+            instantiated.GetComponent<RectTransform>().localPosition += offsetPosition;
+        }
+
+        foreach (var node in allNodes)
+        {
+            foreach (var connection in node.GetComponent<MapNode>().connections)
+            {
+                GameObject nextNode = allNodes.Find(x => x.GetComponent<MapNode>().point.col == connection.point2.col && x.GetComponent<MapNode>().point.row == connection.point2.row);
+                if (!node.GetComponent<MapNode>().nextNodes.Contains(nextNode.GetComponent<MapNode>()))
+                {
+                    node.GetComponent<MapNode>().nextNodes.Add(nextNode.GetComponent<MapNode>());
+                }
+
+                if (!nextNode.GetComponent<MapNode>().prevNodes.Contains(node.GetComponent<MapNode>()))
+                {
+                    nextNode.GetComponent<MapNode>().prevNodes.Add(node.GetComponent<MapNode>());
+                }
+            }
+        }
+
+        lastVisitedNode = allNodes.Find(x => x.GetComponent<MapNode>().point.col == mapInfo.lastVisitedNode.col && x.GetComponent<MapNode>().point.row == mapInfo.lastVisitedNode.row).GetComponent<MapNode>();
+        LockSiblingNodes(lastVisitedNode);
+
+        InstantiateStairs();
+
+        contents.GetComponent<ScrollMap>().Init();
     }
 
     void InitializeAllNodesList()
@@ -148,21 +272,30 @@ public class MapGrid : MonoBehaviour
                 }
             }
         }
+
+        allNodes.Add(exitInstace);
     }
 
     void MoveBossAndExit()
     {
         Vector2 exitPos = new Vector3(OrientingPosition.x + (2 * XOffsetDistanceBetweenRows) + distanceBetweenNodes * numberOfRooms, OrientingPosition.y + (2 * heightBetweenRows));
         GameObject exitObj = Instantiate(exit, exitPos, Quaternion.identity, contents.transform);
+        Point exitPoint = new Point((int)((exitPos.x - OrientingPosition.x - 2 * XOffsetDistanceBetweenRows) / distanceBetweenNodes), 2);
+        exitObj.GetComponent<MapNode>().point = exitPoint;
+        exitInstace = exitObj;
 
         Vector2 bossPos = new Vector3(OrientingPosition.x + distanceBetweenNodes * numberOfRooms, OrientingPosition.y + (2 * heightBetweenRows));
         GameObject bossObj = Instantiate(Boss, bossPos, Quaternion.identity, contents.transform);
         bossObj.GetComponent<MapNode>().nextNodes.Add(exitObj.GetComponent<MapNode>());
+        Point bossPoint = new Point((int)((bossPos.x - OrientingPosition.x - 2 * XOffsetDistanceBetweenRows) / distanceBetweenNodes), 2);
+        bossObj.GetComponent<MapNode>().point = bossPoint;
+
+        bossObj.GetComponent<MapNode>().connections.Add(new Connection(bossObj.GetComponent<MapNode>().point, exitObj.GetComponent<MapNode>().point));
 
         row3.Add(bossObj);
         row3.Add(exitObj);
         bossObj.tag = "UsedNodes";
-        exit.tag = "UsedNodes";
+        exitObj.tag = "UsedNodes";
     }
     // Sets exit position based on number of rooms and adds it to row3
     void AddPoints(float x, float y)
@@ -197,19 +330,22 @@ public class MapGrid : MonoBehaviour
         {
             GameObject instantiated = Instantiate(type, point, transform.rotation, contents.transform);
             row1.Add(instantiated);
-            instantiated.GetComponent<MapNode>().row = 1;
+            Point nodePoint = new Point((int)((point.x - OrientingPosition.x) / distanceBetweenNodes), 0);
+            instantiated.GetComponent<MapNode>().point = nodePoint;
         }
         else if (point.y == OrientingPosition.y + heightBetweenRows)
         {
             GameObject instantiated = Instantiate(type, point, transform.rotation, contents.transform);
             row2.Add(instantiated);
-            instantiated.GetComponent<MapNode>().row = 2;
+            Point nodePoint = new Point((int)((point.x - OrientingPosition.x - XOffsetDistanceBetweenRows) / distanceBetweenNodes), 1);
+            instantiated.GetComponent<MapNode>().point = nodePoint;
         }
         else if (point.y == OrientingPosition.y + (2 * heightBetweenRows))
         {
             GameObject instantiated = Instantiate(type, point, transform.rotation, contents.transform);
             row3.Add(instantiated);
-            instantiated.GetComponent<MapNode>().row = 3;
+            Point nodePoint = new Point((int)((point.x - OrientingPosition.x - 2 * XOffsetDistanceBetweenRows) / distanceBetweenNodes), 2);
+            instantiated.GetComponent<MapNode>().point = nodePoint;
         }
     }
     // Sorts nodes into rows to draw lines
@@ -224,9 +360,7 @@ public class MapGrid : MonoBehaviour
             {
                 float random = UnityEngine.Random.Range(0f, 1f);
                 GameObject lastNode = pathNodes[i - 1];
-                Debug.Log(lastNode);
-                Debug.Log(lastNode.GetComponent<MapNode>().row);
-                if (lastNode.GetComponent<MapNode>().row == 1)
+                if (lastNode.GetComponent<MapNode>().point.row == 0)
                 {
                     if (lastNode == row1[0])
                     {
@@ -255,7 +389,7 @@ public class MapGrid : MonoBehaviour
                         }
                     }
                 }
-                else if (lastNode.GetComponent<MapNode>().row == 2)
+                else if (lastNode.GetComponent<MapNode>().point.row == 1)
                 {
                     if (random < 0.5f && i < numberOfRooms + 1)
                     {
@@ -279,8 +413,12 @@ public class MapGrid : MonoBehaviour
                 repeat = false;
                 for (int i = 0; i < pathNodes.Count - 1; i++)
                 {
-                    pathNodes[i].GetComponent<MapNode>().nextNodes.Add(pathNodes[i + 1].GetComponent<MapNode>());
-                    pathNodes[i + 1].GetComponent<MapNode>().prevNodes.Add(pathNodes[i].GetComponent<MapNode>());
+                    MapNode currMapNode = pathNodes[i].GetComponent<MapNode>();
+                    MapNode nextMapNode = pathNodes[i + 1].GetComponent<MapNode>();
+                    currMapNode.nextNodes.Add(nextMapNode);
+                    nextMapNode.prevNodes.Add(currMapNode);
+
+                    currMapNode.connections.Add(new Connection(currMapNode.point, nextMapNode.point));
                 }
             }
             else
@@ -290,14 +428,18 @@ public class MapGrid : MonoBehaviour
                     repeat = false;
                     for (int i = 0; i < pathNodes.Count - 1; i++)
                     {
-                        if (!pathNodes[i].GetComponent<MapNode>().nextNodes.Contains(pathNodes[i + 1].GetComponent<MapNode>()))
+                        MapNode currMapNode = pathNodes[i].GetComponent<MapNode>();
+                        MapNode nextMapNode = pathNodes[i + 1].GetComponent<MapNode>();
+
+                        if (!currMapNode.nextNodes.Contains(nextMapNode))
                         {
-                            pathNodes[i].GetComponent<MapNode>().nextNodes.Add(pathNodes[i + 1].GetComponent<MapNode>());
+                            currMapNode.nextNodes.Add(nextMapNode);
+                            currMapNode.connections.Add(new Connection(currMapNode.point, nextMapNode.point));
                         }
 
-                        if (!pathNodes[i + 1].GetComponent<MapNode>().prevNodes.Contains(pathNodes[i + 1].GetComponent<MapNode>()))
+                        if (!nextMapNode.prevNodes.Contains(currMapNode))
                         {
-                            pathNodes[i + 1].GetComponent<MapNode>().prevNodes.Add(pathNodes[i].GetComponent<MapNode>());
+                            nextMapNode.prevNodes.Add(currMapNode);
                         }
                     }
 
@@ -383,11 +525,11 @@ public class MapGrid : MonoBehaviour
             MapNode mapNode = node.GetComponent<MapNode>();
             foreach (var nextNode in mapNode.nextNodes)
             {
-                float yDist = nextNode.row == mapNode.row ? 0f : heightBetweenRows;
+                float yDist = nextNode.point.row == mapNode.point.row ? 0f : heightBetweenRows;
                 float zAngle = Mathf.Atan2(yDist, XOffsetDistanceBetweenRows) * Mathf.Rad2Deg;
                 Vector3 angle = new Vector3(0, 0, zAngle);
                 GameObject stairObj = Instantiate(stair, node.transform.position, Quaternion.Euler(angle), node.transform);
-                if (nextNode.row == mapNode.row)
+                if (nextNode.point.row == mapNode.point.row)
                 {
                     stairObj.GetComponent<RectTransform>().localPosition = horStairOffset;
                 }
@@ -426,14 +568,16 @@ public class MapGrid : MonoBehaviour
         return duplicate;
     }
 
-    public void LockSiblingNodes()
+    public void LockSiblingNodes(MapNode lastVisitedNode)
     {
-        foreach (var path in paths)
+        foreach (var node in allNodes)
         {
-            foreach (var node in path)
-            {
-                node.GetComponent<MapNode>().locked = true;
-            }
+            node.GetComponent<MapNode>().locked = true;
+        }
+
+        foreach (var nextNode in lastVisitedNode.nextNodes)
+        {
+            nextNode.locked = false;
         }
     }
 
