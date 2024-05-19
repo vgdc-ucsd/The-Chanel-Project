@@ -16,6 +16,8 @@ public class InventoryUI : MonoBehaviour
 
     List<CardInteractable> ciList = new List<CardInteractable>();
 
+    // Display Card
+    public CardInfoPanel inventoryInfoPanel;
 
     PersistentData.InventoryData inventory;
 
@@ -111,6 +113,13 @@ public class InventoryUI : MonoBehaviour
         inventory.InactiveCards.Add(card);
         inventory.ActiveCards.Remove(card);
         ArrangeCards();
+    }
+
+    public void UpdateInfoPanel(UnitCard card)
+    {
+        inventoryInfoPanel.CardName.text = card.Name;
+        inventoryInfoPanel.Description.text = card.description;
+        inventoryInfoPanel.Image.sprite = card.Artwork;
     }
 
     // This method reloads/refreshes the inventory UI

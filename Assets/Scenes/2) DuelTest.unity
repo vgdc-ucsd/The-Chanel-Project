@@ -321,7 +321,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99ed7c26354de3d4a8003a5df80d2017, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyHandLocation: {fileID: 794390334}
 --- !u!1 &151152918
 GameObject:
   m_ObjectHideFlags: 0
@@ -1335,6 +1334,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CardName: {fileID: 1883484595}
   Description: {fileID: 670124569}
+  Image: {fileID: 0}
 --- !u!1 &580135122
 GameObject:
   m_ObjectHideFlags: 0
