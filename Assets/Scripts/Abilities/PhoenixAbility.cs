@@ -7,13 +7,12 @@ public class PhoenixAbility : Ability
 {
     public override ActivationCondition Condition { get{return ActivationCondition.OnDeath;} }
 
-    public FireEffect effectTemplate;
 
     public override void Activate(UnitCard c, ActivationInfo Info)
     {
         foreach (UnitCard cAdj in Info.Duel.DuelBoard.GetAdjacentCards(c.Pos)) {
             if (cAdj.CurrentTeam != c.CurrentTeam) {
-                FireEffect effect = ScriptableObject.Instantiate(effectTemplate);
+                FireEffect effect = ScriptableObject.Instantiate(DuelManager.Instance.Effects.FireEffectTemplate);
                 effect.AddEffect(cAdj, Info);
 
                 AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, cAdj);

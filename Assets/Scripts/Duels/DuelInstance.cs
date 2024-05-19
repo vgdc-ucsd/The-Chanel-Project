@@ -235,6 +235,7 @@ public class DuelInstance
         if (target.Health <= 0)
         {
             overkillDamage = -1*target.Health;
+            target.Health = 0;
             DuelBoard.RemoveCard(target.Pos);
             AnimationManager.Instance.DeathAnimation(this, target);
         }

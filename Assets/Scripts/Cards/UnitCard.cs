@@ -101,7 +101,6 @@ public class UnitCard : Card
         info.TotalDamage = damage;
         if(Health < 0) {
             info.OverkillDamage = Health*-1;
-            Health = 0;
         }
 
         AnimationManager.Instance.DamageCardAnimation(duel, this);
