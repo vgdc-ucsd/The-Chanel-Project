@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Unicorn
   ManaCost: 2
+  ShopCost: 0
   Artwork: {fileID: 0}
+  drawStatus: 0
+  id: 0
+  description: 
   CurrentTeam: 2
   Health: 3
   CanMove: 1
+  CanAttack: 0
   isSelected: 0
   BaseDamage: 2
   UnitCardInteractableRef: {fileID: 0}
@@ -32,3 +37,4 @@ MonoBehaviour:
     damage: 2
   Abilities:
   - {fileID: 11400000, guid: 42d7c65101470674298116dc52e2251d, type: 2}
+  StatusEffects: []
