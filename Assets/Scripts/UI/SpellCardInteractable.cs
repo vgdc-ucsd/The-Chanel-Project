@@ -74,8 +74,22 @@ public class SpellCardInteractable : CardInteractable
         AnimationManager.Instance.StopManaHover(card.CurrentTeam);
     }
 
+    public override void OnPointerDown(PointerEventData eventData)
+    {
+        base.OnPointerDown(eventData);
+        if (mode == CIMode.Inventory)
+        {
+            InventoryUI.Instance.HandleClick(card);
+        }
+    }
+
     public override void UpdateCardInfo()
     {
         CardCost.text = "Mana Cost: " + card.ManaCost;
+    }
+
+    public override Card GetCard()
+    {
+        return card;
     }
 }

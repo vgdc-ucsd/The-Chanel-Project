@@ -135,9 +135,14 @@ public class UnitCardInteractable : CardInteractable,
         }
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public override void OnPointerDown(PointerEventData eventData)
     {
-        if (!inHand) 
+        base.OnPointerDown(eventData);
+        if (mode == CIMode.Inventory)
+        {
+            InventoryUI.Instance.HandleClick(card);
+        }
+        else if (!inHand) 
         {
             PlayerInputController.Instance.InteractCard(card);
         }
@@ -166,5 +171,10 @@ public class UnitCardInteractable : CardInteractable,
             Debug.LogError("Could not create hand, TemplateCard is has no TemplateArrowEnemy");
             return;
         }
+    }
+
+    public override Card GetCard()
+    {
+        return card;
     }
 }
