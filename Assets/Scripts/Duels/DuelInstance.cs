@@ -85,20 +85,20 @@ public class DuelInstance
 
                 bool attackLanded = false;
 
-                foreach (Attack atk in card.Attacks)
+                for (int i = card.Attacks.Count - 1; i >= 0; i--)
                 {
 
 
-                    BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
+                    BoardCoords atkDest = card.Pos + new BoardCoords(card.Attacks[i].direction);
 
                     if ((DuelBoard.BeyondEnemyEdge(atkDest) && team == Team.Player) ||
                          DuelBoard.BeyondPlayerEdge(atkDest) && team == Team.Enemy)
                     {
-                        queuedCharAttacks.Add(atk);
+                        queuedCharAttacks.Add(card.Attacks[i]);
                         continue;
                     }
 
-                    if (ProcessAttack(card, atk)) attackLanded = true;
+                    if (ProcessAttack(card, card.Attacks[i])) attackLanded = true;
                 }
 
                 if (queuedCharAttacks.Count != 0)
@@ -124,7 +124,7 @@ public class DuelInstance
                     }
                 }
 
-                
+
             }
             card.CanAttack = true;
         }
@@ -132,7 +132,7 @@ public class DuelInstance
 
     private bool ProcessAttack(UnitCard card, Attack atk) {
         BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
-        
+
 
 
         // Do nothing if attack is out of bounds
@@ -152,8 +152,8 @@ public class DuelInstance
             info.TargetCard = target;
             info.TotalDamage = atk.damage;
             info.OverkillDamage = DealDamage(target, atk.damage);
-            foreach(Ability a in card.Abilities) {
-                if(a.Condition == ActivationCondition.OnDealDamage) a.Activate(card, info);
+            for (int i = card.Abilities.Count - 1; i >= 0; i--) {
+                if(card.Abilities[i].Condition == ActivationCondition.OnDealDamage) card.Abilities[i].Activate(card, info);
             }
             return true;
         }
@@ -200,7 +200,7 @@ public class DuelInstance
 
             Card drawnCard = deck.RandomAvailableCard();
 
-            
+
             if (drawnCard == null) break;
 
             drawnCard.drawStatus = DrawStatus.InPlay;
