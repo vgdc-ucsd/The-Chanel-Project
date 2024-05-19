@@ -78,6 +78,12 @@ public class AnimationManager : MonoBehaviour
     // Translates the transform at origin to the position at dest
     public IEnumerator SimpleTranslate(Transform origin, Vector3 dest, float duration, InterpolationMode mode) {
         if(origin == null) yield break;
+        CardInteractable ci = origin.gameObject.GetComponent<CardInteractable>();
+        bool couldInteract = false;
+        if(ci != null) {
+            couldInteract = ci.CanInteract;
+            ci.CanInteract = false;
+        }
         float startTime = Time.time;
         Vector3 startPos = origin.position;
         float elapsedTime = Time.time - startTime;
@@ -92,6 +98,9 @@ public class AnimationManager : MonoBehaviour
         }
 
         if(origin != null) origin.position = dest;
+        if(ci != null) {
+            ci.CanInteract = couldInteract;
+        }
     }
 
     // Animation that plays when a card makes an attack in a direction
@@ -154,7 +163,7 @@ public class AnimationManager : MonoBehaviour
             }
         }
 
-        yield return SimpleTranslate(cardTransform, discardPile.position, duration, InterpolationMode.Linear);
+        yield return SimpleTranslate(cardTransform, discardPile.position, duration, InterpolationMode.EaseOut);
     }
 
     private IEnumerator SpellDiscard(SpellCard card) {
@@ -306,7 +315,7 @@ public class AnimationManager : MonoBehaviour
             Destroy(cardBack);
 
             // translation animation
-            yield return SimpleTranslate(unitRef.transform, tile.transform.position, speed, InterpolationMode.Linear);
+            yield return SimpleTranslate(unitRef.transform, tile.transform.position, speed, InterpolationMode.EaseOut);
         }
         else {
             unitRef.UIPlaceCard(pos);
@@ -314,7 +323,7 @@ public class AnimationManager : MonoBehaviour
     }
 
     public IEnumerator MoveCard(UnitCard uc, Transform targetPos, float speed) {
-        yield return SimpleTranslate(uc.UnitCardInteractableRef.transform, targetPos.position, speed, InterpolationMode.Linear);
+        yield return SimpleTranslate(uc.UnitCardInteractableRef.transform, targetPos.position, speed, InterpolationMode.EaseOut);
         uc.UnitCardInteractableRef.UpdateCardPos();
     }
 
@@ -455,7 +464,7 @@ public class AnimationManager : MonoBehaviour
             cardBack.transform.SetParent(draw);
             cardBack.transform.localScale = Vector3.one;
             Destroy(t.gameObject);
-            yield return SimpleTranslate(cardBack.transform, draw.position, 0.2f, InterpolationMode.Linear);
+            yield return SimpleTranslate(cardBack.transform, draw.position, 0.2f, InterpolationMode.EaseOut);
         }
     }
 
@@ -484,6 +493,7 @@ public class AnimationManager : MonoBehaviour
 
     private IEnumerator UpdateUI(DuelInstance duel) {
         UIManager.Instance.UpdateStatus(duel);
+        UIManager.Instance.Player.UnhoverMana(duel.PlayerStatus);
         yield return null;
     }
 

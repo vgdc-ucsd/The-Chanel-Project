@@ -7,6 +7,7 @@ public class GameData : MonoBehaviour
     public UnitCardInteractable UCITemplate;
     public SpellCardInteractable SCITemplate;
 
+    public static int DECK_SIZE = 12;
 
     private void Awake()
     {

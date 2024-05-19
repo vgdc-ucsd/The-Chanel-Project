@@ -15,6 +15,7 @@ public enum CIMode
 public abstract class CardInteractable : MonoBehaviour,
     IPointerEnterHandler, 
     IPointerExitHandler, 
+    IPointerDownHandler,
     IBeginDragHandler, 
     IDragHandler,
     IEndDragHandler
@@ -78,6 +79,11 @@ public abstract class CardInteractable : MonoBehaviour,
             }
             transform.localScale = Vector3.one;
         }
+    }
+
+    public virtual void OnPointerDown(PointerEventData eventData)
+    {
+
     }
 
     public virtual void OnDrag(PointerEventData eventData)
@@ -153,4 +159,6 @@ public abstract class CardInteractable : MonoBehaviour,
             transform.position.z
         );
     }
+
+    public abstract Card GetCard();
 }

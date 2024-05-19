@@ -112,8 +112,14 @@ public class UnitCardInteractable : CardInteractable,
             //    return;
             //}
             CharStatus charStatus;
-            if (card.CurrentTeam == Team.Player) charStatus = DuelManager.Instance.MainDuel.PlayerStatus;
-            else charStatus = DuelManager.Instance.MainDuel.EnemyStatus;
+            if (card.CurrentTeam == Team.Player) {
+                charStatus = DuelManager.Instance.MainDuel.PlayerStatus;
+                UIManager.Instance.Player.UnhoverMana(charStatus);
+            }
+            else {
+                charStatus = DuelManager.Instance.MainDuel.EnemyStatus;
+                UIManager.Instance.Enemy.UnhoverMana(charStatus);
+            }
 
             if (!charStatus.CanUseMana(card.ManaCost))
             {
@@ -129,9 +135,14 @@ public class UnitCardInteractable : CardInteractable,
         }
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public override void OnPointerDown(PointerEventData eventData)
     {
-        if (!inHand) 
+        base.OnPointerDown(eventData);
+        if (mode == CIMode.Inventory)
+        {
+            InventoryUI.Instance.HandleClick(card);
+        }
+        else if (!inHand) 
         {
             PlayerInputController.Instance.InteractCard(card);
         }
@@ -160,5 +171,10 @@ public class UnitCardInteractable : CardInteractable,
             Debug.LogError("Could not create hand, TemplateCard is has no TemplateArrowEnemy");
             return;
         }
+    }
+
+    public override Card GetCard()
+    {
+        return card;
     }
 }

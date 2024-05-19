@@ -45,22 +45,7 @@ public class PlayerUI : MonoBehaviour
         HealthText.text = status.Health.ToString();
         ManaText.text = status.Mana.ToString();
 
-        for(int i = 0; i < ManaSprites.Length; i++) {
-            if(i < status.ManaCapacity) {
-                ManaSprites[i].sprite = ManaBlue;
-                if(i < status.Mana) {
-                    ManaSprites[i].color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-                }
-                else {
-                    ManaSprites[i].color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
-                }
-            }
-            else {
-                ManaSprites[i].sprite = ManaBlack;
-                ManaSprites[i].color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
-            }
-        }
-
+        UpdateMana(status);
         
         if(status.Health <= 0 && !DuelManager.Instance.Settings.DisableWinning) {
             if(status.CharTeam == Team.Player) UIManager.Instance.PlayerWin();
@@ -93,7 +78,7 @@ public class PlayerUI : MonoBehaviour
         }
         // Can't afford
         else {
-            for(int i = 0; i < status.Mana; i++) {
+            for(int i = 0; i < cost; i++) {
                 ManaSprites[i].sprite = ManaRed;
                 flickerSprites.Add(ManaSprites[i]);
             }
@@ -102,10 +87,26 @@ public class PlayerUI : MonoBehaviour
     }
 
     public void UnhoverMana(CharStatus status) {
-        for(int i = 0; i < status.Mana; i++) {
-            ManaSprites[i].sprite = ManaBlue;
-        }
+        UpdateMana(status);
         StopManaEffect();
+    }
+
+    private void UpdateMana(CharStatus status) {
+        for(int i = 0; i < ManaSprites.Length; i++) {
+            if(i < status.ManaCapacity) {
+                ManaSprites[i].sprite = ManaBlue;
+                if(i < status.Mana) {
+                    ManaSprites[i].color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                }
+                else {
+                    ManaSprites[i].color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+                }
+            }
+            else {
+                ManaSprites[i].sprite = ManaBlack;
+                ManaSprites[i].color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+            }
+        }
     }
 
     private IEnumerator ManaShake(List<Transform> shakeTransforms, List<Vector3> originalPositions) {
