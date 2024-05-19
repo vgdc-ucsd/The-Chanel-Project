@@ -9,8 +9,6 @@ public class AnimationManager : MonoBehaviour
 {
     public static AnimationManager Instance;
 
-    public Transform EnemyHandLocation;
-
     private Queue<QueueableAnimation> animations = new Queue<QueueableAnimation>();
     private bool activelyPlaying = false;
 
@@ -452,6 +450,24 @@ public class AnimationManager : MonoBehaviour
         obj.localScale = endScale;
     }
 
+    private IEnumerator Shake(Transform obj, float intensity, float duration) {
+        Vector3 originalPos = obj.localPosition;
+        float startTime = Time.time;
+
+        while(Time.time - startTime < duration) {
+            // Screen shake
+            obj.localPosition = originalPos + Random.insideUnitSphere * intensity;
+            yield return null;
+        }
+
+        obj.localPosition = originalPos;
+    }
+
+    private IEnumerator ShakeCard(Card c, float intensity, float duration) {
+        Transform obj = c.CardInteractableRef.transform;
+        yield return Shake(obj, intensity, duration);
+    }
+
     private IEnumerator UpdateUI(DuelInstance duel) {
         UIManager.Instance.UpdateStatus(duel);
         yield return null;
@@ -533,6 +549,10 @@ public class AnimationManager : MonoBehaviour
     }
 
     public void DamageCardAnimation(DuelInstance duel, UnitCard c) {
+        IEnumerator shake = ShakeCard(c, 2.0f, 0.2f);
+        QueueableAnimation shakeAnim = new QueueableAnimation(shake, 0.0f);
+        duel.Animations.Enqueue(shakeAnim);
+
         float duration = 0.75f;
         IEnumerator ie = DamageFlash(c, duration);
         QueueableAnimation qa = new QueueableAnimation(ie, duration);
@@ -548,6 +568,10 @@ public class AnimationManager : MonoBehaviour
         else {
             ui = UIManager.Instance.Enemy;
         }
+
+        IEnumerator shake = Shake(ui.transform, 2.0f, 0.2f);
+        QueueableAnimation shakeAnim = new QueueableAnimation(shake, 0.0f);
+        duel.Animations.Enqueue(shakeAnim);
 
         IEnumerator ie = DamageFlashPlayer(ui, status.Health, duration);
         QueueableAnimation qa = new QueueableAnimation(ie, duration);

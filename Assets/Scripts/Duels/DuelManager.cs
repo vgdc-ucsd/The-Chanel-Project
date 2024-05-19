@@ -126,6 +126,7 @@ public class DuelManager : MonoBehaviour
         else {
             MainDuel.ProcessBoard(Team.Player);
             currentTeam = Team.Enemy;
+            AnimationManager.Instance.UpdateUIAnimation(MainDuel);
             StartCoroutine(ai.MCTS(MainDuel));
             awaitingAI = true;
         }

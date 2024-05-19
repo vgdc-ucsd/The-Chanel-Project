@@ -71,6 +71,7 @@ public class Board
         status.UseMana(card.ManaCost);
         SetCard(card, pos);
         // TODO mana spend animation
+        // AnimationManager.Instance.UpdateUIAnimation(duel);
 
         ActivationInfo info = new ActivationInfo(duel);
         foreach(Ability a in card.Abilities) {
