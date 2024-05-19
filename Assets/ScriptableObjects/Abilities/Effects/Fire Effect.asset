@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Fire Effect
   m_EditorClassIdentifier: 
   duration: 2
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: f8a323008058ac84f9df909d44628168, type: 3}
