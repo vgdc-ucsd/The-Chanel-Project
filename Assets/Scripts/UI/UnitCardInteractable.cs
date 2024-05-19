@@ -139,6 +139,7 @@ public class UnitCardInteractable : CardInteractable,
 
     public override void OnPointerEnter(PointerEventData eventData) {
         base.OnPointerEnter(eventData);
+        if (mode != CIMode.Duel) return;
         UIManager.Instance.InfoPanel.UpdateInfoPanelUnitCard(this.card);
         if(!CanInteract) return;
         AnimationManager.Instance.StartManaHover(card.ManaCost, card.CurrentTeam);
@@ -146,6 +147,7 @@ public class UnitCardInteractable : CardInteractable,
 
     public override void OnPointerExit(PointerEventData eventData) {
         base.OnPointerExit(eventData);
+        if (mode != CIMode.Duel) return;
         AnimationManager.Instance.StopManaHover(card.CurrentTeam);
     }
 

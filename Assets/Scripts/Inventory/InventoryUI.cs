@@ -9,12 +9,44 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] Transform inventoryContainer;
     [SerializeField] GameObject inventoryTemplateCardPrefab;
 
+    List<CardInteractable> ciList = new List<CardInteractable>();
+
     // This method assigns inventorySlotContainer & inventoryTemplateCardPrefab
     // private void Awake()
     // {
     //     // NOTE: inventoryTemplateCardPrefab must be named exacty this.
     //     inventoryTemplateCardPrefab = inventoryContainer.Find("inventoryTemplateCardPrefab");
     // }
+
+    private void Awake()
+    {
+        InitCards();
+        ArrangeCards();
+    }
+
+    public void InitCards()
+    {
+        foreach (Card card in PersistentData.Instance.Inventory.InactiveCards)
+        {
+            CardInteractable ci = card.GenerateCardInteractable();
+            ci.mode = CIMode.Inventory;
+            ciList.Add(ci);
+            
+        }
+    }
+
+    public void ArrangeCards()
+    {
+
+        for (int i = 0; i < ciList.Count; i++)
+        {
+            CardInteractable ci = ciList[i];
+            ci.transform.SetParent(inventoryContainer.transform.GetChild(i));
+            ci.transform.localScale = Vector3.one * 2;
+            ci.transform.localPosition = Vector3.zero;
+        }
+
+    }
 
     // This method reloads/refreshes the inventory UI
     public void RefreshInventoryItems()
@@ -32,24 +64,16 @@ public class InventoryUI : MonoBehaviour
 
         // Sort inventory by name (in ascending order)
         // THIS CAN BE CHANGED --> EITHER DON'T SORT AT ALL OR SORT BY RARITY FOR EXAMPLE
-        if (inventoryManager.cards.Count > 0)
+        //if (inventoryManager.cards.Count > 0)
+        //{
+        //    inventoryManager.cards = inventoryManager.SortItemsByName(inventoryManager.cards, 0, inventoryManager.cards.Count - 1);
+        //}
+
+        // Add Instantiate all cards in inventory to the UI
+        
+        foreach (UnitCard card in PersistentData.Instance.Inventory.InactiveCards) 
         {
-            inventoryManager.cards = inventoryManager.SortItemsByName(inventoryManager.cards, 0, inventoryManager.cards.Count - 1);
-        }
 
-        // Add/Instantiate all cards in inventory to the UI
-        foreach (UnitCard card in inventoryManager.cards)
-        {
-            RectTransform inventorySlotRectTransform = Instantiate(inventoryTemplateCardPrefab, inventoryContainer).GetComponent<RectTransform>();
-            inventorySlotRectTransform.gameObject.SetActive(true);
-
-            // Set name, health, attack text appropriately
-            inventorySlotRectTransform.Find("Name").GetComponent<TextMeshProUGUI>().text = card.name;
-            inventorySlotRectTransform.Find("Health").GetComponent<TextMeshProUGUI>().text = "Health: " + card.Health.ToString();
-            inventorySlotRectTransform.Find("Attack").GetComponent<TextMeshProUGUI>().text = "Attack: " + card.BaseDamage.ToString();
-
-            // Set card info appropriately
-            inventorySlotRectTransform.GetComponent<InventoryItemInteractable>().card = card;
         }
     }
 }

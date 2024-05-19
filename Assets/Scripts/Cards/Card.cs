@@ -22,4 +22,6 @@ public abstract class Card: ScriptableObject
     {
         return Name;
     }
+
+    public abstract CardInteractable GenerateCardInteractable();
 }

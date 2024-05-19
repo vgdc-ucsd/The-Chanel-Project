@@ -87,8 +87,9 @@ public class UIManager : MonoBehaviour
             UnitCardInteractable ci = Instantiate(TemplateUnitCard);
             ci.card = (UnitCard) c;
             ci.SetCardInfo();
+            ci.mode = CIMode.Duel;
 
-            if(c.CurrentTeam == Team.Player) ci.handInterface = Hand;
+            if (c.CurrentTeam == Team.Player) ci.handInterface = Hand;
             else if (c.CurrentTeam == Team.Player) ci.handInterface = EnemyHand;
             else return ci;
 
@@ -99,8 +100,9 @@ public class UIManager : MonoBehaviour
             SpellCardInteractable ci = Instantiate(TemplateSpellCard);
             ci.card = (SpellCard)c;
             ci.SetCardInfo();
+            ci.mode = CIMode.Duel;
 
-            if(c.CurrentTeam == Team.Player) ci.handInterface = Hand;
+            if (c.CurrentTeam == Team.Player) ci.handInterface = Hand;
             else if (c.CurrentTeam == Team.Player) ci.handInterface = EnemyHand;
             else return ci;
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.XR;
 
 
 
@@ -163,5 +164,20 @@ public class UnitCard : Card
         }
 
     }
-    
+
+    // DO NOT USE THIS INSIDE DUELS, use this for visual card objects outside of duels only
+    public override CardInteractable GenerateCardInteractable()
+    {
+        if (DuelManager.Instance != null)
+        {
+            Debug.LogError("Do not call GenerateCardInteractable() from cards in duels, generate from UIManager only");
+            return null;
+        }
+        UnitCardInteractable ci = Instantiate(GameData.Instance.UCITemplate);
+        ci.card = this;
+        ci.SetCardInfo();
+        return ci;
+    }
+
+
 }
