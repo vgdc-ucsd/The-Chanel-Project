@@ -312,6 +312,7 @@ MonoBehaviour:
   DeckViewContainer: {fileID: 256980349}
   InfoPanel: {fileID: 436506803}
   MainCanvas: {fileID: 37294272}
+  EndTurnButton: {fileID: 1109121973}
 --- !u!114 &37294275
 MonoBehaviour:
   m_ObjectHideFlags: 0
