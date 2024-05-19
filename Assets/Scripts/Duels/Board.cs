@@ -112,14 +112,6 @@ public class Board
         SetCard(card, pos);
         card.Pos = pos;
         AnimationManager.Instance.MoveCardAnimation(duel, card, pos);
-        if (duel == DuelManager.Instance.MainDuel)
-        {
-            // TODO fix animation
-            Transform targetTransform = BoardInterface.Instance.GetTile(pos).transform;
-            IEnumerator ie = AnimationManager.Instance.MoveCard(card, targetTransform, 0.2f);
-            AnimationManager.Instance.Play(ie);
-        }
-
     }
 
     public void RenewMovement(Team t) {
