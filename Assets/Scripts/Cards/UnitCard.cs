@@ -99,13 +99,15 @@ public class UnitCard : Card
         Health -= damage;
         ActivationInfo info = new ActivationInfo(duel);
         info.TotalDamage = damage;
-        if(Health < 0) info.OverkillDamage = Health*-1;
+        if(Health < 0) {
+            info.OverkillDamage = Health*-1;
+            Health = 0;
+        }
 
         AnimationManager.Instance.DamageCardAnimation(duel, this);
         
         // On receive damage but still alive
         if (Health > 0) {
-            AnimationManager.Instance.UpdateCardInfoAnimation(duel, this);
             foreach (Ability a in Abilities) {      
                 if(a.Condition == ActivationCondition.OnReceiveDamage) a.Activate(this, info);
             }

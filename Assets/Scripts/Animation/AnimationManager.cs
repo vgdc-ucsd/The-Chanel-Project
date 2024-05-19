@@ -90,7 +90,7 @@ public class AnimationManager : MonoBehaviour
             yield return null;
         }
 
-        origin.position = dest;
+        if(origin != null) origin.position = dest;
     }
 
     // Animation that plays when a card makes an attack in a direction
@@ -123,7 +123,7 @@ public class AnimationManager : MonoBehaviour
         cardTransform.position = startPos;
     }
 
-    private IEnumerator CardDeath(UnitCard card) {
+    private IEnumerator CardDeath(UnitCard card, float duration) {
         Transform cardTransform = card.UnitCardInteractableRef.transform;
         Transform drawPile;
         Transform discardPile;
@@ -153,7 +153,7 @@ public class AnimationManager : MonoBehaviour
             }
         }
 
-        yield return SimpleTranslate(cardTransform, discardPile.position, 0.5f, InterpolationMode.Linear);
+        yield return SimpleTranslate(cardTransform, discardPile.position, duration, InterpolationMode.Linear);
     }
 
     private IEnumerator SpellDiscard(SpellCard card) {
@@ -173,11 +173,6 @@ public class AnimationManager : MonoBehaviour
         card.SpellCardInteractableRef.CanInteract = false;
         cardTransform.SetParent(discardPile);
         yield return SimpleTranslate(cardTransform, discardPile.position, 0.5f, InterpolationMode.Linear);
-    }
-
-    public void CardDeathImmediate(UnitCard card)
-    {
-        StartCoroutine(CardDeath(card));
     }
 
     public IEnumerator OrganizeCards(Team team) {
@@ -349,6 +344,8 @@ public class AnimationManager : MonoBehaviour
             yield return null;
         }
 
+        yield return UpdateCardInfo(c);
+
         // red to black
         startTime = Time.time;
         elapsedTime = Time.time - startTime;
@@ -489,8 +486,9 @@ public class AnimationManager : MonoBehaviour
     }
 
     public void DeathAnimation(DuelInstance duel, UnitCard card) {
-        IEnumerator ie = CardDeath(card);
-        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+        float duration = 0.5f;
+        IEnumerator ie = CardDeath(card, duration);
+        QueueableAnimation qa = new QueueableAnimation(ie, duration);
         duel.Animations.Enqueue(qa);
     }
 
