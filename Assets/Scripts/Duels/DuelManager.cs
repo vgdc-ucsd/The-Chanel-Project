@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ public class DuelManager : MonoBehaviour
 {
     // Singleton
     public static DuelManager Instance;
+    public EffectsLibrary Effects;
 
     // Set through inspector
     public DuelSettings Settings;
@@ -31,6 +33,7 @@ public class DuelManager : MonoBehaviour
         if (Instance != null && Instance != this) {
             Debug.LogWarning("Tried to create more than one instance of the DuelManager singleton");
             Destroy(this);
+            return;
         }
         else Instance = this;
     }
@@ -175,5 +178,12 @@ public class DuelManager : MonoBehaviour
                 card.CardInteractableRef.CanInteract = enable;
             }
         }
+    }
+
+    [Serializable]
+    public class EffectsLibrary
+    {
+        public FireEffect FireEffectTemplate;
+        public PoisonEffect PoisonEffectTemplate;
     }
 }

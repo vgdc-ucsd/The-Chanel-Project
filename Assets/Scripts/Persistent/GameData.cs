@@ -6,7 +6,7 @@ public class GameData : MonoBehaviour
     public static GameData Instance;
     public UnitCardInteractable UCITemplate;
     public SpellCardInteractable SCITemplate;
-    public FireEffect FireEffectTemplate;
+
 
     public static int DECK_SIZE = 12;
 

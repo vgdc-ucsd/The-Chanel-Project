@@ -84,7 +84,7 @@ public class DuelInstance
             if (card.CanAttack)
             {
                 List<Attack> queuedCharAttacks = new List<Attack>();
-
+                List<UnitCard> damagedCards = new List<UnitCard>();
                 bool attackLanded = false;
 
                 for (int i = card.Attacks.Count - 1; i >= 0; i--)
@@ -99,8 +99,9 @@ public class DuelInstance
                         queuedCharAttacks.Add(card.Attacks[i]);
                         continue;
                     }
-
-                    if (ProcessAttack(card, card.Attacks[i])) attackLanded = true;
+                    UnitCard target = ProcessAttack(card, card.Attacks[i]);
+                    if (target != null) attackLanded = true;
+                    if (target != null && target.Health > 0) damagedCards.Add(target);
                 }
 
                 if (queuedCharAttacks.Count != 0)
@@ -118,7 +119,7 @@ public class DuelInstance
                 }
                 if (attackLanded)
                 {
-
+                    info.DamagedCards = damagedCards;
                     for (int i = card.Abilities.Count - 1; i >= 0; i--)
                     {
                         Ability a = card.Abilities[i];
@@ -132,16 +133,16 @@ public class DuelInstance
         }
     }
 
-    private bool ProcessAttack(UnitCard card, Attack atk) {
+    private UnitCard ProcessAttack(UnitCard card, Attack atk) {
         BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
 
 
 
         // Do nothing if attack is out of bounds
-        if(DuelBoard.IsOutOfBounds(atkDest)) return false;
+        if(DuelBoard.IsOutOfBounds(atkDest)) return null;
 
         // Do nothing if destination tile is empty
-        if(DuelBoard.GetCard(atkDest) == null) return false;
+        if(DuelBoard.GetCard(atkDest) == null) return null;
 
         // Deal damage
         UnitCard target = DuelBoard.GetCard(atkDest);
@@ -157,9 +158,9 @@ public class DuelInstance
             for (int i = card.Abilities.Count - 1; i >= 0; i--) {
                 if(card.Abilities[i].Condition == ActivationCondition.OnDealDamage) card.Abilities[i].Activate(card, info);
             }
-            return true;
+            return target;
         }
-        return false;
+        return null;
     }
 
 

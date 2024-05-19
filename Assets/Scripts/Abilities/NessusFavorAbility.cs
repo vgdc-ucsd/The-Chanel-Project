@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using UnityEditor.Playables;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Abilites/RedSpiderLilyAbility")]
-public class RedSpiderLilyAbility : StatusEffect
+[CreateAssetMenu(menuName = "Abilites/NessusFavorAbility")]
+public class NessusFavorAbility : StatusEffect
 {
 
     public override ActivationCondition Condition
@@ -16,6 +16,11 @@ public class RedSpiderLilyAbility : StatusEffect
     // "Activate" is actually the finish condition, removes the extra attacks
     public override void Activate(UnitCard c, ActivationInfo info)
     {
+        foreach (UnitCard card in info.DamagedCards)
+        {
+            PoisonEffect effect = ScriptableObject.Instantiate(DuelManager.Instance.Effects.PoisonEffectTemplate);
+            effect.AddEffect(card, info);
+        }
         RemoveEffect(c, info);
     }
 
@@ -30,9 +35,5 @@ public class RedSpiderLilyAbility : StatusEffect
 
     public override void ReapplyEffect(UnitCard c, ActivationInfo info)
     {
-        foreach (Attack atk in c.Attacks)
-        {
-            atk.damage *= 2;
-        }
     }
 }
