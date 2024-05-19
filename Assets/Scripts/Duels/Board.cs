@@ -70,6 +70,7 @@ public class Board
         if (!status.Cards.Remove(card)) Debug.LogError("Failed to remove card");
         status.UseMana(card.ManaCost);
         SetCard(card, pos);
+        // TODO mana spend animation
 
         ActivationInfo info = new ActivationInfo(duel);
         foreach(Ability a in card.Abilities) {

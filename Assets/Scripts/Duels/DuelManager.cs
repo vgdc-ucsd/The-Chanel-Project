@@ -105,7 +105,7 @@ public class DuelManager : MonoBehaviour
 
         MainDuel.DrawCardWithMana(Team.Player);
         
-        UIManager.Instance.UpdateStatus(MainDuel);
+        AnimationManager.Instance.UpdateUIAnimation(MainDuel);
     }
 
     // triggered by button
@@ -137,7 +137,7 @@ public class DuelManager : MonoBehaviour
         MainDuel = state;
         //state.DebugBoard();
         AnimationManager.Instance.DrawCardsAnimation(MainDuel, new List<Card>(), Team.Enemy);
-        UIManager.Instance.UpdateStatus(state);
+        AnimationManager.Instance.UpdateUIAnimation(MainDuel);
         
         awaitingAI = false;
         currentTeam = Team.Player;

@@ -450,6 +450,11 @@ public class AnimationManager : MonoBehaviour
         obj.localScale = endScale;
     }
 
+    private IEnumerator UpdateUI(DuelInstance duel) {
+        UIManager.Instance.UpdateStatus(duel);
+        yield return null;
+    }
+
     // **************************************************************
     //              public animation methods (void)
     // **************************************************************
@@ -541,6 +546,11 @@ public class AnimationManager : MonoBehaviour
         else {
             ui = UIManager.Instance.Enemy;
         }
+
+        IEnumerator uiEnum = UpdateUI(duel);
+        QueueableAnimation uiAnim = new QueueableAnimation(uiEnum, 0.0f);
+        duel.Animations.Enqueue(uiAnim);
+
         IEnumerator ie = DamageFlashPlayer(ui, duration);
         QueueableAnimation qa = new QueueableAnimation(ie, duration);
         duel.Animations.Enqueue(qa);
@@ -569,6 +579,12 @@ public class AnimationManager : MonoBehaviour
     public void BounceScaleAnimation(DuelInstance duel, Transform t, float from, float to, float duration) {
         IEnumerator ie = BounceScale(t, from, to, duration);
         QueueableAnimation qa = new QueueableAnimation(ie, duration/6f);
+        duel.Animations.Enqueue(qa);
+    }
+
+    public void UpdateUIAnimation(DuelInstance duel) {
+        IEnumerator ie = UpdateUI(duel);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
         duel.Animations.Enqueue(qa);
     }
 }
