@@ -144,7 +144,7 @@ public class DuelManager : MonoBehaviour
         //state.DebugBoard();
         AnimationManager.Instance.DrawCardsAnimation(MainDuel, new List<Card>(), Team.Enemy);
         AnimationManager.Instance.UpdateUIAnimation(MainDuel);
-        EnablePlayerControl(false);
+        AnimationManager.Instance.RestorePlayerControlAnimation(MainDuel);
 
         awaitingAI = false;
         currentTeam = Team.Player;
@@ -169,6 +169,7 @@ public class DuelManager : MonoBehaviour
     }
 
     public void EnablePlayerControl(bool enable) {
+        UIManager.Instance.HighlightEndTurnButton(enable);
         List<Card> cards = new List<Card>();
         cards.AddRange(MainDuel.GetStatus(Team.Player).Cards);
         cards.AddRange(MainDuel.DuelBoard.CardSlots);

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -41,6 +41,7 @@ public class UIManager : MonoBehaviour
 
     public CardInfoPanel InfoPanel;
     public Canvas MainCanvas;
+    public Image EndTurnButton;
 
     public static UIManager Instance;
 
@@ -124,6 +125,15 @@ public class UIManager : MonoBehaviour
         else {
             Debug.LogWarning("No tile exists at x=" + bc.x + ", y=" + bc.y);
             return null;
+        }
+    }
+
+    public void HighlightEndTurnButton(bool enable) {
+        if(enable) {
+            EndTurnButton.color = Color.white;
+        }
+        else {
+            EndTurnButton.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
         }
     }
 

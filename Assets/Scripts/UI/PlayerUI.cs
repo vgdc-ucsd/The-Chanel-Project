@@ -22,11 +22,13 @@ public class PlayerUI : MonoBehaviour
     private List<Transform> shakeTransforms;
     private List<Vector3> originalPositions;
     private List<Image> flickerSprites;
+    private List<Color> originalColors;
 
     void Start() {
         shakeTransforms = new List<Transform>();
         originalPositions = new List<Vector3>();
         flickerSprites = new List<Image>();
+        originalColors = new List<Color>();
 
         float distance = 90f;
         if(IsEnemy) HealthIndicator.localPosition = new Vector3(
@@ -81,6 +83,7 @@ public class PlayerUI : MonoBehaviour
             for(int i = 0; i < cost; i++) {
                 ManaSprites[i].sprite = ManaRed;
                 flickerSprites.Add(ManaSprites[i]);
+                originalColors.Add(ManaSprites[i].color);
             }
             ManaEffect = StartCoroutine(ManaFlicker(flickerSprites));
         }
@@ -165,11 +168,12 @@ public class PlayerUI : MonoBehaviour
         }
 
         for(int i = 0; i < flickerSprites.Count; i++) {
-            flickerSprites[i].color = Color.white;
+            flickerSprites[i].color = originalColors[i];
         }
 
         shakeTransforms.Clear();
         originalPositions.Clear();
         flickerSprites.Clear();
+        originalColors.Clear();
     }
 }

@@ -64,7 +64,6 @@ public class AnimationManager : MonoBehaviour
             }
         }
         activelyPlaying = false;
-        DuelManager.Instance.EnablePlayerControl(true);
     }
 
     public bool DonePlaying() {
@@ -497,6 +496,11 @@ public class AnimationManager : MonoBehaviour
         yield return null;
     }
 
+    private IEnumerator RestorePlayerControl() {
+        DuelManager.Instance.EnablePlayerControl(true);
+        yield return null;
+    }
+
     // **************************************************************
     //              public animation methods (void)
     // **************************************************************
@@ -610,6 +614,12 @@ public class AnimationManager : MonoBehaviour
 
     public void UpdateUIAnimation(DuelInstance duel) {
         IEnumerator ie = UpdateUI(duel);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+        duel.Animations.Enqueue(qa);
+    }
+
+    public void RestorePlayerControlAnimation(DuelInstance duel) {
+        IEnumerator ie = RestorePlayerControl();
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
         duel.Animations.Enqueue(qa);
     }
