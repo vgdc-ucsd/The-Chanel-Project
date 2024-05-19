@@ -233,48 +233,48 @@ public class AnimationManager : MonoBehaviour
             }
         }
         // draw then shuffle then draw
-        else if(drawPile.childCount < cards.Count && drawPile.childCount+discardPile.childCount >= cards.Count) {
-            int initalCount = drawPile.childCount;
-            int afterCount = cards.Count-initalCount;
-            for(int i = 0; i < initalCount; i++) {
-                Card c = cards[i];
-                GameObject cardObject;
-                // Draw hidden enemy card
-                if(team == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode) {
-                    cardObject = Instantiate(UIManager.Instance.TemplateCardBack);
-                    UIManager.Instance.EnemyHand.cardObjects.Add(cardObject); // need to do manually since not generating interactable
-                }
-                // Draw visible card
-                else {
-                    c.CardInteractableRef = UIManager.Instance.GenerateCardInteractable(c);
-                    cardObject = c.CardInteractableRef.gameObject;
-                }
-                cardObject.transform.position = drawPile.position;
-                Destroy(drawPile.GetChild(childIndex).gameObject);
-                childIndex++;
-            }
+        // else if(drawPile.childCount < cards.Count && drawPile.childCount+discardPile.childCount >= cards.Count) {
+        //     int initalCount = drawPile.childCount;
+        //     int afterCount = cards.Count-initalCount;
+        //     for(int i = 0; i < initalCount; i++) {
+        //         Card c = cards[i];
+        //         GameObject cardObject;
+        //         // Draw hidden enemy card
+        //         if(team == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode) {
+        //             cardObject = Instantiate(UIManager.Instance.TemplateCardBack);
+        //             UIManager.Instance.EnemyHand.cardObjects.Add(cardObject); // need to do manually since not generating interactable
+        //         }
+        //         // Draw visible card
+        //         else {
+        //             c.CardInteractableRef = UIManager.Instance.GenerateCardInteractable(c);
+        //             cardObject = c.CardInteractableRef.gameObject;
+        //         }
+        //         cardObject.transform.position = drawPile.position;
+        //         Destroy(drawPile.GetChild(childIndex).gameObject);
+        //         childIndex++;
+        //     }
 
-            // ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
+        //     // ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
 
-            childIndex = 0;
-            for(int i = 0; i < afterCount; i++) {
-                Card c = cards[i];
-                GameObject cardObject;
-                // Draw hidden enemy card
-                if(team == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode) {
-                    cardObject = Instantiate(UIManager.Instance.TemplateCardBack);
-                    UIManager.Instance.EnemyHand.cardObjects.Add(cardObject); // need to do manually since not generating interactable
-                }
-                // Draw visible card
-                else {
-                    c.CardInteractableRef = UIManager.Instance.GenerateCardInteractable(c);
-                    cardObject = c.CardInteractableRef.gameObject;
-                }
-                cardObject.transform.position = drawPile.position;
-                Destroy(drawPile.GetChild(childIndex).gameObject);
-                childIndex++;
-            }
-        }
+        //     childIndex = 0;
+        //     for(int i = 0; i < afterCount; i++) {
+        //         Card c = cards[i];
+        //         GameObject cardObject;
+        //         // Draw hidden enemy card
+        //         if(team == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode) {
+        //             cardObject = Instantiate(UIManager.Instance.TemplateCardBack);
+        //             UIManager.Instance.EnemyHand.cardObjects.Add(cardObject); // need to do manually since not generating interactable
+        //         }
+        //         // Draw visible card
+        //         else {
+        //             c.CardInteractableRef = UIManager.Instance.GenerateCardInteractable(c);
+        //             cardObject = c.CardInteractableRef.gameObject;
+        //         }
+        //         cardObject.transform.position = drawPile.position;
+        //         Destroy(drawPile.GetChild(childIndex).gameObject);
+        //         childIndex++;
+        //     }
+        // }
         // no draw
         else {
             Debug.LogError("trying to draw too many cards " + team + " " + cards.Count);
@@ -455,6 +455,9 @@ public class AnimationManager : MonoBehaviour
             discardPile = UIManager.Instance.EnemyDiscard;
         }
 
+        // Log discard draw childcounts
+        Debug.Log("Discard: " + discardPile.childCount + " Draw: " + drawPile.childCount);
+
         if(discardPile.childCount>=1 && drawPile.childCount==0) {
             Debug.Log("Shuffling " + team + " discard into draw");
             ShuffleDiscardIntoDeckAnimation2(duel, discardPile, drawPile);
@@ -478,14 +481,46 @@ public class AnimationManager : MonoBehaviour
 
     private void ShuffleDiscardIntoDeckAnimation2(DuelInstance duel, Transform discard, Transform draw) { // only call from other coroutines in this script
         foreach(Transform t in discard) {
-            IEnumerator ie2 = SimpleTranslate(t, draw.position, 0.2f, InterpolationMode.Linear);
-            QueueableAnimation qa2 = new QueueableAnimation(ie2, 1f);
-            duel.Animations.Enqueue(qa2);
-
-            IEnumerator ie = ChangeDrawIntoCardBack(t, draw);
+            IEnumerator ie = ChangeToCardBackThenSimpleTranslate(t, draw, draw.position, 0.2f, InterpolationMode.Linear);
             QueueableAnimation qa = new QueueableAnimation(ie, 1f);
             duel.Animations.Enqueue(qa);
+            // IEnumerator ie2 = SimpleTranslate(t, draw.position, 0.2f, InterpolationMode.Linear);
+            // QueueableAnimation qa2 = new QueueableAnimation(ie2, 1f);
+            // duel.Animations.Enqueue(qa2);
+
+            // IEnumerator ie = ChangeDrawIntoCardBack(t, draw);
+            // QueueableAnimation qa = new QueueableAnimation(ie, 1f);
+            // duel.Animations.Enqueue(qa);
         }
+    }
+
+    public IEnumerator ChangeToCardBackThenSimpleTranslate(Transform original, Transform draw, Vector3 dest, float duration, InterpolationMode mode) {
+        // Change card to card back
+        GameObject cardBack = Instantiate(UIManager.Instance.TemplateCardBack);
+        Transform cardBackTransform = cardBack.transform;
+        cardBack.transform.position = original.position;
+        cardBack.transform.SetParent(draw);
+        cardBack.transform.localScale = Vector3.one;
+        Destroy(original.gameObject);
+
+        yield return null;
+
+        // SimpleTranslate
+        if(cardBackTransform == null) yield break;
+        float startTime = Time.time;
+        Vector3 startPos = cardBackTransform.position;
+        float elapsedTime = Time.time - startTime;
+
+        // Interpolates between two positions until elapsedTime reaches duration
+        while(elapsedTime < duration) {
+            if(cardBackTransform == null) yield break;
+            float t = elapsedTime / duration;
+            cardBackTransform.position = Interpolation.Interpolate(startPos, dest, t, mode);
+            elapsedTime = Time.time - startTime;
+            yield return null;
+        }
+
+        cardBackTransform.position = dest;
     }
 
     private IEnumerator ChangeDrawIntoCardBack(Transform original, Transform draw){
