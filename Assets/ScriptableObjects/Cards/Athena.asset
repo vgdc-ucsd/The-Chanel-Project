@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Athena
   ManaCost: 4
+  ShopCost: 0
   Artwork: {fileID: 0}
+  drawStatus: 0
+  id: 0
+  description: 
   CurrentTeam: 2
   Health: 5
   CanMove: 1
+  CanAttack: 0
   isSelected: 0
   BaseDamage: 4
   UnitCardInteractableRef: {fileID: 0}
@@ -32,3 +37,4 @@ MonoBehaviour:
     damage: 4
   Abilities:
   - {fileID: 11400000, guid: c3702e5cf5d1cc04782e365feb2f31b5, type: 2}
+  StatusEffects: []

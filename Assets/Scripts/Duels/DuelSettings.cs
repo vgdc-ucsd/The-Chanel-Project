@@ -17,10 +17,12 @@ public class DuelSettings
 
     // Misc
     public bool EnemyGoesFirst = false;
+    public int DrawCardManaCost = 2;
 
     // Dev/Debug settings
     public bool EnablePVPMode = false;
     public bool RestrictPlacement = true;
     public bool UnlimitedMana = false;
     public bool ShowEnemyHand = false;
+    public bool DisableWinning = false;
 }

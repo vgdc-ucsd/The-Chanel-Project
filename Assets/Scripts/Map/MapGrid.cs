@@ -14,12 +14,13 @@ public class MapGrid : MonoBehaviour
 {
     [Header("Debugging Info")]
     public List<Vector3> Points;
-    public List<Vector3> StairsPoints = new();
-    public List<GameObject> stairDirections;
+    // public List<Vector3> StairsPoints = new();
+    // public List<GameObject> stairDirections;
 
     public List<GameObject> row1;
     public List<GameObject> row2;
     public List<GameObject> row3;
+    public List<GameObject> allNodes = new();
     public List<List<GameObject>> paths = new();
     [SerializeField] GameObject contents;
 
@@ -30,21 +31,23 @@ public class MapGrid : MonoBehaviour
     public GameObject Shop;
     public GameObject Event;
     public GameObject Boss;
-    public GameObject horStairs;
-    public GameObject diagStairs;
-    public GameObject lineRenderer;
+    // public GameObject horStairs;
+    // public GameObject diagStairs;
+    public GameObject stair;
 
     [Header("Map Settings")]
     public Vector3 OrientingPosition;
     public Vector3 offsetPosition = new Vector3(-300, -100, 0);
+    public Vector3 horStairOffset;
+    public Vector3 diagStairOffset;
     public int numberOfRooms;
     // Higher pathDensityIndex means more paths are generated
     public int pathDensityIndex;
     public string KeepTag = "UsedNodes";
-    public List<MapLayerOptions> layerOptions;
     [SerializeField] float heightBetweenRows = 86.6f;
     [SerializeField] float distanceBetweenNodes = 100f;
     [SerializeField] float XOffsetDistanceBetweenRows = 50f;
+    public List<MapLayerOptions> layerOptions;
 
     private List<List<Vector3>> layers;
 
@@ -99,7 +102,6 @@ public class MapGrid : MonoBehaviour
         }
 
         MoveBossAndExit();
-        CreateStairs(new Vector3(exit.transform.position.x - XOffsetDistanceBetweenRows, exit.transform.position.y), horStairs);
 
         // Creates path and stairs
         if (pathDensityIndex < 1)
@@ -113,6 +115,9 @@ public class MapGrid : MonoBehaviour
             paths.Add(new List<GameObject>());
             CreatePath(paths[i], i);
         }
+
+        // Store all nodes in one list
+        InitializeAllNodesList();
 
         InstantiateStairs();
 
@@ -131,6 +136,20 @@ public class MapGrid : MonoBehaviour
         }
     }
 
+    void InitializeAllNodesList()
+    {
+        foreach (var path in paths)
+        {
+            foreach (var node in path)
+            {
+                if (!allNodes.Contains(node))
+                {
+                    allNodes.Add(node);
+                }
+            }
+        }
+    }
+
     void MoveBossAndExit()
     {
         Vector2 exitPos = new Vector3(OrientingPosition.x + (2 * XOffsetDistanceBetweenRows) + distanceBetweenNodes * numberOfRooms, OrientingPosition.y + (2 * heightBetweenRows));
@@ -138,6 +157,7 @@ public class MapGrid : MonoBehaviour
 
         Vector2 bossPos = new Vector3(OrientingPosition.x + distanceBetweenNodes * numberOfRooms, OrientingPosition.y + (2 * heightBetweenRows));
         GameObject bossObj = Instantiate(Boss, bossPos, Quaternion.identity, contents.transform);
+        bossObj.GetComponent<MapNode>().nextNodes.Add(exitObj.GetComponent<MapNode>());
 
         row3.Add(bossObj);
         row3.Add(exitObj);
@@ -270,8 +290,15 @@ public class MapGrid : MonoBehaviour
                     repeat = false;
                     for (int i = 0; i < pathNodes.Count - 1; i++)
                     {
-                        pathNodes[i].GetComponent<MapNode>().nextNodes.Add(pathNodes[i + 1].GetComponent<MapNode>());
-                        pathNodes[i + 1].GetComponent<MapNode>().prevNodes.Add(pathNodes[i].GetComponent<MapNode>());
+                        if (!pathNodes[i].GetComponent<MapNode>().nextNodes.Contains(pathNodes[i + 1].GetComponent<MapNode>()))
+                        {
+                            pathNodes[i].GetComponent<MapNode>().nextNodes.Add(pathNodes[i + 1].GetComponent<MapNode>());
+                        }
+
+                        if (!pathNodes[i + 1].GetComponent<MapNode>().prevNodes.Contains(pathNodes[i + 1].GetComponent<MapNode>()))
+                        {
+                            pathNodes[i + 1].GetComponent<MapNode>().prevNodes.Add(pathNodes[i].GetComponent<MapNode>());
+                        }
                     }
 
                 }
@@ -279,6 +306,7 @@ public class MapGrid : MonoBehaviour
         }
     }
     // Creates paths to generate stairs between nodes; paths cannot be entirely identical
+    /*
     void ListStairPoints(List<Vector3> StairsPoints, List<GameObject> path)
     {
         if (StairsPoints.Count == 0)
@@ -330,8 +358,10 @@ public class MapGrid : MonoBehaviour
             }
         }
     }
+    */
 
     // Creates list of stair points to generate them with no copies in the same spot
+    /*
     void InstantiateStairs()
     {
         foreach (var path in paths)
@@ -344,8 +374,32 @@ public class MapGrid : MonoBehaviour
             CreateStairs(StairsPoints[i], stairDirections[i]);
         }
     }
-    // Generates stairs
+    */
 
+    void InstantiateStairs()
+    {
+        foreach (var node in allNodes)
+        {
+            MapNode mapNode = node.GetComponent<MapNode>();
+            foreach (var nextNode in mapNode.nextNodes)
+            {
+                float yDist = nextNode.row == mapNode.row ? 0f : heightBetweenRows;
+                float zAngle = Mathf.Atan2(yDist, XOffsetDistanceBetweenRows) * Mathf.Rad2Deg;
+                Vector3 angle = new Vector3(0, 0, zAngle);
+                GameObject stairObj = Instantiate(stair, node.transform.position, Quaternion.Euler(angle), node.transform);
+                if (nextNode.row == mapNode.row)
+                {
+                    stairObj.GetComponent<RectTransform>().localPosition = horStairOffset;
+                }
+                else
+                {
+                    stairObj.GetComponent<RectTransform>().localPosition = diagStairOffset;
+                }
+            }
+        }
+    }
+
+    // Generates stairs
     bool CheckDuplicatePath(List<GameObject> path, int currentIndex)
     {
         bool duplicate = false;

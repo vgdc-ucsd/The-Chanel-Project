@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -31,13 +32,15 @@ public abstract class CardInteractable : MonoBehaviour,
     private float scaleFactor = 1.1f;
 
     private static int hoveredCardIndex;
+    private Vector3 basePosition;
     private static CardInteractable hoveredCard;
 
     // Determines if a card is able to be played
     // Not hidden for debugging purposes
     public bool inHand = true;
+    public bool CanInteract = true;
 
-    public void Awake()
+    protected virtual void Awake()
     {
         if(DuelManager.Instance != null) raycaster = DuelManager.Instance.GetComponent<GraphicRaycaster>();
     }
@@ -46,20 +49,23 @@ public abstract class CardInteractable : MonoBehaviour,
     public abstract void SetCardInfo();
     public abstract void UpdateCardInfo();
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        if(inHand) {
+        if(inHand && CanInteract) {
             hoveredCard = this;
             hoveredCardIndex = transform.GetSiblingIndex();
             hoveredCard.transform.SetAsLastSibling();
+            basePosition = transform.position;
+            hoveredCard.transform.position = hoverPosition();
             transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
         }
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public virtual void OnPointerExit(PointerEventData eventData)
     {
         if(inHand) {
             if(this == hoveredCard) {
+                transform.position = basePosition;
                 hoveredCard.transform.SetSiblingIndex(hoveredCardIndex);
                 hoveredCard = null;
             }
@@ -69,20 +75,21 @@ public abstract class CardInteractable : MonoBehaviour,
 
     public void OnDrag(PointerEventData eventData)
     {
-        if(inHand) {
+        if(inHand && CanInteract) {
             transform.position = eventData.position;
         }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if(inHand) {
+        if(inHand && CanInteract) {
             transform.localEulerAngles = Vector3.zero;
         }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if(!CanInteract) return;
         if (inHand)
         {
             // Check if the drag ended over a TileInteractable using a raycast
@@ -126,5 +133,13 @@ public abstract class CardInteractable : MonoBehaviour,
         {
             image.color = defaultColor;
         }
+    }
+
+    private Vector3 hoverPosition() {
+        return new Vector3(
+            transform.position.x, 
+            transform.position.y+(50f*UIManager.Instance.MainCanvas.scaleFactor), 
+            transform.position.z
+        );
     }
 }

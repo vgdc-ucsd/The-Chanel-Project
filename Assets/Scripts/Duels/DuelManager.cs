@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -16,13 +17,13 @@ public class DuelManager : MonoBehaviour
     public DuelSettings Settings;
     public Deck PlayerDeck;
     public Deck EnemyDeck;
-    public UIManager UI;
 
     // Game Logic
     public DuelInstance MainDuel;
     private MctsAI ai;
     private bool awaitingAI;
-    private Team currentTeam;
+    public Team currentTeam;
+
 
     void Awake() {
         // Singleton
@@ -36,16 +37,23 @@ public class DuelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(MenuScript.Instance == null) {
+            Debug.LogWarning("Could not load encounter data");
+        }
+        else {
+            Settings = MenuScript.Instance.CurrentEncounter.Settings;
+            EnemyDeck = MenuScript.Instance.CurrentEncounter.EnemyDeck;
+        }
+
         CheckProperInitialization();
 
         // DuelInstance Setup
-        CharStatus PlayerStatus = new CharStatus(Team.Player, PlayerDeck);
-        CharStatus EnemyStatus = new CharStatus(Team.Enemy, EnemyDeck);
+        CharStatus PlayerStatus = new CharStatus(Team.Player, ScriptableObject.Instantiate(PlayerDeck));
+        CharStatus EnemyStatus = new CharStatus(Team.Enemy, ScriptableObject.Instantiate(EnemyDeck));
+        PlayerStatus.Deck.Init();
+        EnemyStatus.Deck.Init();
         Board board = new Board(Settings.BoardRows, Settings.BoardCols);
         MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, board);
-
-        // Draw staring cards
-        AnimationManager.Instance.Enqueue(MainDuel.DrawStartingCards());
 
         // AI setup
         ai = new MctsAI();
@@ -56,24 +64,31 @@ public class DuelManager : MonoBehaviour
         else currentTeam = Team.Player;
 
         // UI Setup
-        UI.Initialize();
-        UI.UpdateStatus(MainDuel);
+        UIManager.Instance.Initialize();
+        UIManager.Instance.UpdateStatus(MainDuel);
         if (Settings.EnablePVPMode || Settings.ShowEnemyHand) {
-            UI.EnemyHand.gameObject.SetActive(true);
+            UIManager.Instance.EnemyHand.gameObject.SetActive(true);
         }
-        //DuelEvents.Instance.UpdateUI();
-        //DuelEvents.Instance.UpdateHand();
+
+        // Draw staring cards
+        AnimationManager.Instance.Enqueue(MainDuel.DrawStartingCards());
+    }
+
+    private void Update()
+    {
+        if(MainDuel.Animations.Count != 0) {
+            AnimationManager.Instance.Enqueue(MainDuel.Animations);
+            MainDuel.Animations.Clear();
+        }
+
+        //Debug.Log(MainDuel.PlayerStatus.Cards.ToCommaSeparatedString());
     }
 
     private void CheckProperInitialization() {
-        UI.CheckProperInitialization();
+        UIManager.Instance.CheckProperInitialization();
 
         if(PlayerDeck == null || EnemyDeck == null) {
             Debug.LogError("Could not start duel, decks are uninitalized");
-            return;
-        }
-        if(UI == null) {
-            Debug.LogError("Could not start duel, the UIManager is uninitalized");
             return;
         }
         if(Settings == null) {
@@ -82,6 +97,18 @@ public class DuelManager : MonoBehaviour
         }
     }
 
+    // triggered by button
+    public void DrawCardPlayer()
+    {
+        if (Settings.EnablePVPMode)
+            throw new System.NotImplementedException();
+
+        MainDuel.DrawCardWithMana(Team.Player);
+        
+        UIManager.Instance.UpdateStatus(MainDuel);
+    }
+
+    // triggered by button
     public void EndTurnPlayer() {
         if(awaitingAI) return; // await AI
         if(!AnimationManager.Instance.DonePlaying()) return; // await animations
@@ -89,29 +116,48 @@ public class DuelManager : MonoBehaviour
         if(Settings.EnablePVPMode) {
             if (currentTeam == Team.Player) {
                 MainDuel.ProcessBoard(Team.Player);
-                AnimationManager.Instance.Enqueue(MainDuel.Animations);
                 currentTeam = Team.Enemy;
             }
             else {
                 MainDuel.ProcessBoard(Team.Enemy);
-                AnimationManager.Instance.Enqueue(MainDuel.Animations);
                 currentTeam = Team.Player;
             }
         }
         else {
             MainDuel.ProcessBoard(Team.Player);
-            AnimationManager.Instance.Enqueue(MainDuel.Animations);
+            currentTeam = Team.Enemy;
             StartCoroutine(ai.MCTS(MainDuel));
             awaitingAI = true;
         }
     }
 
+
     public void EnemyMove(DuelInstance state) {
         state.ProcessBoard(Team.Enemy);
         MainDuel = state;
         //state.DebugBoard();
-        AnimationManager.Instance.Enqueue(state.Animations);
-        UI.UpdateStatus(state);
+        AnimationManager.Instance.DrawCardsAnimation(MainDuel, new List<Card>(), Team.Enemy);
+        UIManager.Instance.UpdateStatus(state);
+        
         awaitingAI = false;
+        currentTeam = Team.Player;
+
+        foreach (CharStatus status in new CharStatus[] { state.EnemyStatus, state.PlayerStatus })
+        {
+            foreach (Card c in status.Cards)
+            {
+                if (c is UnitCard uc && uc.UnitCardInteractableRef != null)
+                    uc.UnitCardInteractableRef.card = uc;
+                else if (c is SpellCard sc && sc.SpellCardInteractableRef != null)
+                    sc.SpellCardInteractableRef.card = sc;
+            }
+        }
+
+        /*
+        Debug.Log($"Player Draw Pile: {MainDuel.PlayerStatus.Deck.DrawPile().ToCommaSeparatedString()}");
+        Debug.Log($"Player Discard Pile: {MainDuel.PlayerStatus.Deck.DiscardPile().ToCommaSeparatedString()}");
+        Debug.Log($"Enemy Draw Pile: {MainDuel.EnemyStatus.Deck.DrawPile().ToCommaSeparatedString()}");
+        Debug.Log($"Enemy Discard Pile: {MainDuel.EnemyStatus.Deck.DiscardPile().ToCommaSeparatedString()}");
+        */
     }
 }

@@ -26,3 +26,4 @@ MonoBehaviour:
     damage: 1
   Abilities:
   - {fileID: 11400000, guid: c7752115f1eda68499d328cbd4a513a2, type: 2}
+  StatusEffects: []

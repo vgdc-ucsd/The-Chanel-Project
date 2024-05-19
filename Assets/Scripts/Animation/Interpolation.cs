@@ -35,6 +35,25 @@ public static class Interpolation
                 );
         }
     }
+
+    public static Color Interpolate(Color from, Color to, float t, InterpolationMode mode) {
+        switch(mode) {
+            case InterpolationMode.Linear:
+                return new Color(
+                    InterpolateLinear(from.r, to.r, t),
+                    InterpolateLinear(from.g, to.g, t),
+                    InterpolateLinear(from.b, to.b, t),
+                    InterpolateLinear(from.a, to.a, t)
+                );
+            default: 
+                return new Color(
+                    InterpolateLinear(from.r, to.r, t),
+                    InterpolateLinear(from.g, to.g, t),
+                    InterpolateLinear(from.b, to.b, t),
+                    InterpolateLinear(from.a, to.a, t)
+                );
+        }
+    }
     
     private static float InterpolateLinear(float from, float to, float t) {
         return from+(t*(to-from));

@@ -25,10 +25,13 @@ public abstract class SpellCard : Card
         SpellCard copy = (SpellCard)ScriptableObject.CreateInstance(this.GetType());
 
         copy.Name = this.Name;
+        copy.description = this.description;
         copy.ManaCost = this.ManaCost;
         copy.Artwork = this.Artwork;
         copy.CurrentTeam = this.CurrentTeam;
         copy.CardInteractableRef = this.CardInteractableRef;
+        copy.drawStatus = this.drawStatus;
+        copy.id = this.id;
 
         CloneExtras(copy);
 
@@ -45,6 +48,8 @@ public abstract class SpellCard : Card
     {
         duel.GetStatus(CurrentTeam).UseMana(ManaCost);
         duel.GetStatus(CurrentTeam).RemoveFromHand(this);
+        duel.GetStatus(CurrentTeam).Deck.Discard(this);
+        AnimationManager.Instance.SpellDiscardAnimation(duel, this);
     }
 
 

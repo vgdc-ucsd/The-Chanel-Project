@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Anubis
   ManaCost: 4
+  ShopCost: 0
   Artwork: {fileID: 0}
+  drawStatus: 0
+  id: 0
+  description: 
   CurrentTeam: 2
   Health: 5
   CanMove: 1
+  CanAttack: 0
   isSelected: 0
   BaseDamage: 3
   UnitCardInteractableRef: {fileID: 0}
@@ -30,3 +35,4 @@ MonoBehaviour:
     damage: 3
   Abilities:
   - {fileID: 11400000, guid: 591b88e9b44c9c44c9133f1fc1824fd0, type: 2}
+  StatusEffects: []

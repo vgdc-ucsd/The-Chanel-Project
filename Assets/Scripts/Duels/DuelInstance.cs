@@ -1,5 +1,8 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -59,6 +62,8 @@ public class DuelInstance
     }
 
     private void ProcessCard(UnitCard card, Team team) {
+
+
         // Cards only take actions on their turn
         if (card.CurrentTeam == team) {
 
@@ -71,35 +76,68 @@ public class DuelInstance
                 }
             }
 
+            if (card.drawStatus != DrawStatus.InPlay) return;
+
             // Attack
-            foreach(Attack atk in card.Attacks) {
-                ProcessAttack(card, atk);
+            if (card.CanAttack)
+            {
+                List<Attack> queuedCharAttacks = new List<Attack>();
+
+                bool attackLanded = false;
+
+                foreach (Attack atk in card.Attacks)
+                {
+
+
+                    BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
+
+                    if ((DuelBoard.BeyondEnemyEdge(atkDest) && team == Team.Player) ||
+                         DuelBoard.BeyondPlayerEdge(atkDest) && team == Team.Enemy)
+                    {
+                        queuedCharAttacks.Add(atk);
+                        continue;
+                    }
+
+                    if (ProcessAttack(card, atk)) attackLanded = true;
+                }
+
+                if (queuedCharAttacks.Count != 0)
+                {
+                    attackLanded = true;
+                    Attack maxDmgAtk = queuedCharAttacks[0];
+                    foreach (Attack atk in queuedCharAttacks)
+                    {
+                        if (atk.damage > maxDmgAtk.damage) maxDmgAtk = atk;
+                    }
+                    Team winner = GetStatus(CharStatus.OppositeTeam(team)).TakeDamage(maxDmgAtk.damage);
+                    if (winner != Team.Neutral) Winner = winner;
+                }
+                if (attackLanded)
+                {
+
+                    for (int i = card.Abilities.Count - 1; i >= 0; i--)
+                    {
+                        Ability a = card.Abilities[i];
+                        if (a.Condition == ActivationCondition.OnFinishAttack) a.Activate(card, info);
+                    }
+                }
+
+                
             }
+            card.CanAttack = true;
         }
     }
 
-    private void ProcessAttack(UnitCard card, Attack atk) {
+    private bool ProcessAttack(UnitCard card, Attack atk) {
         BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
+        
 
-        // Attack targeting enemy
-        if(DuelBoard.BeyondEnemyEdge(atkDest) && card.CurrentTeam == Team.Player) {
-            Team winner = EnemyStatus.TakeDamage(atk.damage);
-            if(winner != Team.Neutral) Winner = winner;
-            return;
-        }
-
-        // Attack targeting player
-        if(DuelBoard.BeyondPlayerEdge(atkDest) && card.CurrentTeam == Team.Enemy) {
-            Team winner = PlayerStatus.TakeDamage(atk.damage);
-            if(winner != Team.Neutral) Winner = winner;
-            return;
-        }
 
         // Do nothing if attack is out of bounds
-        if(DuelBoard.IsOutOfBounds(atkDest)) return;
+        if(DuelBoard.IsOutOfBounds(atkDest)) return false;
 
         // Do nothing if destination tile is empty
-        if(DuelBoard.GetCard(atkDest) == null) return;
+        if(DuelBoard.GetCard(atkDest) == null) return false;
 
         // Deal damage
         UnitCard target = DuelBoard.GetCard(atkDest);
@@ -115,24 +153,72 @@ public class DuelInstance
             foreach(Ability a in card.Abilities) {
                 if(a.Condition == ActivationCondition.OnDealDamage) a.Activate(card, info);
             }
+            return true;
         }
+        return false;
     }
 
-    private void DrawCards(Team team, int count) {
+
+
+    public void DrawCardWithMana(Team team)
+    {
         CharStatus status = GetStatus(team);
         Deck deck = status.Deck;
 
-        List<Card> drawnCards = new List<Card>();
-        for(int i = 0; i < count; i++) {
-            // pick a random card, TODO keep track of how many cards are left in deck
-            int index = Random.Range(0, deck.CardList.Count);
-            Card c = ScriptableObject.Instantiate(deck.CardList[index]);
-            c.CurrentTeam = team;
-            status.AddCard(c);
-            drawnCards.Add(c);
+        if (deck.DrawPileIsEmpty())
+        {
+            Debug.Log("Cannot draw card, no cards remaining");
+            return;
+        }
+        if (!status.CanUseMana(DuelManager.Instance.Settings.DrawCardManaCost))
+        {
+            Debug.Log("Cannot draw card, not enough mana");
+            return;
         }
 
-        AnimationManager.Instance.OrganizeCardsAnimation(this, drawnCards, team);
+        status.UseMana(DuelManager.Instance.Settings.DrawCardManaCost);
+        DrawCards(team, 1, true);
+    }
+
+    private void DrawCards(Team team, int count, bool immediate = false) {
+        CharStatus status = GetStatus(team);
+        Deck deck = status.Deck;
+
+
+        List<Card> drawnCards = new List<Card>();
+
+        if (deck.DrawPileIsEmpty())
+        {
+            deck.Refresh();
+        }
+
+        for (int i = 0; i < count; i++) {
+            // pick a random card, TODO keep track of how many cards are left in deck
+
+
+            Card drawnCard = deck.RandomAvailableCard();
+
+            
+            if (drawnCard == null) break;
+
+            drawnCard.drawStatus = DrawStatus.InPlay;
+            deck.numAvailableCards--;
+            // Debug.Log($"Team: {team}, cards: {deck.numAvailableCards}");
+            Card c = drawnCard.Clone();
+            c.CurrentTeam = team;
+
+
+            status.AddCard(c);
+            drawnCards.Add(c);
+
+            if (deck.DrawPileIsEmpty())
+            {
+                deck.Refresh();
+            }
+
+        }
+
+        AnimationManager.Instance.DrawCardsAnimation(this, drawnCards, team);
     }
 
     public int DealDamage(UnitCard target, int damage, bool immediate = false)
@@ -167,6 +253,19 @@ public class DuelInstance
 
         // gain 1 mana capacity every turn until it reaches the max then it caps out;
         oppositeStatus.GiveMana();
+
+        ActivationInfo info = new ActivationInfo(this);
+        foreach (UnitCard card in DuelBoard.GetCardsOfTeam(oppositeTeam))
+        {
+            for (int i = card.Abilities.Count - 1; i >= 0; i--)
+            {
+                Ability ability = card.Abilities[i];
+                if (ability.Condition == ActivationCondition.OnBeginTurn)
+                {
+                    ability.Activate(card, info);
+                }
+            }
+        }
 
         DuelBoard.RenewMovement(oppositeTeam);
         DrawCards(oppositeTeam, 1);

@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class MenuScript : MonoBehaviour
 {
     public static MenuScript Instance { get; set; }
+    public Encounter CurrentEncounter;
+
     private static int TITLE_INDEX = 0;
     private static int MAP_INDEX = 1;
     private static int INVENTORY_INDEX = 6;
