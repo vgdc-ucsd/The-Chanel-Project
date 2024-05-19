@@ -167,7 +167,7 @@ MonoBehaviour:
       MaxHealth: 10
       MaxHealthEnabled: 0
       StartingMana: 1
-      MaxMana: 4
+      MaxMana: 5
       MaxManaEnabled: 1
       StartingCards: 4
     Enemy:

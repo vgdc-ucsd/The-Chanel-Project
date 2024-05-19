@@ -14,5 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Bomb
   ManaCost: 2
+  ShopCost: 0
   Artwork: {fileID: 0}
+  drawStatus: 0
+  id: 0
+  description: Deals 1 damage to all cards in a square.
   CurrentTeam: 2
+  SpellCardInteractableRef: {fileID: 0}
