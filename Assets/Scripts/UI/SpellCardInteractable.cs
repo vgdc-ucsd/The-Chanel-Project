@@ -65,7 +65,7 @@ public class SpellCardInteractable : CardInteractable
         base.OnPointerEnter(eventData);
         if (mode != CIMode.Duel) return;
         UIManager.Instance.InfoPanel.UpdateInfoPanelSpellCard(this.card);
-        if(!CanInteract) return;
+        if(!CanInteract || !inHand) return;
         AnimationManager.Instance.StartManaHover(card.ManaCost, card.CurrentTeam);
     }
 
