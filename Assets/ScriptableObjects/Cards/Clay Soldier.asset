@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Clay Soldier
   ManaCost: 1
+  ShopCost: 0
   Artwork: {fileID: 0}
+  drawStatus: 0
+  id: 0
+  description: 
   CurrentTeam: 2
   Health: 2
   CanMove: 1
+  CanAttack: 0
   isSelected: 0
   BaseDamage: 1
   UnitCardInteractableRef: {fileID: 0}
@@ -29,3 +34,4 @@ MonoBehaviour:
   - direction: {x: 1, y: 0}
     damage: 1
   Abilities: []
+  StatusEffects: []

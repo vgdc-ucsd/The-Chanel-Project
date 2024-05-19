@@ -12,18 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1ad278697cae34da6360ecf631cd87, type: 3}
   m_Name: Cerberus
   m_EditorClassIdentifier: 
-  enableLogging: 0
   Name: Cerberus
-  Health: 5
-  AttackDamage: 1
   ManaCost: 4
-  isSelected: 0
-  CanMove: 1
   ShopCost: 4
-  isActive: 0
   Artwork: {fileID: 21300000, guid: ad86c94acdfb73e47a3247d6a1574972, type: 3}
-  team: 2
-  CardInteractableRef: {fileID: 0}
-  AttackDirections: []
-  AttackDamages: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-  Abilities: []
+  drawStatus: 0
+  id: 0
+  description: 
+  CurrentTeam: 2
+  Health: 5
+  CanMove: 1
+  CanAttack: 0
+  isSelected: 0
+  BaseDamage: 1
+  UnitCardInteractableRef: {fileID: 0}
+  Attacks:
+  - direction: {x: -1, y: 1}
+    damage: 1
+  - direction: {x: 1, y: 1}
+    damage: 1
+  - direction: {x: 0, y: 1}
+    damage: 1
+  Abilities:
+  - {fileID: 11400000, guid: d0ec9963d2becf3459919a5bae0d7723, type: 2}
+  StatusEffects: []

@@ -149,9 +149,19 @@ public class DuelInstance
             ActivationInfo info = new ActivationInfo(this);
             info.TargetCard = target;
             info.TotalDamage = atk.damage;
+
+            foreach (Ability a in card.Abilities)
+            {
+                if (a.Condition == ActivationCondition.OnAttack) a.Activate(card, info); //BEFORE damage calculation
+            }
+
             info.OverkillDamage = DealDamage(target, atk.damage);
             foreach(Ability a in card.Abilities) {
                 if(a.Condition == ActivationCondition.OnDealDamage) a.Activate(card, info);
+            }
+            foreach(Ability b in target.Abilities)
+            {
+                if (b.Condition == ActivationCondition.OnAttacksHitMe) b.Activate(card, info);
             }
             return true;
         }

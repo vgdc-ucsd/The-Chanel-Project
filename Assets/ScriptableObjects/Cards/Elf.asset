@@ -12,18 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1ad278697cae34da6360ecf631cd87, type: 3}
   m_Name: Elf
   m_EditorClassIdentifier: 
-  enableLogging: 0
   Name: Elf
-  Health: 1
-  AttackDamage: 1
   ManaCost: 1
-  isSelected: 0
-  CanMove: 1
-  isActive: 0
+  ShopCost: 0
   Artwork: {fileID: 0}
-  team: 2
-  CardInteractableRef: {fileID: 0}
-  AttackDirections:
-  - {x: 0, y: 1}
-  AttackDamages: ffffffff
+  drawStatus: 0
+  id: 0
+  description: 
+  CurrentTeam: 2
+  Health: 1
+  CanMove: 1
+  CanAttack: 0
+  isSelected: 0
+  BaseDamage: 1
+  UnitCardInteractableRef: {fileID: 0}
+  Attacks: []
   Abilities: []
+  StatusEffects: []

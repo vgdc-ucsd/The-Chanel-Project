@@ -3,16 +3,18 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public enum ActivationCondition {
-    OnProcess, // applies effect every turn during attack phase
-    OnBeginTurn, // applies effect at start of every turn of the card's team
+    OnProcess,      // applies effect every turn during attack phase
+    OnBeginTurn,    // applies effect at start of every turn of the card's team
     OnDeath,
     OnDraw,
     OnPlay,
     OnMove,
     OnReceiveDamage,
-    OnDealDamage, // triggers once after landing each separate attack
+    OnAttacksHitMe, // triggers when any Attacker hits you, gives Attacker reference
+    OnAttack,       // triggers just before Attack hits
+    OnDealDamage,   // triggers once after landing each separate attack
     OnFinishAttack, // triggers once per turn after landing at least one attack
-    OnTrigger, // can only be triggered externally
+    OnTrigger,      // can only be triggered externally
 }
 
 public struct ActivationInfo {
