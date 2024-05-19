@@ -368,6 +368,45 @@ public class AnimationManager : MonoBehaviour
         text.color = Color.black;
     }
 
+    private IEnumerator DamageFlashPlayer(PlayerUI status, float duration) {
+        float damageTime = duration * 0.25f;
+        float restoreTime = duration * 0.75f;
+
+        InterpolationMode mode = InterpolationMode.Linear;
+        float startTime = Time.time;
+        float elapsedTime = Time.time - startTime;
+
+        TextMeshProUGUI text = status.HealthText;
+
+        // black to red
+        Color from = Color.black;
+        Color to = Color.red;
+        while(elapsedTime < damageTime) {
+            if(text == null) break;
+            float t = elapsedTime / damageTime;
+            elapsedTime = Time.time - startTime;
+            Color col = Interpolation.Interpolate(from, to, t, mode);
+            text.color = col;
+            yield return null;
+        }
+
+        // red to black
+        startTime = Time.time;
+        elapsedTime = Time.time - startTime;
+        from = Color.red;
+        to = Color.black;
+        while(elapsedTime < restoreTime) {
+            if(text == null) break;
+            float t = elapsedTime / restoreTime;
+            elapsedTime = Time.time - startTime;
+            Color col = Interpolation.Interpolate(from, to, t, mode);
+            text.color = col;
+            yield return null;
+        }
+
+        text.color = Color.black;
+    }
+
     private IEnumerator DrawArrows(UnitCardInteractable uci) {
         uci.DrawArrows();
         yield return null;
@@ -493,6 +532,20 @@ public class AnimationManager : MonoBehaviour
         duel.Animations.Enqueue(qa);
     }
 
+    public void DamagePlayerAnimation(DuelInstance duel, CharStatus status) {
+        float duration = 0.75f;
+        PlayerUI ui;
+        if(status.CharTeam == Team.Player) {
+            ui = UIManager.Instance.Player;
+        }
+        else {
+            ui = UIManager.Instance.Enemy;
+        }
+        IEnumerator ie = DamageFlashPlayer(ui, duration);
+        QueueableAnimation qa = new QueueableAnimation(ie, duration);
+        duel.Animations.Enqueue(qa);
+    }
+
     public void DrawArrowsAnimation(DuelInstance duel, UnitCard uc) {
         if(uc.UnitCardInteractableRef != null) {
             IEnumerator ie = DrawArrows(uc.UnitCardInteractableRef);
@@ -515,7 +568,7 @@ public class AnimationManager : MonoBehaviour
 
     public void BounceScaleAnimation(DuelInstance duel, Transform t, float from, float to, float duration) {
         IEnumerator ie = BounceScale(t, from, to, duration);
-        QueueableAnimation qa = new QueueableAnimation(ie, duration/4f);
+        QueueableAnimation qa = new QueueableAnimation(ie, duration/6f);
         duel.Animations.Enqueue(qa);
     }
 }

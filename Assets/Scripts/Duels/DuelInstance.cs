@@ -110,6 +110,7 @@ public class DuelInstance
                         if (atk.damage > maxDmgAtk.damage) maxDmgAtk = atk;
                     }
                     Team winner = GetStatus(CharStatus.OppositeTeam(team)).TakeDamage(maxDmgAtk.damage);
+                    AnimationManager.Instance.DamagePlayerAnimation(this, GetStatus(CharStatus.OppositeTeam(team)));
                     if (winner != Team.Neutral) Winner = winner;
                 }
                 if (attackLanded)
