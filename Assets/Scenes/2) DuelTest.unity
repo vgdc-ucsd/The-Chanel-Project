@@ -157,6 +157,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a2ff4bab6d28c640975ea9cc37965d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Effects:
+    FireEffectTemplate: {fileID: 11400000, guid: 162224b0944ce7c47a29789f46383e04, type: 2}
+    PoisonEffectTemplate: {fileID: 11400000, guid: dac4cb9396ed7874f81626acf05ade59, type: 2}
   Settings:
     SameSettingsForBothPlayers: 1
     Player:

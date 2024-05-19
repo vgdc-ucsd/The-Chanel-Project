@@ -29,7 +29,7 @@ public class DragonAbility : Ability
 
     private void ApplyFire(UnitCard card, ActivationInfo info)
     {
-        FireEffect effect = ScriptableObject.Instantiate(GameData.Instance.FireEffectTemplate);
+        FireEffect effect = ScriptableObject.Instantiate(DuelManager.Instance.Effects.FireEffectTemplate);
         effect.AddEffect(card, info);
     }
 }

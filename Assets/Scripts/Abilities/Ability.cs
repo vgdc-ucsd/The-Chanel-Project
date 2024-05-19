@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -22,12 +23,14 @@ public struct ActivationInfo {
         TargetCard = null;
         OverkillDamage = 0;
         TotalDamage = 0;
+        DamagedCards = new List<UnitCard>();
     }
 
     public DuelInstance Duel;
     public UnitCard TargetCard;
     public int OverkillDamage;
     public int TotalDamage;
+    public List<UnitCard> DamagedCards;
 }
 
 [Serializable]

@@ -4,35 +4,46 @@ using System.Collections.Generic;
 using UnityEditor.Playables;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Abilites/RedSpiderLilyAbility")]
-public class RedSpiderLilyAbility : StatusEffect
+[CreateAssetMenu(menuName = "Abilites/PoisonEffect")]
+public class PoisonEffect : StatusEffect
 {
+    static int initialDuration = 1;
 
     public override ActivationCondition Condition
     {
-        get { return ActivationCondition.OnFinishAttack; }
+        get { return ActivationCondition.OnEndTurn; }
     }
 
-    // "Activate" is actually the finish condition, removes the extra attacks
+
     public override void Activate(UnitCard c, ActivationInfo info)
     {
-        RemoveEffect(c, info);
+
+        info.Duel.DealDamage(c, 1);
+        duration--;
+        if (duration == 0)
+        {
+            RemoveEffect(c, info);
+        }
+        AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
+
     }
 
     public override void AddEffect(UnitCard c, ActivationInfo info)
     {
         base.AddEffect(c, info);
-        duration = -1;
-
-
+        duration = initialDuration;
         ReapplyEffect(c, info);
     }
+
 
     public override void ReapplyEffect(UnitCard c, ActivationInfo info)
     {
         foreach (Attack atk in c.Attacks)
         {
-            atk.damage *= 2;
+            if (atk.damage > 0) 
+            { 
+                atk.damage--;
+            }
         }
     }
 }
