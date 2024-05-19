@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PersistentData : MonoBehaviour
-{ 
+{
     public static PersistentData Instance;
     public InventoryData Inventory = new InventoryData();
+    public MapInfo mapInfo;
 
     public Deck DebugImportCards;
 
@@ -24,7 +25,7 @@ public class PersistentData : MonoBehaviour
         {
             Inventory.InactiveCards.Clear();
             Inventory.ActiveCards.Clear();
-            foreach (Card card in DebugImportCards.CardList) 
+            foreach (Card card in DebugImportCards.CardList)
             {
                 Inventory.InactiveCards.Add(card);
             }
