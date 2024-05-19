@@ -112,8 +112,14 @@ public class UnitCardInteractable : CardInteractable,
             //    return;
             //}
             CharStatus charStatus;
-            if (card.CurrentTeam == Team.Player) charStatus = DuelManager.Instance.MainDuel.PlayerStatus;
-            else charStatus = DuelManager.Instance.MainDuel.EnemyStatus;
+            if (card.CurrentTeam == Team.Player) {
+                charStatus = DuelManager.Instance.MainDuel.PlayerStatus;
+                UIManager.Instance.Player.UnhoverMana(charStatus);
+            }
+            else {
+                charStatus = DuelManager.Instance.MainDuel.EnemyStatus;
+                UIManager.Instance.Enemy.UnhoverMana(charStatus);
+            }
 
             if (!charStatus.CanUseMana(card.ManaCost))
             {

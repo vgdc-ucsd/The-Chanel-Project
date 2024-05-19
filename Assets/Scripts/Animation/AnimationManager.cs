@@ -483,6 +483,7 @@ public class AnimationManager : MonoBehaviour
 
     private IEnumerator UpdateUI(DuelInstance duel) {
         UIManager.Instance.UpdateStatus(duel);
+        UIManager.Instance.Player.UnhoverMana(duel.PlayerStatus);
         yield return null;
     }
 
