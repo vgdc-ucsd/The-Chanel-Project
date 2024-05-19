@@ -331,7 +331,7 @@ public class AnimationManager : MonoBehaviour
         yield return null;
     }
 
-    private IEnumerator DamageFlash(UnitCard c, float duration) {
+    private IEnumerator DamageFlash(UnitCard c, float duration, Color damage) {
         float damageTime = duration * 0.25f;
         float restoreTime = duration * 0.75f;
 
@@ -343,7 +343,7 @@ public class AnimationManager : MonoBehaviour
 
         // black to red
         Color from = Color.black;
-        Color to = Color.red;
+        Color to = damage;
         while(elapsedTime < damageTime) {
             if(text == null) break;
             float t = elapsedTime / damageTime;
@@ -358,7 +358,7 @@ public class AnimationManager : MonoBehaviour
         // red to black
         startTime = Time.time;
         elapsedTime = Time.time - startTime;
-        from = Color.red;
+        from = damage;
         to = Color.black;
         while(elapsedTime < restoreTime) {
             if(text == null) break;
@@ -556,13 +556,13 @@ public class AnimationManager : MonoBehaviour
         duel.Animations.Enqueue(qa);
     }
 
-    public void DamageCardAnimation(DuelInstance duel, UnitCard c) {
+    public void DamageCardAnimation(DuelInstance duel, UnitCard c, Color col) {
         IEnumerator shake = ShakeCard(c, 2.0f, 0.2f);
         QueueableAnimation shakeAnim = new QueueableAnimation(shake, 0.0f);
         duel.Animations.Enqueue(shakeAnim);
 
         float duration = 0.75f;
-        IEnumerator ie = DamageFlash(c, duration);
+        IEnumerator ie = DamageFlash(c, duration, col);
         QueueableAnimation qa = new QueueableAnimation(ie, duration);
         duel.Animations.Enqueue(qa);
     }

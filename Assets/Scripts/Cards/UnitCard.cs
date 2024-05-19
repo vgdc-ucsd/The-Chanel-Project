@@ -103,7 +103,7 @@ public class UnitCard : Card
             info.OverkillDamage = Health*-1;
         }
 
-        AnimationManager.Instance.DamageCardAnimation(duel, this);
+        AnimationManager.Instance.DamageCardAnimation(duel, this, Color.red);
         
         // On receive damage but still alive
         if (Health > 0) {
