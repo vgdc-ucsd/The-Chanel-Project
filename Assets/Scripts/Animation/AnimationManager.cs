@@ -198,7 +198,7 @@ public class AnimationManager : MonoBehaviour
         }
 
         if(discardPile.childCount>=1 && drawPile.childCount==0) {
-            ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
+            yield return ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
             yield return null;
         }
 
@@ -244,7 +244,7 @@ public class AnimationManager : MonoBehaviour
                 childIndex++;
             }
 
-            ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
+            yield return ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
 
             childIndex = 0;
             for(int i = 0; i < afterCount; i++) {
@@ -447,6 +447,17 @@ public class AnimationManager : MonoBehaviour
         obj.localScale = endScale;
     }
 
+    private IEnumerator ShuffleDiscardIntoDeckAnimation(Transform discard, Transform draw) { // only call from other coroutines in this script
+        foreach(Transform t in discard) {
+            GameObject cardBack = Instantiate(UIManager.Instance.TemplateCardBack);
+            cardBack.transform.position = t.position;
+            cardBack.transform.SetParent(draw);
+            cardBack.transform.localScale = Vector3.one;
+            Destroy(t.gameObject);
+            yield return SimpleTranslate(cardBack.transform, draw.position, 0.2f, InterpolationMode.Linear);
+        }
+    }
+
     private IEnumerator Shake(Transform obj, float intensity, float duration) {
         Vector3 originalPos = obj.localPosition;
         float startTime = Time.time;
@@ -458,6 +469,11 @@ public class AnimationManager : MonoBehaviour
         }
 
         obj.localPosition = originalPos;
+    }
+
+    private IEnumerator DrawCardsCoroutine(List<Card> cards, Team team) {
+        yield return DrawCards(cards, team);
+        yield return OrganizeCards(team);
     }
 
     private IEnumerator ShakeCard(Card c, float intensity, float duration) {
@@ -499,11 +515,7 @@ public class AnimationManager : MonoBehaviour
     }
 
     public void DrawCardsAnimation(DuelInstance duel, List<Card> cards, Team team) {
-        IEnumerator draw = DrawCards(cards, team);
-        QueueableAnimation drawAnim = new QueueableAnimation(draw, 0.0f);
-        duel.Animations.Enqueue(drawAnim);
-
-        IEnumerator ie = OrganizeCards(team);
+        IEnumerator ie = DrawCardsCoroutine(cards, team);
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
         duel.Animations.Enqueue(qa);
     }
@@ -513,21 +525,6 @@ public class AnimationManager : MonoBehaviour
         IEnumerator ie = PlaceUnitCard(c, pos, speed);
         QueueableAnimation qa = new QueueableAnimation(ie, speed);
         duel.Animations.Enqueue(qa);
-    }
-
-    private void ShuffleDiscardIntoDeckAnimation(Transform discard, Transform draw) { // only call from other coroutines in this script
-        foreach(Transform t in discard) {
-            GameObject cardBack = Instantiate(UIManager.Instance.TemplateCardBack);
-            cardBack.transform.position = t.position;
-            cardBack.transform.SetParent(draw);
-            cardBack.transform.localScale = Vector3.one;
-            Destroy(t.gameObject);
-            IEnumerator ie = SimpleTranslate(cardBack.transform, draw.position, 0.2f, InterpolationMode.Linear);
-            QueueableAnimation qa = new QueueableAnimation(ie, 1f);
-            animations.Enqueue(qa);
-            //Debug.Log(cardBack.transform.parent.name);
-            // TODO shows one less card
-        }
     }
 
     public void MoveCardAnimation(DuelInstance duel, UnitCard uc, BoardCoords targetPos) {
