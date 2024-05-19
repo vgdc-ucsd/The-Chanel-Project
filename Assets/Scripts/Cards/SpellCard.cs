@@ -52,5 +52,17 @@ public abstract class SpellCard : Card
         AnimationManager.Instance.SpellDiscardAnimation(duel, this);
     }
 
+    public override CardInteractable GenerateCardInteractable()
+    {
+        if (DuelManager.Instance != null)
+        {
+            Debug.LogError("Do not call GenerateCardInteractable() from cards in duels, generate from UIManager only");
+            return null;
+        }
+        SpellCardInteractable ci = Instantiate(GameData.Instance.SCITemplate);
+        ci.card = this;
+        ci.SetCardInfo();
+        return ci;
+    }
 
 }
