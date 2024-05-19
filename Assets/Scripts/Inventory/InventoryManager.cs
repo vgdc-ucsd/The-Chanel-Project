@@ -9,11 +9,12 @@ using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
 {
-    // IGNORE THIS maxItems. IT IS FOR TESTING PURPOSES
-    public int maxItems = 10;
-    // IDK IF THIS IS SUPPOSED TO BE A LIST OF CARDS OR A DECK
-    public List<UnitCard> cards;
+    public int maxItems = 10; // Testing
     public InventoryUI inventoryUI;
+
+    public Deck playerDeck;
+    public Deck playerInventoryDeck;
+    public List<UnitCard> cards;
 
     void Start()
     {
@@ -23,26 +24,38 @@ public class InventoryManager : MonoBehaviour
         // NOTE: There should only be one object with InventoryUI scripts. If not
         // this line does not work properly.
         inventoryUI = FindObjectOfType<InventoryUI>();
+
+        // Adds inventory cards to list
+        
+        // Use a deck as a list of all inventory cards, should be no max card limit as we wont reach it
     }
 
     private void InitializeInventory()
     {
         cards = new List<UnitCard>(maxItems);
+        //Debug.Log(playerInventoryDeck.CardList);
+        foreach (Card card in playerInventoryDeck.CardList)
+        {
+            cards.Add((UnitCard)card); // idk if this cast works lol
+        }
+        inventoryUI.RefreshInventoryItems();
     }
 
-    public void AddItem(UnitCard card)
+    public void DisplayCards()
     {
         if (cards.Count < maxItems)
         {
-            cards.Add(card);
+            //cards.Add(card);
         }
         else
         {
             Debug.Log("No space in inventory");
         }
 
+
         inventoryUI.RefreshInventoryItems();
     }
+
 
     public void RemoveItem(UnitCard card)
     {

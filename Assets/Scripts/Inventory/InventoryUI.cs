@@ -9,6 +9,8 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] Transform inventoryContainer;
     [SerializeField] GameObject inventoryTemplateCardPrefab;
 
+    [SerializeField] Transform deckContainer;
+
     // This method assigns inventorySlotContainer & inventoryTemplateCardPrefab
     // private void Awake()
     // {
@@ -27,6 +29,7 @@ public class InventoryUI : MonoBehaviour
             if (child != inventoryTemplateCardPrefab)
             {
                 Destroy(child.gameObject);
+                Debug.Log("deleted shit");
             }
         }
 
@@ -50,6 +53,26 @@ public class InventoryUI : MonoBehaviour
 
             // Set card info appropriately
             inventorySlotRectTransform.GetComponent<InventoryItemInteractable>().card = card;
+        }
+
+        AddDeckCards();
+    }
+
+    private void AddDeckCards()
+    {
+        // Adds all cards to deck
+        foreach (Card card in inventoryManager.playerDeck.CardList)
+        {
+            RectTransform DeckSlotRectTransform = Instantiate(inventoryTemplateCardPrefab, deckContainer).GetComponent<RectTransform>();
+            DeckSlotRectTransform.gameObject.SetActive(true);
+
+            // Set name, health, attack text appropriately
+            //inventorySlotRectTransform.Find("Name").GetComponent<TextMeshProUGUI>().text = card.name;
+            //inventorySlotRectTransform.Find("Health").GetComponent<TextMeshProUGUI>().text = "Health: " + card.Health.ToString();
+            //inventorySlotRectTransform.Find("Attack").GetComponent<TextMeshProUGUI>().text = "Attack: " + card.BaseDamage.ToString();
+
+            // Set card info appropriately
+            //inventorySlotRectTransform.GetComponent<InventoryItemInteractable>().card = card;
         }
     }
 }

@@ -2,27 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Abilites/WorldTurtleAbility")]
-public class WorldTurtleAbility : Ability
+[CreateAssetMenu(menuName = "Abilites/NearWorldTurtleAbility")]
+public class NearWorldTurtleAbility : Ability
 {
-    public override ActivationCondition Condition { get { return ActivationCondition.OnReceiveDamage; } } // On after everyone's taken damage
+    public override ActivationCondition Condition { get { return ActivationCondition.OnProcess; } } // After the end turn
 
     public override void Activate(UnitCard c, ActivationInfo info)
     {
-        int damageAbsorbed = 0;
-        NearWorldTurtleAbility nearWorldTurtleAbil;
-
         foreach (UnitCard adjCard in info.Duel.DuelBoard.GetAdjacentCards(c.Pos))
         {
-            // Take all their dmg and do it to me
-            // damageAbsorbed += adjCard's info.totalDamage
-            //adjCard.Abilities.Add((nearWorldTurtleAbil);
-
-
-
+            if (adjCard.Name == "WorldTurtle") // edit
+            {
+                // redirect damage to 
+                adjCard.TakeDamage(info.Duel, 0); // 0 redirected damage;
+                //adjCard.UnitCardInteractableRef.gameObject.GetComponent<WorldTurtleAbility>().damageAbsorbed += dmg;
+            }
         }
 
-        c.TakeDamage(info.Duel, damageAbsorbed);
     }
 }
 
