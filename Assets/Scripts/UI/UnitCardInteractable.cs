@@ -154,7 +154,7 @@ public class UnitCardInteractable : CardInteractable,
         // Inventory stuff
         if (mode == CIMode.Inventory)
         {
-            InventoryUI.Instance.inventoryInfoPanel.UpdateInfoPanelUnitCard(this.card);
+            InventoryUI.Instance.inventoryInfoPanel.UpdateInventoryInfoPanelUnitCard(this.card);
         }
 
         if (mode != CIMode.Duel) return;

@@ -18,6 +18,7 @@ public class InventoryUI : MonoBehaviour
 
     // Display Card
     public CardInfoPanel inventoryInfoPanel;
+    public TextMeshProUGUI cardCountText;
 
     PersistentData.InventoryData inventory;
 
@@ -85,6 +86,9 @@ public class InventoryUI : MonoBehaviour
             i++;
         }
 
+
+        // Adds Cards Count
+        cardCountText.text = inventory.CardCount() + "";
     }
 
     public void HandleClick(Card card)
@@ -115,13 +119,6 @@ public class InventoryUI : MonoBehaviour
         ArrangeCards();
     }
 
-    public void UpdateInfoPanel(UnitCard card)
-    {
-        inventoryInfoPanel.CardName.text = card.Name;
-        inventoryInfoPanel.Description.text = card.description;
-        inventoryInfoPanel.Image.sprite = card.Artwork;
-    }
-
     // This method reloads/refreshes the inventory UI
     public void RefreshInventoryItems()
     {
@@ -149,5 +146,6 @@ public class InventoryUI : MonoBehaviour
         {
 
         }
+
     }
 }
