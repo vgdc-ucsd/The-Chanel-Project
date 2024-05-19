@@ -77,7 +77,7 @@ IPointerExitHandler
         {
             if(MenuScript.Instance != null) {
                 int randomIndex = UnityEngine.Random.Range(0, EncounterManager.Instance.Encounters.Count);
-                MenuScript.Instance.CurrentEncounter = EncounterManager.Instance.Encounters[randomIndex];
+                PersistentData.Instance.CurrentEncounter = EncounterManager.Instance.Encounters[randomIndex];
             }
             
             mapNodeTypeIdx = 2;
