@@ -152,7 +152,7 @@ public class UnitCardInteractable : CardInteractable,
         base.OnPointerEnter(eventData);
         if (mode != CIMode.Duel) return;
         UIManager.Instance.InfoPanel.UpdateInfoPanelUnitCard(this.card);
-        if(!CanInteract) return;
+        if(!CanInteract || !inHand) return;
         AnimationManager.Instance.StartManaHover(card.ManaCost, card.CurrentTeam);
     }
 
