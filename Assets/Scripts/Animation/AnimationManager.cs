@@ -232,8 +232,9 @@ public class AnimationManager : MonoBehaviour
                 childIndex++;
             }
         }
-        // draw then shuffle then draw
+        // // draw then shuffle then draw
         // else if(drawPile.childCount < cards.Count && drawPile.childCount+discardPile.childCount >= cards.Count) {
+        //     Debug.Log("Draw: " + drawPile.childCount + ", " + "Discard: " + discardPile.childCount + ", " + "Cards: " + cards.Count);
         //     int initalCount = drawPile.childCount;
         //     int afterCount = cards.Count-initalCount;
         //     for(int i = 0; i < initalCount; i++) {
@@ -455,9 +456,7 @@ public class AnimationManager : MonoBehaviour
             discardPile = UIManager.Instance.EnemyDiscard;
         }
 
-        // Log discard draw childcounts
-        Debug.Log("Discard: " + discardPile.childCount + " Draw: " + drawPile.childCount);
-
+        Debug.Log("Animation: Draw("+discardPile.childCount + "), Discard(" + drawPile.childCount);
         if(discardPile.childCount>=1 && drawPile.childCount==0) {
             Debug.Log("Shuffling " + team + " discard into draw");
             ShuffleDiscardIntoDeckAnimation2(duel, discardPile, drawPile);
@@ -526,9 +525,9 @@ public class AnimationManager : MonoBehaviour
     private IEnumerator ChangeDrawIntoCardBack(Transform original, Transform draw){
         GameObject cardBack = Instantiate(UIManager.Instance.TemplateCardBack);
         cardBack.transform.position = original.position;
-        cardBack.transform.SetParent(draw);
         cardBack.transform.localScale = Vector3.one;
         Destroy(original.gameObject);
+        cardBack.transform.SetParent(draw);
         yield return null;
     }
 

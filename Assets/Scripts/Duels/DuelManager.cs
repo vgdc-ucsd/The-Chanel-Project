@@ -109,7 +109,7 @@ public class DuelManager : MonoBehaviour
     }
 
     // triggered by button
-    public void EndTurnPlayer() {
+    public async void EndTurnPlayer() {
         if(awaitingAI) return; // await AI
         if(!AnimationManager.Instance.DonePlaying()) return; // await animations
 
@@ -136,7 +136,7 @@ public class DuelManager : MonoBehaviour
         state.ProcessBoard(Team.Enemy);
         MainDuel = state;
         //state.DebugBoard();
-        AnimationManager.Instance.DrawCardsAnimation(MainDuel, new List<Card>(), Team.Enemy);
+        // AnimationManager.Instance.DrawCardsAnimation(MainDuel, new List<Card>(), Team.Enemy);
         UIManager.Instance.UpdateStatus(state);
         
         awaitingAI = false;

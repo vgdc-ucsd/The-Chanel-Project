@@ -181,6 +181,7 @@ public class DuelInstance
     }
 
     private void DrawCards(Team team, int count, bool immediate = false) {
+        Debug.Log($"Drawing {count} cards for team {team}");
         CharStatus status = GetStatus(team);
         Deck deck = status.Deck;
 
@@ -217,7 +218,6 @@ public class DuelInstance
             }
 
         }
-
         AnimationManager.Instance.DrawCardsAnimation(this, drawnCards, team);
     }
 
