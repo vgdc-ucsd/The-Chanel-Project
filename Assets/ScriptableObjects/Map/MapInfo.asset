@@ -12,4 +12,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57a4a4c50422224c80e650540399fe4, type: 3}
   m_Name: MapInfo
   m_EditorClassIdentifier: 
-  row1: []
+  nodeTypes: 040000000000000000000000000000000200000000000000020000000000000002000000020000000000000003000000000000000000000000000000000000000000000002000000020000000100000000000000000000000100000001000000
+  nodePoints:
+  - col: 0
+    row: 0
+  - col: 1
+    row: 0
+  - col: 1
+    row: 1
+  - col: 2
+    row: 1
+  - col: 2
+    row: 2
+  - col: 3
+    row: 2
+  - col: 4
+    row: 2
+  - col: 5
+    row: 2
+  - col: 6
+    row: 2
+  - col: 7
+    row: 2
+  - col: 8
+    row: 2
+  - col: 9
+    row: 2
+  - col: 0
+    row: 1
+  - col: 0
+    row: 2
+  - col: 1
+    row: 2
+  - col: 2
+    row: 0
+  - col: 3
+    row: 0
+  - col: 3
+    row: 1
+  - col: 4
+    row: 0
+  - col: 5
+    row: 0
+  - col: 6
+    row: 0
+  - col: 6
+    row: 1
+  - col: 7
+    row: 1
+  - col: 4
+    row: 1

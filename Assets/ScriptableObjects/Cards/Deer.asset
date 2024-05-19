@@ -13,14 +13,22 @@ MonoBehaviour:
   m_Name: Deer
   m_EditorClassIdentifier: 
   Name: Deer
-  Health: 0
-  Attack: 0
-  ManaCost: 1
+  ManaCost: 2
+  ShopCost: 0
   Artwork: {fileID: 0}
-  BelongsToPlayer: 1
-  team: 0
-  CardInteractableRef: {fileID: 0}
-  TileInteractableRef: {fileID: 0}
-  AttackDirections:
-  - {x: 0, y: 1}
-  - {x: 0, y: -1}
+  drawStatus: 0
+  id: 0
+  CurrentTeam: 2
+  Health: 1
+  CanMove: 1
+  CanAttack: 0
+  isSelected: 0
+  BaseDamage: 2
+  UnitCardInteractableRef: {fileID: 0}
+  Attacks:
+  - direction: {x: 0, y: 1}
+    damage: 2
+  - direction: {x: 0, y: -1}
+    damage: 2
+  Abilities: []
+  StatusEffects: []

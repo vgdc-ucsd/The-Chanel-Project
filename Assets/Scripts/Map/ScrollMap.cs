@@ -17,7 +17,7 @@ public class ScrollMap : MonoBehaviour
         mapGridRef = FindObjectOfType<MapGenerator>();
     }
 
-    private void Init()
+    public void Init()
     {
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -29,7 +29,7 @@ public class ScrollMap : MonoBehaviour
     {
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
-            float endNodeXPos = mapGridRef.row3[mapGridRef.row3.Count - 1].GetComponent<RectTransform>().localPosition.x - (10 * sensitivity);
+            float endNodeXPos = mapGridRef.exitInstace.GetComponent<RectTransform>().localPosition.x - (10 * sensitivity);
             if (endNodeXPos > (GetComponent<RectTransform>().sizeDelta.x / 2f) - sidePadding)
             {
                 foreach (var child in children)
@@ -40,7 +40,8 @@ public class ScrollMap : MonoBehaviour
         }
         else if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
-            float startNodeXPos = mapGridRef.row1[0].GetComponent<RectTransform>().localPosition.x + (10 * sensitivity);
+            float startNodeXPos = mapGridRef.startInstace.GetComponent<RectTransform>().localPosition.x + (10 * sensitivity);
+
             if (startNodeXPos < -(GetComponent<RectTransform>().sizeDelta.x / 2f) + sidePadding)
             {
                 foreach (var child in children)

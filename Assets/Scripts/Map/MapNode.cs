@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Vector3 = UnityEngine.Vector3;
 
@@ -19,15 +20,15 @@ IPointerExitHandler
     public MapNodeType mapNodeType;
     public List<MapNode> nextNodes;
     public List<MapNode> prevNodes;
+    public List<Connection> connections = new();
 
-    private bool initialized;
-    public int row = 1;
+    [HideInInspector] public bool initialized;
+    // public int row = 1;
+    public Point point;
     private MapGenerator mapGenerator;
 
     private void Start()
     {
-        // Set locked to true initially
-        locked = true;
         mapGenerator = FindObjectOfType<MapGenerator>();
     }
 
@@ -36,7 +37,7 @@ IPointerExitHandler
         // Initialize here because it is called after Start
         if (!initialized)
         {
-            visited = gameObject == mapGenerator.row1[0];
+            visited = gameObject == mapGenerator.startInstace;
             if (visited == true)
             {
                 foreach (var node in nextNodes)
@@ -62,18 +63,18 @@ IPointerExitHandler
         // This can be done by doing a either a sprite swap or instantiate a 'X' on it
 
         // Lock all other nodes
-        FindObjectOfType<MapGenerator>().LockSiblingNodes();
-
-        // Unlock all of its nextNodes
-        foreach (var node in nextNodes)
-        {
-            node.locked = false;
-        }
+        mapGenerator.LockSiblingNodes(this);
+        mapGenerator.lastVisitedNode = this;
 
         // TODO: Load new scene after click
         int mapNodeTypeIdx = -1;
         if (mapNodeType == MapNodeType.Encounter)
         {
+            if(MenuScript.Instance != null) {
+                int randomIndex = UnityEngine.Random.Range(0, EncounterManager.Instance.Encounters.Count);
+                PersistentData.Instance.CurrentEncounter = EncounterManager.Instance.Encounters[randomIndex];
+            }
+            
             mapNodeTypeIdx = 2;
         }
         else if (mapNodeType == MapNodeType.Shop)
@@ -95,6 +96,7 @@ IPointerExitHandler
 
         if (mapNodeTypeIdx != -1)
         {
+            mapGenerator.SaveMap();
             FindObjectOfType<ChangeScene>().MoveToScene(mapNodeTypeIdx);
         }
     }
@@ -134,4 +136,17 @@ public enum MapNodeType
     Shop,
     Boss,
     StartOrExit
+}
+
+[Serializable]
+public class Point
+{
+    public int col;
+    public int row;
+
+    public Point(int col, int row)
+    {
+        this.col = col;
+        this.row = row;
+    }
 }

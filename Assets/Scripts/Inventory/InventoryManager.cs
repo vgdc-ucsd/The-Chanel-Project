@@ -10,31 +10,23 @@ using UnityEngine.UI;
 public class InventoryManager : MonoBehaviour
 {
     // IGNORE THIS maxItems. IT IS FOR TESTING PURPOSES
-    public int maxItems = 10;
-    // IDK IF THIS IS SUPPOSED TO BE A LIST OF CARDS OR A DECK
-    public List<Card> cards;
+    public int maxItems = 100;
     public InventoryUI inventoryUI;
 
     void Start()
     {
-        // Create a new list at the start
-        InitializeInventory();
 
         // NOTE: There should only be one object with InventoryUI scripts. If not
         // this line does not work properly.
         inventoryUI = FindObjectOfType<InventoryUI>();
     }
 
-    private void InitializeInventory()
-    {
-        cards = new List<Card>(maxItems);
-    }
 
     public void AddItem(Card card)
     {
-        if (cards.Count < maxItems)
+        if (PersistentData.Instance.Inventory.CardCount() < maxItems)
         {
-            cards.Add(card);
+            PersistentData.Instance.Inventory.InactiveCards.Add(card);
         }
         else
         {
@@ -46,13 +38,13 @@ public class InventoryManager : MonoBehaviour
 
     public void RemoveItem(Card card)
     {
-        cards.Remove(card);
+        PersistentData.Instance.Inventory.Remove(card);
 
         inventoryUI.RefreshInventoryItems();
     }
 
     // Quicksort to sort 'items' list by name (in ascending order)
-    public List<Card> SortItemsByName(List<Card> cards, int leftIndex, int rightIndex)
+    public List<UnitCard> SortItemsByName(List<UnitCard> cards, int leftIndex, int rightIndex)
     {
         var i = leftIndex;
         var j = rightIndex;
@@ -73,7 +65,7 @@ public class InventoryManager : MonoBehaviour
 
             if (i <= j)
             {
-                Card temp = cards[i];
+                UnitCard temp = cards[i];
                 cards[i] = cards[j];
                 cards[j] = temp;
                 i++;

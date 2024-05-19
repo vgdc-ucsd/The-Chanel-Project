@@ -451,6 +451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbb62d10bce51034ab3e2992882ef2a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapInfo: {fileID: 11400000, guid: 63f54fb4a911fb647896b2ddea38335e, type: 2}
   Points: []
   row1: []
   row2: []
@@ -493,6 +494,9 @@ MonoBehaviour:
     randomization: 0.418
   - mapNodeType: 0
     randomization: 0
+  startInstace: {fileID: 0}
+  exitInstace: {fileID: 0}
+  lastVisitedNode: {fileID: 0}
 --- !u!1 &1743649444
 GameObject:
   m_ObjectHideFlags: 0

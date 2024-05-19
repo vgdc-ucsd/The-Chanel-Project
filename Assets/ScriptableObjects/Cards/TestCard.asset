@@ -12,18 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1ad278697cae34da6360ecf631cd87, type: 3}
   m_Name: TestCard
   m_EditorClassIdentifier: 
-  enableLogging: 0
   Name: 
-  Health: 0
-  AttackDamage: 0
   ManaCost: 0
-  isSelected: 0
-  isActive: 0
   Artwork: {fileID: 0}
-  team: 2
-  CardInteractableRef: {fileID: 0}
-  AttackDirections:
-  - {x: 1, y: 1}
-  AttackDamages: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+  CurrentTeam: 2
+  Health: 0
+  CanMove: 1
+  isSelected: 0
+  BaseDamage: 1
+  UnitCardInteractableRef: {fileID: 0}
+  Attacks: []
   Abilities:
   - {fileID: 0}

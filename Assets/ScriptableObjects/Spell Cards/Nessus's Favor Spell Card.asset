@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a742083026aceed478e705701ed9c728, type: 3}
+  m_Name: Nessus's Favor Spell Card
+  m_EditorClassIdentifier: 
+  Name: Nessus's Favor
+  ManaCost: 2
+  ShopCost: 0
+  Artwork: {fileID: 0}
+  drawStatus: 0
+  id: 0
+  description: When cast on an ally, its next attack poisons all enemies damaged.
+  CurrentTeam: 2
+  SpellCardInteractableRef: {fileID: 0}
+  abilityTemplate: {fileID: 11400000, guid: 0b0a52c9bb76157449196df4c350c569, type: 2}
