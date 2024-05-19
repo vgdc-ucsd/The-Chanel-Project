@@ -14,5 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Tsunami
   ManaCost: 2
+  ShopCost: 0
   Artwork: {fileID: 0}
+  drawStatus: 0
+  id: 0
+  description: Pushes all enemy cards in a row back 1 tile.
   CurrentTeam: 2
+  SpellCardInteractableRef: {fileID: 0}

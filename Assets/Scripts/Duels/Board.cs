@@ -104,6 +104,24 @@ public class Board
 
     }
 
+    public void TeleportCard(UnitCard card, BoardCoords pos, DuelInstance duel)
+    {
+        // move card and update board and card data
+        if (IsOutOfBounds(pos)) return;
+        SetCard(null, card.Pos);
+        SetCard(card, pos);
+        card.Pos = pos;
+        AnimationManager.Instance.MoveCardAnimation(duel, card, pos);
+        if (duel == DuelManager.Instance.MainDuel)
+        {
+            // TODO fix animation
+            Transform targetTransform = BoardInterface.Instance.GetTile(pos).transform;
+            IEnumerator ie = AnimationManager.Instance.MoveCard(card, targetTransform, 0.2f);
+            AnimationManager.Instance.Play(ie);
+        }
+
+    }
+
     public void RenewMovement(Team t) {
         for(int i = 0; i < Cols; i++) {
             for(int j = 0; j < Rows; j++) {
