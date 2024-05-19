@@ -54,6 +54,7 @@ public class MapGenerator : MonoBehaviour
 
     void Start()
     {
+        Debug.Log(PersistentData.Instance);
         if (PersistentData.Instance != null)
         {
             LoadMap(mapInfo);
