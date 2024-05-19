@@ -21,7 +21,6 @@ public class InventoryManager : MonoBehaviour
         inventoryUI = FindObjectOfType<InventoryUI>();
     }
 
-
     public void AddItem(Card card)
     {
         if (PersistentData.Instance.Inventory.CardCount() < maxItems)

@@ -9,10 +9,14 @@ public class ShopManager : MonoBehaviour
 {
     // Collection of Cards Player Unlocked
     public Deck cardCollection;
-    // Player's Current Deck
-    public Deck playerDeck;
+    public Deck playerDeck; // use persistant data
+
+    [HideInInspector]
+    public List<Card> availableShopCards;
+
+
     // Player's Gold
-    public int playerGold;
+    public int playerGold; // use persistant data
 
     //TEST, Text Reference for Player Gold
     public TextMeshProUGUI goldText;
@@ -32,6 +36,15 @@ public class ShopManager : MonoBehaviour
         playerGold = 4;
 
         goldText.text = "Gold: " + playerGold.ToString();
+
+        // Adds cards that the player doesn't have into the shop
+        foreach (Card card in cardCollection.CardList)
+        {
+            if (!playerDeck.CardList.Contains(card))
+            {
+                availableShopCards.Add(card);
+            }
+        }
     }
 
     // TESTING ONLY, REMOVE LATER
