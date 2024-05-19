@@ -37,12 +37,12 @@ public class DuelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(MenuScript.Instance == null) {
+        if(PersistentData.Instance == null) {
             Debug.LogWarning("Could not load encounter data");
         }
         else {
-            Settings = MenuScript.Instance.CurrentEncounter.Settings;
-            EnemyDeck = MenuScript.Instance.CurrentEncounter.EnemyDeck;
+            Settings = PersistentData.Instance.CurrentEncounter.Settings;
+            EnemyDeck = PersistentData.Instance.CurrentEncounter.EnemyDeck;
         }
 
         CheckProperInitialization();
