@@ -1338,6 +1338,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CardName: {fileID: 1883484595}
   Description: {fileID: 670124569}
+  Image: {fileID: 0}
 --- !u!1 &580135122
 GameObject:
   m_ObjectHideFlags: 0

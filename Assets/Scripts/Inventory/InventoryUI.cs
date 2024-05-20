@@ -16,6 +16,9 @@ public class InventoryUI : MonoBehaviour
 
     List<CardInteractable> ciList = new List<CardInteractable>();
 
+    // Display Card
+    public CardInfoPanel inventoryInfoPanel;
+    public TextMeshProUGUI cardCountText;
 
     PersistentData.InventoryData inventory;
 
@@ -83,6 +86,9 @@ public class InventoryUI : MonoBehaviour
             i++;
         }
 
+
+        // Adds Cards Count
+        cardCountText.text = inventory.CardCount() + "";
     }
 
     public void HandleClick(Card card)
@@ -140,5 +146,6 @@ public class InventoryUI : MonoBehaviour
         {
 
         }
+
     }
 }
