@@ -128,7 +128,7 @@ public class UnitCard : Card
     {
         this.Pos = pos;
         CanMove = false;
-        CanAttack = false;
+        CanAttack = true;
 
         baseStats.health = this.Health;
         List<Attack> atkList = new List<Attack>();

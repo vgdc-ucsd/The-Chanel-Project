@@ -38,27 +38,27 @@ public class MctsAI
     }
 
     const int MAX_TURNS = 100;
-    const int CHILD_COUNT = 6;
-    const int MAX_ITERATIONS = 120;
+    const int CHILD_COUNT = 9;
+    const int MAX_ITERATIONS = 300;
 
-    const int WEIGHTED_MAX_TURNS = 10;
+    const int WEIGHTED_MAX_TURNS = 4;
 
     // probability that the AI will consider these actions
-    float aiMovementChance = 0.4f;
+    float aiMovementChance = 0.6f;
     float aiPushChance = 0.7f;
-    float aiDrawChance = 0.15f;
+    float aiDrawChance = 0.1f;
 
     // probability that the AI will anticipate the player doing these actions
     float playerMovementChance = 0.4f;
     float playerPushChance = 0.5f;
-    float playerDrawChance = 0.15f;
+    float playerDrawChance = 0.1f;
 
     // how much the AI likes enemy/player cards positioned at corresponding y value
     // multiplied by mana cost of card
     static float[] ENEMY_CARD_POSITIONING_WEIGHTS = { 30, 20, 3, 2 };
-    static float[] PLAYER_CARD_POSITIONING_WEIGHTS = { -8, -10, -20, -50 };
+    static float[] PLAYER_CARD_POSITIONING_WEIGHTS = { -8, -10, -20, -80 };
 
-    const float STATUS_DAMAGE_WEIGHT = 50; // weight bias/penalty per pt of damage taken by player/enemy
+    const float STATUS_DAMAGE_WEIGHT = 150; // weight bias/penalty per pt of damage taken by player/enemy
 
 
     private List<Node> nodes;
@@ -196,9 +196,9 @@ public class MctsAI
         foreach (UnitCard card in duel.DuelBoard.GetAllCards())
         {
             if (card.CurrentTeam == Team.Player) 
-                score += 2 * PLAYER_CARD_POSITIONING_WEIGHTS[card.Pos.y] * card.ManaCost * (card.Health / card.baseStats.health) ;
+                score += PLAYER_CARD_POSITIONING_WEIGHTS[card.Pos.y] * card.ManaCost * (card.Health / card.baseStats.health + 1) ;
             else if (card.CurrentTeam == Team.Enemy) 
-                score += 2 * ENEMY_CARD_POSITIONING_WEIGHTS[card.Pos.y] * card.ManaCost * (card.Health / card.baseStats.health);
+                score += ENEMY_CARD_POSITIONING_WEIGHTS[card.Pos.y] * card.ManaCost * (card.Health / card.baseStats.health + 1);
         }
         score += (originalState.GetStatus(Team.Player).Health - duel.GetStatus(Team.Player).Health) * STATUS_DAMAGE_WEIGHT;
         score -= (originalState.GetStatus(Team.Enemy).Health - duel.GetStatus(Team.Enemy).Health) * STATUS_DAMAGE_WEIGHT;
@@ -426,7 +426,7 @@ public class MctsAI
         List<UnitCard> results = new List<UnitCard>();
         foreach(UnitCard uc in board.CardSlots) {
             if (uc != null) {
-                if(uc.CurrentTeam == team && board.GetEmptyAdjacentTiles(uc.Pos).Count > 0) results.Add(uc);
+                if(uc.CurrentTeam == team && board.GetEmptyAdjacentTiles(uc.Pos).Count > 0 && uc.CanMove) results.Add(uc);
             }
         }
         return results;

@@ -111,7 +111,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: c1af7b6de9f691a4ebd260c395c4f39f, type: 2}
     - {fileID: 11400000, guid: 96538df7e080c6446bc14ab009715f80, type: 2}
   mapInfo: {fileID: 11400000, guid: 63f54fb4a911fb647896b2ddea38335e, type: 2}
-  DebugImportCards: {fileID: 0}
+  ImportDeck: {fileID: 11400000, guid: b7d8ba3d153ff854c80fe2c770da15bf, type: 2}
   CurrentEncounter: {fileID: 11400000, guid: a92bed907e362f04f81c42e688defbb9, type: 2}
 --- !u!114 &5186411577442620811
 MonoBehaviour:

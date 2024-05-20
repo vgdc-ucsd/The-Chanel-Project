@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Dragon
   m_EditorClassIdentifier: 
   Name: Dragon
-  ManaCost: 1
+  ManaCost: 4
   ShopCost: 0
   Artwork: {fileID: 21300000, guid: 71bcb4a363d71c84e86b6f45c88b6b0d, type: 3}
   drawStatus: 0

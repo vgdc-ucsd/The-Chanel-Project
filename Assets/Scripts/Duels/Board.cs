@@ -85,7 +85,7 @@ public class Board
         SetCard(null, pos);
     }
 
-    public void MoveCard(UnitCard card, BoardCoords pos, DuelInstance duel)
+    public void MoveCard(UnitCard card, BoardCoords pos, DuelInstance duel, bool pushed = false)
     {
         // move card and update board and card data
         if (IsOutOfBounds(pos)) return;
@@ -93,10 +93,14 @@ public class Board
         SetCard(null, card.Pos);
         SetCard(card, pos);
         card.Pos = pos;
-        card.CanMove = false;
-        ActivationInfo info = new ActivationInfo(duel);
-        foreach(Ability a in card.Abilities) {
-            if(a.Condition == ActivationCondition.OnMove) a.Activate(card, info);
+        if (!pushed)
+        {
+            card.CanMove = false;
+            ActivationInfo info = new ActivationInfo(duel);
+            foreach (Ability a in card.Abilities)
+            {
+                if (a.Condition == ActivationCondition.OnMove) a.Activate(card, info);
+            }
         }
 
         AnimationManager.Instance.MoveCardAnimation(duel, card, pos);
@@ -120,7 +124,11 @@ public class Board
                 BoardCoords pos = new BoardCoords(i,j);
                 if (IsOccupied(pos)) {
                     UnitCard c = GetCard(pos);
-                    if(c.CurrentTeam == t) c.CanMove = true;
+                    if (c.CurrentTeam == t)
+                    {
+                        c.CanAttack = true;
+                        c.CanMove = true;
+                    }
                 }
             }
         }

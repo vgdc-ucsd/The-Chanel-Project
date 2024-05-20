@@ -129,7 +129,7 @@ public class DuelInstance
 
 
             }
-            card.CanAttack = true;
+            
         }
     }
 
@@ -271,6 +271,8 @@ public class DuelInstance
 
         // gain 1 mana capacity every turn until it reaches the max then it caps out;
         oppositeStatus.GiveMana();
+        DuelBoard.RenewMovement(oppositeTeam);
+
 
         foreach (UnitCard card in DuelBoard.GetCardsOfTeam(oppositeTeam))
         {
@@ -284,7 +286,7 @@ public class DuelInstance
             }
         }
 
-        DuelBoard.RenewMovement(oppositeTeam);
+        
         DrawCards(oppositeTeam, 1);
     }
 

@@ -160,6 +160,7 @@ MonoBehaviour:
   Effects:
     FireEffectTemplate: {fileID: 11400000, guid: 162224b0944ce7c47a29789f46383e04, type: 2}
     PoisonEffectTemplate: {fileID: 11400000, guid: dac4cb9396ed7874f81626acf05ade59, type: 2}
+    FrozenEffectTemplate: {fileID: 11400000, guid: 5552cc1104484994185fe7633a524a74, type: 2}
   Settings:
     SameSettingsForBothPlayers: 1
     Player:

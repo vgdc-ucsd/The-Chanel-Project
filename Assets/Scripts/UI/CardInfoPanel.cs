@@ -39,6 +39,6 @@ public class CardInfoPanel : MonoBehaviour
     public void UpdateInfoPanelSpellCard(SpellCard sc) {
         CardName.text = sc.Name;
         Description.text = sc.description;
-        SpriteImage.sprite = sc.Artwork;
+        if (SpriteImage != null) SpriteImage.sprite = sc.Artwork;
     }
 }

@@ -196,5 +196,6 @@ public class DuelManager : MonoBehaviour
     {
         public FireEffect FireEffectTemplate;
         public PoisonEffect PoisonEffectTemplate;
+        public FrozenEffect FrozenEffectTemplate;
     }
 }
