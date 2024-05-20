@@ -8,6 +8,10 @@ public class NavButtons : MonoBehaviour
     public void PlayGame()
     {
         SceneManager.LoadScene(1);
+        PersistentData.Instance.mapInfo.nodePoints = new();
+        PersistentData.Instance.mapInfo.nodeTypes = new();
+        PersistentData.Instance.mapInfo.nodeConnections = new();
+        PersistentData.Instance.mapInfo.lastVisitedNode = new(0, 0);
     }
 
     public void QuitGame()
