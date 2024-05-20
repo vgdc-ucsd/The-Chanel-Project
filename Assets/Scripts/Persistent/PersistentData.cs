@@ -9,7 +9,7 @@ public class PersistentData : MonoBehaviour
     public InventoryData Inventory = new InventoryData();
     public MapInfo mapInfo;
 
-    public Deck DebugImportCards;
+    public Deck ImportDeck;
 
     private void Awake()
     {
@@ -21,13 +21,17 @@ public class PersistentData : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
 
-        if (DebugImportCards != null)
+        if (ImportDeck != null)
         {
             Inventory.InactiveCards.Clear();
             Inventory.ActiveCards.Clear();
-            foreach (Card card in DebugImportCards.CardList)
+            foreach (Card card in ImportDeck.CardList)
             {
-                Inventory.InactiveCards.Add(card);
+                if (Inventory.ActiveCards.Count < Deck.DECK_SIZE)
+                {
+                    Inventory.ActiveCards.Add(card);
+                }
+                else Inventory.InactiveCards.Add(card);
             }
         }
 

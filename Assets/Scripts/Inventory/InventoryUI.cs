@@ -7,6 +7,7 @@ public class InventoryUI : MonoBehaviour
 {
     const int ROW_SIZE = 6;
 
+
     public static InventoryUI Instance;
     [SerializeField] InventoryManager inventoryManager;
     [SerializeField] Transform inventoryContainer;
@@ -21,6 +22,9 @@ public class InventoryUI : MonoBehaviour
     public TextMeshProUGUI cardCountText;
 
     PersistentData.InventoryData inventory;
+
+    Coroutine deckSizeWarnCor;
+    public TMP_Text deckSizeWarningText;
 
     private void Awake()
     {
@@ -117,6 +121,25 @@ public class InventoryUI : MonoBehaviour
         inventory.InactiveCards.Add(card);
         inventory.ActiveCards.Remove(card);
         ArrangeCards();
+    }
+
+    public void TryExit()
+    {
+        if (inventory.ActiveCards.Count != Deck.DECK_SIZE)
+        {
+            if (deckSizeWarnCor != null) StopCoroutine(deckSizeWarnCor);
+            deckSizeWarnCor = StartCoroutine(DeckSizeWarn());
+            return;
+        }
+        MenuScript.Instance.LoadMap();
+
+    }
+
+    IEnumerator DeckSizeWarn()
+    {
+        deckSizeWarningText.enabled = true;
+        yield return new WaitForSeconds(1);
+        deckSizeWarningText.enabled = false;
     }
 
     // This method reloads/refreshes the inventory UI

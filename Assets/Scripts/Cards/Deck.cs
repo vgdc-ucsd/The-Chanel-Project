@@ -17,6 +17,8 @@ public class Deck : ScriptableObject
     public List<Card> CardList = new List<Card>();
     [HideInInspector] public int numAvailableCards = 0;
 
+    public const int DECK_SIZE = 12;
+
     private void addCard(UnitCard card)
     {
         CardList.Add(card);
