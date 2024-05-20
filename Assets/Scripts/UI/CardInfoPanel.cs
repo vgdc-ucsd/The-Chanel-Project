@@ -8,7 +8,7 @@ public class CardInfoPanel : MonoBehaviour
 {
     public TextMeshProUGUI CardName;
     public TextMeshProUGUI Description;
-    public Image Image;
+    public Image SpriteImage;
 
     // Leave blank if Combat
     [Header("Inventory")]
@@ -20,14 +20,16 @@ public class CardInfoPanel : MonoBehaviour
     public void UpdateInfoPanelUnitCard(UnitCard uc) {
         CardName.text = uc.Name;
         Description.text = uc.description;
-        Image.sprite = uc.Artwork;
+        if (SpriteImage != null){
+            SpriteImage.sprite = uc.Artwork;
+        }
     }
 
     public void UpdateInventoryInfoPanelUnitCard(UnitCard uc)
     {
         CardName.text = uc.Name;
         Description.text = uc.description;
-        Image.sprite = uc.Artwork;
+        SpriteImage.sprite = uc.Artwork;
 
         Mana.text = uc.ManaCost + "";
         Health.text = uc.Health + "";
@@ -37,6 +39,6 @@ public class CardInfoPanel : MonoBehaviour
     public void UpdateInfoPanelSpellCard(SpellCard sc) {
         CardName.text = sc.Name;
         Description.text = sc.description;
-        Image.sprite = sc.Artwork;
+        SpriteImage.sprite = sc.Artwork;
     }
 }
