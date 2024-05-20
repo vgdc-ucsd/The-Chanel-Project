@@ -20,6 +20,8 @@ public class MapGenerator : MonoBehaviour
     public List<GameObject> allNodes = new();
     public List<List<GameObject>> paths = new();
     public GameObject contents;
+    public ScrollMap scrollMap;
+    public MapCharacterController character;
 
     [Header("Prefabs")]
     public GameObject start;
@@ -53,15 +55,19 @@ public class MapGenerator : MonoBehaviour
 
     void Start()
     {
-        Debug.Log(PersistentData.Instance);
         if (PersistentData.Instance.mapInfo.nodePoints.Count != 0)
         {
+            // THIS LINE IS FOR DEBUGGING PURPOSES
+            // PersistentData.Instance.mapInfo.lastVisitedNode = new(0, 0);
             LoadMap(PersistentData.Instance.mapInfo);
         }
         else
         {
             GenerateMap();
         }
+
+        // GenerateMap();
+        // LoadMap(PersistentData.Instance.mapInfo);
     }
 
     public void GenerateMap()
@@ -151,8 +157,10 @@ public class MapGenerator : MonoBehaviour
             o.GetComponent<RectTransform>().localPosition += offsetPosition;
         }
 
-        // MapInfo mapInfo = ScriptableObject.CreateInstance<MapInfo>();
         SaveMap();
+
+        Vector2 charPos = startObj.GetComponent<RectTransform>().localPosition;
+        character.SetPosition(charPos);
     }
 
     public void SaveMap()
@@ -255,7 +263,10 @@ public class MapGenerator : MonoBehaviour
 
         InstantiateStairs();
 
-        contents.GetComponent<ScrollMap>().Init();
+        scrollMap.Init();
+
+        Vector2 charPos = lastVisitedNode.GetComponent<RectTransform>().localPosition;
+        character.SetPosition(charPos);
     }
 
     void InitializeAllNodesList()
