@@ -13,7 +13,6 @@ using static UnityEditor.PlayerSettings;
 public class MapGenerator : MonoBehaviour
 {
     [Header("Debugging Info")]
-    public MapInfo mapInfo;
     public List<Vector3> Points;
     public List<GameObject> row1;
     public List<GameObject> row2;
@@ -55,9 +54,9 @@ public class MapGenerator : MonoBehaviour
     void Start()
     {
         Debug.Log(PersistentData.Instance);
-        if (PersistentData.Instance != null)
+        if (PersistentData.Instance.mapInfo.nodePoints.Count != 0)
         {
-            LoadMap(mapInfo);
+            LoadMap(PersistentData.Instance.mapInfo);
         }
         else
         {
@@ -174,11 +173,10 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        mapInfo.nodeTypes = nodeTypes;
-        mapInfo.nodePoints = nodePoints;
-        mapInfo.nodeConnections = nodeConnections;
-        mapInfo.lastVisitedNode = lastVisitedNode.point;
-        Debug.Log(allNodes.Count);
+        PersistentData.Instance.mapInfo.nodeTypes = nodeTypes;
+        PersistentData.Instance.mapInfo.nodePoints = nodePoints;
+        PersistentData.Instance.mapInfo.nodeConnections = nodeConnections;
+        PersistentData.Instance.mapInfo.lastVisitedNode = lastVisitedNode.point;
     }
 
     public void LoadMap(MapInfo mapInfo)

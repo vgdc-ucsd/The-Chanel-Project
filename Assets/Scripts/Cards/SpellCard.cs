@@ -44,11 +44,20 @@ public abstract class SpellCard : Card
 
     public virtual void CloneExtras(SpellCard copy) { }
 
+    protected void StartCast(DuelInstance duel, BoardCoords pos)
+    {
+        if (CurrentTeam == Team.Enemy)
+        {
+            AnimationManager.Instance.PlaceSpellCardAnimationAI(duel, this, pos);
+        }
+    }
+
     protected void FinishCast(DuelInstance duel)
     {
         duel.GetStatus(CurrentTeam).UseMana(ManaCost);
         duel.GetStatus(CurrentTeam).RemoveFromHand(this);
         duel.GetStatus(CurrentTeam).Deck.Discard(this);
+
         AnimationManager.Instance.SpellDiscardAnimation(duel, this);
     }
 

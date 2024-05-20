@@ -7,13 +7,15 @@ public class SpellPortal : SpellCard, ISpellTypeUnit
 {
     public bool CastSpell(DuelInstance duel, UnitCard card)
     {
-
+        if (card == null) return false;
         Board board = duel.DuelBoard;
         BoardCoords targetPos;
         if (CurrentTeam == Team.Player) targetPos = new BoardCoords(card.Pos.x, 3);
         else targetPos = new BoardCoords(card.Pos.x, 0);
 
         if (targetPos == card.Pos) return false;
+
+        StartCast(duel, card.Pos);
 
         if (board.IsOccupied(targetPos))
         {

@@ -273,12 +273,14 @@ public class Board
     public UnitCard GetRandomCard()
     {
         List<UnitCard> cards = GetAllCards();
+        if (cards.Count == 0) return null;
         return cards[Random.Range(0, cards.Count)];
     }
 
     public UnitCard GetRandomCardOfTeam(Team team)
     {
         List<UnitCard> cards = GetCardsOfTeam(team);
+        if (cards.Count == 0) return null;
         return cards[Random.Range(0, cards.Count)];
     }
 }

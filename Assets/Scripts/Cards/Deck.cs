@@ -26,6 +26,10 @@ public class Deck : ScriptableObject
     {
 
     }
+    public void LoadCards(List<Card> cards)
+    {
+        CardList = cards;
+    }
 
     public void Init()
     {

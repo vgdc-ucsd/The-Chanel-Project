@@ -40,7 +40,7 @@ MonoBehaviour:
     ShowEnemyHand: 0
     DisableWinning: 0
   EnemyArt: {fileID: 0}
-  EnemyDeck: {fileID: 11400000, guid: 3fee81777dd337d44af028e8dc03f5ee, type: 2}
+  EnemyDeck: {fileID: 11400000, guid: fb3a3b98a4bf81345bdec01436ad3966, type: 2}
   RewardGold: 0
   CardOffers:
   - {fileID: 11400000, guid: ec5f0323c276dc141bf415a48ede4a84, type: 2}

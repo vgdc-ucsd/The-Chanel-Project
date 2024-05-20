@@ -13,6 +13,8 @@ public class SpellTsunami : SpellCard , ISpellTypeTile
         Board board = duel.DuelBoard;
         if (board.IsOutOfBounds(pos + push)) return false;
 
+        StartCast(duel, pos);
+
         List<UnitCard> pushedCards = new List<UnitCard>();
         foreach (UnitCard c in board.GetCardsInRow(pos.y))
         {

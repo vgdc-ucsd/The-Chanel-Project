@@ -7,6 +7,9 @@ public class SpellFlameStrike : SpellCard , ISpellTypeTile
 {
     public bool CastSpell(DuelInstance duel, BoardCoords pos)
     {
+
+        StartCast(duel, pos);
+
         List<UnitCard> damagedCards = duel.DuelBoard.GetCardsInRow(pos.y);
         foreach(UnitCard card in damagedCards)
         {

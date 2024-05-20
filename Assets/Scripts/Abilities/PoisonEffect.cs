@@ -38,12 +38,9 @@ public class PoisonEffect : StatusEffect
 
     public override void ReapplyEffect(UnitCard c, ActivationInfo info)
     {
-        foreach (Attack atk in c.Attacks)
-        {
-            if (atk.damage > 0) 
-            { 
-                atk.damage--;
-            }
+        if (c.BaseDamage > 0) 
+        { 
+            c.BaseDamage--;
         }
     }
 }

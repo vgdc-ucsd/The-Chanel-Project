@@ -196,9 +196,9 @@ public class MctsAI
         foreach (UnitCard card in duel.DuelBoard.GetAllCards())
         {
             if (card.CurrentTeam == Team.Player) 
-                score += PLAYER_CARD_POSITIONING_WEIGHTS[card.Pos.y] * card.ManaCost * card.Health;
+                score += 2 * PLAYER_CARD_POSITIONING_WEIGHTS[card.Pos.y] * card.ManaCost * (card.Health / card.baseStats.health) ;
             else if (card.CurrentTeam == Team.Enemy) 
-                score += ENEMY_CARD_POSITIONING_WEIGHTS[card.Pos.y] * card.ManaCost * card.Health;
+                score += 2 * ENEMY_CARD_POSITIONING_WEIGHTS[card.Pos.y] * card.ManaCost * (card.Health / card.baseStats.health);
         }
         score += (originalState.GetStatus(Team.Player).Health - duel.GetStatus(Team.Player).Health) * STATUS_DAMAGE_WEIGHT;
         score -= (originalState.GetStatus(Team.Enemy).Health - duel.GetStatus(Team.Enemy).Health) * STATUS_DAMAGE_WEIGHT;
@@ -311,7 +311,7 @@ public class MctsAI
                 {
                     duel.DuelBoard.PlayCard(uc, randomTile, status, duel);
                 }
-                else if (randomCard is SpellCard)
+                else if (randomCard is SpellCard sc)
                 {
                     bool success = false;
                     if (randomCard is ISpellTypeTile sct)
@@ -332,6 +332,7 @@ public class MctsAI
                     }
 
 
+
                 }
             }
             
@@ -346,7 +347,7 @@ public class MctsAI
             loopCount++;
             if (loopCount > 1000)
             {
-                UnityEngine.Debug.LogError("Failed to find random move");
+                UnityEngine.Debug.LogWarning("Failed to find random move");
                 break;
             }
         }
