@@ -162,7 +162,39 @@ public class AnimationManager : MonoBehaviour
             }
         }
 
-        yield return SimpleTranslate(cardTransform, discardPile.position, duration, InterpolationMode.EaseOut);
+        yield return SimpleTranslateThenRotate(cardTransform, discardPile.position, duration, InterpolationMode.EaseOut);
+    }
+
+    public IEnumerator SimpleTranslateThenRotate(Transform origin, Vector3 dest, float duration, InterpolationMode mode) {
+        if(origin == null) yield break;
+        CardInteractable ci = origin.gameObject.GetComponent<CardInteractable>();
+        bool couldInteract = false;
+        if(ci != null) {
+            couldInteract = ci.CanInteract;
+            ci.CanInteract = false;
+        }
+        float startTime = Time.time;
+        Vector3 startPos = origin.position;
+        float elapsedTime = Time.time - startTime;
+
+        // Interpolates between two positions until elapsedTime reaches duration
+        while(elapsedTime < duration) {
+            if(origin == null) yield break;
+            float t = elapsedTime / duration;
+            origin.position = Interpolation.Interpolate(startPos, dest, t, mode);
+            elapsedTime = Time.time - startTime;
+            yield return null;
+        }
+
+        if(origin != null) {
+            origin.position = dest;
+            origin.localEulerAngles = new Vector3(0, 0, Random.Range(-40, 40));
+        }
+        if(ci != null) {
+            ci.CanInteract = couldInteract;
+        }
+
+        
     }
 
     private IEnumerator SpellDiscard(SpellCard card) {
