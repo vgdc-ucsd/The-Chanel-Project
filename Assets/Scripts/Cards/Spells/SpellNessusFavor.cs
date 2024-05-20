@@ -18,7 +18,10 @@ public class SpellNessusFavor : SpellCard , ISpellTypeAlly
 
     public bool CastSpell(DuelInstance duel, UnitCard card)
     {
+        if (card == null) return false;
         if (card.CurrentTeam != CurrentTeam) return false;
+
+        StartCast(duel, card.Pos);
 
         NessusFavorAbility ability = ScriptableObject.Instantiate(abilityTemplate);
         ActivationInfo info = new ActivationInfo(duel);

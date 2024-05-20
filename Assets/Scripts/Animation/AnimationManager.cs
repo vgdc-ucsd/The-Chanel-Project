@@ -321,6 +321,46 @@ public class AnimationManager : MonoBehaviour
         }
     }
 
+    public IEnumerator PlaceSpellCardEnemy(SpellCard c, BoardCoords pos, float speed)
+    {
+        SpellCardInteractable scRef = c.SpellCardInteractableRef;
+
+        // make a new card interactable if there is none
+        // TODO remove since they should be generated when the enemy draws/organizes the card ?
+        if (scRef == null)
+        {
+            scRef = (SpellCardInteractable)UIManager.Instance.GenerateCardInteractable(c);
+            c.SpellCardInteractableRef = scRef;
+        }
+
+        // Show card place animation if card belongs to enemy
+        if (!DuelManager.Instance.Settings.EnablePVPMode && c.CurrentTeam == Team.Enemy)
+        {
+            // set card
+            TileInteractable tile = BoardInterface.Instance.GetTile(pos);
+            scRef.inHand = false;
+            scRef.transform.localEulerAngles = Vector3.zero;
+            scRef.transform.localScale = Vector3.one;
+            if (scRef.handInterface != null)
+            {
+                scRef.handInterface.cardObjects.Remove(scRef.gameObject);
+            }
+            scRef.transform.SetParent(tile.transform);
+            scRef.transform.localScale = Vector3.one;
+            scRef.gameObject.SetActive(true);
+
+            // remove card from hand
+            int randomIndex = Random.Range(0, UIManager.Instance.EnemyHand.cardObjects.Count);
+            GameObject cardBack = UIManager.Instance.EnemyHand.cardObjects[randomIndex];
+            UIManager.Instance.EnemyHand.cardObjects.Remove(cardBack);
+            scRef.transform.position = cardBack.transform.position;
+            Destroy(cardBack);
+
+            // translation animation
+            yield return SimpleTranslate(scRef.transform, tile.transform.position, speed, InterpolationMode.EaseOut);
+        }
+    }
+
     public IEnumerator MoveCard(UnitCard uc, Transform targetPos, float speed) {
         yield return SimpleTranslate(uc.UnitCardInteractableRef.transform, targetPos.position, speed, InterpolationMode.EaseOut);
         uc.UnitCardInteractableRef.UpdateCardPos();
@@ -538,6 +578,15 @@ public class AnimationManager : MonoBehaviour
     public void PlaceUnitCardAnimation(DuelInstance duel, UnitCard c, BoardCoords pos) {
         float speed = 0.5f; // time of animation in seconds
         IEnumerator ie = PlaceUnitCard(c, pos, speed);
+        QueueableAnimation qa = new QueueableAnimation(ie, speed);
+        duel.Animations.Enqueue(qa);
+    }
+
+    // only the AI should use this
+    public void PlaceSpellCardAnimationAI(DuelInstance duel, SpellCard c, BoardCoords pos)
+    {
+        float speed = 1f; // time of animation in seconds
+        IEnumerator ie = PlaceSpellCardEnemy(c, pos, speed);
         QueueableAnimation qa = new QueueableAnimation(ie, speed);
         duel.Animations.Enqueue(qa);
     }

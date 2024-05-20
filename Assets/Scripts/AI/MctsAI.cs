@@ -311,7 +311,7 @@ public class MctsAI
                 {
                     duel.DuelBoard.PlayCard(uc, randomTile, status, duel);
                 }
-                else if (randomCard is SpellCard)
+                else if (randomCard is SpellCard sc)
                 {
                     bool success = false;
                     if (randomCard is ISpellTypeTile sct)
@@ -330,6 +330,7 @@ public class MctsAI
                     {
                         success = scu.CastSpell(duel, duel.DuelBoard.GetRandomCard());
                     }
+
 
 
                 }
