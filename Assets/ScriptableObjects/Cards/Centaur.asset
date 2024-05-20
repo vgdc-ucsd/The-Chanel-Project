@@ -26,6 +26,11 @@ MonoBehaviour:
   isSelected: 0
   BaseDamage: 1
   UnitCardInteractableRef: {fileID: 0}
-  Attacks: []
-  Abilities: []
+  Attacks:
+  - direction: {x: 0, y: 1}
+    damage: 1
+  - direction: {x: 0, y: -1}
+    damage: 1
+  Abilities:
+  - {fileID: 11400000, guid: 04e9a33c6d08e9046beaf8bfbedce1c6, type: 2}
   StatusEffects: []

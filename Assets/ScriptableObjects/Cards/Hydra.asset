@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Hydra
   ManaCost: 4
+  ShopCost: 0
   Artwork: {fileID: 0}
+  drawStatus: 0
+  id: 0
+  description: 
   CurrentTeam: 2
   Health: 6
   CanMove: 1
+  CanAttack: 0
   isSelected: 0
   BaseDamage: 1
   UnitCardInteractableRef: {fileID: 0}
@@ -32,3 +37,4 @@ MonoBehaviour:
     damage: 1
   Abilities:
   - {fileID: 11400000, guid: 8f6ec952687836146a247c6ea9ddd955, type: 2}
+  StatusEffects: []

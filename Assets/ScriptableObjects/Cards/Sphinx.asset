@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Sphinx
   ManaCost: 3
+  ShopCost: 0
   Artwork: {fileID: 0}
+  drawStatus: 0
+  id: 0
+  description: 
   CurrentTeam: 2
   Health: 4
   CanMove: 1
+  CanAttack: 0
   isSelected: 0
   BaseDamage: 2
   UnitCardInteractableRef: {fileID: 0}
@@ -26,3 +31,4 @@ MonoBehaviour:
     damage: 2
   Abilities:
   - {fileID: 11400000, guid: 7cc5e481715aebf43aa99e8561cc7718, type: 2}
+  StatusEffects: []

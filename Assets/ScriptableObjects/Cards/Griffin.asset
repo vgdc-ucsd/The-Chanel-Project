@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Griffin
   ManaCost: 3
+  ShopCost: 0
   Artwork: {fileID: 0}
+  drawStatus: 0
+  id: 0
+  description: 
   CurrentTeam: 2
   Health: 7
   CanMove: 1
+  CanAttack: 0
   isSelected: 0
   BaseDamage: 2
   UnitCardInteractableRef: {fileID: 0}
@@ -33,3 +38,4 @@ MonoBehaviour:
   - direction: {x: 1, y: 0}
     damage: 2
   Abilities: []
+  StatusEffects: []
