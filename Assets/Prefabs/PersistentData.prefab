@@ -94,12 +94,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Inventory:
     InactiveCards:
-    - {fileID: 11400000, guid: ec5f0323c276dc141bf415a48ede4a84, type: 2}
+    - {fileID: 11400000, guid: f3b69c70ca0bb6b4792c30e461bc866c, type: 2}
+    - {fileID: 11400000, guid: b0588fcb2d650924aad9a7445cb13b24, type: 2}
+    - {fileID: 11400000, guid: c39ab0e8a3dfc1742a87be83397d457c, type: 2}
+    ActiveCards:
+    - {fileID: 11400000, guid: 575c3927bbdd81043bedbd79b3f941b4, type: 2}
+    - {fileID: 11400000, guid: 2c284dc844ac6964da4c0d7527b24de9, type: 2}
+    - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
+    - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
     - {fileID: 11400000, guid: a88c7d8913880fd4aa37c9ba6619601b, type: 2}
-    - {fileID: 11400000, guid: 34690e13dc6b06544aceb4d763edda1c, type: 2}
-    ActiveCards: []
+    - {fileID: 11400000, guid: a88c7d8913880fd4aa37c9ba6619601b, type: 2}
+    - {fileID: 11400000, guid: c39ab0e8a3dfc1742a87be83397d457c, type: 2}
+    - {fileID: 11400000, guid: c39ab0e8a3dfc1742a87be83397d457c, type: 2}
+    - {fileID: 11400000, guid: 3140f3a6a1ea936499c7203083f2c746, type: 2}
+    - {fileID: 11400000, guid: e7bb028145f1efc45ae1da90255731d8, type: 2}
+    - {fileID: 11400000, guid: c1af7b6de9f691a4ebd260c395c4f39f, type: 2}
+    - {fileID: 11400000, guid: 96538df7e080c6446bc14ab009715f80, type: 2}
   mapInfo: {fileID: 11400000, guid: 63f54fb4a911fb647896b2ddea38335e, type: 2}
-  DebugImportCards: {fileID: 11400000, guid: 22819085b6b6e9847970a66ba359bb83, type: 2}
+  DebugImportCards: {fileID: 0}
   CurrentEncounter: {fileID: 11400000, guid: a92bed907e362f04f81c42e688defbb9, type: 2}
 --- !u!114 &5186411577442620811
 MonoBehaviour:

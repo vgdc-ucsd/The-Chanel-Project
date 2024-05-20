@@ -6,7 +6,7 @@ using UnityEngine;
 public class InventoryUI : MonoBehaviour
 {
     const int ROW_SIZE = 6;
-    const int DECK_SIZE = 12;
+
 
     public static InventoryUI Instance;
     [SerializeField] InventoryManager inventoryManager;
@@ -125,7 +125,7 @@ public class InventoryUI : MonoBehaviour
 
     public void TryExit()
     {
-        if (inventory.ActiveCards.Count != DECK_SIZE)
+        if (inventory.ActiveCards.Count != Deck.DECK_SIZE)
         {
             if (deckSizeWarnCor != null) StopCoroutine(deckSizeWarnCor);
             deckSizeWarnCor = StartCoroutine(DeckSizeWarn());
