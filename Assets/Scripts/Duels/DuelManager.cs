@@ -51,15 +51,19 @@ public class DuelManager : MonoBehaviour
             EnemyDeck = PersistentData.Instance.CurrentEncounter.EnemyDeck;
         }
 
+        CheckProperInitialization();
+
+        PlayerDeck = ScriptableObject.Instantiate(PlayerDeck);
         if (loadDeckFromInventory)
         {
             PlayerDeck.LoadCards(PersistentData.Instance.Inventory.ActiveCards);
         }
-        CheckProperInitialization();
+        EnemyDeck = ScriptableObject.Instantiate(EnemyDeck);
+        
 
         // DuelInstance Setup
-        CharStatus PlayerStatus = new CharStatus(Team.Player, ScriptableObject.Instantiate(PlayerDeck));
-        CharStatus EnemyStatus = new CharStatus(Team.Enemy, ScriptableObject.Instantiate(EnemyDeck));
+        CharStatus PlayerStatus = new CharStatus(Team.Player, PlayerDeck);
+        CharStatus EnemyStatus = new CharStatus(Team.Enemy, EnemyDeck);
         PlayerStatus.Deck.Init();
         EnemyStatus.Deck.Init();
         Board board = new Board(Settings.BoardRows, Settings.BoardCols);

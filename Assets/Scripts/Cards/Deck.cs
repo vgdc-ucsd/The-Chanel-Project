@@ -26,6 +26,8 @@ public class Deck : ScriptableObject
     {
 
     }
+
+    // NOT A DEEP COPY; must use Init() after loading
     public void LoadCards(List<Card> cards)
     {
         CardList = cards;
