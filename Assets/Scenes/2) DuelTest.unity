@@ -187,9 +187,10 @@ MonoBehaviour:
     UnlimitedMana: 0
     ShowEnemyHand: 0
     DisableWinning: 1
-  PlayerDeck: {fileID: 11400000, guid: d925836930c25ea47a6472a49b1ff310, type: 2}
+  PlayerDeck: {fileID: 11400000, guid: f39f86b1760608f4aa6058519ffc2f85, type: 2}
   EnemyDeck: {fileID: 11400000, guid: 3fee81777dd337d44af028e8dc03f5ee, type: 2}
   currentTeam: 0
+  loadDeckFromInventory: 0
 --- !u!114 &37294270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1338,7 +1339,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CardName: {fileID: 1883484595}
   Description: {fileID: 670124569}
-  Image: {fileID: 0}
+  SpriteImage: {fileID: 0}
+  Mana: {fileID: 0}
+  Health: {fileID: 0}
+  Atk: {fileID: 0}
 --- !u!1 &580135122
 GameObject:
   m_ObjectHideFlags: 0
@@ -3310,7 +3314,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 207.30995, y: -127.9}
+  m_AnchoredPosition: {x: 207.30995, y: -156.1}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1694186254
@@ -3983,6 +3987,7 @@ GameObject:
   - component: {fileID: 1890215679}
   - component: {fileID: 1890215678}
   - component: {fileID: 1890215677}
+  - component: {fileID: 1890215680}
   m_Layer: 0
   m_Name: Draw Card
   m_TagString: Untagged
@@ -3997,7 +4002,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1890215675}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4007,8 +4012,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 223.81, y: -17.9}
-  m_SizeDelta: {x: 145.29, y: 23.3}
+  m_AnchoredPosition: {x: 207, y: -60}
+  m_SizeDelta: {x: 80, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1890215677
 MonoBehaviour:
@@ -4079,7 +4084,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4104,6 +4109,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1890215675}
   m_CullTransparentMesh: 1
+--- !u!114 &1890215680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1890215675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1965284e2fcb7e147be0ac5edcf99e3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1930321015
 GameObject:
   m_ObjectHideFlags: 0
@@ -4348,7 +4365,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Draw Card
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4457,7 +4474,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 207.31, y: -55.58}
+  m_AnchoredPosition: {x: 207, y: -60}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2049375915
@@ -4613,7 +4630,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 207.30995, y: -55.580006}
+  m_AnchoredPosition: {x: 207.30995, y: -135.7}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2136818690

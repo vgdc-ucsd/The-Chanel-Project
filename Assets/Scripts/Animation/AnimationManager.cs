@@ -194,7 +194,7 @@ public class AnimationManager : MonoBehaviour
             ci.CanInteract = couldInteract;
         }
 
-        
+
     }
 
     private IEnumerator SpellDiscard(SpellCard card) {
@@ -224,8 +224,6 @@ public class AnimationManager : MonoBehaviour
     }
 
     private IEnumerator DrawCards(List<Card> cards, Team team) {
-        int childIndex = 0;
-
         Transform drawPile;
         Transform discardPile;
 
@@ -237,6 +235,8 @@ public class AnimationManager : MonoBehaviour
             drawPile = UIManager.Instance.EnemyDraw;
             discardPile = UIManager.Instance.EnemyDiscard;
         }
+
+        int childIndex = drawPile.childCount - 1;
 
         if(discardPile.childCount>=1 && drawPile.childCount==0) {
             yield return ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
@@ -260,7 +260,7 @@ public class AnimationManager : MonoBehaviour
                 }
                 cardObject.transform.position = drawPile.position;
                 Destroy(drawPile.GetChild(childIndex).gameObject);
-                childIndex++;
+                childIndex--;
             }
         }
         // draw then shuffle then draw
@@ -282,7 +282,7 @@ public class AnimationManager : MonoBehaviour
                 }
                 cardObject.transform.position = drawPile.position;
                 Destroy(drawPile.GetChild(childIndex).gameObject);
-                childIndex++;
+                childIndex--;
             }
 
             yield return ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
