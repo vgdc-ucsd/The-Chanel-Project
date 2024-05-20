@@ -18,9 +18,11 @@ MonoBehaviour:
   Artwork: {fileID: 0}
   drawStatus: 2
   id: 3
+  description: 
   CurrentTeam: 2
   Health: 3
   CanMove: 1
+  CanAttack: 0
   isSelected: 0
   BaseDamage: 1
   UnitCardInteractableRef: {fileID: 0}

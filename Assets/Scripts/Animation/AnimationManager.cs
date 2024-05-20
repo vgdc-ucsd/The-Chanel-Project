@@ -640,9 +640,11 @@ public class AnimationManager : MonoBehaviour
     }
 
     public void DamageCardAnimation(DuelInstance duel, UnitCard c, Color col) {
-        IEnumerator shake = ShakeCard(c, 2.0f, 0.2f);
-        QueueableAnimation shakeAnim = new QueueableAnimation(shake, 0.0f);
-        duel.Animations.Enqueue(shakeAnim);
+        if (!col.Equals(Color.green)) {
+            IEnumerator shake = ShakeCard(c, 2.0f, 0.2f);
+            QueueableAnimation shakeAnim = new QueueableAnimation(shake, 0.0f);
+            duel.Animations.Enqueue(shakeAnim);
+        }
 
         float duration = 0.75f;
         IEnumerator ie = DamageFlash(c, duration, col);

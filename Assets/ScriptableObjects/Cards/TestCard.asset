@@ -14,13 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: 
   ManaCost: 0
+  ShopCost: 0
   Artwork: {fileID: 0}
+  drawStatus: 0
+  id: 0
+  description: 
   CurrentTeam: 2
   Health: 0
   CanMove: 1
+  CanAttack: 0
   isSelected: 0
   BaseDamage: 1
   UnitCardInteractableRef: {fileID: 0}
   Attacks: []
   Abilities:
   - {fileID: 0}
+  StatusEffects: []
