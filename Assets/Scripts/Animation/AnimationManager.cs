@@ -529,7 +529,9 @@ public class AnimationManager : MonoBehaviour
     }
 
     private IEnumerator ShuffleDiscardIntoDeckAnimation(Transform discard, Transform draw) { // only call from other coroutines in this script
-        foreach(Transform t in discard) {
+        int shuffleCount = discard.childCount;
+        for (int i = 0; i < shuffleCount; i++){
+            Transform t = discard.GetChild(0);
             GameObject cardBack = Instantiate(UIManager.Instance.TemplateCardBack);
             cardBack.transform.position = t.position;
             cardBack.transform.SetParent(draw);
