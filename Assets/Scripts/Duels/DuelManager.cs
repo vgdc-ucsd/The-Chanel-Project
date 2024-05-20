@@ -27,6 +27,8 @@ public class DuelManager : MonoBehaviour
     private bool awaitingAI;
     public Team currentTeam;
 
+    public bool loadDeckFromInventory = false;
+
 
     void Awake() {
         // Singleton
@@ -49,6 +51,10 @@ public class DuelManager : MonoBehaviour
             EnemyDeck = PersistentData.Instance.CurrentEncounter.EnemyDeck;
         }
 
+        if (loadDeckFromInventory)
+        {
+            PlayerDeck.LoadCards(PersistentData.Instance.Inventory.ActiveCards);
+        }
         CheckProperInitialization();
 
         // DuelInstance Setup
