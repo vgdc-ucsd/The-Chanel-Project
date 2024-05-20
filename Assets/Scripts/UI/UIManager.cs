@@ -140,7 +140,7 @@ public class UIManager : MonoBehaviour
     public void ShowDeckView(List<Card> cards) {
         DeckViewObject.SetActive(true);
 
-        for(int i = 0; i < cards.Count; i++) {
+        for(int i = 0; i < Mathf.Min(12 , cards.Count); i++) {
             Card c = cards[i].Clone();
             c.CurrentTeam = Team.Neutral;
             CardInteractable ci = GenerateCardInteractable(c);
