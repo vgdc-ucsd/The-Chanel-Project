@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public enum CIMode
 {
-    Duel, Inventory
+    Duel, Inventory, Reward
 }
 
 // The MonoBehavior counterpart for a Card, this is what the user actually interacts with
@@ -57,7 +57,11 @@ public abstract class CardInteractable : MonoBehaviour,
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        if (mode != CIMode.Duel) return;
+        if (mode == CIMode.Inventory) return;
+        else if (mode == CIMode.Reward) {
+            transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+            return;
+        }
         if(inHand && CanInteract) {
             hoveredCard = this;
             hoveredCardIndex = transform.GetSiblingIndex();
@@ -70,7 +74,11 @@ public abstract class CardInteractable : MonoBehaviour,
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        if (mode != CIMode.Duel) return;
+        if (mode == CIMode.Inventory) return;
+        else if (mode == CIMode.Reward) {
+            transform.localScale = Vector3.one;
+            return;
+        }
         if (inHand) {
             if(this == hoveredCard) {
                 transform.position = basePosition;
