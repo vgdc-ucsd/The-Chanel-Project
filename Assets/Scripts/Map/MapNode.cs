@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Vector3 = UnityEngine.Vector3;
+using Vector2 = UnityEngine.Vector2;
 
 public class MapNode : MonoBehaviour,
 IPointerClickHandler,
@@ -26,10 +26,12 @@ IPointerExitHandler
     // public int row = 1;
     public Point point;
     private MapGenerator mapGenerator;
+    private MapCharacterController character;
 
     private void Start()
     {
         mapGenerator = FindObjectOfType<MapGenerator>();
+        character = mapGenerator.character;
     }
 
     private void Update()
@@ -59,14 +61,43 @@ IPointerExitHandler
         visited = true;
         locked = true;
 
-        // TODO: Show that the node has been visited
-        // This can be done by doing a either a sprite swap or instantiate a 'X' on it
-
         // Lock all other nodes
         mapGenerator.LockSiblingNodes(this);
         mapGenerator.lastVisitedNode = this;
 
-        // TODO: Load new scene after click
+        // Character script moves and then loads new scene
+        Vector2 endPos = GetComponent<RectTransform>().localPosition + transform.parent.GetComponent<RectTransform>().localPosition;
+        character.Move(endPos, this);
+    }
+
+    /// <summary>
+    /// This method is called when the mouse enters this node. It is used to show
+    /// that the mouse is 'hovering' over the node.
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (locked || visited) return;
+
+        // TODO: Show that the node is selected / being hovered on
+        // This can be done either by sprite swap or change color maybe?
+    }
+
+    /// <summary>
+    /// This method is called when the mouse exits this node. It is used to show
+    /// that the mouse is no longer 'hovering' over the node.
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (locked || visited) return;
+
+        // TODO: Show that the node is no longer selected / being hovered on
+        // This can be done either by sprite swap or change color maybe?
+    }
+
+    public void LoadSceneAfterDelay()
+    {
         int mapNodeTypeIdx = -1;
         if (mapNodeType == MapNodeType.Encounter)
         {
@@ -100,32 +131,6 @@ IPointerExitHandler
             mapGenerator.SaveMap();
             FindObjectOfType<ChangeScene>().MoveToScene(mapNodeTypeIdx);
         }
-    }
-
-    /// <summary>
-    /// This method is called when the mouse enters this node. It is used to show
-    /// that the mouse is 'hovering' over the node.
-    /// </summary>
-    /// <param name="eventData"></param>
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (locked || visited) return;
-
-        // TODO: Show that the node is selected / being hovered on
-        // This can be done either by sprite swap or change color maybe?
-    }
-
-    /// <summary>
-    /// This method is called when the mouse exits this node. It is used to show
-    /// that the mouse is no longer 'hovering' over the node.
-    /// </summary>
-    /// <param name="eventData"></param>
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        if (locked || visited) return;
-
-        // TODO: Show that the node is no longer selected / being hovered on
-        // This can be done either by sprite swap or change color maybe?
     }
 }
 
