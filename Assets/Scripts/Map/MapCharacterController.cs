@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class MapCharacterController : MonoBehaviour
@@ -13,24 +14,31 @@ public class MapCharacterController : MonoBehaviour
     Vector2 initialPos;
     Vector2 endPos;
     MapNode callerNode;
+    public Animator animations;
 
     void Start()
     {
         rt = GetComponent<RectTransform>();
     }
 
+    void Awake() {
+        animations.Play("stand");
+    }
+
     void Update()
     {
         if (isMoving)
         {
+            animations.Play("walk");
             elapsedTime = Time.time - startTime;
-            float t = Mathf.Clamp01(elapsedTime);
+            float t = Mathf.Clamp01(elapsedTime * (1/walkTime));
             float xPos = Mathf.Lerp(initialPos.x, endPos.x, t);
             float yPos = Mathf.Lerp(initialPos.y, endPos.y, t);
             rt.localPosition = new(xPos, yPos);
 
-            if (elapsedTime >= walkTime)
+            if (t >= 1)
             {
+                animations.Play("stand");
                 isMoving = false;
                 callerNode.LoadSceneAfterDelay();
             }

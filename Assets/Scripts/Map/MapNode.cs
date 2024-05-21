@@ -45,7 +45,9 @@ IPointerExitHandler
                 foreach (var node in nextNodes)
                 {
                     node.locked = false;
+                    node.GetComponent<Image>().color = Color.white;
                 }
+                
             }
             initialized = true;
         }
