@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Mummy
   ManaCost: 2
   ShopCost: 0
-  Artwork: {fileID: 0}
+  Artwork: {fileID: 21300000, guid: 51283aadd37c8a846ae06359175cbd0f, type: 3}
   drawStatus: 2
   id: 3
   description: 

@@ -298,7 +298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TemplateTile: {fileID: 1579219178362612961, guid: 999dcc045024fe34ea39ab4828116667, type: 3}
-  TemplateUnitCard: {fileID: 5529432279168170932, guid: ec86733fc6b76794da6e8b291552bdd7, type: 3}
+  TemplateUnitCard: {fileID: 5529432279168170932, guid: 801edf5fdac38ad46b0d131361ee5bc1, type: 3}
   TemplateSpellCard: {fileID: 255992776724812640, guid: 2c9213e4d0b5aad4a853179481f5e8fa, type: 3}
   TemplateCardBack: {fileID: 7125500276102778040, guid: d7539e95d28eb9649ad67a7461939a9b, type: 3}
   BoardContainer: {fileID: 1938627644}

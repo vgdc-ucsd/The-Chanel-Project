@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Hydra
   ManaCost: 4
   ShopCost: 0
-  Artwork: {fileID: 0}
+  Artwork: {fileID: 21300000, guid: 8d10eb881e4721f4f9b8bb71aa9c7dc6, type: 3}
   drawStatus: 0
   id: 0
   description: 

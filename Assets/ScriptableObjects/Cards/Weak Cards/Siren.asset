@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Siren
   ManaCost: 1
   ShopCost: 0
-  Artwork: {fileID: 0}
+  Artwork: {fileID: 21300000, guid: 37ded6fed34074e4b8874e4ff441f6e1, type: 3}
   drawStatus: 0
   id: 0
   description: 
