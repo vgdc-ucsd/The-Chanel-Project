@@ -47,10 +47,11 @@ IPointerExitHandler
                     node.locked = false;
                     node.GetComponent<Image>().color = Color.white;
                 }
-                
             }
             initialized = true;
         }
+
+        if (!locked) StartCoroutine(ManaFlicker());
     }
 
     /// <summary>
@@ -132,6 +133,53 @@ IPointerExitHandler
         {
             mapGenerator.SaveMap();
             FindObjectOfType<ChangeScene>().MoveToScene(mapNodeTypeIdx);
+        }
+    }
+
+    private IEnumerator ManaFlicker()
+    {
+        float startTime = Time.time;
+        float duration = 1.0f;
+        bool direction = true;
+        Color white = Color.white;
+        Color flicker = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+        Color col = Color.white;
+        Vector2 initScale = GetComponent<RectTransform>().sizeDelta;
+        Vector2 flickerScale = initScale * 1.1f;
+        Vector2 scale = initScale;
+
+        while (true)
+        {
+            float elapsedTime = Time.time - startTime;
+            float t = elapsedTime / duration;
+
+            if (direction)
+            {
+                col = Interpolation.Interpolate(white, flicker, t, InterpolationMode.Linear);
+                scale = Vector2.Lerp(flickerScale, initScale, t);
+
+                if (elapsedTime > duration)
+                {
+                    direction = false;
+                    startTime = Time.time;
+                }
+            }
+            else
+            {
+                col = Interpolation.Interpolate(flicker, white, t, InterpolationMode.Linear);
+                scale = Vector2.Lerp(initScale, flickerScale, t);
+
+                if (elapsedTime > duration)
+                {
+                    direction = true;
+                    startTime = Time.time;
+                }
+            }
+
+            GetComponent<Image>().color = col;
+            GetComponent<RectTransform>().sizeDelta = scale;
+
+            yield return null;
         }
     }
 }

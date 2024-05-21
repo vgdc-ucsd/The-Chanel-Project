@@ -166,6 +166,7 @@ public class MapGenerator : MonoBehaviour
         List<MapNodeType> nodeTypes = new();
         List<Point> nodePoints = new();
         List<ConnectionsList> nodeConnections = new();
+        List<bool> nodeVisited = new();
         for (int i = 0; i < allNodes.Count; i++)
         {
             MapNode curNode = allNodes[i].GetComponent<MapNode>();
@@ -176,12 +177,14 @@ public class MapGenerator : MonoBehaviour
                 nodePoints.Add(curNode.point);
                 connectionsList.connections = curNode.connections;
                 nodeConnections.Add(connectionsList);
+                nodeVisited.Add(curNode.visited);
             }
         }
 
         PersistentData.Instance.mapInfo.nodeTypes = nodeTypes;
         PersistentData.Instance.mapInfo.nodePoints = nodePoints;
         PersistentData.Instance.mapInfo.nodeConnections = nodeConnections;
+        PersistentData.Instance.mapInfo.nodeVisited = nodeVisited;
         PersistentData.Instance.mapInfo.lastVisitedNode = lastVisitedNode.point;
     }
 
@@ -231,8 +234,7 @@ public class MapGenerator : MonoBehaviour
 
             instantiatedMapNode.point = point;
             instantiatedMapNode.connections = mapInfo.nodeConnections[i].connections;
-            // instantiatedMapNode.visited = mapInfo.nodeVisited[i];
-            // instantiatedMapNode.locked = mapInfo.nodeLocked[i];
+            instantiatedMapNode.visited = mapInfo.nodeVisited[i];
             instantiatedMapNode.initialized = true;
             instantiated.tag = "UsedNodes";
 
@@ -259,13 +261,16 @@ public class MapGenerator : MonoBehaviour
         lastVisitedNode = allNodes.Find(x => x.GetComponent<MapNode>().point.col == mapInfo.lastVisitedNode.col && x.GetComponent<MapNode>().point.row == mapInfo.lastVisitedNode.row).GetComponent<MapNode>();
         LockSiblingNodes(lastVisitedNode);
 
-        foreach(GameObject obj in allNodes){
+        foreach (GameObject obj in allNodes)
+        {
             MapNode n = obj.GetComponent<MapNode>();
-            if(n.locked) {
-                n.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
-            }
-            else {
+            if (!n.locked || n.visited)
+            {
                 n.GetComponent<Image>().color = Color.white;
+            }
+            else
+            {
+                n.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
             }
         }
 
