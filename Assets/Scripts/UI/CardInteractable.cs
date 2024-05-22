@@ -91,7 +91,9 @@ public abstract class CardInteractable : MonoBehaviour,
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-
+        if(mode == CIMode.Reward && CanInteract) {
+            RewardManager.Instance.SelectCard(this);
+        }
     }
 
     public virtual void OnDrag(PointerEventData eventData)

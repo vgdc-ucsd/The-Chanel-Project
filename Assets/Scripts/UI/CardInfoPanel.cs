@@ -46,7 +46,9 @@ public class CardInfoPanel : MonoBehaviour
 
     public void SetCardInteractable(Card c) {
         // TODO use base stats
-        currentCard = UIManager.Instance.GenerateCardInteractable(c.Clone());
+        Card card = c.Clone();
+        card.CurrentTeam = Team.Neutral;
+        currentCard = UIManager.Instance.GenerateCardInteractable(card);
         currentCard.transform.SetParent(CardHolder);
         currentCard.transform.localPosition = Vector3.zero;
         currentCard.transform.localScale = Vector3.one;
