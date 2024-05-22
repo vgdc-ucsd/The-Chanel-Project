@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f15f282beda789c4686a2671c4e99758, type: 3}
+  m_Name: EarlyDeck 1
+  m_EditorClassIdentifier: 
+  CardList:
+  - {fileID: 11400000, guid: ec5f0323c276dc141bf415a48ede4a84, type: 2}
+  - {fileID: 11400000, guid: a88c7d8913880fd4aa37c9ba6619601b, type: 2}
+  - {fileID: 11400000, guid: a88c7d8913880fd4aa37c9ba6619601b, type: 2}
+  - {fileID: 11400000, guid: b0588fcb2d650924aad9a7445cb13b24, type: 2}
+  - {fileID: 11400000, guid: 7a5653329eba6434380b93bcb2540527, type: 2}
+  - {fileID: 11400000, guid: 7a5653329eba6434380b93bcb2540527, type: 2}
+  - {fileID: 11400000, guid: f3b69c70ca0bb6b4792c30e461bc866c, type: 2}
+  - {fileID: 11400000, guid: 80f5775be1a5e4f4ba034b671b0e152e, type: 2}
+  - {fileID: 11400000, guid: e7bb028145f1efc45ae1da90255731d8, type: 2}
+  - {fileID: 11400000, guid: e7bb028145f1efc45ae1da90255731d8, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  numAvailableCards: 12
