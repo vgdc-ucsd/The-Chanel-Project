@@ -7,24 +7,26 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Abilites/FireEffect")]
 public class FireEffect : StatusEffect
 {
-    static int initialDuration = 2;
+    static int initialDuration = 3;
 
     public override ActivationCondition Condition
     {
-        get { return ActivationCondition.OnEndTurn; }
+        get { return ActivationCondition.OnBeginTurn; }
     }
 
 
     public override void Activate(UnitCard c, ActivationInfo info)
     {
-
-        info.Duel.DealDamage(c, 1);
+        if (duration != initialDuration)
+        {
+            info.Duel.DealDamage(c, 1);
+        }
         duration--;
+        AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
         if (duration == 0)
         {
             RemoveEffect(c, info);
         }
-        AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
 
     }
 

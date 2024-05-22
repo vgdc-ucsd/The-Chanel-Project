@@ -18,7 +18,7 @@ public class ShopCardInteractable : MonoBehaviour,
     private ShopManager shopManager;
 
     // Collection of Cards Player Unlocked
-    private List<Card> availableShopCards;
+    public Deck cardCollection;
 
     // Takes in Card object
     public Card card;
@@ -45,15 +45,12 @@ public class ShopCardInteractable : MonoBehaviour,
         }
 
         // Generates Unique Random Card from Card Collection
-        /*
         int collectionSize = cardCollection.CardList.Count;
         int randomIndex = shopManager.generateNum(collectionSize);
-        Card randomCard = cardCollection.CardList[randomIndex];*/
-        availableShopCards = shopManager.availableShopCards;
-        card = availableShopCards[Random.Range(0, availableShopCards.Count)];
+        Card randomCard = cardCollection.CardList[randomIndex];
 
-        display.setDisplay((UnitCard)card); // TODO support spell cards
-        //card = randomCard;
+        display.setDisplay((UnitCard)randomCard); // TODO support spell cards
+        card = randomCard;
     }
 
     // Left Click to Buy, Right Click to Inspect

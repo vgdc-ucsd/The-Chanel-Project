@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: MixedDeck
   m_EditorClassIdentifier: 
   CardList:
+  - {fileID: 11400000, guid: a88c7d8913880fd4aa37c9ba6619601b, type: 2}
+  - {fileID: 11400000, guid: eb7d38ae15c928b48a3de6fc238291a2, type: 2}
+  - {fileID: 11400000, guid: 34690e13dc6b06544aceb4d763edda1c, type: 2}
+  - {fileID: 11400000, guid: 3140f3a6a1ea936499c7203083f2c746, type: 2}
+  - {fileID: 11400000, guid: 0fbf928ca99cf444d86b6bc34fb185af, type: 2}
   - {fileID: 11400000, guid: bca5dcb3c747b704697a0cf8447dd5ae, type: 2}
-  - {fileID: 11400000, guid: e841bf25629185c49a1481dce02f44f1, type: 2}
-  - {fileID: 11400000, guid: c39ab0e8a3dfc1742a87be83397d457c, type: 2}
-  - {fileID: 11400000, guid: 575c3927bbdd81043bedbd79b3f941b4, type: 2}
-  - {fileID: 11400000, guid: 6ae7309b1a2400649b240f056567c5ab, type: 2}
-  - {fileID: 11400000, guid: c26f43099fad7b54f8df370c9f59dddf, type: 2}
+  - {fileID: 11400000, guid: 8a266833b02d6d048b380e1fff69867d, type: 2}
+  - {fileID: 11400000, guid: eb1d07e946728c1458fd054a2804fb0f, type: 2}
+  - {fileID: 11400000, guid: 28b62a5838aa119488c8f1c9ef63c3fa, type: 2}
   numAvailableCards: 7

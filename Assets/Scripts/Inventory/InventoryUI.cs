@@ -5,142 +5,16 @@ using UnityEngine;
 
 public class InventoryUI : MonoBehaviour
 {
-    const int ROW_SIZE = 6;
-
-
-    public static InventoryUI Instance;
     [SerializeField] InventoryManager inventoryManager;
     [SerializeField] Transform inventoryContainer;
-    public int invContainerSize = ROW_SIZE * 2;
-    [SerializeField] Transform deckContainer;
     [SerializeField] GameObject inventoryTemplateCardPrefab;
 
-    List<CardInteractable> ciList = new List<CardInteractable>();
-
-    // Display Card
-    public CardInfoPanel inventoryInfoPanel;
-    public TextMeshProUGUI cardCountText;
-
-    PersistentData.InventoryData inventory;
-
-    Coroutine deckSizeWarnCor;
-    public TMP_Text deckSizeWarningText;
-
-    private void Awake()
-    {
-        if (Instance == null) 
-            Instance = this;
-        inventory = PersistentData.Instance.Inventory;
-        InitCards();
-        ArrangeCards();
-        
-    }
-
-    public void InitCards()
-    {
-        foreach (Card card in inventory.InactiveCards)
-        {
-            CardInteractable ci = card.GenerateCardInteractable();
-            ci.mode = CIMode.Inventory;
-            ciList.Add(ci);
-         
-        }
-        foreach (Card card in inventory.ActiveCards)
-        {
-            CardInteractable ci = card.GenerateCardInteractable();
-            ci.mode = CIMode.Inventory;
-            ciList.Add(ci);
-        }
-    }
-
-    public void ArrangeCards()
-    {
-        int i = 0;
-        int invIndex = 0, deckIndex = 0;
-        while (i < inventory.CardCount()) 
-        {
-            CardInteractable ci = ciList[i];
-            Card c = ci.GetCard();
-
-            if (inventory.IsActive(c))
-            {
-                ci.transform.SetParent(deckContainer.transform.GetChild(deckIndex));
-                deckIndex++;
-            }
-            else
-            {
-                if (invIndex >= invContainerSize)
-                {
-                    for (int j = 0; j < ROW_SIZE; j++)
-                    {
-                        GameObject slot = new GameObject();
-                        slot.AddComponent<RectTransform>();
-                        slot.transform.SetParent(inventoryContainer.transform);
-                    }
-                    invContainerSize += ROW_SIZE;
-                }
-
-                ci.transform.SetParent(inventoryContainer.transform.GetChild(invIndex));
-                invIndex++;
-            }
-            
-            
-            ci.transform.localScale = Vector3.one * 2;
-            ci.transform.localPosition = Vector3.zero;
-            i++;
-        }
-
-
-        // Adds Cards Count
-        cardCountText.text = inventory.CardCount() + "";
-    }
-
-    public void HandleClick(Card card)
-    {
-        if (inventory.IsActive(card))
-        {
-            Unequip(card);
-        }
-        else 
-
-        {
-            if (inventory.ActiveCards.Count < GameData.DECK_SIZE)
-                Equip(card);
-        }
-    }
-
-    private void Equip(Card card)
-    {
-        inventory.InactiveCards.Remove(card);
-        inventory.ActiveCards.Add(card);
-        ArrangeCards();
-    }
-
-    private void Unequip(Card card)
-    {
-        inventory.InactiveCards.Add(card);
-        inventory.ActiveCards.Remove(card);
-        ArrangeCards();
-    }
-
-    public void TryExit()
-    {
-        if (inventory.ActiveCards.Count != Deck.DECK_SIZE)
-        {
-            if (deckSizeWarnCor != null) StopCoroutine(deckSizeWarnCor);
-            deckSizeWarnCor = StartCoroutine(DeckSizeWarn());
-            return;
-        }
-        MenuScript.Instance.LoadMap();
-
-    }
-
-    IEnumerator DeckSizeWarn()
-    {
-        deckSizeWarningText.enabled = true;
-        yield return new WaitForSeconds(1);
-        deckSizeWarningText.enabled = false;
-    }
+    // This method assigns inventorySlotContainer & inventoryTemplateCardPrefab
+    // private void Awake()
+    // {
+    //     // NOTE: inventoryTemplateCardPrefab must be named exacty this.
+    //     inventoryTemplateCardPrefab = inventoryContainer.Find("inventoryTemplateCardPrefab");
+    // }
 
     // This method reloads/refreshes the inventory UI
     public void RefreshInventoryItems()
@@ -158,17 +32,24 @@ public class InventoryUI : MonoBehaviour
 
         // Sort inventory by name (in ascending order)
         // THIS CAN BE CHANGED --> EITHER DON'T SORT AT ALL OR SORT BY RARITY FOR EXAMPLE
-        //if (inventoryManager.cards.Count > 0)
-        //{
-        //    inventoryManager.cards = inventoryManager.SortItemsByName(inventoryManager.cards, 0, inventoryManager.cards.Count - 1);
-        //}
-
-        // Add Instantiate all cards in inventory to the UI
-        
-        foreach (UnitCard card in PersistentData.Instance.Inventory.InactiveCards) 
+        if (inventoryManager.cards.Count > 0)
         {
-
+            inventoryManager.cards = inventoryManager.SortItemsByName(inventoryManager.cards, 0, inventoryManager.cards.Count - 1);
         }
 
+        // Add/Instantiate all cards in inventory to the UI
+        foreach (UnitCard card in inventoryManager.cards)
+        {
+            RectTransform inventorySlotRectTransform = Instantiate(inventoryTemplateCardPrefab, inventoryContainer).GetComponent<RectTransform>();
+            inventorySlotRectTransform.gameObject.SetActive(true);
+
+            // Set name, health, attack text appropriately
+            inventorySlotRectTransform.Find("Name").GetComponent<TextMeshProUGUI>().text = card.name;
+            inventorySlotRectTransform.Find("Health").GetComponent<TextMeshProUGUI>().text = "Health: " + card.Health.ToString();
+            inventorySlotRectTransform.Find("Attack").GetComponent<TextMeshProUGUI>().text = "Attack: " + card.BaseDamage.ToString();
+
+            // Set card info appropriately
+            inventorySlotRectTransform.GetComponent<InventoryItemInteractable>().card = card;
+        }
     }
 }

@@ -39,11 +39,10 @@ public class SpellCardInteractable : CardInteractable
         else if (card is ISpellTypeUnit unitSpell)
         {
             UnitCard target = DuelManager.Instance.MainDuel.DuelBoard.GetCard(pos);
-            Team targetTeam = Team.Neutral;
+            Team targetTeam = Team.Player;
             if (card is ISpellTypeEnemy) targetTeam = CharStatus.OppositeTeam(card.CurrentTeam);
-            else if (card is ISpellTypeAlly) targetTeam = card.CurrentTeam;
-            if (target != null && targetTeam == Team.Neutral) success = unitSpell.CastSpell(DuelManager.Instance.MainDuel, target);
-            else if (target != null && target.CurrentTeam == targetTeam) success = unitSpell.CastSpell(DuelManager.Instance.MainDuel, target);
+            if (card is ISpellTypeAlly) targetTeam = card.CurrentTeam;
+            if (target != null && target.CurrentTeam == targetTeam) success = unitSpell.CastSpell(DuelManager.Instance.MainDuel, target);
         }
 
         if (!success) return;
@@ -54,7 +53,6 @@ public class SpellCardInteractable : CardInteractable
             handInterface.cardObjects.Remove(this.gameObject);
         }
         UIManager.Instance.UpdateStatus(DuelManager.Instance.MainDuel);
-        UIManager.Instance.Player.UnhoverMana(DuelManager.Instance.MainDuel.PlayerStatus);
         inHand = false;
         /*
         UIManager.Instance.UpdateStatus(DuelManager.Instance.MainDuel);
@@ -63,34 +61,17 @@ public class SpellCardInteractable : CardInteractable
 
     public override void OnPointerEnter(PointerEventData eventData) {
         base.OnPointerEnter(eventData);
-        if (mode != CIMode.Duel) return;
         UIManager.Instance.InfoPanel.UpdateInfoPanelSpellCard(this.card);
-        if(!CanInteract || !inHand) return;
         AnimationManager.Instance.StartManaHover(card.ManaCost, card.CurrentTeam);
     }
 
     public override void OnPointerExit(PointerEventData eventData) {
         base.OnPointerExit(eventData);
-        if (mode != CIMode.Duel) return;
         AnimationManager.Instance.StopManaHover(card.CurrentTeam);
-    }
-
-    public override void OnPointerDown(PointerEventData eventData)
-    {
-        base.OnPointerDown(eventData);
-        if (mode == CIMode.Inventory)
-        {
-            InventoryUI.Instance.HandleClick(card);
-        }
     }
 
     public override void UpdateCardInfo()
     {
         CardCost.text = "Mana Cost: " + card.ManaCost;
-    }
-
-    public override Card GetCard()
-    {
-        return card;
     }
 }

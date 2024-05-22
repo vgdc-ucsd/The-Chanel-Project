@@ -43,8 +43,6 @@ public class DuelInstance
             }
         }
 
-        
-
         EndTurn(team);
     }
 
@@ -84,24 +82,23 @@ public class DuelInstance
             if (card.CanAttack)
             {
                 List<Attack> queuedCharAttacks = new List<Attack>();
-                List<UnitCard> damagedCards = new List<UnitCard>();
+
                 bool attackLanded = false;
 
-                for (int i = card.Attacks.Count - 1; i >= 0; i--)
+                foreach (Attack atk in card.Attacks)
                 {
 
 
-                    BoardCoords atkDest = card.Pos + new BoardCoords(card.Attacks[i].direction);
+                    BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
 
                     if ((DuelBoard.BeyondEnemyEdge(atkDest) && team == Team.Player) ||
                          DuelBoard.BeyondPlayerEdge(atkDest) && team == Team.Enemy)
                     {
-                        queuedCharAttacks.Add(card.Attacks[i]);
+                        queuedCharAttacks.Add(atk);
                         continue;
                     }
-                    UnitCard target = ProcessAttack(card, card.Attacks[i]);
-                    if (target != null) attackLanded = true;
-                    if (target != null && target.Health > 0) damagedCards.Add(target);
+
+                    if (ProcessAttack(card, atk)) attackLanded = true;
                 }
 
                 if (queuedCharAttacks.Count != 0)
@@ -113,13 +110,11 @@ public class DuelInstance
                         if (atk.damage > maxDmgAtk.damage) maxDmgAtk = atk;
                     }
                     Team winner = GetStatus(CharStatus.OppositeTeam(team)).TakeDamage(maxDmgAtk.damage);
-                    AnimationManager.Instance.AttackAnimation(this, card, maxDmgAtk);
-                    AnimationManager.Instance.DamagePlayerAnimation(this, GetStatus(CharStatus.OppositeTeam(team)));
                     if (winner != Team.Neutral) Winner = winner;
                 }
                 if (attackLanded)
                 {
-                    info.DamagedCards = damagedCards;
+
                     for (int i = card.Abilities.Count - 1; i >= 0; i--)
                     {
                         Ability a = card.Abilities[i];
@@ -127,22 +122,22 @@ public class DuelInstance
                     }
                 }
 
-
+                
             }
-            
+            card.CanAttack = true;
         }
     }
 
-    private UnitCard ProcessAttack(UnitCard card, Attack atk) {
+    private bool ProcessAttack(UnitCard card, Attack atk) {
         BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
-
+        
 
 
         // Do nothing if attack is out of bounds
-        if(DuelBoard.IsOutOfBounds(atkDest)) return null;
+        if(DuelBoard.IsOutOfBounds(atkDest)) return false;
 
         // Do nothing if destination tile is empty
-        if(DuelBoard.GetCard(atkDest) == null) return null;
+        if(DuelBoard.GetCard(atkDest) == null) return false;
 
         // Deal damage
         UnitCard target = DuelBoard.GetCard(atkDest);
@@ -154,13 +149,23 @@ public class DuelInstance
             ActivationInfo info = new ActivationInfo(this);
             info.TargetCard = target;
             info.TotalDamage = atk.damage;
-            info.OverkillDamage = DealDamage(target, atk.damage);
-            for (int i = card.Abilities.Count - 1; i >= 0; i--) {
-                if(card.Abilities[i].Condition == ActivationCondition.OnDealDamage) card.Abilities[i].Activate(card, info);
+
+            foreach (Ability a in card.Abilities)
+            {
+                if (a.Condition == ActivationCondition.OnAttack) a.Activate(card, info); //BEFORE damage calculation
             }
-            return target;
+
+            info.OverkillDamage = DealDamage(target, atk.damage);
+            foreach(Ability a in card.Abilities) {
+                if(a.Condition == ActivationCondition.OnDealDamage) a.Activate(card, info);
+            }
+            foreach(Ability b in target.Abilities)
+            {
+                if (b.Condition == ActivationCondition.OnAttacksHitMe) b.Activate(card, info);
+            }
+            return true;
         }
-        return null;
+        return false;
     }
 
 
@@ -203,7 +208,7 @@ public class DuelInstance
 
             Card drawnCard = deck.RandomAvailableCard();
 
-
+            
             if (drawnCard == null) break;
 
             drawnCard.drawStatus = DrawStatus.InPlay;
@@ -235,28 +240,15 @@ public class DuelInstance
         if (target.Health <= 0)
         {
             overkillDamage = -1*target.Health;
-            target.Health = 0;
             DuelBoard.RemoveCard(target.Pos);
-            AnimationManager.Instance.DeathAnimation(this, target);
+            if (immediate && this == DuelManager.Instance.MainDuel) AnimationManager.Instance.CardDeathImmediate(target);
+            else AnimationManager.Instance.DeathAnimation(this, target);
         }
 
         return overkillDamage;
     }
 
     private void EndTurn(Team team) {
-        ActivationInfo info = new ActivationInfo(this);
-        foreach (UnitCard card in DuelBoard.GetCardsOfTeam(team))
-        {
-            for (int i = card.Abilities.Count - 1; i >= 0; i--)
-            {
-                Ability ability = card.Abilities[i];
-                if (ability.Condition == ActivationCondition.OnEndTurn)
-                {
-                    ability.Activate(card, info);
-                }
-            }
-        }
-
         // End turn
         Team oppositeTeam;
         CharStatus oppositeStatus;
@@ -271,9 +263,8 @@ public class DuelInstance
 
         // gain 1 mana capacity every turn until it reaches the max then it caps out;
         oppositeStatus.GiveMana();
-        DuelBoard.RenewMovement(oppositeTeam);
 
-
+        ActivationInfo info = new ActivationInfo(this);
         foreach (UnitCard card in DuelBoard.GetCardsOfTeam(oppositeTeam))
         {
             for (int i = card.Abilities.Count - 1; i >= 0; i--)
@@ -286,7 +277,7 @@ public class DuelInstance
             }
         }
 
-        
+        DuelBoard.RenewMovement(oppositeTeam);
         DrawCards(oppositeTeam, 1);
     }
 

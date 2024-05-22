@@ -12,7 +12,7 @@ public class AthenaAbility : Ability
         foreach (UnitCard cAdj in Info.Duel.DuelBoard.GetAdjacentCards(c.Pos)) {
             if (cAdj.CurrentTeam == c.CurrentTeam) {
                 ++cAdj.Health;
-                AnimationManager.Instance.DamageCardAnimation(Info.Duel, cAdj, Color.green);
+                AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, cAdj);
             }
         }
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Tilemaps;
 
 public class UIManager : MonoBehaviour
 {
@@ -35,13 +35,8 @@ public class UIManager : MonoBehaviour
     private List<GameObject> PlayerDiscardObjects;
     private List<GameObject> EnemyDiscardObjects;
 
-    // Card View Panel
-    public GameObject DeckViewObject; // root object
-    public GameObject DeckViewContainer; // object that can scale (no raycast blocker)
-
     public CardInfoPanel InfoPanel;
     public Canvas MainCanvas;
-    public Image EndTurnButton;
 
     public static UIManager Instance;
 
@@ -88,11 +83,9 @@ public class UIManager : MonoBehaviour
             UnitCardInteractable ci = Instantiate(TemplateUnitCard);
             ci.card = (UnitCard) c;
             ci.SetCardInfo();
-            ci.mode = CIMode.Duel;
 
-            if (c.CurrentTeam == Team.Player) ci.handInterface = Hand;
-            else if (c.CurrentTeam == Team.Player) ci.handInterface = EnemyHand;
-            else return ci;
+            if(c.CurrentTeam == Team.Player) ci.handInterface = Hand;
+            else ci.handInterface = EnemyHand;
 
             ci.handInterface.cardObjects.Add(ci.gameObject);
             return ci;
@@ -101,11 +94,9 @@ public class UIManager : MonoBehaviour
             SpellCardInteractable ci = Instantiate(TemplateSpellCard);
             ci.card = (SpellCard)c;
             ci.SetCardInfo();
-            ci.mode = CIMode.Duel;
 
-            if(c.CurrentTeam == Team.Player) ci.handInterface = Hand;
-            else if (c.CurrentTeam == Team.Enemy) ci.handInterface = EnemyHand;
-            else return ci;
+            if (c.CurrentTeam == Team.Player) ci.handInterface = Hand;
+            else ci.handInterface = EnemyHand;
 
             ci.handInterface.cardObjects.Add(ci.gameObject);
             return ci;
@@ -126,61 +117,6 @@ public class UIManager : MonoBehaviour
             Debug.LogWarning("No tile exists at x=" + bc.x + ", y=" + bc.y);
             return null;
         }
-    }
-
-    public void HighlightEndTurnButton(bool enable) {
-        if(enable) {
-            EndTurnButton.color = Color.white;
-        }
-        else {
-            EndTurnButton.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
-        }
-    }
-
-    public void ShowDeckView(List<Card> cards) {
-        DeckViewObject.SetActive(true);
-
-        for(int i = 0; i < Mathf.Min(12 , cards.Count); i++) {
-            Card c = cards[i].Clone();
-            c.CurrentTeam = Team.Neutral;
-            CardInteractable ci = GenerateCardInteractable(c);
-            ci.CanInteract = false;
-            ci.transform.SetParent(DeckViewContainer.transform.GetChild(i));
-            ci.transform.localScale = Vector3.one;
-            ci.transform.localPosition = Vector3.zero;
-        }
-
-        foreach(Transform obj in DeckViewContainer.transform) {
-            obj.localScale = Vector3.zero;
-            AnimationManager.Instance.BounceScaleAnimation(
-                DuelManager.Instance.MainDuel,
-                obj,
-                0.0f,
-                1.0f,
-                0.2f
-            );
-        }
-    }
-
-    public void HideDeckview() {
-        foreach(Transform obj in DeckViewContainer.transform) {
-            if(obj.childCount != 0) {
-                Destroy(obj.GetChild(0).gameObject);
-            }
-        }
-        DeckViewObject.SetActive(false);
-    }
-
-    public void ShowPlayerDraw() {
-        ShowDeckView(DuelManager.Instance.MainDuel.PlayerStatus.Deck.DrawPile());
-    }
-
-    public void ShowPlayerDiscard() {
-        ShowDeckView(DuelManager.Instance.MainDuel.PlayerStatus.Deck.DiscardPile());
-    }
-
-    public void ShowEnemyDiscard() {
-        ShowDeckView(DuelManager.Instance.MainDuel.EnemyStatus.Deck.DiscardPile());
     }
 
     public void PlayerWin() {

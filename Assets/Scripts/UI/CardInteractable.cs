@@ -6,16 +6,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public enum CIMode
-{
-    Duel, Inventory, Reward
-}
-
 // The MonoBehavior counterpart for a Card, this is what the user actually interacts with
 public abstract class CardInteractable : MonoBehaviour,
     IPointerEnterHandler, 
     IPointerExitHandler, 
-    IPointerDownHandler,
     IBeginDragHandler, 
     IDragHandler,
     IEndDragHandler
@@ -45,7 +39,7 @@ public abstract class CardInteractable : MonoBehaviour,
     // Not hidden for debugging purposes
     public bool inHand = true;
     public bool CanInteract = true;
-    public CIMode mode = CIMode.Duel;
+
     protected virtual void Awake()
     {
         if(DuelManager.Instance != null) raycaster = DuelManager.Instance.GetComponent<GraphicRaycaster>();
@@ -57,12 +51,7 @@ public abstract class CardInteractable : MonoBehaviour,
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        if (mode == CIMode.Inventory) return;
-        else if (mode == CIMode.Reward) {
-            transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
-            return;
-        }
-        if(inHand && CanInteract) {
+        if(inHand) {
             hoveredCard = this;
             hoveredCardIndex = transform.GetSiblingIndex();
             hoveredCard.transform.SetAsLastSibling();
@@ -74,12 +63,7 @@ public abstract class CardInteractable : MonoBehaviour,
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        if (mode == CIMode.Inventory) return;
-        else if (mode == CIMode.Reward) {
-            transform.localScale = Vector3.one;
-            return;
-        }
-        if (inHand) {
+        if(inHand) {
             if(this == hoveredCard) {
                 transform.position = basePosition;
                 hoveredCard.transform.SetSiblingIndex(hoveredCardIndex);
@@ -89,31 +73,22 @@ public abstract class CardInteractable : MonoBehaviour,
         }
     }
 
-    public virtual void OnPointerDown(PointerEventData eventData)
+    public void OnDrag(PointerEventData eventData)
     {
-
-    }
-
-    public virtual void OnDrag(PointerEventData eventData)
-    {
-        if (mode != CIMode.Duel) return;
-        if (inHand && CanInteract) {
+        if(inHand) {
             transform.position = eventData.position;
         }
     }
 
-    public virtual void OnBeginDrag(PointerEventData eventData)
+    public void OnBeginDrag(PointerEventData eventData)
     {
-        if (mode != CIMode.Duel) return;
-        if (inHand && CanInteract) {
+        if(inHand) {
             transform.localEulerAngles = Vector3.zero;
         }
     }
 
-    public virtual void OnEndDrag(PointerEventData eventData)
+    public void OnEndDrag(PointerEventData eventData)
     {
-        if (mode != CIMode.Duel) return;
-        if (!CanInteract) return;
         if (inHand)
         {
             // Check if the drag ended over a TileInteractable using a raycast
@@ -160,13 +135,10 @@ public abstract class CardInteractable : MonoBehaviour,
     }
 
     private Vector3 hoverPosition() {
-        if (mode != CIMode.Duel) return Vector3.zero;
         return new Vector3(
             transform.position.x, 
             transform.position.y+(50f*UIManager.Instance.MainCanvas.scaleFactor), 
             transform.position.z
         );
     }
-
-    public abstract Card GetCard();
 }

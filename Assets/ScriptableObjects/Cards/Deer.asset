@@ -18,7 +18,6 @@ MonoBehaviour:
   Artwork: {fileID: 0}
   drawStatus: 0
   id: 0
-  description: 
   CurrentTeam: 2
   Health: 1
   CanMove: 1

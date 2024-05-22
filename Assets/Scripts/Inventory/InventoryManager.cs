@@ -10,22 +10,31 @@ using UnityEngine.UI;
 public class InventoryManager : MonoBehaviour
 {
     // IGNORE THIS maxItems. IT IS FOR TESTING PURPOSES
-    public int maxItems = 100;
+    public int maxItems = 10;
+    // IDK IF THIS IS SUPPOSED TO BE A LIST OF CARDS OR A DECK
+    public List<UnitCard> cards;
     public InventoryUI inventoryUI;
 
     void Start()
     {
+        // Create a new list at the start
+        InitializeInventory();
 
         // NOTE: There should only be one object with InventoryUI scripts. If not
         // this line does not work properly.
         inventoryUI = FindObjectOfType<InventoryUI>();
     }
 
-    public void AddItem(Card card)
+    private void InitializeInventory()
     {
-        if (PersistentData.Instance.Inventory.CardCount() < maxItems)
+        cards = new List<UnitCard>(maxItems);
+    }
+
+    public void AddItem(UnitCard card)
+    {
+        if (cards.Count < maxItems)
         {
-            PersistentData.Instance.Inventory.InactiveCards.Add(card);
+            cards.Add(card);
         }
         else
         {
@@ -35,9 +44,9 @@ public class InventoryManager : MonoBehaviour
         inventoryUI.RefreshInventoryItems();
     }
 
-    public void RemoveItem(Card card)
+    public void RemoveItem(UnitCard card)
     {
-        PersistentData.Instance.Inventory.Remove(card);
+        cards.Remove(card);
 
         inventoryUI.RefreshInventoryItems();
     }

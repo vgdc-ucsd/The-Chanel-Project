@@ -38,27 +38,27 @@ public class MctsAI
     }
 
     const int MAX_TURNS = 100;
-    const int CHILD_COUNT = 9;
-    const int MAX_ITERATIONS = 300;
+    const int CHILD_COUNT = 6;
+    const int MAX_ITERATIONS = 120;
 
-    const int WEIGHTED_MAX_TURNS = 4;
+    const int WEIGHTED_MAX_TURNS = 10;
 
     // probability that the AI will consider these actions
-    float aiMovementChance = 0.6f;
+    float aiMovementChance = 0.4f;
     float aiPushChance = 0.7f;
-    float aiDrawChance = 0.1f;
+    float aiDrawChance = 0.15f;
 
     // probability that the AI will anticipate the player doing these actions
     float playerMovementChance = 0.4f;
     float playerPushChance = 0.5f;
-    float playerDrawChance = 0.1f;
+    float playerDrawChance = 0.15f;
 
     // how much the AI likes enemy/player cards positioned at corresponding y value
     // multiplied by mana cost of card
     static float[] ENEMY_CARD_POSITIONING_WEIGHTS = { 30, 20, 3, 2 };
-    static float[] PLAYER_CARD_POSITIONING_WEIGHTS = { -8, -10, -20, -80 };
+    static float[] PLAYER_CARD_POSITIONING_WEIGHTS = { -8, -10, -20, -50 };
 
-    const float STATUS_DAMAGE_WEIGHT = 150; // weight bias/penalty per pt of damage taken by player/enemy
+    const float STATUS_DAMAGE_WEIGHT = 50; // weight bias/penalty per pt of damage taken by player/enemy
 
 
     private List<Node> nodes;
@@ -196,9 +196,9 @@ public class MctsAI
         foreach (UnitCard card in duel.DuelBoard.GetAllCards())
         {
             if (card.CurrentTeam == Team.Player) 
-                score += PLAYER_CARD_POSITIONING_WEIGHTS[card.Pos.y] * card.ManaCost * (card.Health / card.baseStats.health + 1) ;
+                score += PLAYER_CARD_POSITIONING_WEIGHTS[card.Pos.y] * card.ManaCost * card.Health;
             else if (card.CurrentTeam == Team.Enemy) 
-                score += ENEMY_CARD_POSITIONING_WEIGHTS[card.Pos.y] * card.ManaCost * (card.Health / card.baseStats.health + 1);
+                score += ENEMY_CARD_POSITIONING_WEIGHTS[card.Pos.y] * card.ManaCost * card.Health;
         }
         score += (originalState.GetStatus(Team.Player).Health - duel.GetStatus(Team.Player).Health) * STATUS_DAMAGE_WEIGHT;
         score -= (originalState.GetStatus(Team.Enemy).Health - duel.GetStatus(Team.Enemy).Health) * STATUS_DAMAGE_WEIGHT;
@@ -311,7 +311,7 @@ public class MctsAI
                 {
                     duel.DuelBoard.PlayCard(uc, randomTile, status, duel);
                 }
-                else if (randomCard is SpellCard sc)
+                else if (randomCard is SpellCard)
                 {
                     bool success = false;
                     if (randomCard is ISpellTypeTile sct)
@@ -332,7 +332,6 @@ public class MctsAI
                     }
 
 
-
                 }
             }
             
@@ -347,7 +346,7 @@ public class MctsAI
             loopCount++;
             if (loopCount > 1000)
             {
-                UnityEngine.Debug.LogWarning("Failed to find random move");
+                UnityEngine.Debug.LogError("Failed to find random move");
                 break;
             }
         }
@@ -426,7 +425,7 @@ public class MctsAI
         List<UnitCard> results = new List<UnitCard>();
         foreach(UnitCard uc in board.CardSlots) {
             if (uc != null) {
-                if(uc.CurrentTeam == team && board.GetEmptyAdjacentTiles(uc.Pos).Count > 0 && uc.CanMove) results.Add(uc);
+                if(uc.CurrentTeam == team && board.GetEmptyAdjacentTiles(uc.Pos).Count > 0) results.Add(uc);
             }
         }
         return results;

@@ -33,6 +33,7 @@ public class RedSpiderLilyAbility : StatusEffect
         foreach (Attack atk in c.Attacks)
         {
             atk.damage *= 2;
+            if (DuelManager.Instance.currentTeam == Team.Player) Debug.Log(atk.damage);
         }
     }
 }

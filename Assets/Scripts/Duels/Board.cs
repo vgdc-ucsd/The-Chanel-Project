@@ -70,8 +70,6 @@ public class Board
         if (!status.Cards.Remove(card)) Debug.LogError("Failed to remove card");
         status.UseMana(card.ManaCost);
         SetCard(card, pos);
-        // TODO mana spend animation
-        // AnimationManager.Instance.UpdateUIAnimation(duel);
 
         ActivationInfo info = new ActivationInfo(duel);
         foreach(Ability a in card.Abilities) {
@@ -85,7 +83,7 @@ public class Board
         SetCard(null, pos);
     }
 
-    public void MoveCard(UnitCard card, BoardCoords pos, DuelInstance duel, bool pushed = false)
+    public void MoveCard(UnitCard card, BoardCoords pos, DuelInstance duel)
     {
         // move card and update board and card data
         if (IsOutOfBounds(pos)) return;
@@ -93,29 +91,15 @@ public class Board
         SetCard(null, card.Pos);
         SetCard(card, pos);
         card.Pos = pos;
-        if (!pushed)
-        {
-            card.CanMove = false;
-            ActivationInfo info = new ActivationInfo(duel);
-            foreach (Ability a in card.Abilities)
-            {
-                if (a.Condition == ActivationCondition.OnMove) a.Activate(card, info);
-            }
+        card.CanMove = false;
+        ActivationInfo info = new ActivationInfo(duel);
+        foreach(Ability a in card.Abilities) {
+            if(a.Condition == ActivationCondition.OnMove) a.Activate(card, info);
         }
 
         AnimationManager.Instance.MoveCardAnimation(duel, card, pos);
         //if (duel == DuelManager.Instance.MainDuel) card.UnitCardInteractableRef.UpdateCardPos();
 
-    }
-
-    public void TeleportCard(UnitCard card, BoardCoords pos, DuelInstance duel)
-    {
-        // move card and update board and card data
-        if (IsOutOfBounds(pos)) return;
-        SetCard(null, card.Pos);
-        SetCard(card, pos);
-        card.Pos = pos;
-        AnimationManager.Instance.MoveCardAnimation(duel, card, pos);
     }
 
     public void RenewMovement(Team t) {
@@ -124,11 +108,7 @@ public class Board
                 BoardCoords pos = new BoardCoords(i,j);
                 if (IsOccupied(pos)) {
                     UnitCard c = GetCard(pos);
-                    if (c.CurrentTeam == t)
-                    {
-                        c.CanAttack = true;
-                        c.CanMove = true;
-                    }
+                    if(c.CurrentTeam == t) c.CanMove = true;
                 }
             }
         }
@@ -281,14 +261,12 @@ public class Board
     public UnitCard GetRandomCard()
     {
         List<UnitCard> cards = GetAllCards();
-        if (cards.Count == 0) return null;
         return cards[Random.Range(0, cards.Count)];
     }
 
     public UnitCard GetRandomCardOfTeam(Team team)
     {
         List<UnitCard> cards = GetCardsOfTeam(team);
-        if (cards.Count == 0) return null;
         return cards[Random.Range(0, cards.Count)];
     }
 }

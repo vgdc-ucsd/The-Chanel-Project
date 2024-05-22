@@ -18,13 +18,12 @@ public class SpellLotusFlower : SpellCard , ISpellTypeAlly
 
     public bool CastSpell(DuelInstance duel, UnitCard card)
     {
-        if (card == null) return false;
         if (card.CurrentTeam != CurrentTeam) return false;
 
-        StartCast(duel, card.Pos);
         LotusFlowerAbility ability = ScriptableObject.Instantiate(abilityTemplate);
         ActivationInfo info = new ActivationInfo(duel);
         ability.AddEffect(card, info);
+        
         FinishCast(duel);
         return true;
     }

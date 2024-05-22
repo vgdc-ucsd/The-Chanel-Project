@@ -15,9 +15,7 @@ public enum DrawStatus
 public class Deck : ScriptableObject
 {
     public List<Card> CardList = new List<Card>();
-    [HideInInspector] public int numAvailableCards = 0;
-
-    public const int DECK_SIZE = 12;
+    public int numAvailableCards = 0;
 
     private void addCard(UnitCard card)
     {
@@ -27,12 +25,6 @@ public class Deck : ScriptableObject
     private void Awake()
     {
 
-    }
-
-    // NOT A DEEP COPY; must use Init() after loading
-    public void LoadCards(List<Card> cards)
-    {
-        CardList = cards;
     }
 
     public void Init()

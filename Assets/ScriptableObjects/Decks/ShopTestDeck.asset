@@ -12,18 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f15f282beda789c4686a2671c4e99758, type: 3}
   m_Name: ShopTestDeck
   m_EditorClassIdentifier: 
-  CardList:
-  - {fileID: 11400000, guid: ec5f0323c276dc141bf415a48ede4a84, type: 2}
-  - {fileID: 11400000, guid: 11541f7e19554f049a10dcf181f0486a, type: 2}
-  - {fileID: 11400000, guid: a88c7d8913880fd4aa37c9ba6619601b, type: 2}
-  - {fileID: 11400000, guid: 8c7da54017624ab4ea2c64f891423225, type: 2}
-  - {fileID: 11400000, guid: eb7d38ae15c928b48a3de6fc238291a2, type: 2}
-  - {fileID: 11400000, guid: f3b69c70ca0bb6b4792c30e461bc866c, type: 2}
-  - {fileID: 11400000, guid: 28b62a5838aa119488c8f1c9ef63c3fa, type: 2}
-  - {fileID: 11400000, guid: 3140f3a6a1ea936499c7203083f2c746, type: 2}
-  - {fileID: 11400000, guid: b7ef493239673974998509332c847fad, type: 2}
-  - {fileID: 11400000, guid: 6ae7309b1a2400649b240f056567c5ab, type: 2}
-  - {fileID: 11400000, guid: 80f5775be1a5e4f4ba034b671b0e152e, type: 2}
-  - {fileID: 11400000, guid: eb1d07e946728c1458fd054a2804fb0f, type: 2}
-  - {fileID: 11400000, guid: 7a5653329eba6434380b93bcb2540527, type: 2}
-  numAvailableCards: 0
+  CardList: []

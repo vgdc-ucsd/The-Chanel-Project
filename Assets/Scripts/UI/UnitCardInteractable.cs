@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
-using UnityEngine.UI;
 
 public class UnitCardInteractable : CardInteractable,
     IEndDragHandler,
@@ -16,7 +15,6 @@ public class UnitCardInteractable : CardInteractable,
 
     public TextMeshProUGUI CardHealth;
     public TextMeshProUGUI CardAttack;
-    public Image CardArt;
 
     private List<GameObject> arrows = new List<GameObject>();
     public StatusIconManager icons;
@@ -39,13 +37,8 @@ public class UnitCardInteractable : CardInteractable,
     }
 
     public override void UpdateCardInfo() {
-        //CardAttack.text = "Attack: " + card.BaseDamage;
-        CardAttack.text = card.BaseDamage.ToString();
-        //CardHealth.text = "Health: " + card.Health;
-        CardHealth.text = card.Health.ToString();
-        if(CardArt.sprite != null) {
-            CardArt.sprite = card.Artwork;
-        }
+        CardAttack.text = "Attack: " + card.BaseDamage;
+        CardHealth.text = "Health: " + card.Health;
         if (inHand) CardCost.text = "Mana Cost: " + card.ManaCost;
         icons.RefreshIcons();
     }
@@ -119,14 +112,8 @@ public class UnitCardInteractable : CardInteractable,
             //    return;
             //}
             CharStatus charStatus;
-            if (card.CurrentTeam == Team.Player) {
-                charStatus = DuelManager.Instance.MainDuel.PlayerStatus;
-                UIManager.Instance.Player.UnhoverMana(charStatus);
-            }
-            else {
-                charStatus = DuelManager.Instance.MainDuel.EnemyStatus;
-                UIManager.Instance.Enemy.UnhoverMana(charStatus);
-            }
+            if (card.CurrentTeam == Team.Player) charStatus = DuelManager.Instance.MainDuel.PlayerStatus;
+            else charStatus = DuelManager.Instance.MainDuel.EnemyStatus;
 
             if (!charStatus.CanUseMana(card.ManaCost))
             {
@@ -142,14 +129,9 @@ public class UnitCardInteractable : CardInteractable,
         }
     }
 
-    public override void OnPointerDown(PointerEventData eventData)
+    public void OnPointerDown(PointerEventData eventData)
     {
-        base.OnPointerDown(eventData);
-        if (mode == CIMode.Inventory)
-        {
-            InventoryUI.Instance.HandleClick(card);
-        }
-        else if (!inHand) 
+        if (!inHand) 
         {
             PlayerInputController.Instance.InteractCard(card);
         }
@@ -157,22 +139,12 @@ public class UnitCardInteractable : CardInteractable,
 
     public override void OnPointerEnter(PointerEventData eventData) {
         base.OnPointerEnter(eventData);
-
-        // Inventory stuff
-        if (mode == CIMode.Inventory)
-        {
-            InventoryUI.Instance.inventoryInfoPanel.UpdateInventoryInfoPanelUnitCard(this.card);
-        }
-
-        if (mode != CIMode.Duel) return;
         UIManager.Instance.InfoPanel.UpdateInfoPanelUnitCard(this.card);
-        if(!CanInteract || !inHand) return;
         AnimationManager.Instance.StartManaHover(card.ManaCost, card.CurrentTeam);
     }
 
     public override void OnPointerExit(PointerEventData eventData) {
         base.OnPointerExit(eventData);
-        if (mode != CIMode.Duel) return;
         AnimationManager.Instance.StopManaHover(card.CurrentTeam);
     }
 
@@ -185,10 +157,5 @@ public class UnitCardInteractable : CardInteractable,
             Debug.LogError("Could not create hand, TemplateCard is has no TemplateArrowEnemy");
             return;
         }
-    }
-
-    public override Card GetCard()
-    {
-        return card;
     }
 }
