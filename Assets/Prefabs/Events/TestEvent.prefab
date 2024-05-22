@@ -269,11 +269,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharacterName: Sycamore
   Option1: Pick the crumpled card up
+  Option1HighlightText: Option 1
   Option2: Fight Sycamore
+  Option2HighlightText: Option 2
   Text: {fileID: 4493026480484674207}
   CharacterNameText: {fileID: 6082291740685966637}
-  Option1Text: {fileID: 4511271392533854370}
-  Option2Text: {fileID: 5636146680855384424}
   DialogueText:
   - Line: Deep, ground-shaking footsteps echo ahead of you. A towering world turtle
       rounds the corner, but something is off. Its usual serenity is long gone, with
@@ -301,6 +301,8 @@ MonoBehaviour:
   DialogueScrollNormal: {fileID: 21300000, guid: 316b9e1a0e51fd547b5eebb68afae74b, type: 3}
   DialogueScrollRipped: {fileID: 21300000, guid: 4c35d22a39a37234db205cbb03de9180, type: 3}
   DialogueScroll: {fileID: 8063209499263999006}
+  Option1Button: {fileID: 2378768394367061564}
+  Option2Button: {fileID: 8241768881105668394}
 --- !u!114 &1057613929408326508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -508,31 +510,20 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4332536210127845989, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
   m_PrefabInstance: {fileID: 3512357275626803743}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2378768394367061564 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1278304404966104099, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
+  m_PrefabInstance: {fileID: 3512357275626803743}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8ae655c9336eda48b66a658bddc3631, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4493026480484674207 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1072993135472736384, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
-  m_PrefabInstance: {fileID: 3512357275626803743}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4511271392533854370 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1019264026043099837, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
-  m_PrefabInstance: {fileID: 3512357275626803743}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5636146680855384424 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9118095852959646583, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
   m_PrefabInstance: {fileID: 3512357275626803743}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -561,5 +552,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8241768881105668394 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4818503555773274933, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
+  m_PrefabInstance: {fileID: 3512357275626803743}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8ae655c9336eda48b66a658bddc3631, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

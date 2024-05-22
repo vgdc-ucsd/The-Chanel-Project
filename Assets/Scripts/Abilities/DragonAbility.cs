@@ -5,7 +5,6 @@ public class DragonAbility : Ability
 {
     public override ActivationCondition Condition { get{return ActivationCondition.OnPlay;} }
 
-    public FireEffect effectTemplate; // probably better to have a universal reference to all effects somewhere
     public override void Activate(UnitCard c, ActivationInfo Info)
     {
         foreach (UnitCard cCol in Info.Duel.DuelBoard.GetCardsInColumn(c.Pos.x)) {
@@ -30,7 +29,7 @@ public class DragonAbility : Ability
 
     private void ApplyFire(UnitCard card, ActivationInfo info)
     {
-        FireEffect effect = ScriptableObject.Instantiate(effectTemplate);
+        FireEffect effect = ScriptableObject.Instantiate(DuelManager.Instance.Effects.FireEffectTemplate);
         effect.AddEffect(card, info);
     }
 }

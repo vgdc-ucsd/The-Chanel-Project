@@ -9,18 +9,6 @@ public class AnubisAbility : Ability
 
     public override void Activate(UnitCard c, ActivationInfo Info)
     {
-        UnitCard anubisCard = c;
-        foreach (UnitCard card in Info.Duel.GetStatus(c.CurrentTeam).Deck.CardList) {
-            if (card.Name == c.Name) {
-                anubisCard = card;
-
-                anubisCard.Abilities.Clear();
-                anubisCard.ManaCost = 0;
-
-                break;
-            }
-        }
-
         UnitCard lowestCard = c;
         foreach (UnitCard card in Info.Duel.DuelBoard.CardSlots) {
             if (card != null && card.ManaCost < lowestCard.ManaCost) {
@@ -32,7 +20,8 @@ public class AnubisAbility : Ability
             Info.Duel.DealDamage(lowestCard, lowestCard.Health);
             AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, lowestCard);
 
-            Info.Duel.GetStatus(c.CurrentTeam).Deck.CardList.Add(anubisCard);
+            c.Health = c.baseStats.health;
+            AnimationManager.Instance.DamageCardAnimation(Info.Duel, c, Color.green);
         }
 
         AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, c);

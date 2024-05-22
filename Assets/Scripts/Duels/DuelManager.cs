@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.VisualScripting;
@@ -12,6 +14,7 @@ public class DuelManager : MonoBehaviour
 {
     // Singleton
     public static DuelManager Instance;
+    public EffectsLibrary Effects;
 
     // Set through inspector
     public DuelSettings Settings;
@@ -24,12 +27,15 @@ public class DuelManager : MonoBehaviour
     private bool awaitingAI;
     public Team currentTeam;
 
+    public bool loadDeckFromInventory = false;
+
 
     void Awake() {
         // Singleton
         if (Instance != null && Instance != this) {
             Debug.LogWarning("Tried to create more than one instance of the DuelManager singleton");
             Destroy(this);
+            return;
         }
         else Instance = this;
     }
@@ -37,19 +43,27 @@ public class DuelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(MenuScript.Instance == null) {
+        if(PersistentData.Instance == null) {
             Debug.LogWarning("Could not load encounter data");
         }
         else {
-            Settings = MenuScript.Instance.CurrentEncounter.Settings;
-            EnemyDeck = MenuScript.Instance.CurrentEncounter.EnemyDeck;
+            Settings = PersistentData.Instance.CurrentEncounter.Settings;
+            EnemyDeck = PersistentData.Instance.CurrentEncounter.EnemyDeck;
         }
 
         CheckProperInitialization();
 
+        PlayerDeck = ScriptableObject.Instantiate(PlayerDeck);
+        if (loadDeckFromInventory)
+        {
+            PlayerDeck.LoadCards(PersistentData.Instance.Inventory.ActiveCards);
+        }
+        EnemyDeck = ScriptableObject.Instantiate(EnemyDeck);
+        
+
         // DuelInstance Setup
-        CharStatus PlayerStatus = new CharStatus(Team.Player, ScriptableObject.Instantiate(PlayerDeck));
-        CharStatus EnemyStatus = new CharStatus(Team.Enemy, ScriptableObject.Instantiate(EnemyDeck));
+        CharStatus PlayerStatus = new CharStatus(Team.Player, PlayerDeck);
+        CharStatus EnemyStatus = new CharStatus(Team.Enemy, EnemyDeck);
         PlayerStatus.Deck.Init();
         EnemyStatus.Deck.Init();
         Board board = new Board(Settings.BoardRows, Settings.BoardCols);
@@ -104,8 +118,8 @@ public class DuelManager : MonoBehaviour
             throw new System.NotImplementedException();
 
         MainDuel.DrawCardWithMana(Team.Player);
-        
-        UIManager.Instance.UpdateStatus(MainDuel);
+
+        AnimationManager.Instance.UpdateUIAnimation(MainDuel);
     }
 
     // triggered by button
@@ -124,8 +138,10 @@ public class DuelManager : MonoBehaviour
             }
         }
         else {
+            EnablePlayerControl(false);
             MainDuel.ProcessBoard(Team.Player);
             currentTeam = Team.Enemy;
+            AnimationManager.Instance.UpdateUIAnimation(MainDuel);
             StartCoroutine(ai.MCTS(MainDuel));
             awaitingAI = true;
         }
@@ -137,8 +153,9 @@ public class DuelManager : MonoBehaviour
         MainDuel = state;
         //state.DebugBoard();
         AnimationManager.Instance.DrawCardsAnimation(MainDuel, new List<Card>(), Team.Enemy);
-        UIManager.Instance.UpdateStatus(state);
-        
+        AnimationManager.Instance.UpdateUIAnimation(MainDuel);
+        AnimationManager.Instance.RestorePlayerControlAnimation(MainDuel);
+
         awaitingAI = false;
         currentTeam = Team.Player;
 
@@ -159,5 +176,26 @@ public class DuelManager : MonoBehaviour
         Debug.Log($"Enemy Draw Pile: {MainDuel.EnemyStatus.Deck.DrawPile().ToCommaSeparatedString()}");
         Debug.Log($"Enemy Discard Pile: {MainDuel.EnemyStatus.Deck.DiscardPile().ToCommaSeparatedString()}");
         */
+    }
+
+    public void EnablePlayerControl(bool enable) {
+        UIManager.Instance.HighlightEndTurnButton(enable);
+        List<Card> cards = new List<Card>();
+        cards.AddRange(MainDuel.GetStatus(Team.Player).Cards);
+        cards.AddRange(MainDuel.DuelBoard.CardSlots);
+
+        foreach (Card card in cards) {
+            if (card != null && card.CardInteractableRef != null) {
+                card.CardInteractableRef.CanInteract = enable;
+            }
+        }
+    }
+
+    [Serializable]
+    public class EffectsLibrary
+    {
+        public FireEffect FireEffectTemplate;
+        public PoisonEffect PoisonEffectTemplate;
+        public FrozenEffect FrozenEffectTemplate;
     }
 }

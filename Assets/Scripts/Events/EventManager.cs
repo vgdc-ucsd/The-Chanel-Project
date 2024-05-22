@@ -5,10 +5,13 @@ using UnityEngine;
 public class EventManager : MonoBehaviour
 {
     public GameObject[] Events;
+    public bool OptionSelected = false;
 
     public static EventManager Instance;
 
     void Awake() {
+        OptionSelected = false;
+
         // Singleton
         if (Instance != null && Instance != this) {
             Debug.LogWarning("Tried to create more than one instance of the EventManager singleton");

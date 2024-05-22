@@ -58,7 +58,7 @@ public class HandInterface : MonoBehaviour
                         card.transform,
                         targetPosition,
                         0.2f,
-                        InterpolationMode.Linear
+                        InterpolationMode.EaseOut
                     );
                     QueueableAnimation qa = new QueueableAnimation(animation, 0.1f);
                     cardAnimations.Add(qa);
@@ -69,7 +69,7 @@ public class HandInterface : MonoBehaviour
                     IEnumerator animation = AnimationManager.Instance.SimpleTranslate(
                         card.transform,
                         targetPosition,
-                        0.1f,
+                        0.2f,
                         InterpolationMode.Linear
                     );
                     QueueableAnimation qa = new QueueableAnimation(animation, 0f);

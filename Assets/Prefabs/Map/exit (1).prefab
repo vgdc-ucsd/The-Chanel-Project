@@ -93,4 +93,6 @@ MonoBehaviour:
   mapNodeType: 4
   nextNodes: []
   prevNodes: []
-  row: 3
+  point:
+    col: 0
+    row: 0
