@@ -9,9 +9,9 @@ public class ShopManager : MonoBehaviour
 {
     // Collection of Cards Player Unlocked
     public Deck cardCollection;
-    // Player's Current Deck || Take from Persistant Data
+    // Player's Current Deck
     public Deck playerDeck;
-    // Player's Gold || Store in Persistant Data
+    // Player's Gold
     public int playerGold;
 
     //TEST, Text Reference for Player Gold
@@ -26,19 +26,12 @@ public class ShopManager : MonoBehaviour
     // Inspect GameObject/Screen
     public GameObject inspectScreen;
 
-    // 
-    public int shopCardAmount;
-    public Transform shopContainer;
-    public int offset;
-
     void Start()
     {
         //TESTING VALUE
         playerGold = 4;
 
         goldText.text = "Gold: " + playerGold.ToString();
-
-        spawnCards();
     }
 
     // TESTING ONLY, REMOVE LATER
@@ -90,16 +83,6 @@ public class ShopManager : MonoBehaviour
 
         CardDisplay display = inspectCard.GetComponent<CardDisplay>();
         display.setDisplay((UnitCard)card); // TODO support spell cards
-    }
-
-    public void spawnCards()
-    {
-        for (int i = 0; i < shopCardAmount; i++)
-        {
-            //Instantiate(shopCardPrefab, shopContainer.transform.position + Vector3.right * (i * offset), Quaternion.identity);
-            GameObject cardObject = Instantiate(shopCardPrefab, shopContainer);
-            cardObject.transform.position += new Vector3(i * offset, 0 ,0);
-        }
     }
 
     // TODO: Port Function to Inventory
