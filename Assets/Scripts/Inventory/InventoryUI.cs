@@ -40,14 +40,14 @@ public class InventoryUI : MonoBehaviour
     {
         foreach (Card card in inventory.InactiveCards)
         {
-            CardInteractable ci = card.GenerateCardInteractable();
+            CardInteractable ci = UIManager.Instance.GenerateCardInteractable(card);
             ci.mode = CIMode.Inventory;
             ciList.Add(ci);
          
         }
         foreach (Card card in inventory.ActiveCards)
         {
-            CardInteractable ci = card.GenerateCardInteractable();
+            CardInteractable ci = UIManager.Instance.GenerateCardInteractable(card);
             ci.mode = CIMode.Inventory;
             ciList.Add(ci);
         }
