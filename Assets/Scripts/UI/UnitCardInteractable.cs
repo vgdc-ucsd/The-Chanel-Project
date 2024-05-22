@@ -43,7 +43,7 @@ public class UnitCardInteractable : CardInteractable,
         CardAttack.text = card.BaseDamage.ToString();
         //CardHealth.text = "Health: " + card.Health;
         CardHealth.text = card.Health.ToString();
-        if(CardArt.sprite != null) {
+        if(CardArt != null) {
             CardArt.sprite = card.Artwork;
         }
         if (inHand) CardCost.text = "Mana Cost: " + card.ManaCost;

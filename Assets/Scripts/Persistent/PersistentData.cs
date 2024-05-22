@@ -20,9 +20,9 @@ public class PersistentData : MonoBehaviour
             return;
         }
         DontDestroyOnLoad(gameObject);
-
         if (ImportDeck != null)
         {
+            ImportDeck.Init();
             Inventory.InactiveCards.Clear();
             Inventory.ActiveCards.Clear();
             foreach (Card card in ImportDeck.CardList)
