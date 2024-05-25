@@ -22,10 +22,11 @@ public class PersistentData : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         if (ImportDeck != null)
         {
-            ImportDeck.Init();
+            Deck newDeck = ImportDeck.Clone();
+            newDeck.Init();
             Inventory.InactiveCards.Clear();
             Inventory.ActiveCards.Clear();
-            foreach (Card card in ImportDeck.CardList)
+            foreach (Card card in newDeck.CardList)
             {
                 if (Inventory.ActiveCards.Count < Deck.DECK_SIZE)
                 {
