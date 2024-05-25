@@ -24,10 +24,10 @@ MonoBehaviour:
   CanMove: 1
   CanAttack: 0
   isSelected: 0
-  BaseDamage: 1
+  BaseDamage: 2
   UnitCardInteractableRef: {fileID: 0}
   Attacks:
-  - direction: {x: 0, y: 1}
-    damage: 1
+  - direction: {x: 1, y: 1}
+    damage: 2
   Abilities: []
   StatusEffects: []

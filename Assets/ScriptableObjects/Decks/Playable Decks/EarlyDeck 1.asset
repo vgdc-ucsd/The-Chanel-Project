@@ -23,6 +23,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 80f5775be1a5e4f4ba034b671b0e152e, type: 2}
   - {fileID: 11400000, guid: e7bb028145f1efc45ae1da90255731d8, type: 2}
   - {fileID: 11400000, guid: e7bb028145f1efc45ae1da90255731d8, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: c1af7b6de9f691a4ebd260c395c4f39f, type: 2}
+  - {fileID: 11400000, guid: 96538df7e080c6446bc14ab009715f80, type: 2}
   numAvailableCards: 12

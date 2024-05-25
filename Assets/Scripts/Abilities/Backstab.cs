@@ -13,7 +13,7 @@ public class Backstab : Ability
 
         foreach(Attack atk in c.baseStats.attacks) {
             if(atk.direction == backwards) {
-                atk.damage *= 2;
+                atk.damage += 1;
             }
         }
         c.RecalculateStats(info);
