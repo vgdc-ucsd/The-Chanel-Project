@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 2376099571698738000}
   - component: {fileID: 1377791331833426138}
   - component: {fileID: 9116396203759512638}
-  - component: {fileID: 6719543524797682378}
+  - component: {fileID: 3476419135882579771}
   m_Layer: 0
-  m_Name: Clio
+  m_Name: Vera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,30 +117,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50f462b25be3c964c9ad3f808a1c4c61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterArt: {fileID: 21300000, guid: a6a3a2260ae3cd54888442e350273ad4, type: 3}
-  CharacterName: Clio
-  Option1: Help her out
-  Option1HighlightText: Lose 3 cards from your inventory
-  Option2: Put her out of her misery
-  Option2HighlightText: Start the next combat with -3 health
+  CharacterArt: {fileID: 21300000, guid: fc17f1c8c2ec552438215c0392cc4fe9, type: 3}
+  CharacterName: Vera
+  Option1: Listen to her
+  Option1HighlightText: Removes the ability from one of your cards
+  Option2: Attempt to dodge
+  Option2HighlightText: Lose all your gold
   DialogueText:
-  - Line: "You see a small, shaking figure across the room. She sticks close to the
-      walls, her body tense and defensive. \u201CDon't\u2026 don't get any closer.\u201D"
+  - Line: A quiet humming emanates through the wall in front of you. You ready yourself
+      for battle, muscles tense in anticipation.
     TextSpeed: 20
-  - Line: 'You see that she is trying to hide a sizable wound, a cultist knife stuck
-      between her ribs. She is bleeding out. "What are you looking at? I''ll kill
-      you, just like the rest of them." '
+  - Line: A veiled cultist rounds the corner, eyes flashing upon noticing you. You
+      blink, and in a blur she moves a little too quickly.
     TextSpeed: 20
-  - Line: She hisses, wiping her runny nose with the back of her calloused hand.
-      Her bloodshot, watery eyes dart between you and the door, delirious from blood
-      loss and paranoia.
+  - Line: "\u201CWell now, if it isn\u2019t the latest ce-le-bri-ty! I\u2019ve just
+      been dying to meet you\u2026\u201D The walls appear to narrow as she inches
+      closer, arms shivering in excitement, her scarlet gaze piercing the darkness
+      and painting her manic smile red."
     TextSpeed: 20
-  - Line: "When you step closer, she starts laughing. \"Tell me, do the birds still
-      sing for you? Do the stars still shine for you? Or was the Outlaw making it
-      all up? Was Mom right this whole time?\u201D"
+  - Line: "\u201CDAR-ling! Give me one of those lovely hands of yours and assist
+      me with this new buffing spell won\u2019t you? Not to worry, sweetness, it
+      won\u2019t hurt a bit.\u201D"
     TextSpeed: 20
-  - Line: "You could put her out of her misery right here and now\u2026 or you could
-      help this kid out."
+  - Line: "The air hums with power, and your gut screams at you to run. \u201CStay
+      still!\u201D she cackles."
     TextSpeed: 20
   DialogueScrollNormal: {fileID: 21300000, guid: 316b9e1a0e51fd547b5eebb68afae74b, type: 3}
   DialogueScrollRipped: {fileID: 21300000, guid: 4c35d22a39a37234db205cbb03de9180, type: 3}
@@ -150,7 +150,7 @@ MonoBehaviour:
   Text: {fileID: 4493026480484674207}
   CharacterNameText: {fileID: 6082291740685966637}
   CharacterImage: {fileID: 5014599397365820904}
---- !u!114 &6719543524797682378
+--- !u!114 &3476419135882579771
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3759208247752327063}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65843629bd1aaeb47be57b934f18ee55, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b795003dfa7e5e49b62d792f3460d62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   center: {fileID: 6765381394224488128}
@@ -321,18 +321,18 @@ PrefabInstance:
     - target: {fileID: 5951049278483131577, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 6719543524797682378}
+      objectReference: {fileID: 3476419135882579771}
     - target: {fileID: 5951049278483131577, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5951049278483131577, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: HelpOut
+      value: Listen
       objectReference: {fileID: 0}
     - target: {fileID: 5951049278483131577, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ClioEvent, Assembly-CSharp
+      value: VeraEvent, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5951049278483131577, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -349,18 +349,18 @@ PrefabInstance:
     - target: {fileID: 6597158597157323221, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 6719543524797682378}
+      objectReference: {fileID: 3476419135882579771}
     - target: {fileID: 6597158597157323221, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6597158597157323221, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Misery
+      value: Dodge
       objectReference: {fileID: 0}
     - target: {fileID: 6597158597157323221, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ClioEvent, Assembly-CSharp
+      value: VeraEvent, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6597158597157323221, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName

@@ -4,13 +4,26 @@ using UnityEngine;
 
 public class ClioEvent : MonoBehaviour
 {
+    public Transform center;
+
+    private List<Card> removedCards = new List<Card>();
+    private float heightOffset = 300f;
+    private float duration = 0.6f;
+
     public void HelpOut() {
         if(EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
-        Debug.Log("help out");
 
+        int cardCount = PersistentData.Instance.Inventory.InactiveCards.Count;
+        if(cardCount > 3) cardCount = 3;
 
-        EventManager.Instance.FinishEvent();
+        for(int i = 0; i < cardCount; i++) {
+            int randomIndex = Random.Range(0, PersistentData.Instance.Inventory.InactiveCards.Count);
+            removedCards.Add(PersistentData.Instance.Inventory.InactiveCards[randomIndex]);
+            PersistentData.Instance.Inventory.InactiveCards.RemoveAt(randomIndex);
+        }
+
+        StartCoroutine(AnimationManager.Instance.ShowRemovedCards(removedCards, center, heightOffset, duration));
     }
 
     public void Misery() {
@@ -18,6 +31,7 @@ public class ClioEvent : MonoBehaviour
         else EventManager.Instance.OptionSelected = true;
         Debug.Log("misery");
 
+        // TODO
 
 
         EventManager.Instance.FinishEvent();

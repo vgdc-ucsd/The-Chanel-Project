@@ -557,6 +557,26 @@ public class AnimationManager : MonoBehaviour
         obj.localPosition = originalPos;
     }
 
+    public IEnumerator ShowRemovedCards(List<Card> removedCards, Transform center, float heightOffset, float duration) {
+        float scaleFactor = transform.parent.GetComponent<Canvas>().scaleFactor;
+        for(int i = 0; i < removedCards.Count; i++) {
+            Card c = removedCards[i].Clone();
+            c.CurrentTeam = Team.Neutral;
+            CardInteractable ci = UIManager.Instance.GenerateCardInteractable(c);
+            ci.CanInteract = false;
+            ci.mode = CIMode.Reward;
+            ci.transform.parent = center;
+            ci.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            ci.transform.localPosition = Vector3.zero;
+            ci.transform.position = new Vector3(center.position.x, center.position.y-(heightOffset*scaleFactor), center.position.z);
+            yield return Instance.SimpleTranslate(ci.transform, center.position, duration, InterpolationMode.Slerp);
+            Vector3 targetPos = new Vector3(center.position.x, center.position.y+(heightOffset*scaleFactor), center.position.z);
+            yield return new WaitForSeconds(0.5f);
+            yield return SimpleTranslate(ci.transform, targetPos, duration, InterpolationMode.Slerp);
+        }
+        EventManager.Instance.FinishEvent();
+    }
+
     private IEnumerator DrawCardsCoroutine(List<Card> cards, Team team) {
         yield return DrawCards(cards, team);
         yield return OrganizeCards(team);
