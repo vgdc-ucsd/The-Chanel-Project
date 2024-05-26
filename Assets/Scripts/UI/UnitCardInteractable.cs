@@ -11,15 +11,26 @@ public class UnitCardInteractable : CardInteractable,
 {
     public UnitCard card;
 
-    public GameObject TemplateArrowPlayer;
-    public GameObject TemplateArrowEnemy;
-
     public TextMeshProUGUI CardHealth;
     public TextMeshProUGUI CardAttack;
     public Image CardArt;
 
-    private List<GameObject> arrows = new List<GameObject>();
+    public List<Image> Arrows = new List<Image>();
+    public Sprite InactiveArrowOrthogonal;
+    public Sprite ActiveArrowOrthogonal;
+    public Sprite InactiveArrowDiagonal;
+    public Sprite ActiveArrowDiagonal;
+
     public StatusIconManager icons;
+
+    private Vector2Int UpLeft = new Vector2Int(-1, 1);
+    private Vector2Int UpMid = new Vector2Int(0, 1);
+    private Vector2Int UpRight = new Vector2Int(1, 1);
+    private Vector2Int Left = new Vector2Int(-1, 0);
+    private Vector2Int Right = new Vector2Int(1, 0);
+    private Vector2Int DownLeft = new Vector2Int(-1, -1);
+    private Vector2Int DownMid = new Vector2Int(0, -1);
+    private Vector2Int DownRight = new Vector2Int(1, -1);
 
     protected override void Awake()
     {
@@ -51,25 +62,28 @@ public class UnitCardInteractable : CardInteractable,
     }
 
     public void DrawArrows() {
-        foreach (GameObject obj in arrows)
-        {
-            Destroy(obj);
+        for(int i = 0; i < 8; i++) {
+            if(i == 1 || i == 3 || i == 4 || i == 6) {
+                Arrows[i].sprite = InactiveArrowOrthogonal;
+            }
+            else {
+                Arrows[i].sprite = InactiveArrowDiagonal;
+            }
         }
-        foreach(Attack atk in card.Attacks) {
-            GameObject arrow;
-            if (card.CurrentTeam == Team.Player) arrow = Instantiate(TemplateArrowPlayer);
-            else arrow = Instantiate(TemplateArrowEnemy);
 
-            arrow.transform.eulerAngles = new Vector3(0, 0, Vector2.SignedAngle(Vector2.up, atk.direction));
-            arrow.transform.SetParent(this.transform);
-            arrow.transform.localPosition = Vector3.zero;
-            arrow.transform.localScale = new Vector3(
-                arrow.transform.localScale.x,
-                atk.direction.magnitude / 2,
-                1
-            );
-            arrow.SetActive(true);
-            arrows.Add(arrow);
+        foreach(Attack atk in card.Attacks) {
+            Vector2Int dir = atk.direction;
+            if(dir == UpLeft) Arrows[0].sprite = ActiveArrowDiagonal;
+            else if(dir == UpMid) Arrows[1].sprite = ActiveArrowOrthogonal;
+            else if(dir == UpRight) Arrows[2].sprite = ActiveArrowDiagonal;
+            else if(dir == Left) Arrows[3].sprite = ActiveArrowOrthogonal;
+            else if(dir == Right) Arrows[4].sprite = ActiveArrowOrthogonal;
+            else if(dir == DownLeft) Arrows[5].sprite = ActiveArrowDiagonal;
+            else if(dir == DownMid) Arrows[6].sprite = ActiveArrowOrthogonal;
+            else if(dir == DownRight) Arrows[7].sprite = ActiveArrowDiagonal;
+            else {
+                Debug.LogWarning($"Could not draw arrows for attack direction {dir}");
+            }
         }
     }
 
@@ -174,17 +188,6 @@ public class UnitCardInteractable : CardInteractable,
         base.OnPointerExit(eventData);
         if (mode != CIMode.Duel) return;
         AnimationManager.Instance.StopManaHover(card.CurrentTeam);
-    }
-
-    public void CheckProperInitialization() {
-        if(TemplateArrowPlayer == null) {
-            Debug.LogError("Could not create hand, TemplateCard is has no TemplateArrowPlayer");
-            return;
-        }
-        if(TemplateArrowEnemy == null) {
-            Debug.LogError("Could not create hand, TemplateCard is has no TemplateArrowEnemy");
-            return;
-        }
     }
 
     public override Card GetCard()

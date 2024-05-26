@@ -201,8 +201,6 @@ public class UIManager : MonoBehaviour
             Debug.LogError("Could not create hand, TemplateCard is uninitialized");
             return;
         }
-        TemplateUnitCard.CheckProperInitialization();
-
         if(BoardContainer == null) {
             Debug.LogError("Cannot create board, BoardContainer is uninitialized");
             return;
