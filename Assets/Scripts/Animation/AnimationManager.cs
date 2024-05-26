@@ -230,6 +230,7 @@ public class AnimationManager : MonoBehaviour
         if(team == Team.Player) {
             drawPile = UIManager.Instance.PlayerDraw;
             discardPile = UIManager.Instance.PlayerDiscard;
+            DrawCardButton.Instance.StopCardHover();
         }
         else {
             drawPile = UIManager.Instance.EnemyDraw;
@@ -404,6 +405,8 @@ public class AnimationManager : MonoBehaviour
     }
 
     private IEnumerator DamageFlash(UnitCard c, float duration, Color damage) {
+        Color normalColor = Color.green;
+
         float damageTime = duration * 0.25f;
         float restoreTime = duration * 0.75f;
 
@@ -414,7 +417,7 @@ public class AnimationManager : MonoBehaviour
         TextMeshProUGUI text = c.UnitCardInteractableRef.CardHealth;
 
         // black to red
-        Color from = Color.black;
+        Color from = normalColor;
         Color to = damage;
         while(elapsedTime < damageTime) {
             if(text == null) break;
@@ -431,7 +434,7 @@ public class AnimationManager : MonoBehaviour
         startTime = Time.time;
         elapsedTime = Time.time - startTime;
         from = damage;
-        to = Color.black;
+        to = normalColor;
         while(elapsedTime < restoreTime) {
             if(text == null) break;
             float t = elapsedTime / restoreTime;
@@ -605,7 +608,12 @@ public class AnimationManager : MonoBehaviour
 
     public void DrawCardsAnimation(DuelInstance duel, List<Card> cards, Team team) {
         IEnumerator ie = DrawCardsCoroutine(cards, team);
-        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+        int shuffledCount = 0;
+        if(duel.GetStatus(team).Deck.DrawPile().Count < cards.Count) {
+            shuffledCount = duel.GetStatus(team).Deck.DiscardPile().Count;
+        }
+        float delay = shuffledCount * 0.2f;
+        QueueableAnimation qa = new QueueableAnimation(ie, delay);
         duel.Animations.Enqueue(qa);
     }
 
