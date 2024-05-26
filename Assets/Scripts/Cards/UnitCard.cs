@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.XR;
 
 
 
@@ -98,13 +99,14 @@ public class UnitCard : Card
         Health -= damage;
         ActivationInfo info = new ActivationInfo(duel);
         info.TotalDamage = damage;
-        if(Health < 0) info.OverkillDamage = Health*-1;
+        if(Health < 0) {
+            info.OverkillDamage = Health*-1;
+        }
 
-        AnimationManager.Instance.DamageCardAnimation(duel, this);
+        AnimationManager.Instance.DamageCardAnimation(duel, this, Color.red);
         
         // On receive damage but still alive
         if (Health > 0) {
-            AnimationManager.Instance.UpdateCardInfoAnimation(duel, this);
             foreach (Ability a in Abilities) {      
                 if(a.Condition == ActivationCondition.OnReceiveDamage) a.Activate(this, info);
             }
@@ -126,7 +128,7 @@ public class UnitCard : Card
     {
         this.Pos = pos;
         CanMove = false;
-        CanAttack = false;
+        CanAttack = true;
 
         baseStats.health = this.Health;
         List<Attack> atkList = new List<Attack>();
@@ -163,5 +165,20 @@ public class UnitCard : Card
         }
 
     }
-    
+
+    // DO NOT USE THIS INSIDE DUELS, use this for visual card objects outside of duels only
+    public override CardInteractable GenerateCardInteractable()
+    {
+        if (DuelManager.Instance != null)
+        {
+            Debug.LogError("Do not call GenerateCardInteractable() from cards in duels, generate from UIManager only");
+            return null;
+        }
+        UnitCardInteractable ci = Instantiate(GameData.Instance.UCITemplate);
+        ci.card = this;
+        ci.SetCardInfo();
+        return ci;
+    }
+
+
 }

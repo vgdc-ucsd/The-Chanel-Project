@@ -1,20 +1,20 @@
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public enum ActivationCondition {
-    OnProcess,      // applies effect every turn during attack phase
-    OnBeginTurn,    // applies effect at start of every turn of the card's team
+    OnProcess, // applies effect every turn during attack phase
+    OnBeginTurn, // applies effect at start of every turn of the card's team
+    OnEndTurn, // applies after process
     OnDeath,
     OnDraw,
     OnPlay,
     OnMove,
     OnReceiveDamage,
-    OnAttacksHitMe, // triggers when any Attacker hits you, gives Attacker reference
-    OnAttack,       // triggers just before Attack hits
-    OnDealDamage,   // triggers once after landing each separate attack
+    OnDealDamage, // triggers once after landing each separate attack
     OnFinishAttack, // triggers once per turn after landing at least one attack
-    OnTrigger,      // can only be triggered externally
+    OnTrigger, // can only be triggered externally
 }
 
 public struct ActivationInfo {
@@ -23,12 +23,14 @@ public struct ActivationInfo {
         TargetCard = null;
         OverkillDamage = 0;
         TotalDamage = 0;
+        DamagedCards = new List<UnitCard>();
     }
 
     public DuelInstance Duel;
     public UnitCard TargetCard;
     public int OverkillDamage;
     public int TotalDamage;
+    public List<UnitCard> DamagedCards;
 }
 
 [Serializable]

@@ -8,16 +8,17 @@ public class ScrollMap : MonoBehaviour
 {
     [SerializeField] int sensitivity;
     [SerializeField] float sidePadding;
+    [SerializeField] RectTransform nodes;
 
     private List<RectTransform> children = new();
-    private MapGrid mapGridRef;
+    private MapGenerator mapGridRef;
     void Start()
     {
         Invoke("Init", 0.1f);
-        mapGridRef = FindObjectOfType<MapGrid>();
+        mapGridRef = FindObjectOfType<MapGenerator>();
     }
 
-    private void Init()
+    public void Init()
     {
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -27,9 +28,9 @@ public class ScrollMap : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        if (Input.GetAxis("Mouse ScrollWheel") < 0) // NODES MOVE LEFT, MAP SCROLLS TO THE RIGHT
         {
-            float endNodeXPos = mapGridRef.row3[mapGridRef.row3.Count - 1].GetComponent<RectTransform>().localPosition.x - (10 * sensitivity);
+            float endNodeXPos = mapGridRef.exitInstace.GetComponent<RectTransform>().localPosition.x - (10 * sensitivity) + nodes.localPosition.x;
             if (endNodeXPos > (GetComponent<RectTransform>().sizeDelta.x / 2f) - sidePadding)
             {
                 foreach (var child in children)
@@ -38,9 +39,9 @@ public class ScrollMap : MonoBehaviour
                 }
             }
         }
-        else if (Input.GetAxis("Mouse ScrollWheel") > 0)
+        else if (Input.GetAxis("Mouse ScrollWheel") > 0) // NODES MOVE RIGHT, MAP SCROLLS LEFT
         {
-            float startNodeXPos = mapGridRef.row1[0].GetComponent<RectTransform>().localPosition.x + (10 * sensitivity);
+            float startNodeXPos = mapGridRef.startInstace.GetComponent<RectTransform>().localPosition.x + (10 * sensitivity) + nodes.localPosition.x;
             if (startNodeXPos < -(GetComponent<RectTransform>().sizeDelta.x / 2f) + sidePadding)
             {
                 foreach (var child in children)

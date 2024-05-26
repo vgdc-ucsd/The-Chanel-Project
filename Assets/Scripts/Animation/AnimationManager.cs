@@ -9,8 +9,6 @@ public class AnimationManager : MonoBehaviour
 {
     public static AnimationManager Instance;
 
-    public Transform EnemyHandLocation;
-
     private Queue<QueueableAnimation> animations = new Queue<QueueableAnimation>();
     private bool activelyPlaying = false;
 
@@ -22,7 +20,7 @@ public class AnimationManager : MonoBehaviour
         }
         else Instance = this;
     }
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -50,7 +48,7 @@ public class AnimationManager : MonoBehaviour
 
     private IEnumerator PlayAnimations() {
         activelyPlaying = true;
-        
+
         // While the animation queue is not empty
         while(animations.Count > 0) {
             float startTime = Time.time;
@@ -79,6 +77,12 @@ public class AnimationManager : MonoBehaviour
     // Translates the transform at origin to the position at dest
     public IEnumerator SimpleTranslate(Transform origin, Vector3 dest, float duration, InterpolationMode mode) {
         if(origin == null) yield break;
+        CardInteractable ci = origin.gameObject.GetComponent<CardInteractable>();
+        bool couldInteract = false;
+        if(ci != null) {
+            couldInteract = ci.CanInteract;
+            ci.CanInteract = false;
+        }
         float startTime = Time.time;
         Vector3 startPos = origin.position;
         float elapsedTime = Time.time - startTime;
@@ -92,7 +96,10 @@ public class AnimationManager : MonoBehaviour
             yield return null;
         }
 
-        origin.position = dest;
+        if(origin != null) origin.position = dest;
+        if(ci != null) {
+            ci.CanInteract = couldInteract;
+        }
     }
 
     // Animation that plays when a card makes an attack in a direction
@@ -125,7 +132,7 @@ public class AnimationManager : MonoBehaviour
         cardTransform.position = startPos;
     }
 
-    private IEnumerator CardDeath(UnitCard card) {
+    private IEnumerator CardDeath(UnitCard card, float duration) {
         Transform cardTransform = card.UnitCardInteractableRef.transform;
         Transform drawPile;
         Transform discardPile;
@@ -155,7 +162,39 @@ public class AnimationManager : MonoBehaviour
             }
         }
 
-        yield return SimpleTranslate(cardTransform, discardPile.position, 0.5f, InterpolationMode.Linear);
+        yield return SimpleTranslateThenRotate(cardTransform, discardPile.position, duration, InterpolationMode.EaseOut);
+    }
+
+    public IEnumerator SimpleTranslateThenRotate(Transform origin, Vector3 dest, float duration, InterpolationMode mode) {
+        if(origin == null) yield break;
+        CardInteractable ci = origin.gameObject.GetComponent<CardInteractable>();
+        bool couldInteract = false;
+        if(ci != null) {
+            couldInteract = ci.CanInteract;
+            ci.CanInteract = false;
+        }
+        float startTime = Time.time;
+        Vector3 startPos = origin.position;
+        float elapsedTime = Time.time - startTime;
+
+        // Interpolates between two positions until elapsedTime reaches duration
+        while(elapsedTime < duration) {
+            if(origin == null) yield break;
+            float t = elapsedTime / duration;
+            origin.position = Interpolation.Interpolate(startPos, dest, t, mode);
+            elapsedTime = Time.time - startTime;
+            yield return null;
+        }
+
+        if(origin != null) {
+            origin.position = dest;
+            origin.localEulerAngles = new Vector3(0, 0, Random.Range(-40, 40));
+        }
+        if(ci != null) {
+            ci.CanInteract = couldInteract;
+        }
+
+
     }
 
     private IEnumerator SpellDiscard(SpellCard card) {
@@ -177,11 +216,6 @@ public class AnimationManager : MonoBehaviour
         yield return SimpleTranslate(cardTransform, discardPile.position, 0.5f, InterpolationMode.Linear);
     }
 
-    public void CardDeathImmediate(UnitCard card)
-    {
-        StartCoroutine(CardDeath(card));
-    }
-
     public IEnumerator OrganizeCards(Team team) {
         if (team == Team.Player) UIManager.Instance.Hand.OrganizeCards();
         else UIManager.Instance.EnemyHand.OrganizeCards();
@@ -190,8 +224,6 @@ public class AnimationManager : MonoBehaviour
     }
 
     private IEnumerator DrawCards(List<Card> cards, Team team) {
-        int childIndex = 0;
-
         Transform drawPile;
         Transform discardPile;
 
@@ -204,14 +236,16 @@ public class AnimationManager : MonoBehaviour
             discardPile = UIManager.Instance.EnemyDiscard;
         }
 
+        int childIndex = drawPile.childCount - 1;
+
         if(discardPile.childCount>=1 && drawPile.childCount==0) {
-            ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
+            yield return ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
             yield return null;
         }
 
         // draw all cards
         if(drawPile.childCount >= cards.Count) {
-            
+
             foreach(Card c in cards) {
                 GameObject cardObject;
                 // Draw hidden enemy card
@@ -226,7 +260,7 @@ public class AnimationManager : MonoBehaviour
                 }
                 cardObject.transform.position = drawPile.position;
                 Destroy(drawPile.GetChild(childIndex).gameObject);
-                childIndex++;
+                childIndex--;
             }
         }
         // draw then shuffle then draw
@@ -248,10 +282,10 @@ public class AnimationManager : MonoBehaviour
                 }
                 cardObject.transform.position = drawPile.position;
                 Destroy(drawPile.GetChild(childIndex).gameObject);
-                childIndex++;
+                childIndex--;
             }
 
-            ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
+            yield return ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
 
             childIndex = 0;
             for(int i = 0; i < afterCount; i++) {
@@ -300,7 +334,7 @@ public class AnimationManager : MonoBehaviour
             }
             unitRef.transform.SetParent(tile.transform);
             unitRef.transform.localScale = Vector3.one;
-            unitRef.DrawArrows(); 
+            unitRef.DrawArrows();
             unitRef.CardCost.enabled = false;
             unitRef.gameObject.SetActive(true);
 
@@ -312,15 +346,55 @@ public class AnimationManager : MonoBehaviour
             Destroy(cardBack);
 
             // translation animation
-            yield return SimpleTranslate(unitRef.transform, tile.transform.position, speed, InterpolationMode.Linear);
+            yield return SimpleTranslate(unitRef.transform, tile.transform.position, speed, InterpolationMode.EaseOut);
         }
         else {
             unitRef.UIPlaceCard(pos);
         }
     }
 
+    public IEnumerator PlaceSpellCardEnemy(SpellCard c, BoardCoords pos, float speed)
+    {
+        SpellCardInteractable scRef = c.SpellCardInteractableRef;
+
+        // make a new card interactable if there is none
+        // TODO remove since they should be generated when the enemy draws/organizes the card ?
+        if (scRef == null)
+        {
+            scRef = (SpellCardInteractable)UIManager.Instance.GenerateCardInteractable(c);
+            c.SpellCardInteractableRef = scRef;
+        }
+
+        // Show card place animation if card belongs to enemy
+        if (!DuelManager.Instance.Settings.EnablePVPMode && c.CurrentTeam == Team.Enemy)
+        {
+            // set card
+            TileInteractable tile = BoardInterface.Instance.GetTile(pos);
+            scRef.inHand = false;
+            scRef.transform.localEulerAngles = Vector3.zero;
+            scRef.transform.localScale = Vector3.one;
+            if (scRef.handInterface != null)
+            {
+                scRef.handInterface.cardObjects.Remove(scRef.gameObject);
+            }
+            scRef.transform.SetParent(tile.transform);
+            scRef.transform.localScale = Vector3.one;
+            scRef.gameObject.SetActive(true);
+
+            // remove card from hand
+            int randomIndex = Random.Range(0, UIManager.Instance.EnemyHand.cardObjects.Count);
+            GameObject cardBack = UIManager.Instance.EnemyHand.cardObjects[randomIndex];
+            UIManager.Instance.EnemyHand.cardObjects.Remove(cardBack);
+            scRef.transform.position = cardBack.transform.position;
+            Destroy(cardBack);
+
+            // translation animation
+            yield return SimpleTranslate(scRef.transform, tile.transform.position, speed, InterpolationMode.EaseOut);
+        }
+    }
+
     public IEnumerator MoveCard(UnitCard uc, Transform targetPos, float speed) {
-        yield return SimpleTranslate(uc.UnitCardInteractableRef.transform, targetPos.position, speed, InterpolationMode.Linear);
+        yield return SimpleTranslate(uc.UnitCardInteractableRef.transform, targetPos.position, speed, InterpolationMode.EaseOut);
         uc.UnitCardInteractableRef.UpdateCardPos();
     }
 
@@ -329,7 +403,7 @@ public class AnimationManager : MonoBehaviour
         yield return null;
     }
 
-    private IEnumerator DamageFlash(UnitCard c, float duration) {
+    private IEnumerator DamageFlash(UnitCard c, float duration, Color damage) {
         float damageTime = duration * 0.25f;
         float restoreTime = duration * 0.75f;
 
@@ -341,15 +415,58 @@ public class AnimationManager : MonoBehaviour
 
         // black to red
         Color from = Color.black;
-        Color to = Color.red;
+        Color to = damage;
         while(elapsedTime < damageTime) {
             if(text == null) break;
-            float t = elapsedTime / duration;
+            float t = elapsedTime / damageTime;
             elapsedTime = Time.time - startTime;
             Color col = Interpolation.Interpolate(from, to, t, mode);
             text.color = col;
             yield return null;
         }
+
+        yield return UpdateCardInfo(c);
+
+        // red to black
+        startTime = Time.time;
+        elapsedTime = Time.time - startTime;
+        from = damage;
+        to = Color.black;
+        while(elapsedTime < restoreTime) {
+            if(text == null) break;
+            float t = elapsedTime / restoreTime;
+            elapsedTime = Time.time - startTime;
+            Color col = Interpolation.Interpolate(from, to, t, mode);
+            text.color = col;
+            yield return null;
+        }
+
+        text.color = Color.black;
+    }
+
+    private IEnumerator DamageFlashPlayer(PlayerUI status, int newHealth, float duration) {
+        float damageTime = duration * 0.25f;
+        float restoreTime = duration * 0.75f;
+
+        InterpolationMode mode = InterpolationMode.Linear;
+        float startTime = Time.time;
+        float elapsedTime = Time.time - startTime;
+
+        TextMeshProUGUI text = status.HealthText;
+
+        // black to red
+        Color from = Color.black;
+        Color to = Color.red;
+        while(elapsedTime < damageTime) {
+            if(text == null) break;
+            float t = elapsedTime / damageTime;
+            elapsedTime = Time.time - startTime;
+            Color col = Interpolation.Interpolate(from, to, t, mode);
+            text.color = col;
+            yield return null;
+        }
+
+        status.HealthText.text = newHealth.ToString();
 
         // red to black
         startTime = Time.time;
@@ -358,7 +475,7 @@ public class AnimationManager : MonoBehaviour
         to = Color.black;
         while(elapsedTime < restoreTime) {
             if(text == null) break;
-            float t = elapsedTime / duration;
+            float t = elapsedTime / restoreTime;
             elapsedTime = Time.time - startTime;
             Color col = Interpolation.Interpolate(from, to, t, mode);
             text.color = col;
@@ -373,6 +490,91 @@ public class AnimationManager : MonoBehaviour
         yield return null;
     }
 
+    private IEnumerator BounceScale(Transform obj, float from, float to, float duration) {
+        float bounceTime = duration * 0.8f;
+        float restoreTime = duration * 0.2f;
+        float bounceFactor = 1.05f;
+
+        InterpolationMode mode = InterpolationMode.Linear;
+        float startTime = Time.time;
+        float elapsedTime = Time.time - startTime;
+
+        obj.localScale = new Vector3(from, from, 1);
+        Vector3 startScale = new Vector3(from, from, 1);
+        Vector3 endScale = new Vector3(to*bounceFactor, to*bounceFactor, 1);
+
+        // bounce up
+        while(elapsedTime < bounceTime) {
+            if(obj == null) break;
+            float t = elapsedTime / bounceTime;
+            elapsedTime = Time.time - startTime;
+            obj.localScale = Interpolation.Interpolate(startScale, endScale, t, mode);
+            yield return null;
+        }
+
+        // bounce down
+        startTime = Time.time;
+        elapsedTime = Time.time - startTime;
+        startScale = endScale;
+        endScale = new Vector3(to, to, 1);
+        while(elapsedTime < restoreTime) {
+            if(obj == null) break;
+            float t = elapsedTime / restoreTime;
+            elapsedTime = Time.time - startTime;
+            obj.localScale = Interpolation.Interpolate(startScale, endScale, t, mode);
+            yield return null;
+        }
+
+        obj.localScale = endScale;
+    }
+
+    private IEnumerator ShuffleDiscardIntoDeckAnimation(Transform discard, Transform draw) { // only call from other coroutines in this script
+        int shuffleCount = discard.childCount;
+        for (int i = 0; i < shuffleCount; i++){
+            Transform t = discard.GetChild(0);
+            GameObject cardBack = Instantiate(UIManager.Instance.TemplateCardBack);
+            cardBack.transform.position = t.position;
+            cardBack.transform.SetParent(draw);
+            cardBack.transform.localScale = Vector3.one;
+            Destroy(t.gameObject);
+            yield return SimpleTranslate(cardBack.transform, draw.position, 0.2f, InterpolationMode.EaseOut);
+        }
+    }
+
+    private IEnumerator Shake(Transform obj, float intensity, float duration) {
+        Vector3 originalPos = obj.localPosition;
+        float startTime = Time.time;
+
+        while(Time.time - startTime < duration) {
+            // Screen shake
+            obj.localPosition = originalPos + Random.insideUnitSphere * intensity;
+            yield return null;
+        }
+
+        obj.localPosition = originalPos;
+    }
+
+    private IEnumerator DrawCardsCoroutine(List<Card> cards, Team team) {
+        yield return DrawCards(cards, team);
+        yield return OrganizeCards(team);
+    }
+
+    private IEnumerator ShakeCard(Card c, float intensity, float duration) {
+        Transform obj = c.CardInteractableRef.transform;
+        yield return Shake(obj, intensity, duration);
+    }
+
+    private IEnumerator UpdateUI(DuelInstance duel) {
+        UIManager.Instance.UpdateStatus(duel);
+        UIManager.Instance.Player.UnhoverMana(duel.PlayerStatus);
+        yield return null;
+    }
+
+    private IEnumerator RestorePlayerControl() {
+        DuelManager.Instance.EnablePlayerControl(true);
+        yield return null;
+    }
+
     // **************************************************************
     //              public animation methods (void)
     // **************************************************************
@@ -380,7 +582,7 @@ public class AnimationManager : MonoBehaviour
     public void AttackAnimation(DuelInstance duel, UnitCard card, Attack atk) {
         float animDuration = 0.3f;
         IEnumerator anim = CardAttack(
-            card, 
+            card,
             atk.direction,
             animDuration
         );
@@ -389,8 +591,9 @@ public class AnimationManager : MonoBehaviour
     }
 
     public void DeathAnimation(DuelInstance duel, UnitCard card) {
-        IEnumerator ie = CardDeath(card);
-        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+        float duration = 0.5f;
+        IEnumerator ie = CardDeath(card, duration);
+        QueueableAnimation qa = new QueueableAnimation(ie, duration);
         duel.Animations.Enqueue(qa);
     }
 
@@ -401,11 +604,7 @@ public class AnimationManager : MonoBehaviour
     }
 
     public void DrawCardsAnimation(DuelInstance duel, List<Card> cards, Team team) {
-        IEnumerator draw = DrawCards(cards, team);
-        QueueableAnimation drawAnim = new QueueableAnimation(draw, 0.0f);
-        duel.Animations.Enqueue(drawAnim);
-
-        IEnumerator ie = OrganizeCards(team);
+        IEnumerator ie = DrawCardsCoroutine(cards, team);
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
         duel.Animations.Enqueue(qa);
     }
@@ -417,29 +616,21 @@ public class AnimationManager : MonoBehaviour
         duel.Animations.Enqueue(qa);
     }
 
-    private void ShuffleDiscardIntoDeckAnimation(Transform discard, Transform draw) { // only call from other coroutines in this script
-        foreach(Transform t in discard) {
-            GameObject cardBack = Instantiate(UIManager.Instance.TemplateCardBack);
-            cardBack.transform.position = t.position;
-            cardBack.transform.SetParent(draw);
-            cardBack.transform.localScale = Vector3.one;
-            Destroy(t.gameObject);
-            IEnumerator ie = SimpleTranslate(cardBack.transform, draw.position, 0.2f, InterpolationMode.Linear);
-            QueueableAnimation qa = new QueueableAnimation(ie, 1f);
-            animations.Enqueue(qa);
-            //Debug.Log(cardBack.transform.parent.name);
-            // TODO shows one less card
-        }
+    // only the AI should use this
+    public void PlaceSpellCardAnimationAI(DuelInstance duel, SpellCard c, BoardCoords pos)
+    {
+        float speed = 1f; // time of animation in seconds
+        IEnumerator ie = PlaceSpellCardEnemy(c, pos, speed);
+        QueueableAnimation qa = new QueueableAnimation(ie, speed);
+        duel.Animations.Enqueue(qa);
     }
 
     public void MoveCardAnimation(DuelInstance duel, UnitCard uc, BoardCoords targetPos) {
-        if(uc.CurrentTeam == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode) {
-            float speed = 0.5f;
-            Transform targetTransform = BoardInterface.Instance.GetTile(targetPos).transform;
-            IEnumerator ie = MoveCard(uc, targetTransform, speed);
-            QueueableAnimation qa = new QueueableAnimation(ie, speed);
-            duel.Animations.Enqueue(qa);
-        }
+        float speed = 0.5f;
+        Transform targetTransform = BoardInterface.Instance.GetTile(targetPos).transform;
+        IEnumerator ie = MoveCard(uc, targetTransform, speed);
+        QueueableAnimation qa = new QueueableAnimation(ie, speed);
+        duel.Animations.Enqueue(qa);
     }
 
     public void UpdateCardInfoAnimation(DuelInstance duel, UnitCard c) {
@@ -448,9 +639,34 @@ public class AnimationManager : MonoBehaviour
         duel.Animations.Enqueue(qa);
     }
 
-    public void DamageCardAnimation(DuelInstance duel, UnitCard c) {
+    public void DamageCardAnimation(DuelInstance duel, UnitCard c, Color col) {
+        if (!col.Equals(Color.green)) {
+            IEnumerator shake = ShakeCard(c, 2.0f, 0.2f);
+            QueueableAnimation shakeAnim = new QueueableAnimation(shake, 0.0f);
+            duel.Animations.Enqueue(shakeAnim);
+        }
+
         float duration = 0.75f;
-        IEnumerator ie = DamageFlash(c, duration);
+        IEnumerator ie = DamageFlash(c, duration, col);
+        QueueableAnimation qa = new QueueableAnimation(ie, duration);
+        duel.Animations.Enqueue(qa);
+    }
+
+    public void DamagePlayerAnimation(DuelInstance duel, CharStatus status) {
+        float duration = 0.75f;
+        PlayerUI ui;
+        if(status.CharTeam == Team.Player) {
+            ui = UIManager.Instance.Player;
+        }
+        else {
+            ui = UIManager.Instance.Enemy;
+        }
+
+        IEnumerator shake = Shake(ui.transform, 2.0f, 0.2f);
+        QueueableAnimation shakeAnim = new QueueableAnimation(shake, 0.0f);
+        duel.Animations.Enqueue(shakeAnim);
+
+        IEnumerator ie = DamageFlashPlayer(ui, status.Health, duration);
         QueueableAnimation qa = new QueueableAnimation(ie, duration);
         duel.Animations.Enqueue(qa);
     }
@@ -473,5 +689,23 @@ public class AnimationManager : MonoBehaviour
         if(team == Team.Player) {
             UIManager.Instance.Player.UnhoverMana(DuelManager.Instance.MainDuel.GetStatus(Team.Player));
         }
+    }
+
+    public void BounceScaleAnimation(DuelInstance duel, Transform t, float from, float to, float duration) {
+        IEnumerator ie = BounceScale(t, from, to, duration);
+        QueueableAnimation qa = new QueueableAnimation(ie, duration/6f);
+        duel.Animations.Enqueue(qa);
+    }
+
+    public void UpdateUIAnimation(DuelInstance duel) {
+        IEnumerator ie = UpdateUI(duel);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+        duel.Animations.Enqueue(qa);
+    }
+
+    public void RestorePlayerControlAnimation(DuelInstance duel) {
+        IEnumerator ie = RestorePlayerControl();
+        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+        duel.Animations.Enqueue(qa);
     }
 }

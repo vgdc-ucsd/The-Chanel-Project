@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba1ad278697cae34da6360ecf631cd87, type: 3}
+  m_Name: Phoenix
+  m_EditorClassIdentifier: 
+  Name: Phoenix
+  ManaCost: 4
+  ShopCost: 0
+  Artwork: {fileID: 21300000, guid: 46b6284d8c7824c42942ce9844a33e86, type: 3}
+  drawStatus: 0
+  id: 0
+  description: 
+  CurrentTeam: 2
+  Health: 4
+  CanMove: 0
+  CanAttack: 0
+  isSelected: 0
+  BaseDamage: 2
+  UnitCardInteractableRef: {fileID: 0}
+  Attacks:
+  - direction: {x: -1, y: 0}
+    damage: 2
+  - direction: {x: 0, y: 1}
+    damage: 2
+  - direction: {x: 0, y: -1}
+    damage: 2
+  - direction: {x: 1, y: 0}
+    damage: 2
+  Abilities:
+  - {fileID: 11400000, guid: 2b32b7ffbba3327469b0332293e10490, type: 2}
+  StatusEffects: []
