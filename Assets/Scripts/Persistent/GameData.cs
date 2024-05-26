@@ -33,6 +33,8 @@ public class GameData : MonoBehaviour
             return;
         }
         DontDestroyOnLoad(gameObject);
+
+
     }
 
     public List<Card> GetCardsOfTypes(List<CardType> cardTypes)

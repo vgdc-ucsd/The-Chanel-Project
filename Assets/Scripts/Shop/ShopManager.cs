@@ -7,6 +7,8 @@ using Random = UnityEngine.Random;
 
 public class ShopManager : MonoBehaviour
 {
+    public static ShopManager Instance;
+
     // Collection of Cards Player Unlocked
     public Deck cardCollection;
     public Deck playerDeck; // use persistant data
@@ -14,48 +16,48 @@ public class ShopManager : MonoBehaviour
     [HideInInspector]
     public List<Card> availableShopCards;
 
-
-    // Player's Gold
-    public int playerGold; // use persistant data
+    public Transform shopContainer;
 
     //TEST, Text Reference for Player Gold
     public TextMeshProUGUI goldText;
+    public TMP_Text dText;
 
-    // Tracks Index of Cards Generated
-    public List<int> shopCards;
+    Coroutine spendGoldCor;
 
-    // Prefab ShopCard Template
-    public GameObject shopCardPrefab;
+    private List<CardInteractable> cardInteractables;
+    public GameObject cardSlotTemplate;
 
     // Inspect GameObject/Screen
     public GameObject inspectScreen;
 
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
+
     void Start()
     {
-        //TESTING VALUE
-        playerGold = 4;
-
-        goldText.text = "Gold: " + playerGold.ToString();
+        PersistentData.Instance.GenerateShopOffers();
+        goldText.text = PersistentData.Instance.Inventory.Gold.ToString();
 
         // Adds cards that the player doesn't have into the shop
-        foreach (Card card in cardCollection.CardList)
+        cardInteractables = new List<CardInteractable>();
+
+        foreach (Card c in PersistentData.Instance.ShopOffers)
         {
-            if (!playerDeck.CardList.Contains(card))
-            {
-                availableShopCards.Add(card);
-            }
+            GameObject cardSlot = Instantiate(cardSlotTemplate);
+            cardSlot.transform.SetParent(shopContainer, false);
+            c.CurrentTeam = Team.Neutral;
+            CardInteractable ci = UIManager.Instance.GenerateCardInteractable(c);
+            ci.transform.SetParent(cardSlot.transform, false);
+            ci.mode = CIMode.Shop;
+            ci.CanInteract = true;
+            cardInteractables.Add(ci);
         }
     }
 
-    // TESTING ONLY, REMOVE LATER
-    void OnApplicationQuit()
-    {
-        Debug.Log("QUIT: RESETTING TEST DECK");
-        playerDeck.CardList.Clear();
-    }
-
     // Randomly Generates a Card Index from Player's Card Collection
-    public int generateNum(int collectionSize)
+    /*public int generateNum(int collectionSize)
     {
         Debug.Log("CollectionSize: " + collectionSize);
         int num = Random.Range(0, collectionSize);
@@ -65,18 +67,20 @@ public class ShopManager : MonoBehaviour
         }
         shopCards.Add(num);
         return num;
-    }
+    }*/
 
     
     // OnClick Function from ShopCardInteractable
-    public bool purchase(Card card)
+    public bool purchase(CardInteractable ci)
     {
-        if(card.ShopCost <= playerGold)
+        Card card = ci.GetCard();
+        if(card.ShopCost <= PersistentData.Instance.Inventory.Gold)
         {
-            //TODO FIX: when changing playerDeck, it permanently affects the ScriptableObject
-            playerDeck.CardList.Add(card); // modified
-            playerGold -= card.ShopCost;
-            goldText.text = "Gold: " + playerGold.ToString();
+            PersistentData.Instance.Inventory.InactiveCards.Add(card.Clone());
+            PersistentData.Instance.Inventory.Gold -= card.ShopCost;
+            if (spendGoldCor != null) StopCoroutine(spendGoldCor);
+            spendGoldCor = StartCoroutine(SpendGoldAnim(card.ShopCost));
+            Destroy(ci.gameObject);
             return true;
         }
         else
@@ -96,6 +100,24 @@ public class ShopManager : MonoBehaviour
 
         CardDisplay display = inspectCard.GetComponent<CardDisplay>();
         display.setDisplay((UnitCard)card); // TODO support spell cards
+    }
+
+    private IEnumerator SpendGoldAnim(int gold)
+    {
+        goldText.text = PersistentData.Instance.Inventory.Gold.ToString();
+        dText.text = "-" + gold.ToString();
+        dText.enabled = true;
+        float elapsedTime = 0;
+        float endTime = 1;
+        float startTime = Time.time;
+        while (elapsedTime < endTime)
+        {
+            elapsedTime = Time.time - startTime;
+            dText.color = Interpolation.Interpolate(Color.red, Color.clear,
+                    elapsedTime / endTime, InterpolationMode.Linear);
+            yield return null;
+        }
+        dText.enabled = false;
     }
 
     // TODO: Port Function to Inventory

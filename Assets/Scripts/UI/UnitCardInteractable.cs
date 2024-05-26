@@ -164,9 +164,11 @@ public class UnitCardInteractable : CardInteractable,
         {
             InventoryUI.Instance.HandleClick(card);
         }
-        else if (!inHand) 
-        {
-            PlayerInputController.Instance.InteractCard(card);
+        else if (mode == CIMode.Duel) {
+            if (!inHand)
+            {
+                PlayerInputController.Instance.InteractCard(card);
+            }
         }
     }
 
