@@ -21,6 +21,8 @@ public class InventoryUI : MonoBehaviour
     public CardInfoPanel inventoryInfoPanel;
     public TextMeshProUGUI cardCountText;
 
+    public TMP_Text goldCountText;
+
     PersistentData.InventoryData inventory;
 
     Coroutine deckSizeWarnCor;
@@ -33,7 +35,8 @@ public class InventoryUI : MonoBehaviour
         inventory = PersistentData.Instance.Inventory;
         InitCards();
         ArrangeCards();
-        
+
+        goldCountText.text = PersistentData.Instance.Inventory.Gold.ToString();
     }
 
     public void InitCards()

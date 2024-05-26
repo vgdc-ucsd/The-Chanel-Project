@@ -1309,10 +1309,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PersistentData
       objectReference: {fileID: 0}
-    - target: {fileID: 9174052836722738598, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
-      propertyPath: AllCards.Array.size
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
