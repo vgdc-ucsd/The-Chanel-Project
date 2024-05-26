@@ -109,6 +109,7 @@ IPointerExitHandler
             //     PersistentData.Instance.CurrentEncounter = EncounterManager.Instance.Encounters[randomIndex];
             // }
 
+            PersistentData.Instance.SetEncounterData();
             mapNodeTypeIdx = 2;
         }
         else if (mapNodeType == MapNodeType.Shop)

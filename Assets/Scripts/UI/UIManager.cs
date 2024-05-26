@@ -185,6 +185,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void PlayerWin() {
+        PersistentData.Instance.EncountersFinished++;
         SceneManager.LoadScene("CardReward");
     }
 

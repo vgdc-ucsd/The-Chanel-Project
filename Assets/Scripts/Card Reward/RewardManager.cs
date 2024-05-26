@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class RewardManager : MonoBehaviour
@@ -13,6 +14,8 @@ public class RewardManager : MonoBehaviour
     private List<CardInteractable> cardInteractables;
 
     public static RewardManager Instance;
+
+    public TMP_Text goldText;
 
     void Awake() {
         // Singleton
@@ -42,7 +45,8 @@ public class RewardManager : MonoBehaviour
             ci.CanInteract = true;
             cardInteractables.Add(ci);
         }
-
+        goldText.text = PersistentData.Instance.CurrentEncounter.RewardGold.ToString();
+        PersistentData.Instance.Inventory.Gold += PersistentData.Instance.CurrentEncounter.RewardGold;
         StartCoroutine(CardAppearAnimation());
     }
 

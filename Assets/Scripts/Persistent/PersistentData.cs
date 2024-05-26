@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PersistentData : MonoBehaviour
@@ -10,6 +11,8 @@ public class PersistentData : MonoBehaviour
     public MapInfo mapInfo;
 
     public Deck ImportDeck;
+    public int EncountersFinished = 0;
+
 
     private void Awake()
     {
@@ -50,6 +53,7 @@ public class PersistentData : MonoBehaviour
                 Inventory.InactiveCards.Add(card);
             }
         }
+        EncountersFinished = 0;
     }
 
     public Encounter CurrentEncounter;
@@ -60,6 +64,7 @@ public class PersistentData : MonoBehaviour
         public List<Card> InactiveCards = new List<Card>();
         public List<Card> ActiveCards = new List<Card>();
 
+        public int Gold = 0;
         public InventoryData()
         {
             InactiveCards = new List<Card>();
@@ -85,6 +90,56 @@ public class PersistentData : MonoBehaviour
             Debug.LogError("Inventory does not contain card");
             return false;
         }
+    }
+
+    /* 
+     * Sets the variable encounter data (rewards, difficulty etc) immediately before
+     * starting the next encounter
+     */
+    public void SetEncounterData()
+    {
+        // Randomize gold reward
+        CurrentEncounter.RewardGold = (int)((GameData.BASE_GOLD + EncountersFinished * GameData.GOLD_SCALING)
+                                        * UnityEngine.Random.Range(1 - GameData.GOLD_VARIANCE, 1 + GameData.GOLD_VARIANCE));
+        
+        // Randomize card reward based on progression
+        List<Card> rewardPool;
+        if (EncountersFinished < GameData.MED_CARDS_CUTOFF) 
+            rewardPool = GameData.Instance.GetCardsOfTypes(new CardType[] {CardType.Weak}.ToList());
+        else if (EncountersFinished < GameData.STRONG_CARDS_CUTOFF)
+            rewardPool = GameData.Instance.GetCardsOfTypes(new CardType[] {CardType.Weak, CardType.Medium}.ToList());
+        else
+            rewardPool = GameData.Instance.GetCardsOfTypes(new CardType[] {CardType.Medium, CardType.Strong}.ToList());
+
+        // randomly add spell cards to potential reward pool
+        if (UnityEngine.Random.value < GameData.SPELLCARD_REWARD_CHANCE)
+        {
+            rewardPool.AddRange(GameData.Instance.GetCardsOfType(CardType.Spell));
+        }
+
+        List<Card> rewardCards = new List<Card>();
+        int i = 0;
+        int iter = 0;
+        bool spellAdded = false;
+        while (i < GameData.CARD_REWARD_CHOICES)
+        {
+            Card cardToAdd = rewardPool[UnityEngine.Random.Range(0, rewardPool.Count)];
+            if (!rewardCards.Contains(cardToAdd) && 
+                !(spellAdded && cardToAdd.cardType == CardType.Spell)) // prevent more than 1 spell card per reward
+            {
+                if (cardToAdd.cardType == CardType.Spell) spellAdded = true;
+                rewardCards.Add(cardToAdd);
+                i++;
+            }
+            iter++;
+            if (iter > 100)
+            {
+                Debug.LogError("Failed to generate rewards");
+                break;
+            }
+        }
+
+        CurrentEncounter.CardOffers = rewardCards.ToArray();
     }
 
 
