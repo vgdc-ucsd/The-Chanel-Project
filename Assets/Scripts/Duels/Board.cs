@@ -159,6 +159,24 @@ public class Board
         }
         return cards;
     }
+    public List<BoardCoords> GetFrontTile(BoardCoords pos)
+    {
+        List<BoardCoords> tiles = new List<BoardCoords>();
+        BoardCoords up = pos + new BoardCoords(0, 1);
+        if (!IsOutOfBounds(up)) tiles.Add(up);
+        return tiles;
+    }
+
+    public List<UnitCard> GetFrontCard(BoardCoords pos)
+    {
+        List<UnitCard> cards = new List<UnitCard>();
+        foreach (BoardCoords tile in GetFrontTile(pos))
+        {
+            UnitCard card = GetCard(tile);
+            if (card != null) cards.Add(card);
+        }
+        return cards;
+    }
 
     public List<BoardCoords> GetEmptyAdjacentTiles(BoardCoords pos)
     {

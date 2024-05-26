@@ -34,5 +34,5 @@ MonoBehaviour:
   - direction: {x: 1, y: 0}
     damage: 2
   Abilities:
-  - {fileID: 11400000, guid: 5552cc1104484994185fe7633a524a74, type: 2}
+  - {fileID: 11400000, guid: 6d63dce7216354e4fa322fd87672f877, type: 2}
   StatusEffects: []
