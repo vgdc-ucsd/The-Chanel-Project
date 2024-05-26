@@ -16,6 +16,7 @@ public class RewardManager : MonoBehaviour
     public static RewardManager Instance;
 
     public TMP_Text goldText;
+    public TMP_Text incText;
 
     void Awake() {
         // Singleton
@@ -45,9 +46,10 @@ public class RewardManager : MonoBehaviour
             ci.CanInteract = true;
             cardInteractables.Add(ci);
         }
-        goldText.text = PersistentData.Instance.CurrentEncounter.RewardGold.ToString();
+        goldText.text = PersistentData.Instance.Inventory.Gold.ToString();
         PersistentData.Instance.Inventory.Gold += PersistentData.Instance.CurrentEncounter.RewardGold;
         StartCoroutine(CardAppearAnimation());
+        StartCoroutine(IncrementGold());
     }
 
     public void SelectCard(CardInteractable selected) {
@@ -88,5 +90,25 @@ public class RewardManager : MonoBehaviour
     private IEnumerator ChangeScene() {
         yield return new WaitForSeconds(1.0f);
         MenuScript.Instance.LoadMap();
+    }
+
+    private IEnumerator IncrementGold()
+    {
+        yield return new WaitForSeconds(1.0f);
+        goldText.text = PersistentData.Instance.Inventory.Gold.ToString();
+        incText.text = "+" + PersistentData.Instance.CurrentEncounter.RewardGold.ToString();
+        incText.enabled = true;
+        incText.color = Color.yellow;
+        float elapsedTime = 0;
+        float endTime = 1;
+        float startTime = Time.time;
+        while (elapsedTime < endTime)
+        {
+            elapsedTime = Time.time - startTime;
+            incText.color = Interpolation.Interpolate(Color.yellow, Color.clear,
+                    elapsedTime / endTime, InterpolationMode.Linear);
+            yield return null;
+        }
+        incText.enabled = false;
     }
 }
