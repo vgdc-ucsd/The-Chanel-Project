@@ -18,7 +18,8 @@ MonoBehaviour:
   Artwork: {fileID: 21300000, guid: 46b6284d8c7824c42942ce9844a33e86, type: 3}
   drawStatus: 0
   id: 0
-  description: 
+  description: 'Upon death, applies burn to all adjacent cards (-1 HP per turn for
+    2 turns.) '
   CurrentTeam: 2
   Health: 4
   CanMove: 0

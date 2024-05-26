@@ -18,7 +18,7 @@ MonoBehaviour:
   Artwork: {fileID: 21300000, guid: 06a4929a8d944bd48801f0d551b63556, type: 3}
   drawStatus: 0
   id: 0
-  description: 
+  description: Any unit damaged with an odd amount of health dies.
   CurrentTeam: 2
   Health: 4
   CanMove: 1
