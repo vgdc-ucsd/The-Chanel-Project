@@ -18,7 +18,8 @@ MonoBehaviour:
   Artwork: {fileID: 21300000, guid: ed8a7af984d11034f8285380ee5304db, type: 3}
   drawStatus: 0
   id: 0
-  description: 
+  description: 'Upon death, Anubis resurrects (can only be done once) and sacrifices
+    the lowest-cost card on the board. '
   CurrentTeam: 2
   Health: 5
   CanMove: 1

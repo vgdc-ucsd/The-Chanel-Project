@@ -18,7 +18,8 @@ MonoBehaviour:
   Artwork: {fileID: 21300000, guid: 71bcb4a363d71c84e86b6f45c88b6b0d, type: 3}
   drawStatus: 0
   id: 0
-  description: 
+  description: Upon play, choose one tile to set on fire. The fire lasts for 3 turns
+    and inflicts burn on enemies who touch it.
   CurrentTeam: 2
   Health: 6
   CanMove: 0

@@ -10,31 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba1ad278697cae34da6360ecf631cd87, type: 3}
-  m_Name: Athena
+  m_Name: Medusa
   m_EditorClassIdentifier: 
-  Name: Athena
-  ManaCost: 4
+  Name: Medusa
+  ManaCost: 3
   ShopCost: 0
-  Artwork: {fileID: 21300000, guid: fbe571039d16d7c4c9e3282756df798a, type: 3}
-  drawStatus: 0
+  Artwork: {fileID: 21300000, guid: 6743f3f871d0b714bae300ecca07600b, type: 3}
+  drawStatus: 2
   id: 0
-  description: Gives adjacent allies a 1 HP shield on play (+1 HP to allies.)
+  description: Upon play, freezes enemy in front (freeze lasts 1 turn.)
   CurrentTeam: 2
-  Health: 5
+  Health: 3
   CanMove: 1
   CanAttack: 0
   isSelected: 0
-  BaseDamage: 4
+  BaseDamage: 2
   UnitCardInteractableRef: {fileID: 0}
   Attacks:
-  - direction: {x: -1, y: 1}
-    damage: 4
   - direction: {x: -1, y: 0}
-    damage: 4
+    damage: 2
+  - direction: {x: 0, y: 1}
+    damage: 2
   - direction: {x: 1, y: 0}
-    damage: 4
-  - direction: {x: 1, y: 1}
-    damage: 4
+    damage: 2
   Abilities:
-  - {fileID: 11400000, guid: c3702e5cf5d1cc04782e365feb2f31b5, type: 2}
+  - {fileID: 11400000, guid: 5552cc1104484994185fe7633a524a74, type: 2}
   StatusEffects: []
