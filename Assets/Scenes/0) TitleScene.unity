@@ -1305,10 +1305,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
-      propertyPath: ImportDeck
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8074719806751530725, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: m_Name
       value: PersistentData

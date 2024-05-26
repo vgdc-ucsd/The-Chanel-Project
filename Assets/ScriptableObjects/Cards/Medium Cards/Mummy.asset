@@ -20,7 +20,7 @@ MonoBehaviour:
   id: 3
   description: 
   CurrentTeam: 2
-  Health: 3
+  Health: 4
   CanMove: 1
   CanAttack: 0
   isSelected: 0

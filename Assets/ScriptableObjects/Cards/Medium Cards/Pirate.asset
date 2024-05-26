@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Pirate
   m_EditorClassIdentifier: 
   Name: Pirate
-  ManaCost: 1
+  ManaCost: 2
   ShopCost: 0
   Artwork: {fileID: 0}
   drawStatus: 0
   id: 0
   description: 
   CurrentTeam: 2
-  Health: 1
+  Health: 2
   CanMove: 1
   CanAttack: 0
   isSelected: 0

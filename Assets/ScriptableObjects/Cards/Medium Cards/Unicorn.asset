@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Unicorn
   m_EditorClassIdentifier: 
   Name: Unicorn
-  ManaCost: 2
+  ManaCost: 3
   ShopCost: 0
   Artwork: {fileID: 21300000, guid: c1e295631c1953c4ab8c61779074ce61, type: 3}
   drawStatus: 0
