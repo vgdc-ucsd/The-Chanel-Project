@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class GameData : MonoBehaviour
     public UnitCardInteractable UCITemplate;
     public SpellCardInteractable SCITemplate;
 
+    public List<Card> AllCards = new List<Card>();
 
     public static int DECK_SIZE = 12;
 

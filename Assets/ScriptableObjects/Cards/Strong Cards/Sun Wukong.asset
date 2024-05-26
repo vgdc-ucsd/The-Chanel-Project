@@ -21,6 +21,7 @@ MonoBehaviour:
   description: "Leftover overkill damage to an enemy card is dealt directly to the
     enemy player\u2019s HP."
   CurrentTeam: 2
+  cardType: 2
   Health: 6
   CanMove: 1
   CanAttack: 0

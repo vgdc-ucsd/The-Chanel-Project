@@ -38,10 +38,11 @@ public class MctsAI
     }
 
     const int MAX_TURNS = 100;
-    const int CHILD_COUNT = 7;
-    const int MAX_ITERATIONS = 300;
+    const int CHILD_COUNT = 6;
+    const int MAX_ITERATIONS = 350;
 
-    const int WEIGHTED_MAX_TURNS = 4;
+    const int WEIGHTED_MAX_TURNS = 5;
+    const int INITIAL_CHILD_COUNT = 15;
 
     // probability that the AI will consider these actions
     float aiMovementChance = 0.6f;
@@ -80,7 +81,7 @@ public class MctsAI
                 // Expansion
                 if (selection == root)
                 {
-                    selection.Children = RandomExpand(selection,20);
+                    selection.Children = RandomExpand(selection, INITIAL_CHILD_COUNT);
                 }
                 else
                 {
@@ -100,7 +101,7 @@ public class MctsAI
             }
             yield return null;
         }
-
+        UnityEngine.Debug.Log($"Iterations: {iterations}");
         DuelInstance move = FindBestMove(root).State;
 
         UpdateUnitCardInteractableRefs(move);

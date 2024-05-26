@@ -20,6 +20,7 @@ MonoBehaviour:
   id: 0
   description: 
   CurrentTeam: 2
+  cardType: 1
   Health: 2
   CanMove: 1
   CanAttack: 0

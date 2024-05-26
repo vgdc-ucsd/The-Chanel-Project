@@ -21,6 +21,7 @@ MonoBehaviour:
   description: 'Upon death, applies burn to all adjacent cards (-1 HP per turn for
     2 turns.) '
   CurrentTeam: 2
+  cardType: 2
   Health: 4
   CanMove: 0
   CanAttack: 0

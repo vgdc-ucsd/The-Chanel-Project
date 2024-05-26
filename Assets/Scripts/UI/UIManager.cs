@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -184,11 +185,11 @@ public class UIManager : MonoBehaviour
     }
 
     public void PlayerWin() {
-
+        SceneManager.LoadScene("CardReward");
     }
 
     public void PlayerLose() {
-
+        SceneManager.LoadScene(MenuScript.TITLE_INDEX);
     }
 
     public void CheckProperInitialization() {

@@ -20,5 +20,6 @@ MonoBehaviour:
   id: 0
   description: When cast on an ally, its next attack poisons all enemies damaged.
   CurrentTeam: 2
+  cardType: 3
   SpellCardInteractableRef: {fileID: 0}
   abilityTemplate: {fileID: 11400000, guid: 0b0a52c9bb76157449196df4c350c569, type: 2}

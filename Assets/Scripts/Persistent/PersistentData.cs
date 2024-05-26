@@ -35,7 +35,21 @@ public class PersistentData : MonoBehaviour
                 else Inventory.InactiveCards.Add(card);
             }
         }
-
+        else // make duplicates unique cards
+        {
+            for (int i = 0; i < Inventory.ActiveCards.Count; i++)
+            {
+                Card card = Inventory.ActiveCards[0].Clone();
+                Inventory.ActiveCards.RemoveAt(0);
+                Inventory.ActiveCards.Add(card);
+            }
+            for (int i = 0; i < Inventory.InactiveCards.Count; i++)
+            {
+                Card card = Inventory.InactiveCards[0].Clone();
+                Inventory.InactiveCards.RemoveAt(0);
+                Inventory.InactiveCards.Add(card);
+            }
+        }
     }
 
     public Encounter CurrentEncounter;

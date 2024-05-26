@@ -51,7 +51,7 @@ public class RewardManager : MonoBehaviour
             ci.CanInteract = false;
 
             if(ci == selected) {
-                PersistentData.Instance.Inventory.InactiveCards.Add(ci.GetCard());
+                PersistentData.Instance.Inventory.InactiveCards.Add(ci.GetCard().Clone());
             }
             else {
                 IEnumerator ie = AnimationManager.Instance.SimpleTranslate(

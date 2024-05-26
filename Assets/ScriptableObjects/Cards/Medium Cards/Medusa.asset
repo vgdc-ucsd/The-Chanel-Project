@@ -20,6 +20,7 @@ MonoBehaviour:
   id: 0
   description: Upon play, freezes enemy in front (freeze lasts 1 turn.)
   CurrentTeam: 2
+  cardType: 1
   Health: 3
   CanMove: 1
   CanAttack: 0

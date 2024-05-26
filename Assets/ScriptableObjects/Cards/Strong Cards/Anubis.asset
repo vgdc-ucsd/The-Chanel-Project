@@ -21,6 +21,7 @@ MonoBehaviour:
   description: 'Upon death, Anubis resurrects (can only be done once) and sacrifices
     the lowest-cost card on the board. '
   CurrentTeam: 2
+  cardType: 2
   Health: 5
   CanMove: 1
   CanAttack: 0

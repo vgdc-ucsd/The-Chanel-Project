@@ -50,7 +50,7 @@ public class PlayerUI : MonoBehaviour
         UpdateMana(status);
         
         if(status.Health <= 0 && !DuelManager.Instance.Settings.DisableWinning) {
-            if(status.CharTeam == Team.Player) UIManager.Instance.PlayerWin();
+            if(status.CharTeam == Team.Enemy) UIManager.Instance.PlayerWin();
             else UIManager.Instance.PlayerLose();
 
             AnimationManager.Instance.ClearQueue();

@@ -21,6 +21,7 @@ MonoBehaviour:
   description: Upon play, choose one tile to set on fire. The fire lasts for 3 turns
     and inflicts burn on enemies who touch it.
   CurrentTeam: 2
+  cardType: 2
   Health: 6
   CanMove: 0
   CanAttack: 0

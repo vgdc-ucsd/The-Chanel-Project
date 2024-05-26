@@ -20,6 +20,7 @@ MonoBehaviour:
   id: 0
   description: Can only die to exact damage.
   CurrentTeam: 2
+  cardType: 1
   Health: 4
   CanMove: 1
   CanAttack: 0

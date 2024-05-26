@@ -20,6 +20,7 @@ MonoBehaviour:
   id: 0
   description: Damage dealt directly in front is doubled.
   CurrentTeam: 2
+  cardType: 1
   Health: 3
   CanMove: 1
   CanAttack: 0

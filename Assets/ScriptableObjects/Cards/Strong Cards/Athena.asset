@@ -20,6 +20,7 @@ MonoBehaviour:
   id: 0
   description: Gives adjacent allies a 1 HP shield on play (+1 HP to allies.)
   CurrentTeam: 2
+  cardType: 2
   Health: 5
   CanMove: 1
   CanAttack: 0

@@ -1,6 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+public enum CardType
+{
+    Weak, Medium, Strong, Spell
+}
 
 public abstract class Card: ScriptableObject
 {
@@ -16,6 +20,7 @@ public abstract class Card: ScriptableObject
     [HideInInspector] public Team CurrentTeam = Team.Neutral;
     [HideInInspector] public abstract CardInteractable CardInteractableRef { get; set; }
 
+    public CardType cardType;
     public abstract Card Clone();
 
     public override string ToString()
