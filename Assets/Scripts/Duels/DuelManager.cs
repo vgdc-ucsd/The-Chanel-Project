@@ -114,6 +114,7 @@ public class DuelManager : MonoBehaviour
     // triggered by button
     public void DrawCardPlayer()
     {
+        if(!DrawCardButton.Instance.CanInteract) return;
         if (Settings.EnablePVPMode)
             throw new System.NotImplementedException();
 
@@ -179,7 +180,7 @@ public class DuelManager : MonoBehaviour
     }
 
     public void EnablePlayerControl(bool enable) {
-        UIManager.Instance.HighlightEndTurnButton(enable);
+        UIManager.Instance.EnablePlayerControlUI(enable);
         List<Card> cards = new List<Card>();
         cards.AddRange(MainDuel.GetStatus(Team.Player).Cards);
         cards.AddRange(MainDuel.DuelBoard.CardSlots);

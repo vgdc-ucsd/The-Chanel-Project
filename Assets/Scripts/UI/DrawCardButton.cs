@@ -10,6 +10,8 @@ public class DrawCardButton : MonoBehaviour,
     IPointerExitHandler
 {
 
+    public bool CanInteract = true;
+
     private static GameObject hoveredCard;
     private Vector3 basePosition;
     private Transform playerDrawPile;
@@ -32,7 +34,7 @@ public class DrawCardButton : MonoBehaviour,
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
-        if (DuelManager.Instance.MainDuel.GetStatus(Team.Player).Deck.DrawPileIsEmpty()) return;
+        if (!CanInteract || DuelManager.Instance.MainDuel.GetStatus(Team.Player).Deck.DrawPileIsEmpty()) return;
 
         AnimationManager.Instance.StartManaHover(DuelManager.Instance.Settings.DrawCardManaCost, Team.Player);
 

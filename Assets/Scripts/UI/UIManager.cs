@@ -129,12 +129,15 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void HighlightEndTurnButton(bool enable) {
+    public void EnablePlayerControlUI(bool enable) {
         if(enable) {
             EndTurnButton.color = Color.white;
+            DrawCardButton.Instance.CanInteract = true;
         }
         else {
             EndTurnButton.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+            DrawCardButton.Instance.CanInteract = false;
+            DrawCardButton.Instance.StopCardHover();
         }
     }
 
