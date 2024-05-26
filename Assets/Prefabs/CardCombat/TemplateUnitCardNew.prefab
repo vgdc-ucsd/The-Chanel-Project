@@ -882,6 +882,7 @@ GameObject:
   - component: {fileID: 5767723507367173616}
   - component: {fileID: 5529432279168170932}
   - component: {fileID: 8222816403201919677}
+  - component: {fileID: 3515920237593333732}
   m_Layer: 0
   m_Name: TemplateUnitCardNew
   m_TagString: Untagged
@@ -1007,6 +1008,37 @@ MonoBehaviour:
   ci: {fileID: 0}
   icons: []
   statusIconTemplate: {fileID: 7524580128921983773, guid: 20315d779fe7afa478d5b390a12e86ec, type: 3}
+--- !u!114 &3515920237593333732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7125500276102778040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1224155470
+      Data2: 1241675972
+      Data3: 917255829
+      Data4: 517719016
+    Path: event:/Card Tick
+  Event: 
+  PlayEvent: 2
+  StopEvent: 17
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &7649041539445918436
 GameObject:
   m_ObjectHideFlags: 0
