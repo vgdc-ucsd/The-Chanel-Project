@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Pirate
   ManaCost: 2
-  ShopCost: 0
+  ShopCost: 50
   Artwork: {fileID: 0}
   drawStatus: 0
   id: 0

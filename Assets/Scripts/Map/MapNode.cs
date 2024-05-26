@@ -114,6 +114,7 @@ IPointerExitHandler
         }
         else if (mapNodeType == MapNodeType.Shop)
         {
+            
             mapNodeTypeIdx = 3;
         }
         else if (mapNodeType == MapNodeType.Event)

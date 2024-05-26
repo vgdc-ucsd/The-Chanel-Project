@@ -10,6 +10,7 @@ public class MenuScript : MonoBehaviour
     public static int TITLE_INDEX = 0;
     public static int MAP_INDEX = 1;
     public static int INVENTORY_INDEX = 6;
+    public static int SHOP_INDEX = 3;
 
     public void Awake()
     {
@@ -39,6 +40,10 @@ public class MenuScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W)) 
         {
             UIManager.Instance.PlayerWin();
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            LoadShop();
         }
     }
 
@@ -74,5 +79,11 @@ public class MenuScript : MonoBehaviour
     public void LoadInventory()
     {
         SceneManager.LoadScene(INVENTORY_INDEX);
+    }
+
+    // Debug Only
+    public void LoadShop()
+    {
+        SceneManager.LoadScene(SHOP_INDEX);
     }
 }

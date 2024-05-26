@@ -10,7 +10,7 @@ public abstract class Card: ScriptableObject
 {
     public string Name;
     public int ManaCost;
-    public int ShopCost;
+    public int ShopCost = 50;
     public Sprite Artwork;
     public DrawStatus drawStatus = DrawStatus.Available;
     public int id;

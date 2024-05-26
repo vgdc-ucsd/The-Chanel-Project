@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public enum CIMode
 {
-    Duel, Inventory, Reward
+    Duel, Inventory, Reward, Shop
 }
 
 // The MonoBehavior counterpart for a Card, this is what the user actually interacts with
@@ -58,34 +58,45 @@ public abstract class CardInteractable : MonoBehaviour,
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
         if (mode == CIMode.Inventory) return;
-        else if (mode == CIMode.Reward) {
+        else if (mode == CIMode.Reward)
+        {
             transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
             return;
         }
-        if(inHand && CanInteract) {
-            hoveredCard = this;
-            hoveredCardIndex = transform.GetSiblingIndex();
-            hoveredCard.transform.SetAsLastSibling();
-            basePosition = transform.position;
-            hoveredCard.transform.position = hoverPosition();
-            transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+        else if (mode == CIMode.Duel)
+        {
+            if (inHand && CanInteract)
+            {
+                hoveredCard = this;
+                hoveredCardIndex = transform.GetSiblingIndex();
+                hoveredCard.transform.SetAsLastSibling();
+                basePosition = transform.position;
+                hoveredCard.transform.position = hoverPosition();
+                transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+            }
         }
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
         if (mode == CIMode.Inventory) return;
-        else if (mode == CIMode.Reward) {
+        else if (mode == CIMode.Reward)
+        {
             transform.localScale = Vector3.one;
             return;
         }
-        if (inHand) {
-            if(this == hoveredCard) {
-                transform.position = basePosition;
-                hoveredCard.transform.SetSiblingIndex(hoveredCardIndex);
-                hoveredCard = null;
+        else if (mode == CIMode.Duel)
+        {
+            if (inHand)
+            {
+                if (this == hoveredCard)
+                {
+                    transform.position = basePosition;
+                    hoveredCard.transform.SetSiblingIndex(hoveredCardIndex);
+                    hoveredCard = null;
+                }
+                transform.localScale = Vector3.one;
             }
-            transform.localScale = Vector3.one;
         }
     }
 
@@ -93,6 +104,10 @@ public abstract class CardInteractable : MonoBehaviour,
     {
         if(mode == CIMode.Reward && CanInteract) {
             RewardManager.Instance.SelectCard(this);
+        }
+        else if (mode == CIMode.Shop && CanInteract)
+        {
+            ShopManager.Instance.purchase(this);
         }
     }
 

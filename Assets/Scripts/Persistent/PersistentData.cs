@@ -13,6 +13,7 @@ public class PersistentData : MonoBehaviour
     public Deck ImportDeck;
     public int EncountersFinished = 0;
 
+    public List<Card> ShopOffers = new List<Card>();
 
     private void Awake()
     {
@@ -23,6 +24,9 @@ public class PersistentData : MonoBehaviour
             return;
         }
         DontDestroyOnLoad(gameObject);
+
+        
+
         if (ImportDeck != null)
         {
             Deck newDeck = ImportDeck.Clone();
@@ -142,5 +146,42 @@ public class PersistentData : MonoBehaviour
         CurrentEncounter.CardOffers = rewardCards.ToArray();
     }
 
+    public void GenerateShopOffers()
+    {
+        // Randomize card reward based on progression
+        List<Card> rewardPool;
+        if (EncountersFinished < GameData.MED_CARDS_CUTOFF)
+            rewardPool = GameData.Instance.GetCardsOfTypes(new CardType[] { CardType.Weak }.ToList());
+        else if (EncountersFinished < GameData.STRONG_CARDS_CUTOFF)
+            rewardPool = GameData.Instance.GetCardsOfTypes(new CardType[] { CardType.Weak, CardType.Medium }.ToList());
+        else
+            rewardPool = GameData.Instance.GetCardsOfTypes(new CardType[] { CardType.Medium, CardType.Strong }.ToList());
+
+        rewardPool.AddRange(GameData.Instance.GetCardsOfType(CardType.Spell));
+
+        List<Card> rewardCards = new List<Card>();
+        int i = 0;
+        int iter = 0;
+        bool spellAdded = false;
+        while (i < 3)
+        {
+            Card cardToAdd = rewardPool[UnityEngine.Random.Range(0, rewardPool.Count)];
+            if (!rewardCards.Contains(cardToAdd) &&
+                !(spellAdded && cardToAdd.cardType == CardType.Spell)) // prevent more than 1 spell card per reward
+            {
+                if (cardToAdd.cardType == CardType.Spell) spellAdded = true;
+                rewardCards.Add(cardToAdd);
+                i++;
+            }
+            iter++;
+            if (iter > 100)
+            {
+                Debug.LogError("Failed to generate rewards");
+                break;
+            }
+        }
+
+        ShopOffers = rewardCards;
+    }
 
 }
