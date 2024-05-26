@@ -246,7 +246,6 @@ public class AnimationManager : MonoBehaviour
 
         // draw all cards
         if(drawPile.childCount >= cards.Count) {
-
             foreach(Card c in cards) {
                 GameObject cardObject;
                 // Draw hidden enemy card
@@ -260,8 +259,7 @@ public class AnimationManager : MonoBehaviour
                     cardObject = c.CardInteractableRef.gameObject;
                 }
                 cardObject.transform.position = drawPile.position;
-                Destroy(drawPile.GetChild(childIndex).gameObject);
-                childIndex--;
+                Destroy(drawPile.GetChild(0).gameObject);
             }
         }
         // draw then shuffle then draw
