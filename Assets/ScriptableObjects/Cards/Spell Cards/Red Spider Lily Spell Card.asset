@@ -20,5 +20,6 @@ MonoBehaviour:
   id: 0
   description: When cast on an ally, its next attack is doubled in damage.
   CurrentTeam: 2
+  cardType: 3
   SpellCardInteractableRef: {fileID: 0}
   abilityTemplate: {fileID: 11400000, guid: d4e44010e07bf5d428f8a91e2c3c4c74, type: 2}

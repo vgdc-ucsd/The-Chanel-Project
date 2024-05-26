@@ -18,8 +18,10 @@ MonoBehaviour:
   Artwork: {fileID: 21300000, guid: d91430e7d21fd2f418e33d9acda90a36, type: 3}
   drawStatus: 0
   id: 0
-  description: 
+  description: "Leftover overkill damage to an enemy card is dealt directly to the
+    enemy player\u2019s HP."
   CurrentTeam: 2
+  cardType: 2
   Health: 6
   CanMove: 1
   CanAttack: 0

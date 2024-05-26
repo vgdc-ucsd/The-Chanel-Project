@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.UI;
 
 public class UnitCardInteractable : CardInteractable,
     IEndDragHandler,
@@ -15,6 +16,7 @@ public class UnitCardInteractable : CardInteractable,
 
     public TextMeshProUGUI CardHealth;
     public TextMeshProUGUI CardAttack;
+    public Image CardArt;
 
     private List<GameObject> arrows = new List<GameObject>();
     public StatusIconManager icons;
@@ -37,8 +39,13 @@ public class UnitCardInteractable : CardInteractable,
     }
 
     public override void UpdateCardInfo() {
-        CardAttack.text = "Attack: " + card.BaseDamage;
-        CardHealth.text = "Health: " + card.Health;
+        //CardAttack.text = "Attack: " + card.BaseDamage;
+        CardAttack.text = card.BaseDamage.ToString();
+        //CardHealth.text = "Health: " + card.Health;
+        CardHealth.text = card.Health.ToString();
+        if(CardArt != null) {
+            CardArt.sprite = card.Artwork;
+        }
         if (inHand) CardCost.text = "Mana Cost: " + card.ManaCost;
         icons.RefreshIcons();
     }

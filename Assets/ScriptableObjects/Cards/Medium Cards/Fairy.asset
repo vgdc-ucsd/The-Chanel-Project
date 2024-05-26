@@ -13,21 +13,22 @@ MonoBehaviour:
   m_Name: Fairy
   m_EditorClassIdentifier: 
   Name: Fairy
-  ManaCost: 1
+  ManaCost: 2
   ShopCost: 0
   Artwork: {fileID: 0}
   drawStatus: 0
   id: 0
   description: 
   CurrentTeam: 2
+  cardType: 1
   Health: 2
   CanMove: 1
   CanAttack: 0
   isSelected: 0
-  BaseDamage: 1
+  BaseDamage: 3
   UnitCardInteractableRef: {fileID: 0}
   Attacks:
   - direction: {x: 0, y: 1}
-    damage: 1
+    damage: 3
   Abilities: []
   StatusEffects: []

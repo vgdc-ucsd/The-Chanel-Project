@@ -21,6 +21,8 @@ public class InventoryUI : MonoBehaviour
     public CardInfoPanel inventoryInfoPanel;
     public TextMeshProUGUI cardCountText;
 
+    public TMP_Text goldCountText;
+
     PersistentData.InventoryData inventory;
 
     Coroutine deckSizeWarnCor;
@@ -33,21 +35,22 @@ public class InventoryUI : MonoBehaviour
         inventory = PersistentData.Instance.Inventory;
         InitCards();
         ArrangeCards();
-        
+
+        goldCountText.text = PersistentData.Instance.Inventory.Gold.ToString();
     }
 
     public void InitCards()
     {
         foreach (Card card in inventory.InactiveCards)
         {
-            CardInteractable ci = card.GenerateCardInteractable();
+            CardInteractable ci = UIManager.Instance.GenerateCardInteractable(card);
             ci.mode = CIMode.Inventory;
             ciList.Add(ci);
          
         }
         foreach (Card card in inventory.ActiveCards)
         {
-            CardInteractable ci = card.GenerateCardInteractable();
+            CardInteractable ci = UIManager.Instance.GenerateCardInteractable(card);
             ci.mode = CIMode.Inventory;
             ciList.Add(ci);
         }

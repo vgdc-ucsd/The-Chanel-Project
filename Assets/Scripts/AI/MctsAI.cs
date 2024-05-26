@@ -38,10 +38,11 @@ public class MctsAI
     }
 
     const int MAX_TURNS = 100;
-    const int CHILD_COUNT = 9;
-    const int MAX_ITERATIONS = 300;
+    const int CHILD_COUNT = 6;
+    const int MAX_ITERATIONS = 350;
 
-    const int WEIGHTED_MAX_TURNS = 4;
+    const int WEIGHTED_MAX_TURNS = 5;
+    const int INITIAL_CHILD_COUNT = 15;
 
     // probability that the AI will consider these actions
     float aiMovementChance = 0.6f;
@@ -55,8 +56,8 @@ public class MctsAI
 
     // how much the AI likes enemy/player cards positioned at corresponding y value
     // multiplied by mana cost of card
-    static float[] ENEMY_CARD_POSITIONING_WEIGHTS = { 30, 20, 3, 2 };
-    static float[] PLAYER_CARD_POSITIONING_WEIGHTS = { -8, -10, -20, -80 };
+    static float[] ENEMY_CARD_POSITIONING_WEIGHTS = { 400, 200, 100, 0 };
+    static float[] PLAYER_CARD_POSITIONING_WEIGHTS = { -50, -60, -80, -200 };
 
     const float STATUS_DAMAGE_WEIGHT = 150; // weight bias/penalty per pt of damage taken by player/enemy
 
@@ -78,7 +79,14 @@ public class MctsAI
                 Node selection = GreedySelection(root);
 
                 // Expansion
-                selection.Children = RandomExpand(selection);
+                if (selection == root)
+                {
+                    selection.Children = RandomExpand(selection, INITIAL_CHILD_COUNT);
+                }
+                else
+                {
+                    selection.Children = RandomExpand(selection, CHILD_COUNT);
+                }
 
                 // Simulation
                 foreach(Node child in selection.Children) {
@@ -93,7 +101,7 @@ public class MctsAI
             }
             yield return null;
         }
-
+        UnityEngine.Debug.Log($"Iterations: {iterations}");
         DuelInstance move = FindBestMove(root).State;
 
         UpdateUnitCardInteractableRefs(move);
@@ -119,10 +127,10 @@ public class MctsAI
         return selection;
     }
 
-    private List<Node> RandomExpand(Node parent) {
+    private List<Node> RandomExpand(Node parent, int childCount) {
         List<Node> children = new List<Node>();
 
-        for(int i = 0; i < CHILD_COUNT; i++) {
+        for(int i = 0; i < childCount; i++) {
             Node child = new Node(parent.State, parent);
             PickRandomMove(child.State, Team.Enemy);
             children.Add(child);

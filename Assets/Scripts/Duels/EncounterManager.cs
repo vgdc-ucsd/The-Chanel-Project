@@ -15,5 +15,9 @@ public class EncounterManager : MonoBehaviour
             Destroy(this);
         }
         else Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
+
+
+
 }

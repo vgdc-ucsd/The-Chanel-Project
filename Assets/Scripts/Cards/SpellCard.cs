@@ -15,6 +15,10 @@ public abstract class SpellCard : Card
 
     public static int cloneCount = 0;
 
+    private void Awake()
+    {
+        cardType = CardType.Spell;
+    }
     public override Card Clone()
     {
         /*if (cloneCount > 10000)

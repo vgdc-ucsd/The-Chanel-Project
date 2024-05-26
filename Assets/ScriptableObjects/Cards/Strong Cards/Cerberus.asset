@@ -18,8 +18,9 @@ MonoBehaviour:
   Artwork: {fileID: 21300000, guid: ad86c94acdfb73e47a3247d6a1574972, type: 3}
   drawStatus: 0
   id: 0
-  description: BIG DOG
+  description: new ability is being worked on
   CurrentTeam: 2
+  cardType: 2
   Health: 5
   CanMove: 1
   CanAttack: 0

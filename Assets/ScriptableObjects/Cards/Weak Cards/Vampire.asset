@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Vampire
   ManaCost: 2
   ShopCost: 0
-  Artwork: {fileID: 0}
+  Artwork: {fileID: 21300000, guid: 0fce4fb8af01e7b449548296629b782d, type: 3}
   drawStatus: 0
   id: 0
   description: 

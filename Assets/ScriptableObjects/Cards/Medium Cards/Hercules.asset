@@ -18,8 +18,9 @@ MonoBehaviour:
   Artwork: {fileID: 0}
   drawStatus: 0
   id: 0
-  description: 
+  description: Upon kill, gain +1 ATK (does not stack.)
   CurrentTeam: 2
+  cardType: 1
   Health: 4
   CanMove: 0
   CanAttack: 0

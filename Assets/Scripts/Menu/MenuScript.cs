@@ -36,6 +36,10 @@ public class MenuScript : MonoBehaviour
         {
             LoadInventory();
         }
+        if (Input.GetKeyDown(KeyCode.W)) 
+        {
+            UIManager.Instance.PlayerWin();
+        }
     }
 
     public void PlayGame()

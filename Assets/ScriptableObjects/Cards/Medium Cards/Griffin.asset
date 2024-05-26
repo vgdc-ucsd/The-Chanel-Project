@@ -20,22 +20,23 @@ MonoBehaviour:
   id: 0
   description: 
   CurrentTeam: 2
-  Health: 7
+  cardType: 1
+  Health: 6
   CanMove: 1
   CanAttack: 0
   isSelected: 0
-  BaseDamage: 2
+  BaseDamage: 1
   UnitCardInteractableRef: {fileID: 0}
   Attacks:
   - direction: {x: -1, y: 0}
-    damage: 2
+    damage: 1
   - direction: {x: -1, y: 1}
-    damage: 2
+    damage: 1
   - direction: {x: 0, y: 1}
-    damage: 2
+    damage: 1
   - direction: {x: 1, y: 1}
-    damage: 2
+    damage: 1
   - direction: {x: 1, y: 0}
-    damage: 2
+    damage: 1
   Abilities: []
   StatusEffects: []

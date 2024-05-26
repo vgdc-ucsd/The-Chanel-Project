@@ -20,4 +20,5 @@ MonoBehaviour:
   id: 0
   description: 
   CurrentTeam: 2
+  cardType: 3
   SpellCardInteractableRef: {fileID: 0}

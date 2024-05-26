@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Spirit
   ManaCost: 1
   ShopCost: 0
-  Artwork: {fileID: 0}
+  Artwork: {fileID: 21300000, guid: cf3bce3ca51ce4947b9a45bf18c2651b, type: 3}
   drawStatus: 0
   id: 0
   description: 

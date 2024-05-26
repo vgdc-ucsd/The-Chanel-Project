@@ -53,12 +53,12 @@ public class DuelManager : MonoBehaviour
 
         CheckProperInitialization();
 
-        PlayerDeck = ScriptableObject.Instantiate(PlayerDeck);
+        PlayerDeck = PlayerDeck.Clone();
         if (loadDeckFromInventory)
         {
             PlayerDeck.LoadCards(PersistentData.Instance.Inventory.ActiveCards);
         }
-        EnemyDeck = ScriptableObject.Instantiate(EnemyDeck);
+        EnemyDeck = EnemyDeck.Clone();
         
 
         // DuelInstance Setup

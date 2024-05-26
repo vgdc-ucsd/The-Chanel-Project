@@ -40,7 +40,7 @@ public class Deck : ScriptableObject
         List<Card> freshCardList = new List<Card>();
         foreach (Card card in CardList)
         {
-            freshCardList.Add(ScriptableObject.Instantiate(card));
+            freshCardList.Add(card.Clone());
         }
         CardList = freshCardList;
         numAvailableCards = 0;
