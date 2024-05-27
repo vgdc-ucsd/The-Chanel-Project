@@ -39,6 +39,11 @@ public class CharStatus
         this.CharTeam = team;
         Deck = deck;
         Cards = new List<Card>();
+
+        if (team == Team.Enemy) {
+            --Mana;
+            --ManaCapacity;
+        }
     }
 
     private CharStatus() {}
@@ -56,12 +61,12 @@ public class CharStatus
         copy.Cards = new List<Card>();
         foreach(Card c in this.Cards) {
             Card cc = c.Clone();
-            if (cc ==  null) 
+            if (cc ==  null)
             {
                 Debug.LogError("added null clone to CharStatus");
             }
             copy.Cards.Add(cc);
-            
+
         }
         copy.playerSettings = this.playerSettings;
         copy.duelSettings = this.duelSettings;
@@ -84,7 +89,7 @@ public class CharStatus
 
     public void RemoveFromHand(Card card)
     {
-        if (!Cards.Contains(card)) 
+        if (!Cards.Contains(card))
         {
             //Debug.Log($"Tried to remove {card.Name} but was not in hand");
             return;
