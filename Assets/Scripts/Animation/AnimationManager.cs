@@ -126,6 +126,7 @@ public class AnimationManager : MonoBehaviour
         // animation
         yield return SimpleTranslate(cardTransform, windupPos, windupDuration, mode);
         yield return SimpleTranslate(cardTransform, launchPos, launchDuration, mode);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/CardAttack", transform.position); // Damage SFX 
         yield return SimpleTranslate(cardTransform, startPos, recoverDuration, mode);
         if(card == null) yield break;
 
@@ -161,6 +162,9 @@ public class AnimationManager : MonoBehaviour
                 card.UnitCardInteractableRef.transform.GetChild(i).gameObject.SetActive(false);
             }
         }
+
+        // Card Death
+        FMODUnity.RuntimeManager.PlayOneShot("event:/CardDeath", transform.position); // SFX
 
         yield return SimpleTranslateThenRotate(cardTransform, discardPile.position, duration, InterpolationMode.EaseOut);
     }
@@ -261,6 +265,8 @@ public class AnimationManager : MonoBehaviour
                 cardObject.transform.position = drawPile.position;
                 Destroy(drawPile.GetChild(0).gameObject);
             }
+
+            FMODUnity.RuntimeManager.PlayOneShot("event:/CardDraw", transform.position); // SFX
         }
         // draw then shuffle then draw
         else if(drawPile.childCount < cards.Count && drawPile.childCount+discardPile.childCount >= cards.Count) {
@@ -344,6 +350,9 @@ public class AnimationManager : MonoBehaviour
             unitRef.transform.position = cardBack.transform.position;
             Destroy(cardBack);
 
+            // SFX
+            FMODUnity.RuntimeManager.PlayOneShot("event:/CardPlace", transform.position);
+
             // translation animation
             yield return SimpleTranslate(unitRef.transform, tile.transform.position, speed, InterpolationMode.EaseOut);
         }
@@ -387,12 +396,18 @@ public class AnimationManager : MonoBehaviour
             scRef.transform.position = cardBack.transform.position;
             Destroy(cardBack);
 
+            // SFX
+            FMODUnity.RuntimeManager.PlayOneShot("event:/CardPlace", transform.position);
+
             // translation animation
             yield return SimpleTranslate(scRef.transform, tile.transform.position, speed, InterpolationMode.EaseOut);
         }
     }
 
     public IEnumerator MoveCard(UnitCard uc, Transform targetPos, float speed) {
+        // SFX
+        FMODUnity.RuntimeManager.PlayOneShot("event:/CardMove", transform.position);
+
         yield return SimpleTranslate(uc.UnitCardInteractableRef.transform, targetPos.position, speed, InterpolationMode.EaseOut);
         uc.UnitCardInteractableRef.UpdateCardPos();
     }

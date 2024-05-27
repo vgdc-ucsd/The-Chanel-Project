@@ -1641,7 +1641,7 @@ MonoBehaviour:
       Data2: 1124994298
       Data3: -1655408211
       Data4: -1153886194
-    Path: event:/Card Tick
+    Path: event:/CardTick
   Event: 
   PlayEvent: 17
   StopEvent: 2

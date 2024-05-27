@@ -115,8 +115,7 @@ public class UnitCardInteractable : CardInteractable,
             //handInterface.OrganizeCards();
         }
 
-        //eventPath = "event:/PlacingCard";
-        FMODUnity.RuntimeManager.PlayOneShot("event:/PlacingCard", transform.position);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/CardPlace", transform.position);
     }
 
     public void UpdateCardPos()

@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{80031a9a-0cfa-430e-ad79-549d0e1839bb}">
 		<property name="name">
-			<value>Card Tick</value>
+			<value>CardTick</value>
 		</property>
 		<property name="outputFormat">
 			<value>0</value>

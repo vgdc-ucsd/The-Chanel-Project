@@ -63,6 +63,8 @@ public class HandInterface : MonoBehaviour
                     QueueableAnimation qa = new QueueableAnimation(animation, 0.1f);
                     cardAnimations.Add(qa);
                     AnimationManager.Instance.Enqueue(qa);
+
+                    //FMODUnity.RuntimeManager.PlayOneShot("event:/CardDraw", transform.position); // SFX
                 }
                 // old cards
                 else {
