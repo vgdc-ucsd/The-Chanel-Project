@@ -68,6 +68,24 @@ public class UnitCardInteractable : CardInteractable,
         icons.RefreshIcons();
     }
 
+    public void UpdateCardInfoDamage(int damage) {
+        //CardAttack.text = "Attack: " + card.BaseDamage;
+        CardAttack.text = card.BaseDamage.ToString();
+        //CardHealth.text = "Health: " + card.Health;
+        int newHealth = int.Parse(CardHealth.text) - damage;
+        if (newHealth < 0) {
+            CardHealth.text = "0";
+        }
+        else {
+            CardHealth.text = newHealth.ToString();
+        }
+        if(CardArt != null) {
+            CardArt.sprite = card.Artwork;
+        }
+        if (inHand) CardCost.text = "Mana Cost: " + card.ManaCost;
+        icons.RefreshIcons();
+    }
+
     public void DrawArrows() {
         ResetArrows();
 
