@@ -80,7 +80,7 @@ public class SpellCardInteractable : CardInteractable
         base.OnPointerDown(eventData);
         if (mode == CIMode.Inventory)
         {
-            InventoryUI.Instance.HandleClick(card);
+            InventoryUI.Instance.HandleClick(this);
         }
     }
 

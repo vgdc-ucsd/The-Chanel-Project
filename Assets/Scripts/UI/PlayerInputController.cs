@@ -118,6 +118,9 @@ public class PlayerInputController: MonoBehaviour
             SelectCard(selectedCard, false);
             selectedCard = null;
             SetAction(ControlAction.None);
+
+            // SFX
+            FMODUnity.RuntimeManager.PlayOneShot("event:/CardMove", transform.position);
         }
     }
 }

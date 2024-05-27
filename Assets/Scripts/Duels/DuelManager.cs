@@ -29,8 +29,12 @@ public class DuelManager : MonoBehaviour
 
     public bool loadDeckFromInventory = false;
 
+    //private FMODUnity.StudioEventEmitter emitter;
+    //private string eventPath = "";
+
 
     void Awake() {
+
         // Singleton
         if (Instance != null && Instance != this) {
             Debug.LogWarning("Tried to create more than one instance of the DuelManager singleton");
@@ -38,6 +42,9 @@ public class DuelManager : MonoBehaviour
             return;
         }
         else Instance = this;
+
+        PersistentData.Instance.SetEncounterStats();
+
     }
 
     // Start is called before the first frame update
@@ -121,6 +128,8 @@ public class DuelManager : MonoBehaviour
         MainDuel.DrawCardWithMana(Team.Player);
 
         AnimationManager.Instance.UpdateUIAnimation(MainDuel);
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/DrawCard", transform.position);
     }
 
     // triggered by button

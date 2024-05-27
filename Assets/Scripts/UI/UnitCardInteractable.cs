@@ -33,10 +33,16 @@ public class UnitCardInteractable : CardInteractable,
     private Vector2Int DownMid = new Vector2Int(0, -1);
     private Vector2Int DownRight = new Vector2Int(1, -1);
 
+    //private FMODUnity.StudioEventEmitter emitter;
+    //private string eventPath = "";
+
     protected override void Awake()
     {
         base.Awake();
         icons.ci = this;
+
+        // Audio
+        //emitter = GetComponent<FMODUnity.StudioEventEmitter>();
     }
 
     public override void SetCardInfo() {
@@ -59,11 +65,18 @@ public class UnitCardInteractable : CardInteractable,
             CardArt.sprite = card.Artwork;
         }
         if (inHand) CardCost.text = "Mana Cost: " + card.ManaCost;
-        icons.ClearIcons();
+        icons.RefreshIcons();
     }
 
     public void DrawArrows() {
-        ResetArrows();
+        for(int i = 0; i < 8; i++) {
+            if(i == 1 || i == 3 || i == 4 || i == 6) {
+                Arrows[i].sprite = InactiveArrowOrthogonal;
+            }
+            else {
+                Arrows[i].sprite = InactiveArrowDiagonal;
+            }
+        }
 
         foreach(Attack atk in card.Attacks) {
             Vector2Int dir = atk.direction;
@@ -81,17 +94,6 @@ public class UnitCardInteractable : CardInteractable,
         }
     }
 
-    public void ResetArrows() {
-        for(int i = 0; i < 8; i++) {
-            if(i == 1 || i == 3 || i == 4 || i == 6) {
-                Arrows[i].sprite = InactiveArrowOrthogonal;
-            }
-            else {
-                Arrows[i].sprite = InactiveArrowDiagonal;
-            }
-        }
-    }
-
     // Updates UI to show card being played
     public void UIPlaceCard(BoardCoords pos)
     {
@@ -104,14 +106,17 @@ public class UnitCardInteractable : CardInteractable,
             transform.position = tile.transform.position;
             if(handInterface != null) {
                 handInterface.cardObjects.Remove(this.gameObject);
-            }
+            } 
             transform.SetParent(tile.transform);
             transform.localScale = Vector3.one;
-            DrawArrows();
+            DrawArrows(); 
             CardCost.enabled = false;
             gameObject.SetActive(true);
             //handInterface.OrganizeCards();
         }
+
+        //eventPath = "event:/PlacingCard";
+        FMODUnity.RuntimeManager.PlayOneShot("event:/PlacingCard", transform.position);
     }
 
     public void UpdateCardPos()
@@ -128,56 +133,56 @@ public class UnitCardInteractable : CardInteractable,
     {
         if (!DuelManager.Instance.Settings.RestrictPlacement || pos.y <= 1)
         {
-            DuelInstance duelInstance = DuelManager.Instance.MainDuel;
-
             // Check out of bounds
-            if (duelInstance.DuelBoard.IsOutOfBounds(pos) || duelInstance.DuelBoard.IsOccupied(pos)) {
-                ResetArrows();
-                return;
-            }
+            if (DuelManager.Instance.MainDuel.DuelBoard.IsOutOfBounds(pos)) return;
+            if (DuelManager.Instance.MainDuel.DuelBoard.IsOccupied(pos)) return;
 
             // TODO
             //if (currentTeam != card.team) {
             //    Debug.Log($"Tried to play {card.team} card while on {currentTeam} turn");
-            //    ResetArrows();
             //    return;
             //}
             CharStatus charStatus;
             if (card.CurrentTeam == Team.Player) {
-                charStatus = duelInstance.PlayerStatus;
+                charStatus = DuelManager.Instance.MainDuel.PlayerStatus;
                 UIManager.Instance.Player.UnhoverMana(charStatus);
             }
             else {
-                charStatus = duelInstance.EnemyStatus;
+                charStatus = DuelManager.Instance.MainDuel.EnemyStatus;
                 UIManager.Instance.Enemy.UnhoverMana(charStatus);
             }
 
             if (!charStatus.CanUseMana(card.ManaCost))
             {
                 Debug.Log("Not enough Mana"); //TODO: UI feedback
-                ResetArrows();
                 return;
             }
             //if(card.team == Team.Enemy) MirrorAttacks(card); // this should only be called once per enemy card
 
-            duelInstance.DuelBoard.PlayCard(card, pos, charStatus, duelInstance);
+            DuelManager.Instance.MainDuel.DuelBoard.PlayCard(card, pos, charStatus, DuelManager.Instance.MainDuel);
             IEnumerator ie = AnimationManager.Instance.PlaceUnitCard(card, pos, 0.0f);
             AnimationManager.Instance.Play(ie);
-            UIManager.Instance.UpdateStatus(duelInstance);
+            UIManager.Instance.UpdateStatus(DuelManager.Instance.MainDuel);
         }
+
+        
     }
 
-    public override void OnPointerDown(PointerEventData eventData) {
+    public override void OnPointerDown(PointerEventData eventData)
+    {
         base.OnPointerDown(eventData);
-
-        if (mode == CIMode.Inventory) {
-            InventoryUI.Instance.HandleClick(card);
+        if (mode == CIMode.Inventory)
+        {
+            InventoryUI.Instance.HandleClick(this);
         }
         else if (mode == CIMode.Duel) {
-            if (!inHand) {
+            if (!inHand)
+            {
                 PlayerInputController.Instance.InteractCard(card);
             }
         }
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/CardSlide", transform.position); // Only want for when clicked/moving from deck
     }
 
     public override void OnPointerEnter(PointerEventData eventData) {
@@ -199,22 +204,6 @@ public class UnitCardInteractable : CardInteractable,
         base.OnPointerExit(eventData);
         if (mode != CIMode.Duel) return;
         AnimationManager.Instance.StopManaHover(card.CurrentTeam);
-    }
-
-    public override void OnBeginDrag(PointerEventData eventData)
-    {
-        if (inHand && CanInteract &&  mode == CIMode.Duel) {
-            DrawArrows();
-        }
-        base.OnBeginDrag(eventData);
-    }
-
-    public override void OnEndDrag(PointerEventData eventData)
-    {
-        if (inHand && CanInteract && mode == CIMode.Duel) {
-            ResetArrows();
-        }
-        base.OnEndDrag(eventData);
     }
 
     public override Card GetCard()

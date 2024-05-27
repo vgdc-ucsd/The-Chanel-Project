@@ -97,7 +97,7 @@ public class RewardManager : MonoBehaviour
 
     private IEnumerator IncrementGold()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.5f);
         goldText.text = PersistentData.Instance.Inventory.Gold.ToString();
         incText.text = "+" + PersistentData.Instance.CurrentEncounter.RewardGold.ToString();
         incText.enabled = true;
