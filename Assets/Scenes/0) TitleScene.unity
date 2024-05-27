@@ -663,6 +663,7 @@ GameObject:
   - component: {fileID: 597980579}
   - component: {fileID: 597980578}
   - component: {fileID: 597980577}
+  - component: {fileID: 597980580}
   m_Layer: 5
   m_Name: PlayBtn
   m_TagString: Untagged
@@ -784,6 +785,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 597980575}
   m_CullTransparentMesh: 1
+--- !u!114 &597980580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 597980575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1723241942
+      Data2: 1224843345
+      Data3: -1729235797
+      Data4: 578795891
+    Path: event:/ButtonClick
+  Event: 
+  PlayEvent: 19
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &810672598
 GameObject:
   m_ObjectHideFlags: 0
