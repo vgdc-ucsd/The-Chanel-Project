@@ -555,7 +555,10 @@ public class AnimationManager : MonoBehaviour
         obj.localPosition = originalPos;
     }
 
-    public IEnumerator ShowChangedCards(List<Card> removedCards, Transform center, float heightOffset, float duration) {
+    public IEnumerator ShowChangedCards(List<Card> removedCards, Transform center) {
+        float heightOffset = 300f;
+        float duration = 0.6f;
+        
         float scaleFactor = transform.parent.GetComponent<Canvas>().scaleFactor;
         for(int i = 0; i < removedCards.Count; i++) {
             Card c = removedCards[i].Clone();
