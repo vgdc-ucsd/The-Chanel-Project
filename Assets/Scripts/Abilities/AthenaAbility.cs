@@ -13,7 +13,7 @@ public class AthenaAbility : Ability
             if (cAdj.CurrentTeam == c.CurrentTeam) {
                 AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
                 ++cAdj.Health;
-                AnimationManager.Instance.DamageCardAnimation(Info.Duel, cAdj, Color.yellow);
+                AnimationManager.Instance.DamageCardAnimation(Info.Duel, cAdj, Color.yellow, -1);
             }
         }
 

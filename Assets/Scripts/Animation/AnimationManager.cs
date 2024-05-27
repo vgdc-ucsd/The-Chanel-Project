@@ -98,7 +98,9 @@ public class AnimationManager : MonoBehaviour
 
         if(origin != null) origin.position = dest;
         if(ci != null) {
-            ci.CanInteract = couldInteract;
+            ci.CanInteract = true;
+            // This sometimes freezes the cards if the animation is cancelled prematurely
+            // ci.CanInteract = couldInteract;
         }
     }
 
@@ -191,7 +193,8 @@ public class AnimationManager : MonoBehaviour
             origin.localEulerAngles = new Vector3(0, 0, Random.Range(-40, 40));
         }
         if(ci != null) {
-            ci.CanInteract = couldInteract;
+            ci.CanInteract = true;
+            // ci.CanInteract = couldInteract;
         }
 
 
@@ -409,7 +412,12 @@ public class AnimationManager : MonoBehaviour
         yield return null;
     }
 
-    private IEnumerator DamageFlash(UnitCard c, float duration, Color damage) {
+    private IEnumerator UpdateCardInfoDamage(UnitCard c, int damage) {
+        if(c.UnitCardInteractableRef != null) {c.UnitCardInteractableRef.UpdateCardInfoDamage(damage);}
+        yield return null;
+    }
+
+    private IEnumerator DamageFlash(UnitCard c, float duration, Color damage, int points) {
         Color normalColor = Color.green;
 
         float damageTime = duration * 0.25f;
@@ -433,7 +441,7 @@ public class AnimationManager : MonoBehaviour
             yield return null;
         }
 
-        yield return UpdateCardInfo(c);
+        yield return UpdateCardInfoDamage(c, points);
 
         // red to green
         startTime = Time.time;
@@ -567,7 +575,7 @@ public class AnimationManager : MonoBehaviour
     public IEnumerator ShowChangedCards(List<Card> removedCards, Transform center, int nextScene = MenuScript.MAP_INDEX) {
         float heightOffset = 300f;
         float duration = 0.6f;
-        
+
         float scaleFactor = transform.parent.GetComponent<Canvas>().scaleFactor;
         for(int i = 0; i < removedCards.Count; i++) {
             Card c = removedCards[i].Clone();
@@ -712,7 +720,7 @@ public class AnimationManager : MonoBehaviour
         duel.Animations.Enqueue(qa);
     }
 
-    public void DamageCardAnimation(DuelInstance duel, UnitCard c, Color col) {
+    public void DamageCardAnimation(DuelInstance duel, UnitCard c, Color col, int damage) {
         // Don't shake card when it's healed
         if (!col.Equals(Color.yellow)) {
             IEnumerator shake = ShakeCard(c, 2.0f, 0.2f);
@@ -721,7 +729,7 @@ public class AnimationManager : MonoBehaviour
         }
 
         float duration = 0.75f;
-        IEnumerator ie = DamageFlash(c, duration, col);
+        IEnumerator ie = DamageFlash(c, duration, col, damage);
         QueueableAnimation qa = new QueueableAnimation(ie, duration);
         duel.Animations.Enqueue(qa);
     }
