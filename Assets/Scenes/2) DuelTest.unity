@@ -189,7 +189,7 @@ MonoBehaviour:
     UnlimitedMana: 0
     ShowEnemyHand: 0
     DisableWinning: 1
-  PlayerDeck: {fileID: 11400000, guid: f39f86b1760608f4aa6058519ffc2f85, type: 2}
+  PlayerDeck: {fileID: 11400000, guid: 81ee80daac1ea284c8d136995e5c524b, type: 2}
   EnemyDeck: {fileID: 11400000, guid: 81ee80daac1ea284c8d136995e5c524b, type: 2}
   currentTeam: 0
   loadDeckFromInventory: 0

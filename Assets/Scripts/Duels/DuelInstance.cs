@@ -136,8 +136,6 @@ public class DuelInstance
     private UnitCard ProcessAttack(UnitCard card, Attack atk) {
         BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
 
-
-
         // Do nothing if attack is out of bounds
         if(DuelBoard.IsOutOfBounds(atkDest)) return null;
 

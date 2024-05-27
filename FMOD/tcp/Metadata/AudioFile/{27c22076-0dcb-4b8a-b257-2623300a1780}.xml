@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="AudioFile" id="{92d8b4e2-564f-43a4-b081-12811bdd7ef1}">
-		<property name="assetPath" />
+	<object class="AudioFile" id="{27c22076-0dcb-4b8a-b257-2623300a1780}">
+		<property name="assetPath">
+			<value>CardAbility.wav</value>
+		</property>
 		<property name="frequencyInKHz">
 			<value>96</value>
 		</property>
@@ -9,7 +11,7 @@
 			<value>2</value>
 		</property>
 		<property name="length">
-			<value>0.30369791666666668</value>
+			<value>0.91436458333333337</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{a6c6dba1-e3fa-4a63-8ea6-7ab540bb5a48}</destination>

@@ -641,6 +641,7 @@ public class AnimationManager : MonoBehaviour
         }
 
         uc.UnitCardInteractableRef.Glow.color = Color.white;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/CardAbility");
 
         // fade out
         startTime = Time.time;
