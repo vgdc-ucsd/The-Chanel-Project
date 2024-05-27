@@ -58,11 +58,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: Fondamento-Regular SDF
+  m_Name: Fondamento-Regular SDF Bold
   m_EditorClassIdentifier: 
-  hashCode: 1738193401
+  hashCode: 153765020
   material: {fileID: 7639434164801204763}
-  materialHashCode: 1609883577
+  materialHashCode: -214434372
   m_Version: 1.1.0
   m_SourceFontFileGUID: 5f7be68333efaf243b86805796c7bf04
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 5f7be68333efaf243b86805796c7bf04, type: 3}
@@ -2327,7 +2327,7 @@ Material:
     - _ColorMask: 15
     - _CullMode: 0
     - _Diffuse: 0.5
-    - _FaceDilate: 0
+    - _FaceDilate: 0.54
     - _FaceUVSpeedX: 0
     - _FaceUVSpeedY: 0
     - _GlowInner: 0.05
@@ -2341,12 +2341,12 @@ Material:
     - _OutlineSoftness: 0
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0
+    - _OutlineWidth: 0.55
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
-    - _ScaleRatioA: 0.9
-    - _ScaleRatioB: 0.73125
-    - _ScaleRatioC: 0.73125
+    - _ScaleRatioA: 0.704501
+    - _ScaleRatioB: 0.24524999
+    - _ScaleRatioC: 0.24524999
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0

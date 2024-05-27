@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 2376099571698738000}
   - component: {fileID: 1377791331833426138}
   - component: {fileID: 9116396203759512638}
-  - component: {fileID: 3660099411637726011}
+  - component: {fileID: -4609863304341088362}
   m_Layer: 0
-  m_Name: Sycamore
+  m_Name: Rain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,36 +117,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50f462b25be3c964c9ad3f808a1c4c61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterArt: {fileID: 21300000, guid: fc17f1c8c2ec552438215c0392cc4fe9, type: 3}
-  CharacterName: Sycamore
-  Option1: Pick the crumpled card up from the ground
-  Option1HighlightText: Gain spirit card
-  Option2: Fight Sycamore
-  Option2HighlightText: Free the world turtle
+  CharacterArt: {fileID: 21300000, guid: 0f3724b61ccb2044db2bef172146bb13, type: 3}
+  CharacterName: Rain
+  Option1: ...
+  Option1HighlightText: Gain 1 random strong card
+  Option2: ...
+  Option2HighlightText: Get duplicates of two random cards you own
   DialogueText:
-  - Line: 'Deep, ground-shaking footsteps echo ahead of you. A towering world turtle
-      rounds the corner, but something is off. '
+  - Line: 'You find a person holding a stuffed bear. He notices your presence and
+      give you a cold, questioning look. Upon seeing those familiar but unfriendly
+      black robes, you stiffen. '
     TextSpeed: 20
-  - Line: Its usual serenity is long gone, with a saddle on its back and a harness
-      around its head, the world turtle trudges mindlessly forward.
+  - Line: "\u201CRelax, we do not need to fight today,\u201D he says. \u201CChildren
+      need to know when not to fight. This bear is Rudy\u2019s. A little punishment
+      for bad decisions.\u201D"
     TextSpeed: 20
-  - Line: A hooded figure sat atop snickers sharply. His eyes scan you several times,
-      almost appalled at what he sees.
+  - Line: "He considers you for a moment and asks, \u201CHave you ever made a choice
+      you regretted?\u201D No words escape your lips, but the look in your eyes betrays
+      your answer. "
     TextSpeed: 20
-  - Line: "\"Oh dear\u2026 you think you\u2019re going to defeat the cult leader?\"
-      He sighs deeply and plants his forehead in his palm, appearing lost in thought."
+  - Line: "\u201CHow about this then? You\u2019re still young. Not a child, but young
+      enough to learn. I\u2019ll give you a choice, and I ask you to think hard about
+      it.\""
     TextSpeed: 20
-  - Line: "After a brief moment, he looks up again, and breaks into an uncontrollably
-      wide grin, wider than any human should really be able to smile. He yanks hard
-      on the world turtle\u2019s harness."
-    TextSpeed: 20
-  - Line: "\u201CDown! I need to speak to our... adventurous little hero up close.\u201D
-      With a thunderous groan, the turtle slowly kneels, bringing its rider within
-      closer view. "
-    TextSpeed: 20
-  - Line: " \u201CWhy, I\u2019ll even help you out! I\u2019m sure you\u2019re terribly
-      lacking in cards right now.\u201D Something falls out of his palm onto the
-      ground in front of you. \u201CGo on. Take it.\u201D\r"
+  - Line: "\"Weigh the benefits, and if you choose well, maybe I can give Rudy an
+      example.\u201D"
     TextSpeed: 20
   DialogueScrollNormal: {fileID: 21300000, guid: 316b9e1a0e51fd547b5eebb68afae74b, type: 3}
   DialogueScrollRipped: {fileID: 21300000, guid: 4c35d22a39a37234db205cbb03de9180, type: 3}
@@ -156,7 +151,7 @@ MonoBehaviour:
   Text: {fileID: 4493026480484674207}
   CharacterNameText: {fileID: 6082291740685966637}
   CharacterImage: {fileID: 5014599397365820904}
---- !u!114 &3660099411637726011
+--- !u!114 &-4609863304341088362
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -165,13 +160,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3759208247752327063}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc75b16a7e8c93b4c88808352c86d388, type: 3}
+  m_Script: {fileID: 11500000, guid: 456ebab1dabaa974bb418a298bb3af31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   center: {fileID: 6765381394224488128}
-  rewardCard1Template: {fileID: 11400000, guid: e7bb028145f1efc45ae1da90255731d8, type: 2}
-  rewardCard2Template: {fileID: 11400000, guid: 7b426a659073e4043b5abdf92114df9a, type: 2}
-  sycamoreEncounter: {fileID: 11400000, guid: 238f92a85bf11dd498c29d617429abb7, type: 2}
 --- !u!1 &6986958356325204326
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,18 +322,18 @@ PrefabInstance:
     - target: {fileID: 5951049278483131577, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 3660099411637726011}
+      objectReference: {fileID: -4609863304341088362}
     - target: {fileID: 5951049278483131577, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5951049278483131577, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PickUp
+      value: Option1
       objectReference: {fileID: 0}
     - target: {fileID: 5951049278483131577, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SycamoreEvent, Assembly-CSharp
+      value: RainEvent, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5951049278483131577, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -358,18 +350,18 @@ PrefabInstance:
     - target: {fileID: 6597158597157323221, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 3660099411637726011}
+      objectReference: {fileID: -4609863304341088362}
     - target: {fileID: 6597158597157323221, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6597158597157323221, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Fight
+      value: Option2
       objectReference: {fileID: 0}
     - target: {fileID: 6597158597157323221, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SycamoreEvent, Assembly-CSharp
+      value: RainEvent, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6597158597157323221, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
