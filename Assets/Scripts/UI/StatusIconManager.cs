@@ -5,17 +5,13 @@ using UnityEngine;
 
 public class StatusIconManager : MonoBehaviour
 {
-    
+
     public UnitCardInteractable ci;
     public List<StatusIcon> icons;
     public StatusIcon statusIconTemplate;
     public void RefreshIcons()
     {
-        foreach (StatusIcon icon in icons)
-        {
-            Destroy(icon.gameObject);
-        }
-        icons.Clear();
+        ClearIcons();
         int i = 0;
         foreach (StatusEffect effect in ci.card.StatusEffects)
         {
@@ -24,5 +20,13 @@ public class StatusIconManager : MonoBehaviour
             icons.Add(icon);
             i++;
         }
+    }
+    public void ClearIcons()
+    {
+        foreach (StatusIcon icon in icons)
+        {
+            Destroy(icon.gameObject);
+        }
+        icons.Clear();
     }
 }

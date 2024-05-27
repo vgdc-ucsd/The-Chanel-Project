@@ -59,7 +59,7 @@ public class UnitCardInteractable : CardInteractable,
             CardArt.sprite = card.Artwork;
         }
         if (inHand) CardCost.text = "Mana Cost: " + card.ManaCost;
-        icons.RefreshIcons();
+        icons.ClearIcons();
     }
 
     public void DrawArrows() {
