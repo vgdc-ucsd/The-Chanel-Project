@@ -159,23 +159,22 @@ public class Board
         }
         return cards;
     }
-    public List<BoardCoords> GetFrontTile(BoardCoords pos)
+    public BoardCoords GetFrontTile(BoardCoords pos,Team team)
     {
-        List<BoardCoords> tiles = new List<BoardCoords>();
-        BoardCoords up = pos + new BoardCoords(0, 1);
-        if (!IsOutOfBounds(up)) tiles.Add(up);
-        return tiles;
+
+        BoardCoords result;
+        if (team == Team.Player) 
+        result = pos + new BoardCoords(0, 1);
+        else
+            result = pos + new BoardCoords(0, -1);
+        return result;
     }
 
-    public List<UnitCard> GetFrontCard(BoardCoords pos)
+    public UnitCard GetFrontCard(BoardCoords pos, Team team)
     {
-        List<UnitCard> cards = new List<UnitCard>();
-        foreach (BoardCoords tile in GetFrontTile(pos))
-        {
-            UnitCard card = GetCard(tile);
-            if (card != null) cards.Add(card);
-        }
-        return cards;
+        BoardCoords tile = GetFrontTile(pos, team);
+        UnitCard card = GetCard(tile);
+        return card;
     }
 
     public List<BoardCoords> GetEmptyAdjacentTiles(BoardCoords pos)

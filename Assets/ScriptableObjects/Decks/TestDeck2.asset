@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: TestDeck2
   m_EditorClassIdentifier: 
   CardList:
-  - {fileID: 11400000, guid: 80f5775be1a5e4f4ba034b671b0e152e, type: 2}
-  - {fileID: 11400000, guid: 80f5775be1a5e4f4ba034b671b0e152e, type: 2}
+  - {fileID: 11400000, guid: 2c284dc844ac6964da4c0d7527b24de9, type: 2}
+  - {fileID: 11400000, guid: 2c284dc844ac6964da4c0d7527b24de9, type: 2}
+  - {fileID: 11400000, guid: 2c284dc844ac6964da4c0d7527b24de9, type: 2}
+  - {fileID: 11400000, guid: 2c284dc844ac6964da4c0d7527b24de9, type: 2}
+  - {fileID: 11400000, guid: 2c284dc844ac6964da4c0d7527b24de9, type: 2}
+  - {fileID: 11400000, guid: 2c284dc844ac6964da4c0d7527b24de9, type: 2}
   numAvailableCards: 0

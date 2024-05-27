@@ -16,8 +16,10 @@ public class MedusaAbility : Ability
     // "Activate" is actually the finish condition, removes the extra attacks
     public override void Activate(UnitCard c, ActivationInfo info)
     {
-        foreach (UnitCard card in info.Duel.DuelBoard.GetFrontCard(c.Pos))
+        UnitCard card = info.Duel.DuelBoard.GetFrontCard(c.Pos, c.CurrentTeam);
+        if (card != null)
         {
+
             FrozenEffect effect = ScriptableObject.Instantiate(DuelManager.Instance.Effects.FrozenEffectTemplate);
             effect.AddEffect(card, info);
         }
