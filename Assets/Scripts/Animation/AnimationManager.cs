@@ -237,12 +237,12 @@ public class AnimationManager : MonoBehaviour
             discardPile = UIManager.Instance.EnemyDiscard;
         }
 
-        int childIndex = drawPile.childCount - 1;
-
         if(discardPile.childCount>=1 && drawPile.childCount==0) {
             yield return ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
             yield return null;
         }
+
+        int childIndex = drawPile.childCount - 1;
 
         // draw all cards
         if(drawPile.childCount >= cards.Count) {
@@ -259,7 +259,11 @@ public class AnimationManager : MonoBehaviour
                     cardObject = c.CardInteractableRef.gameObject;
                 }
                 cardObject.transform.position = drawPile.position;
-                Destroy(drawPile.GetChild(0).gameObject);
+                // Destroy top card on discard pile
+                if (drawPile.childCount > 0) {
+                    Destroy(drawPile.GetChild(childIndex).gameObject);
+                    --childIndex;
+                }
             }
         }
         // draw then shuffle then draw
@@ -279,9 +283,11 @@ public class AnimationManager : MonoBehaviour
                     c.CardInteractableRef = UIManager.Instance.GenerateCardInteractable(c);
                     cardObject = c.CardInteractableRef.gameObject;
                 }
-                cardObject.transform.position = drawPile.position;
-                Destroy(drawPile.GetChild(childIndex).gameObject);
-                childIndex--;
+                // Destroy top card on discard pile
+                if (drawPile.childCount > 0) {
+                    Destroy(drawPile.GetChild(childIndex).gameObject);
+                    --childIndex;
+                }
             }
 
             yield return ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
@@ -298,6 +304,7 @@ public class AnimationManager : MonoBehaviour
                 // Draw visible card
                 else {
                     c.CardInteractableRef = UIManager.Instance.GenerateCardInteractable(c);
+                    c.CardInteractableRef.CanInteract = false;
                     cardObject = c.CardInteractableRef.gameObject;
                 }
                 cardObject.transform.position = drawPile.position;

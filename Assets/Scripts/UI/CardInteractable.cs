@@ -65,7 +65,7 @@ public abstract class CardInteractable : MonoBehaviour,
         }
         else if (mode == CIMode.Duel)
         {
-            if (inHand && CanInteract)
+            if (inHand && CanInteract && transform.position.y < UIManager.Instance.PlayerDraw.position.y)
             {
                 hoveredCard = this;
                 hoveredCardIndex = transform.GetSiblingIndex();
