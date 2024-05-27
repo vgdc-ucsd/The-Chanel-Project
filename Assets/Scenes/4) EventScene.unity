@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Events:
-  - {fileID: 3759208247752327063, guid: 28565dd499ab23f41803654915da7740, type: 3}
+  - {fileID: 3759208247752327063, guid: 15122422398b99840bd5b4fcd54c4e9e, type: 3}
   OptionSelected: 0
 --- !u!4 &303332515
 Transform:
@@ -478,7 +478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}

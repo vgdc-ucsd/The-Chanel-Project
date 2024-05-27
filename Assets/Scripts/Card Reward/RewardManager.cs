@@ -40,6 +40,9 @@ public class RewardManager : MonoBehaviour
             Card reward = c.Clone();
             c.CurrentTeam = Team.Neutral;
             CardInteractable ci = UIManager.Instance.GenerateCardInteractable(c);
+            if (ci is UnitCardInteractable) {
+                ((UnitCardInteractable)ci).DrawArrows();
+            }
             ci.transform.SetParent(cardSlot.transform, false);
             ci.transform.localPosition = new Vector3(0.0f, heightOffset, 0.0f);
             ci.mode = CIMode.Reward;
@@ -61,9 +64,9 @@ public class RewardManager : MonoBehaviour
             }
             else {
                 IEnumerator ie = AnimationManager.Instance.SimpleTranslate(
-                ci.transform, 
+                ci.transform,
                 new Vector3(ci.transform.position.x, heightOffset, 0.0f),
-                duration, 
+                duration,
                 InterpolationMode.Slerp);
                 QueueableAnimation qa = new QueueableAnimation(ie, delay);
                 AnimationManager.Instance.Enqueue(qa);
@@ -75,12 +78,12 @@ public class RewardManager : MonoBehaviour
 
     private IEnumerator CardAppearAnimation() {
         yield return null;
-        
+
         foreach(CardInteractable ci in cardInteractables) {
             IEnumerator ie = AnimationManager.Instance.SimpleTranslate(
-                ci.transform, 
-                ci.transform.parent.position, 
-                duration, 
+                ci.transform,
+                ci.transform.parent.position,
+                duration,
                 InterpolationMode.Slerp);
             QueueableAnimation qa = new QueueableAnimation(ie, delay);
             AnimationManager.Instance.Enqueue(qa);
@@ -94,7 +97,7 @@ public class RewardManager : MonoBehaviour
 
     private IEnumerator IncrementGold()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.5f);
         goldText.text = PersistentData.Instance.Inventory.Gold.ToString();
         incText.text = "+" + PersistentData.Instance.CurrentEncounter.RewardGold.ToString();
         incText.enabled = true;

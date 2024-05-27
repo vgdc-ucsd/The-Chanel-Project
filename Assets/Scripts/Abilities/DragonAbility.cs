@@ -12,6 +12,7 @@ public class DragonAbility : Ability
             {
                 if (cCol.Pos.y < c.Pos.y)
                 {
+                    AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
                     ApplyFire(cCol, Info);
                 }
             }
@@ -19,6 +20,7 @@ public class DragonAbility : Ability
             {
                 if (cCol.Pos.y > c.Pos.y)
                 {
+                    AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
                     ApplyFire(cCol, Info);
                 }
             }

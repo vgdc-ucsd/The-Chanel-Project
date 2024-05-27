@@ -100,7 +100,7 @@ public class PersistentData : MonoBehaviour
      * Sets the variable encounter data (rewards, difficulty etc) immediately before
      * starting the next encounter
      */
-    public void SetEncounterData()
+    public void SetEncounterStats()
     {
         // Randomize gold reward
         CurrentEncounter.RewardGold = (int)((GameData.BASE_GOLD + EncountersFinished * GameData.GOLD_SCALING)
@@ -144,6 +144,12 @@ public class PersistentData : MonoBehaviour
         }
 
         CurrentEncounter.CardOffers = rewardCards.ToArray();
+    }
+
+    public void SetNextEncounter(Encounter encounter)
+    {
+        CurrentEncounter = encounter;
+        // todo: track what encounters already completed
     }
 
     public void GenerateShopOffers()

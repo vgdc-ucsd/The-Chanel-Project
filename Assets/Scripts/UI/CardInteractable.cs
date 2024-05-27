@@ -13,10 +13,10 @@ public enum CIMode
 
 // The MonoBehavior counterpart for a Card, this is what the user actually interacts with
 public abstract class CardInteractable : MonoBehaviour,
-    IPointerEnterHandler, 
-    IPointerExitHandler, 
+    IPointerEnterHandler,
+    IPointerExitHandler,
     IPointerDownHandler,
-    IBeginDragHandler, 
+    IBeginDragHandler,
     IDragHandler,
     IEndDragHandler
 {
@@ -24,7 +24,7 @@ public abstract class CardInteractable : MonoBehaviour,
     [HideInInspector] public HandInterface handInterface;
 
     // fields set through inspector
-    public GraphicRaycaster raycaster; 
+    public GraphicRaycaster raycaster;
 
     // Text fields on the card
     public TextMeshProUGUI CardName;
@@ -65,7 +65,7 @@ public abstract class CardInteractable : MonoBehaviour,
         }
         else if (mode == CIMode.Duel)
         {
-            if (inHand && CanInteract)
+            if (inHand && CanInteract && transform.position.y < UIManager.Instance.PlayerDraw.position.y)
             {
                 hoveredCard = this;
                 hoveredCardIndex = transform.GetSiblingIndex();
@@ -151,13 +151,13 @@ public abstract class CardInteractable : MonoBehaviour,
             {
                 TryPlayCard(tile.location);
             }
-            // Reorganize the player's hand
-            if (handInterface == null)
-            {
-                Debug.Log("Could not organize hand, handInterface is uninitialized");
-                return;
-            }
+        }
 
+        // Reorganize the player's hand
+        if (handInterface == null)
+        {
+            Debug.Log("Could not organize hand, handInterface is uninitialized");
+            return;
         }
         handInterface.OrganizeCards();
     }
@@ -179,8 +179,8 @@ public abstract class CardInteractable : MonoBehaviour,
     private Vector3 hoverPosition() {
         if (mode != CIMode.Duel) return Vector3.zero;
         return new Vector3(
-            transform.position.x, 
-            transform.position.y+(50f*UIManager.Instance.MainCanvas.scaleFactor), 
+            transform.position.x,
+            transform.position.y+(50f*UIManager.Instance.MainCanvas.scaleFactor),
             transform.position.z
         );
     }

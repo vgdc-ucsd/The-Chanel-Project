@@ -7,10 +7,11 @@ public class MenuScript : MonoBehaviour
 {
     public static MenuScript Instance { get; set; }
 
-    public static int TITLE_INDEX = 0;
-    public static int MAP_INDEX = 1;
-    public static int INVENTORY_INDEX = 6;
-    public static int SHOP_INDEX = 3;
+    public const int TITLE_INDEX = 0;
+    public const int MAP_INDEX = 1;
+    public const int INVENTORY_INDEX = 6;
+    public const int SHOP_INDEX = 3;
+    public const int DUEL_INDEX = 2;
 
     public void Awake()
     {
@@ -61,6 +62,11 @@ public class MenuScript : MonoBehaviour
         Application.Quit();
     }
 
+    public void LoadScene(int index)
+    {
+        SceneManager.LoadScene(index);
+    }
+
     public void LoadNextScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
@@ -85,5 +91,10 @@ public class MenuScript : MonoBehaviour
     public void LoadShop()
     {
         SceneManager.LoadScene(SHOP_INDEX);
+    }
+
+    public void LoadDuel()
+    {
+        SceneManager.LoadScene(DUEL_INDEX);
     }
 }

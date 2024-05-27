@@ -34,6 +34,7 @@ public class DuelManager : MonoBehaviour
 
 
     void Awake() {
+
         // Singleton
         if (Instance != null && Instance != this) {
             Debug.LogWarning("Tried to create more than one instance of the DuelManager singleton");
@@ -41,6 +42,9 @@ public class DuelManager : MonoBehaviour
             return;
         }
         else Instance = this;
+
+        PersistentData.Instance.SetEncounterStats();
+
     }
 
     // Start is called before the first frame update

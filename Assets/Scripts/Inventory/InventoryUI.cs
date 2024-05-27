@@ -99,14 +99,16 @@ public class InventoryUI : MonoBehaviour
         cardCountText.text = inventory.CardCount() + "";
     }
 
-    public void HandleClick(Card card)
+    public void HandleClick(CardInteractable ci)
     {
+        Card card = ci.GetCard();
+        ciList.Remove(ci);
+        ciList.Add(ci);
         if (inventory.IsActive(card))
         {
             Unequip(card);
         }
         else 
-
         {
             if (inventory.ActiveCards.Count < GameData.DECK_SIZE)
                 Equip(card);
