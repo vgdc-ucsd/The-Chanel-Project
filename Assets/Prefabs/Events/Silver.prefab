@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2376099571698738000}
   - component: {fileID: 1377791331833426138}
   - component: {fileID: 9116396203759512638}
+  - component: {fileID: 2197921562720878901}
   m_Layer: 0
   m_Name: Silver
   m_TagString: Untagged
@@ -144,6 +145,20 @@ MonoBehaviour:
   Text: {fileID: 4493026480484674207}
   CharacterNameText: {fileID: 6082291740685966637}
   CharacterImage: {fileID: 5014599397365820904}
+--- !u!114 &2197921562720878901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3759208247752327063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cfa4fc0f93908d45b621ae793e1607b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  center: {fileID: 6765381394224488128}
+  lancelot: {fileID: 11400000, guid: eb7d38ae15c928b48a3de6fc238291a2, type: 2}
 --- !u!1 &6986958356325204326
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,16 +315,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5951049278483131577, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2197921562720878901}
+    - target: {fileID: 5951049278483131577, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5951049278483131577, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Listen
+      value: Help
       objectReference: {fileID: 0}
     - target: {fileID: 5951049278483131577, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: VeraEvent, Assembly-CSharp
+      value: SilverEvent, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5951049278483131577, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -324,16 +343,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6597158597157323221, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2197921562720878901}
+    - target: {fileID: 6597158597157323221, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6597158597157323221, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Dodge
+      value: DontHelp
       objectReference: {fileID: 0}
     - target: {fileID: 6597158597157323221, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: VeraEvent, Assembly-CSharp
+      value: SilverEvent, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6597158597157323221, guid: 9d0c4a440de35e84aa93ecaca3b1c835, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
