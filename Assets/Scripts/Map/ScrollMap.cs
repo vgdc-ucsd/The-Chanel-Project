@@ -9,6 +9,7 @@ public class ScrollMap : MonoBehaviour
     [SerializeField] int sensitivity;
     [SerializeField] float sidePadding;
     [SerializeField] RectTransform nodes;
+    [SerializeField] MapCharacterController character;
 
     private List<RectTransform> children = new();
     private MapGenerator mapGridRef;
@@ -28,6 +29,8 @@ public class ScrollMap : MonoBehaviour
 
     void Update()
     {
+        if (character.isMoving) return;
+
         if (Input.GetAxis("Mouse ScrollWheel") < 0) // NODES MOVE LEFT, MAP SCROLLS TO THE RIGHT
         {
             float endNodeXPos = mapGridRef.exitInstace.GetComponent<RectTransform>().localPosition.x - (10 * sensitivity) + nodes.localPosition.x;

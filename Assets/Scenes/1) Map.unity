@@ -759,6 +759,7 @@ MonoBehaviour:
   sensitivity: 5
   sidePadding: 100
   nodes: {fileID: 1166223307}
+  character: {fileID: 1424894587}
 --- !u!1 &1747339426
 GameObject:
   m_ObjectHideFlags: 0
