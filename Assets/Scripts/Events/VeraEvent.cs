@@ -31,7 +31,7 @@ public class VeraEvent : MonoBehaviour
             Card removed = PersistentData.Instance.Inventory.ActiveCards[cardsWithAbilities[randomIndex]];
             removedCards.Add(removed);
             PersistentData.Instance.Inventory.ActiveCards.RemoveAt(cardsWithAbilities[randomIndex]);
-            StartCoroutine(AnimationManager.Instance.ShowChangedCards(removedCards, center));
+            StartCoroutine(AnimationManager.Instance.ShowChangedCards(removedCards, center, MenuScript.INVENTORY_INDEX));
         }
         else
         {

@@ -109,11 +109,11 @@ public class PersistentData : MonoBehaviour
         // Randomize card reward based on progression
         List<Card> rewardPool;
         if (EncountersFinished < GameData.MED_CARDS_CUTOFF) 
-            rewardPool = GameData.Instance.GetCardsOfTypes(new CardType[] {CardType.Weak}.ToList());
+            rewardPool = GameData.Instance.GetCardsOfTypes(new List<CardType> { CardType.Weak });
         else if (EncountersFinished < GameData.STRONG_CARDS_CUTOFF)
-            rewardPool = GameData.Instance.GetCardsOfTypes(new CardType[] {CardType.Weak, CardType.Medium}.ToList());
+            rewardPool = GameData.Instance.GetCardsOfTypes(new List<CardType> { CardType.Weak, CardType.Medium });
         else
-            rewardPool = GameData.Instance.GetCardsOfTypes(new CardType[] {CardType.Medium, CardType.Strong}.ToList());
+            rewardPool = GameData.Instance.GetCardsOfTypes(new List<CardType> { CardType.Medium, CardType.Strong });
 
         // randomly add spell cards to potential reward pool
         if (UnityEngine.Random.value < GameData.SPELLCARD_REWARD_CHANCE)
