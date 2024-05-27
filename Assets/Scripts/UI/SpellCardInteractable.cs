@@ -27,7 +27,8 @@ public class SpellCardInteractable : CardInteractable
         if (!DuelManager.Instance.MainDuel.GetStatus(Team.Player).CanUseMana(card.ManaCost))
         {
             Debug.Log("Not enough Mana"); //TODO: UI feedback
-            FMODUnity.RuntimeManager.PlayOneShot("event:/NoMana");
+            FMODUnity.RuntimeManager.PlayOneShot("event:/NoMana"); // SFX
+
             return;
         }
 
@@ -78,7 +79,7 @@ public class SpellCardInteractable : CardInteractable
         base.OnPointerDown(eventData);
         if (mode == CIMode.Inventory)
         {
-            InventoryUI.Instance.HandleClick(this);
+            //InventoryUI.Instance.HandleClick(card);
         }
     }
 
