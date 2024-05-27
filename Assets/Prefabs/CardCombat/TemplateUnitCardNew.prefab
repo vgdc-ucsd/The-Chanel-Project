@@ -1637,14 +1637,14 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 1224155470
-      Data2: 1241675972
-      Data3: 917255829
-      Data4: 517719016
+      Data1: -2147280230
+      Data2: 1124994298
+      Data3: -1655408211
+      Data4: -1153886194
     Path: event:/Card Tick
   Event: 
-  PlayEvent: 2
-  StopEvent: 17
+  PlayEvent: 17
+  StopEvent: 2
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0

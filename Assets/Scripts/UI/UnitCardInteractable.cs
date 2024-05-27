@@ -33,10 +33,16 @@ public class UnitCardInteractable : CardInteractable,
     private Vector2Int DownMid = new Vector2Int(0, -1);
     private Vector2Int DownRight = new Vector2Int(1, -1);
 
+    //private FMODUnity.StudioEventEmitter emitter;
+    //private string eventPath = "";
+
     protected override void Awake()
     {
         base.Awake();
         icons.ci = this;
+
+        // Audio
+        //emitter = GetComponent<FMODUnity.StudioEventEmitter>();
     }
 
     public override void SetCardInfo() {
@@ -108,6 +114,9 @@ public class UnitCardInteractable : CardInteractable,
             gameObject.SetActive(true);
             //handInterface.OrganizeCards();
         }
+
+        //eventPath = "event:/PlacingCard";
+        FMODUnity.RuntimeManager.PlayOneShot("event:/PlacingCard", transform.position);
     }
 
     public void UpdateCardPos()
@@ -155,6 +164,8 @@ public class UnitCardInteractable : CardInteractable,
             AnimationManager.Instance.Play(ie);
             UIManager.Instance.UpdateStatus(DuelManager.Instance.MainDuel);
         }
+
+        
     }
 
     public override void OnPointerDown(PointerEventData eventData)
@@ -162,7 +173,7 @@ public class UnitCardInteractable : CardInteractable,
         base.OnPointerDown(eventData);
         if (mode == CIMode.Inventory)
         {
-            InventoryUI.Instance.HandleClick(card);
+            InventoryUI.Instance.HandleClick(this);
         }
         else if (mode == CIMode.Duel) {
             if (!inHand)
@@ -170,6 +181,8 @@ public class UnitCardInteractable : CardInteractable,
                 PlayerInputController.Instance.InteractCard(card);
             }
         }
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/CardSlide", transform.position); // Only want for when clicked/moving from deck
     }
 
     public override void OnPointerEnter(PointerEventData eventData) {
