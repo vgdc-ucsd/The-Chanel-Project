@@ -613,8 +613,8 @@ MonoBehaviour:
   contents: {fileID: 1166223306}
   scrollMap: {fileID: 1743649449}
   character: {fileID: 1424894587}
-  start: {fileID: 5707002247015326414, guid: eeb5a59c9fb148b4f8e2ab914c0758ef, type: 3}
-  exit: {fileID: 3899294230495701110, guid: 6e008a9e73ded844ea44bb95c423cbed, type: 3}
+  start: {fileID: 5707002247015326414, guid: 1c9b9dd04692b9849921381f47c8f8d4, type: 3}
+  exit: {fileID: 3899294230495701110, guid: 427ca5749d520d447aa19a17a8d062a0, type: 3}
   Encounter: {fileID: 7941678108802521201, guid: 66b632cbc40f96149bf143f57ca746ee, type: 3}
   Shop: {fileID: 1152119393304664273, guid: e8f592762a0f63442b1c72c14e93c6c7, type: 3}
   Event: {fileID: 6478176069062018305, guid: f587ee085a825b94fb338a22b2526d9e, type: 3}
@@ -860,11 +860,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attenuationObject: {fileID: 0}
---- !u!224 &1801152461 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 8375216437030798952, guid: 0ffcfaf9f0206bb43a6cb12cba3c6725, type: 3}
-  m_PrefabInstance: {fileID: 7437716890670681411}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1808681261
 PrefabInstance:
   m_ObjectHideFlags: 0
