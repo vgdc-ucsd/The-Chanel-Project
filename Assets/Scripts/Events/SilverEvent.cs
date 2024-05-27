@@ -29,7 +29,5 @@ public class SilverEvent : MonoBehaviour
         };
 
         StartCoroutine(AnimationManager.Instance.ShowChangedCards(addedCards, center));
-
-        EventManager.Instance.FinishEvent();
     }
 }
