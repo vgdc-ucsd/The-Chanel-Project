@@ -28,10 +28,8 @@ public class EventManager : MonoBehaviour
         selectedEvent.transform.SetParent(this.transform);
     }
 
-    public void FinishEvent(bool returnToMap = true) {
-        if (returnToMap) {
-            if(MenuScript.Instance != null) MenuScript.Instance.LoadMap();
-            else Debug.LogWarning("Couldn't return to map");
-        }
+    public void FinishEvent(int nextScene = MenuScript.MAP_INDEX) {
+        if(MenuScript.Instance != null) MenuScript.Instance.LoadScene(nextScene);
+        else Debug.LogWarning("Couldn't return to map");
     }
 }
