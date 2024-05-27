@@ -43,7 +43,7 @@ public class DuelManager : MonoBehaviour
         }
         else Instance = this;
 
-        PersistentData.Instance.SetEncounterData();
+        PersistentData.Instance.SetEncounterStats();
 
     }
 

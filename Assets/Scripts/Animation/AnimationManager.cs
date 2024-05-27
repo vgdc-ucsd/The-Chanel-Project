@@ -555,7 +555,7 @@ public class AnimationManager : MonoBehaviour
         obj.localPosition = originalPos;
     }
 
-    public IEnumerator ShowChangedCards(List<Card> removedCards, Transform center) {
+    public IEnumerator ShowChangedCards(List<Card> removedCards, Transform center, int nextScene = MenuScript.MAP_INDEX) {
         float heightOffset = 300f;
         float duration = 0.6f;
         
@@ -575,7 +575,7 @@ public class AnimationManager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             yield return SimpleTranslate(ci.transform, targetPos, duration, InterpolationMode.Slerp);
         }
-        EventManager.Instance.FinishEvent();
+        EventManager.Instance.FinishEvent(nextScene);
     }
 
     private IEnumerator DrawCardsCoroutine(List<Card> cards, Team team) {

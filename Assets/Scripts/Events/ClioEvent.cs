@@ -23,7 +23,7 @@ public class ClioEvent : MonoBehaviour
             PersistentData.Instance.Inventory.InactiveCards.RemoveAt(randomIndex);
         }
 
-        StartCoroutine(AnimationManager.Instance.ShowChangedCards(removedCards, center, heightOffset, duration));
+        StartCoroutine(AnimationManager.Instance.ShowChangedCards(removedCards, center));
     }
 
     public void Misery() {
