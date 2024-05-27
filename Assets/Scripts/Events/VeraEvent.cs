@@ -7,8 +7,6 @@ public class VeraEvent : MonoBehaviour
     public Transform center;
 
     private List<Card> removedCards = new List<Card>();
-    private float heightOffset = 300f;
-    private float duration = 0.6f;
 
     public void Listen()
     {
