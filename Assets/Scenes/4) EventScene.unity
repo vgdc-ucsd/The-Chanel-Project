@@ -198,6 +198,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Events:
   - {fileID: 3759208247752327063, guid: 28565dd499ab23f41803654915da7740, type: 3}
+  - {fileID: 3759208247752327063, guid: 2a8d6bd5e93cb074d810f920580448d8, type: 3}
+  - {fileID: 3759208247752327063, guid: 4bf8fc3c837b91a4aae40eed91cc5c25, type: 3}
   OptionSelected: 0
 --- !u!4 &303332515
 Transform:
