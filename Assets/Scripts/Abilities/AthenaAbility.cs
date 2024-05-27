@@ -11,6 +11,7 @@ public class AthenaAbility : Ability
     {
         foreach (UnitCard cAdj in Info.Duel.DuelBoard.GetAdjacentCards(c.Pos)) {
             if (cAdj.CurrentTeam == c.CurrentTeam) {
+                AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
                 ++cAdj.Health;
                 AnimationManager.Instance.DamageCardAnimation(Info.Duel, cAdj, Color.yellow);
             }

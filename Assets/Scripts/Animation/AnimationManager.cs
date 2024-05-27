@@ -608,6 +608,41 @@ public class AnimationManager : MonoBehaviour
         yield return null;
     }
 
+    private IEnumerator ActivateAbility(UnitCard uc) {
+        InterpolationMode mode = InterpolationMode.Slerp;
+        float duration = 0.25f; // * 2 since runs twice
+        float startTime = Time.time;
+        float elapsedTime = Time.time - startTime;
+
+        // fade in
+        Color from = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        Color to = Color.white;
+        while(elapsedTime < duration) {
+            float t = elapsedTime / duration;
+            elapsedTime = Time.time - startTime;
+            Color col = Interpolation.Interpolate(from, to, t, mode);
+            uc.UnitCardInteractableRef.Glow.color = col;
+            yield return null;
+        }
+
+        uc.UnitCardInteractableRef.Glow.color = Color.white;
+
+        // fade out
+        startTime = Time.time;
+        elapsedTime = Time.time - startTime;
+        from = Color.white;
+        to = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        while(elapsedTime < duration) {
+            float t = elapsedTime / duration;
+            elapsedTime = Time.time - startTime;
+            Color col = Interpolation.Interpolate(from, to, t, mode);
+            uc.UnitCardInteractableRef.Glow.color = col;
+            yield return null;
+        }
+
+        uc.UnitCardInteractableRef.Glow.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+    }
+
     // **************************************************************
     //              public animation methods (void)
     // **************************************************************
@@ -745,6 +780,12 @@ public class AnimationManager : MonoBehaviour
     public void RestorePlayerControlAnimation(DuelInstance duel) {
         IEnumerator ie = RestorePlayerControl();
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+        duel.Animations.Enqueue(qa);
+    }
+
+    public void AbilityActivateAnimation(DuelInstance duel, UnitCard uc) {
+        IEnumerator ie = ActivateAbility(uc);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0.5f);
         duel.Animations.Enqueue(qa);
     }
 }

@@ -10,6 +10,7 @@ public class LadyJusticeAbility : Ability
     public override void Activate(UnitCard c, ActivationInfo Info)
     {
         if (Info.TargetCard.Health % 2 != 0) {
+            AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
             Info.Duel.DealDamage(Info.TargetCard, Info.TargetCard.Health);
         }
 

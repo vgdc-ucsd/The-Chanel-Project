@@ -17,6 +17,8 @@ public class AnubisAbility : Ability
         }
 
         if (!lowestCard.Equals(c)) {
+            AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
+
             Info.Duel.DealDamage(lowestCard, lowestCard.Health);
             AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, lowestCard);
 

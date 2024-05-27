@@ -18,6 +18,7 @@ public class SunWukongAbility : Ability
                 Team winner = Info.Duel.PlayerStatus.TakeDamage(Info.OverkillDamage);
                 if (winner != Team.Neutral) Info.Duel.Winner = winner;
             }
+            AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
             AnimationManager.Instance.UpdateUIAnimation(Info.Duel);
             AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, c);
         }
