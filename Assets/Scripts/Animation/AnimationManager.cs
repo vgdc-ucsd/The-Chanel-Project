@@ -237,12 +237,12 @@ public class AnimationManager : MonoBehaviour
             discardPile = UIManager.Instance.EnemyDiscard;
         }
 
-        int childIndex = drawPile.childCount - 1;
-
         if(discardPile.childCount>=1 && drawPile.childCount==0) {
             yield return ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
             yield return null;
         }
+
+        int childIndex = drawPile.childCount - 1;
 
         // draw all cards
         if(drawPile.childCount >= cards.Count) {
@@ -259,7 +259,11 @@ public class AnimationManager : MonoBehaviour
                     cardObject = c.CardInteractableRef.gameObject;
                 }
                 cardObject.transform.position = drawPile.position;
-                Destroy(drawPile.GetChild(0).gameObject);
+                // Destroy top card on discard pile
+                if (drawPile.childCount > 0) {
+                    Destroy(drawPile.GetChild(childIndex).gameObject);
+                    --childIndex;
+                }
             }
         }
         // draw then shuffle then draw
@@ -279,9 +283,11 @@ public class AnimationManager : MonoBehaviour
                     c.CardInteractableRef = UIManager.Instance.GenerateCardInteractable(c);
                     cardObject = c.CardInteractableRef.gameObject;
                 }
-                cardObject.transform.position = drawPile.position;
-                Destroy(drawPile.GetChild(childIndex).gameObject);
-                childIndex--;
+                // Destroy top card on discard pile
+                if (drawPile.childCount > 0) {
+                    Destroy(drawPile.GetChild(childIndex).gameObject);
+                    --childIndex;
+                }
             }
 
             yield return ShuffleDiscardIntoDeckAnimation(discardPile, drawPile);
@@ -298,6 +304,7 @@ public class AnimationManager : MonoBehaviour
                 // Draw visible card
                 else {
                     c.CardInteractableRef = UIManager.Instance.GenerateCardInteractable(c);
+                    c.CardInteractableRef.CanInteract = false;
                     cardObject = c.CardInteractableRef.gameObject;
                 }
                 cardObject.transform.position = drawPile.position;
@@ -414,7 +421,7 @@ public class AnimationManager : MonoBehaviour
 
         TextMeshProUGUI text = c.UnitCardInteractableRef.CardHealth;
 
-        // black to red
+        // green to red
         Color from = normalColor;
         Color to = damage;
         while(elapsedTime < damageTime) {
@@ -428,7 +435,7 @@ public class AnimationManager : MonoBehaviour
 
         yield return UpdateCardInfo(c);
 
-        // red to black
+        // red to green
         startTime = Time.time;
         elapsedTime = Time.time - startTime;
         from = damage;
@@ -442,10 +449,12 @@ public class AnimationManager : MonoBehaviour
             yield return null;
         }
 
-        text.color = Color.black;
+        text.color = normalColor;
     }
 
     private IEnumerator DamageFlashPlayer(PlayerUI status, int newHealth, float duration) {
+        Color normalColor = Color.black;
+
         float damageTime = duration * 0.25f;
         float restoreTime = duration * 0.75f;
 
@@ -456,7 +465,7 @@ public class AnimationManager : MonoBehaviour
         TextMeshProUGUI text = status.HealthText;
 
         // black to red
-        Color from = Color.black;
+        Color from = normalColor;
         Color to = Color.red;
         while(elapsedTime < damageTime) {
             if(text == null) break;
@@ -473,7 +482,7 @@ public class AnimationManager : MonoBehaviour
         startTime = Time.time;
         elapsedTime = Time.time - startTime;
         from = Color.red;
-        to = Color.black;
+        to = normalColor;
         while(elapsedTime < restoreTime) {
             if(text == null) break;
             float t = elapsedTime / restoreTime;
@@ -483,7 +492,7 @@ public class AnimationManager : MonoBehaviour
             yield return null;
         }
 
-        text.color = Color.black;
+        text.color = normalColor;
     }
 
     private IEnumerator DrawArrows(UnitCardInteractable uci) {
@@ -669,7 +678,8 @@ public class AnimationManager : MonoBehaviour
     }
 
     public void DamageCardAnimation(DuelInstance duel, UnitCard c, Color col) {
-        if (!col.Equals(Color.green)) {
+        // Don't shake card when it's healed
+        if (!col.Equals(Color.yellow)) {
             IEnumerator shake = ShakeCard(c, 2.0f, 0.2f);
             QueueableAnimation shakeAnim = new QueueableAnimation(shake, 0.0f);
             duel.Animations.Enqueue(shakeAnim);

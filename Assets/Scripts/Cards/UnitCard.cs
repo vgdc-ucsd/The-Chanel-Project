@@ -23,7 +23,7 @@ public struct UnitStats
 public class UnitCard : Card
 {
     public int Health;
-    
+
     [HideInInspector] public bool CanMove = false;
     [HideInInspector] public bool CanAttack = false;
     [HideInInspector] public BoardCoords Pos;
@@ -68,7 +68,7 @@ public class UnitCard : Card
         foreach (Ability ab in this.Abilities) {
             if (ab is StatusEffect s)
             {
-                StatusEffect newEffect = s.Clone(); 
+                StatusEffect newEffect = s.Clone();
                 copy.Abilities.Add(newEffect);
                 copy.StatusEffects.Add(newEffect);
             }
@@ -76,7 +76,7 @@ public class UnitCard : Card
                 copy.Abilities.Add(ab);
         }
 
-        
+
 
         return copy;
     }
@@ -104,10 +104,10 @@ public class UnitCard : Card
         }
 
         AnimationManager.Instance.DamageCardAnimation(duel, this, Color.red);
-        
+
         // On receive damage but still alive
         if (Health > 0) {
-            foreach (Ability a in Abilities) {      
+            foreach (Ability a in Abilities) {
                 if(a.Condition == ActivationCondition.OnReceiveDamage) a.Activate(this, info);
             }
         }
@@ -121,6 +121,7 @@ public class UnitCard : Card
     }
 
     public void ResetStats(){
+        StatusEffects.Clear();
         Health = baseStats.health;
     }
 
