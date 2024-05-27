@@ -31,7 +31,7 @@ public abstract class CardInteractable : MonoBehaviour,
     public TextMeshProUGUI CardCost;
 
     //Image object of the card
-    [SerializeField] private Image image;
+    [SerializeField] public Image image;
     [SerializeField] private Color defaultColor, selectedColor;
 
     // How much the card scales on hover
