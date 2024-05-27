@@ -1582,6 +1582,7 @@ MonoBehaviour:
   raycaster: {fileID: 5767723507367173616}
   CardName: {fileID: 8775277688575511005}
   CardCost: {fileID: 1935634880742371814}
+  CardBorder: {fileID: 0}
   image: {fileID: 7934217333704476081}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   selectedColor: {r: 0.8443396, g: 0.8443396, b: 0.8443396, a: 1}

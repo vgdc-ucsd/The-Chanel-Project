@@ -174,6 +174,8 @@ public class AnimationManager : MonoBehaviour
     }
 
     public IEnumerator SimpleTranslateThenRotate(Transform origin, Vector3 dest, float duration, InterpolationMode mode) {
+        float maxRotationDegrees = 20f;
+
         if(origin == null) yield break;
         CardInteractable ci = origin.gameObject.GetComponent<CardInteractable>();
         bool couldInteract = false;
@@ -196,14 +198,12 @@ public class AnimationManager : MonoBehaviour
 
         if(origin != null) {
             origin.position = dest;
-            origin.localEulerAngles = new Vector3(0, 0, Random.Range(-40, 40));
+            origin.localEulerAngles = new Vector3(0, 0, Random.Range(-maxRotationDegrees, maxRotationDegrees));
         }
         if(ci != null) {
             ci.CanInteract = true;
             // ci.CanInteract = couldInteract;
         }
-
-
     }
 
     private IEnumerator SpellDiscard(SpellCard card) {
