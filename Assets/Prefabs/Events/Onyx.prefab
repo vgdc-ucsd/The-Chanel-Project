@@ -128,20 +128,11 @@ MonoBehaviour:
       has collapsed, and the automated book carts are careening out of control towards
       Inscription Yin, one of the restricted reading rooms\u2026"
     TextSpeed: 20
-  - Line: A veiled cultist rounds the corner, eyes flashing upon noticing you. You
-      blink, and in a blur she moves a little too quickly.
+  - Line: My scroll analysis group is in that room, so I could save them by activating
+      the rotation system, but that would place Inscription Yang right in the line
+      of collision, and my best friend is in there!
     TextSpeed: 20
-  - Line: "\u201CWell now, if it isn\u2019t the latest ce-le-bri-ty! I\u2019ve just
-      been dying to meet you\u2026\u201D The walls appear to narrow as she inches
-      closer, arms shivering in excitement, her scarlet gaze piercing the darkness
-      and painting her manic smile red."
-    TextSpeed: 20
-  - Line: "\u201CDAR-ling! Give me one of those lovely hands of yours and assist
-      me with this new buffing spell won\u2019t you? Not to worry, sweetness, it
-      won\u2019t hurt a bit.\u201D"
-    TextSpeed: 20
-  - Line: "The air hums with power, and your gut screams at you to run. \u201CStay
-      still!\u201D she cackles."
+  - Line: "What should I do???\u201D"
     TextSpeed: 20
   DialogueScrollNormal: {fileID: 21300000, guid: 316b9e1a0e51fd547b5eebb68afae74b, type: 3}
   DialogueScrollRipped: {fileID: 21300000, guid: 4c35d22a39a37234db205cbb03de9180, type: 3}
