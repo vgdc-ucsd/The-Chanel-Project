@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="AudioFile" id="{a58eb252-a058-466a-a199-ac844e621e2c}">
+	<object class="AudioFile" id="{2189ddd3-79b2-4f07-9d3a-3edc5af5713b}">
 		<property name="assetPath">
-			<value>Card Slide onto Table.wav</value>
+			<value>ButtonClick2.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>96</value>
 		</property>
 		<property name="channelCount">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<property name="length">
-			<value>0.47752083333333334</value>
+			<value>4.6944791666666665</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{a6c6dba1-e3fa-4a63-8ea6-7ab540bb5a48}</destination>

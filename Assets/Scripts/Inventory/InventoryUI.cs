@@ -37,6 +37,7 @@ public class InventoryUI : MonoBehaviour
         ArrangeCards();
 
         goldCountText.text = PersistentData.Instance.Inventory.Gold.ToString();
+
     }
 
     public void InitCards()

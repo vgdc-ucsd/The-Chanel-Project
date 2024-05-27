@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 37294269}
   - component: {fileID: 37294274}
   - component: {fileID: 37294275}
+  - component: {fileID: 37294276}
   m_Layer: 0
   m_Name: DuelManager(Canvas)
   m_TagString: Untagged
@@ -326,6 +327,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99ed7c26354de3d4a8003a5df80d2017, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &37294276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37294268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 51200139
+      Data2: 1296122223
+      Data3: -1744285027
+      Data4: 1921855037
+    Path: event:/DrawCard
+  Event: 
+  PlayEvent: 0
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &101138489
 GameObject:
   m_ObjectHideFlags: 0
@@ -1140,6 +1172,7 @@ GameObject:
   - component: {fileID: 279623600}
   - component: {fileID: 279623599}
   - component: {fileID: 279623598}
+  - component: {fileID: 279623601}
   m_Layer: 0
   m_Name: Exit Button
   m_TagString: Untagged
@@ -1261,6 +1294,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 279623596}
   m_CullTransparentMesh: 1
+--- !u!114 &279623601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 279623596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1723241942
+      Data2: 1224843345
+      Data3: -1729235797
+      Data4: 578795891
+    Path: event:/ButtonClick
+  Event: 
+  PlayEvent: 19
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &436506801
 GameObject:
   m_ObjectHideFlags: 0
@@ -2230,8 +2294,9 @@ GameObject:
   - component: {fileID: 1109121974}
   - component: {fileID: 1109121973}
   - component: {fileID: 1109121972}
+  - component: {fileID: 1109121975}
   m_Layer: 0
-  m_Name: Image
+  m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2350,6 +2415,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1109121970}
   m_CullTransparentMesh: 1
+--- !u!114 &1109121975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109121970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1723241942
+      Data2: 1224843345
+      Data3: -1729235797
+      Data4: 578795891
+    Path: event:/ButtonClick
+  Event: 
+  PlayEvent: 19
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &1251784303
 GameObject:
   m_ObjectHideFlags: 0
@@ -3032,6 +3128,7 @@ GameObject:
   - component: {fileID: 1694186256}
   - component: {fileID: 1694186255}
   - component: {fileID: 1694186254}
+  - component: {fileID: 1694186257}
   m_Layer: 0
   m_Name: View Deck (2)
   m_TagString: Untagged
@@ -3152,6 +3249,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1694186252}
   m_CullTransparentMesh: 1
+--- !u!114 &1694186257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1694186252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1723241942
+      Data2: 1224843345
+      Data3: -1729235797
+      Data4: 578795891
+    Path: event:/ButtonClick
+  Event: 
+  PlayEvent: 19
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &1721334444
 GameObject:
   m_ObjectHideFlags: 0
@@ -3729,6 +3857,7 @@ GameObject:
   - component: {fileID: 1890215678}
   - component: {fileID: 1890215677}
   - component: {fileID: 1890215680}
+  - component: {fileID: 1890215681}
   m_Layer: 0
   m_Name: Draw Card
   m_TagString: Untagged
@@ -3863,6 +3992,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanInteract: 1
+--- !u!114 &1890215681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1890215675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 51200139
+      Data2: 1296122223
+      Data3: -1744285027
+      Data4: 1921855037
+    Path: event:/DrawCard
+  Event: 
+  PlayEvent: 0
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &1930321015
 GameObject:
   m_ObjectHideFlags: 0
@@ -4349,6 +4509,7 @@ GameObject:
   - component: {fileID: 2136818692}
   - component: {fileID: 2136818691}
   - component: {fileID: 2136818690}
+  - component: {fileID: 2136818693}
   m_Layer: 0
   m_Name: View Deck
   m_TagString: Untagged
@@ -4469,6 +4630,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136818688}
   m_CullTransparentMesh: 1
+--- !u!114 &2136818693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136818688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1723241942
+      Data2: 1224843345
+      Data3: -1729235797
+      Data4: 578795891
+    Path: event:/ButtonClick
+  Event: 
+  PlayEvent: 19
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &2138133954
 GameObject:
   m_ObjectHideFlags: 0
@@ -4481,6 +4673,7 @@ GameObject:
   - component: {fileID: 2138133958}
   - component: {fileID: 2138133957}
   - component: {fileID: 2138133956}
+  - component: {fileID: 2138133959}
   m_Layer: 0
   m_Name: View Deck (1)
   m_TagString: Untagged
@@ -4601,6 +4794,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2138133954}
   m_CullTransparentMesh: 1
+--- !u!114 &2138133959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138133954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1723241942
+      Data2: 1224843345
+      Data3: -1729235797
+      Data4: 578795891
+    Path: event:/ButtonClick
+  Event: 
+  PlayEvent: 19
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &967466493107758639
 PrefabInstance:
   m_ObjectHideFlags: 0

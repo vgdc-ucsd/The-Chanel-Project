@@ -29,6 +29,9 @@ public class DuelManager : MonoBehaviour
 
     public bool loadDeckFromInventory = false;
 
+    //private FMODUnity.StudioEventEmitter emitter;
+    //private string eventPath = "";
+
 
     void Awake() {
         // Singleton
@@ -121,6 +124,8 @@ public class DuelManager : MonoBehaviour
         MainDuel.DrawCardWithMana(Team.Player);
 
         AnimationManager.Instance.UpdateUIAnimation(MainDuel);
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/DrawCard", transform.position);
     }
 
     // triggered by button
