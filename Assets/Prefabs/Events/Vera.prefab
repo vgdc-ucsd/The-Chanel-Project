@@ -120,7 +120,7 @@ MonoBehaviour:
   CharacterArt: {fileID: 21300000, guid: fc17f1c8c2ec552438215c0392cc4fe9, type: 3}
   CharacterName: Vera
   Option1: Listen to her
-  Option1HighlightText: Removes the ability from one of your cards
+  Option1HighlightText: Removes one of your unique cards
   Option2: Attempt to dodge
   Option2HighlightText: Lose all your gold
   DialogueText:

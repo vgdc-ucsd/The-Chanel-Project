@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Events:
-  - {fileID: 3759208247752327063, guid: 15122422398b99840bd5b4fcd54c4e9e, type: 3}
+  - {fileID: 3759208247752327063, guid: 28565dd499ab23f41803654915da7740, type: 3}
   OptionSelected: 0
 --- !u!4 &303332515
 Transform:
@@ -261,6 +261,7 @@ MonoBehaviour:
   InfoPanel: {fileID: 0}
   MainCanvas: {fileID: 0}
   EndTurnButton: {fileID: 0}
+  EnemyArt: {fileID: 0}
 --- !u!4 &320443525
 Transform:
   m_ObjectHideFlags: 0

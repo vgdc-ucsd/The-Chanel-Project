@@ -9,9 +9,11 @@ public class MenuScript : MonoBehaviour
 
     public const int TITLE_INDEX = 0;
     public const int MAP_INDEX = 1;
-    public const int INVENTORY_INDEX = 6;
-    public const int SHOP_INDEX = 3;
     public const int DUEL_INDEX = 2;
+    public const int SHOP_INDEX = 3;
+    public const int EVENT_INDEX = 4;
+    public const int INVENTORY_INDEX = 6;
+    public const int VERSUS_INDEX = 7;
 
     public void Awake()
     {
@@ -38,7 +40,7 @@ public class MenuScript : MonoBehaviour
         {
             LoadInventory();
         }
-        if (Input.GetKeyDown(KeyCode.W)) 
+        if (Input.GetKeyDown(KeyCode.W))
         {
             UIManager.Instance.PlayerWin();
         }
