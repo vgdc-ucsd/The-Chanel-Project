@@ -59,6 +59,13 @@ public abstract class StatusEffect : Ability
 
     public virtual void AddEffect(UnitCard c, ActivationInfo info)
     {
+        foreach (StatusEffect s in c.StatusEffects)
+        {
+            if (s.GetType() == this.GetType())
+            {
+                return;
+            }
+        }
         c.Abilities.Add(this);
         c.StatusEffects.Add(this);
         AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
