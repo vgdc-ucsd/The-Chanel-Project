@@ -1,6 +1,3 @@
-
-
-
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -30,6 +27,7 @@ public class SpellCardInteractable : CardInteractable
         if (!DuelManager.Instance.MainDuel.GetStatus(Team.Player).CanUseMana(card.ManaCost))
         {
             Debug.Log("Not enough Mana"); //TODO: UI feedback
+            FMODUnity.RuntimeManager.PlayOneShot("event:/NoMana");
             return;
         }
 

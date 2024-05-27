@@ -804,6 +804,7 @@ GameObject:
   - component: {fileID: 4633144380959704258}
   - component: {fileID: 5767723507367173616}
   - component: {fileID: 255992776724812640}
+  - component: {fileID: 5090619087350398419}
   m_Layer: 0
   m_Name: TemplateSpellCard
   m_TagString: Untagged
@@ -904,7 +905,40 @@ MonoBehaviour:
   defaultColor: {r: 1, g: 1, b: 1, a: 0}
   selectedColor: {r: 0.8431373, g: 0.8431373, b: 0.8431373, a: 0}
   inHand: 1
+  CanInteract: 1
+  mode: 0
   card: {fileID: 0}
+--- !u!114 &5090619087350398419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7125500276102778040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -2147280230
+      Data2: 1124994298
+      Data3: -1655408211
+      Data4: -1153886194
+    Path: event:/CardTick
+  Event: 
+  PlayEvent: 17
+  StopEvent: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &7649041539445918436
 GameObject:
   m_ObjectHideFlags: 0

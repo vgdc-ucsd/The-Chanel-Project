@@ -154,6 +154,8 @@ public class UnitCardInteractable : CardInteractable,
             if (!charStatus.CanUseMana(card.ManaCost))
             {
                 Debug.Log("Not enough Mana"); //TODO: UI feedback
+                FMODUnity.RuntimeManager.PlayOneShot("event:/NoMana"); // SFX
+
                 return;
             }
             //if(card.team == Team.Enemy) MirrorAttacks(card); // this should only be called once per enemy card
