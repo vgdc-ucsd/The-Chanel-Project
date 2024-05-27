@@ -63,14 +63,7 @@ public class UnitCardInteractable : CardInteractable,
     }
 
     public void DrawArrows() {
-        for(int i = 0; i < 8; i++) {
-            if(i == 1 || i == 3 || i == 4 || i == 6) {
-                Arrows[i].sprite = InactiveArrowOrthogonal;
-            }
-            else {
-                Arrows[i].sprite = InactiveArrowDiagonal;
-            }
-        }
+        ResetArrows();
 
         foreach(Attack atk in card.Attacks) {
             Vector2Int dir = atk.direction;
@@ -88,6 +81,17 @@ public class UnitCardInteractable : CardInteractable,
         }
     }
 
+    public void ResetArrows() {
+        for(int i = 0; i < 8; i++) {
+            if(i == 1 || i == 3 || i == 4 || i == 6) {
+                Arrows[i].sprite = InactiveArrowOrthogonal;
+            }
+            else {
+                Arrows[i].sprite = InactiveArrowDiagonal;
+            }
+        }
+    }
+
     // Updates UI to show card being played
     public void UIPlaceCard(BoardCoords pos)
     {
@@ -100,10 +104,10 @@ public class UnitCardInteractable : CardInteractable,
             transform.position = tile.transform.position;
             if(handInterface != null) {
                 handInterface.cardObjects.Remove(this.gameObject);
-            } 
+            }
             transform.SetParent(tile.transform);
             transform.localScale = Vector3.one;
-            DrawArrows(); 
+            DrawArrows();
             CardCost.enabled = false;
             gameObject.SetActive(true);
             //handInterface.OrganizeCards();
@@ -124,49 +128,53 @@ public class UnitCardInteractable : CardInteractable,
     {
         if (!DuelManager.Instance.Settings.RestrictPlacement || pos.y <= 1)
         {
+            DuelInstance duelInstance = DuelManager.Instance.MainDuel;
+
             // Check out of bounds
-            if (DuelManager.Instance.MainDuel.DuelBoard.IsOutOfBounds(pos)) return;
-            if (DuelManager.Instance.MainDuel.DuelBoard.IsOccupied(pos)) return;
+            if (duelInstance.DuelBoard.IsOutOfBounds(pos) || duelInstance.DuelBoard.IsOccupied(pos)) {
+                ResetArrows();
+                return;
+            }
 
             // TODO
             //if (currentTeam != card.team) {
             //    Debug.Log($"Tried to play {card.team} card while on {currentTeam} turn");
+            //    ResetArrows();
             //    return;
             //}
             CharStatus charStatus;
             if (card.CurrentTeam == Team.Player) {
-                charStatus = DuelManager.Instance.MainDuel.PlayerStatus;
+                charStatus = duelInstance.PlayerStatus;
                 UIManager.Instance.Player.UnhoverMana(charStatus);
             }
             else {
-                charStatus = DuelManager.Instance.MainDuel.EnemyStatus;
+                charStatus = duelInstance.EnemyStatus;
                 UIManager.Instance.Enemy.UnhoverMana(charStatus);
             }
 
             if (!charStatus.CanUseMana(card.ManaCost))
             {
                 Debug.Log("Not enough Mana"); //TODO: UI feedback
+                ResetArrows();
                 return;
             }
             //if(card.team == Team.Enemy) MirrorAttacks(card); // this should only be called once per enemy card
 
-            DuelManager.Instance.MainDuel.DuelBoard.PlayCard(card, pos, charStatus, DuelManager.Instance.MainDuel);
+            duelInstance.DuelBoard.PlayCard(card, pos, charStatus, duelInstance);
             IEnumerator ie = AnimationManager.Instance.PlaceUnitCard(card, pos, 0.0f);
             AnimationManager.Instance.Play(ie);
-            UIManager.Instance.UpdateStatus(DuelManager.Instance.MainDuel);
+            UIManager.Instance.UpdateStatus(duelInstance);
         }
     }
 
-    public override void OnPointerDown(PointerEventData eventData)
-    {
+    public override void OnPointerDown(PointerEventData eventData) {
         base.OnPointerDown(eventData);
-        if (mode == CIMode.Inventory)
-        {
+
+        if (mode == CIMode.Inventory) {
             InventoryUI.Instance.HandleClick(card);
         }
         else if (mode == CIMode.Duel) {
-            if (!inHand)
-            {
+            if (!inHand) {
                 PlayerInputController.Instance.InteractCard(card);
             }
         }
@@ -191,6 +199,22 @@ public class UnitCardInteractable : CardInteractable,
         base.OnPointerExit(eventData);
         if (mode != CIMode.Duel) return;
         AnimationManager.Instance.StopManaHover(card.CurrentTeam);
+    }
+
+    public override void OnBeginDrag(PointerEventData eventData)
+    {
+        if (inHand && CanInteract &&  mode == CIMode.Duel) {
+            DrawArrows();
+        }
+        base.OnBeginDrag(eventData);
+    }
+
+    public override void OnEndDrag(PointerEventData eventData)
+    {
+        if (inHand && CanInteract && mode == CIMode.Duel) {
+            ResetArrows();
+        }
+        base.OnEndDrag(eventData);
     }
 
     public override Card GetCard()

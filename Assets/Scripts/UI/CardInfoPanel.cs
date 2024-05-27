@@ -24,6 +24,7 @@ public class CardInfoPanel : MonoBehaviour
         Description.text = uc.description;
         if(currentCard != null) Destroy(currentCard.gameObject);
         SetCardInteractable(uc);
+        ((UnitCardInteractable)currentCard).DrawArrows();
     }
 
     public void UpdateInventoryInfoPanelUnitCard(UnitCard uc)
