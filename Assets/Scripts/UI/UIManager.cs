@@ -43,6 +43,7 @@ public class UIManager : MonoBehaviour
     public CardInfoPanel InfoPanel;
     public Canvas MainCanvas;
     public Image EndTurnButton;
+    public Image EnemyArt;
 
     public static UIManager Instance;
 
@@ -76,6 +77,10 @@ public class UIManager : MonoBehaviour
             cardBack.transform.localPosition = Vector3.zero;
             cardBack.transform.localScale = Vector3.one;
             EnemyDrawObjects.Add(cardBack);
+        }
+
+        if(PersistentData.Instance.CurrentEncounter.EnemyArt != null) {
+            EnemyArt.sprite = PersistentData.Instance.CurrentEncounter.EnemyArt;
         }
     }
 

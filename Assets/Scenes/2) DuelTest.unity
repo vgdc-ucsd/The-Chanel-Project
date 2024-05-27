@@ -189,7 +189,7 @@ MonoBehaviour:
     UnlimitedMana: 0
     ShowEnemyHand: 0
     DisableWinning: 1
-  PlayerDeck: {fileID: 11400000, guid: f39f86b1760608f4aa6058519ffc2f85, type: 2}
+  PlayerDeck: {fileID: 11400000, guid: d925836930c25ea47a6472a49b1ff310, type: 2}
   EnemyDeck: {fileID: 11400000, guid: 81ee80daac1ea284c8d136995e5c524b, type: 2}
   currentTeam: 0
   loadDeckFromInventory: 0
@@ -315,6 +315,7 @@ MonoBehaviour:
   InfoPanel: {fileID: 436506803}
   MainCanvas: {fileID: 37294272}
   EndTurnButton: {fileID: 1109121973}
+  EnemyArt: {fileID: 1679223926}
 --- !u!114 &37294275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -929,6 +930,10 @@ PrefabInstance:
     - target: {fileID: 2617327619063060685, guid: 0a98d5dba78568a4fbf88861b29d4791, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3995966394952238104, guid: 0a98d5dba78568a4fbf88861b29d4791, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4305645468397121386, guid: 0a98d5dba78568a4fbf88861b29d4791, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3116,6 +3121,17 @@ Transform:
   - {fileID: 1270436024}
   m_Father: {fileID: 37294273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1679223926 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3196632386068082800, guid: 0a98d5dba78568a4fbf88861b29d4791, type: 3}
+  m_PrefabInstance: {fileID: 227482974}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1694186252
 GameObject:
   m_ObjectHideFlags: 0
