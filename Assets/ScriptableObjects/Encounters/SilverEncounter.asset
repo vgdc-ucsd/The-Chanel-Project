@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76be4abdea6030b47892b95441f5fa03, type: 3}
-  m_Name: TestEncounter
+  m_Name: SilverEncounter
   m_EditorClassIdentifier: 
-  EncounterName: Test
+  EncounterName: Silver
   Settings:
     SameSettingsForBothPlayers: 1
     Player:
@@ -40,10 +40,10 @@ MonoBehaviour:
     UnlimitedMana: 0
     ShowEnemyHand: 0
     DisableWinning: 0
-  EnemyArt: {fileID: 21300000, guid: 14d9a4dac9edcf74f8b1317180f22d17, type: 3}
+  EnemyArt: {fileID: 21300000, guid: dcd23570ea9519942bc3e1bcc8da995d, type: 3}
   EnemyDeck: {fileID: 11400000, guid: c77c60e166e08324785f01f5ec070d56, type: 2}
-  RewardGold: 80
+  RewardGold: 30
   CardOffers:
-  - {fileID: 11400000, guid: b0588fcb2d650924aad9a7445cb13b24, type: 2}
+  - {fileID: 11400000, guid: a88c7d8913880fd4aa37c9ba6619601b, type: 2}
   - {fileID: 11400000, guid: 7a5653329eba6434380b93bcb2540527, type: 2}
-  - {fileID: 11400000, guid: 7b426a659073e4043b5abdf92114df9a, type: 2}
+  - {fileID: 11400000, guid: f478542d8bd0ddb47aaf315da0ce8277, type: 2}
