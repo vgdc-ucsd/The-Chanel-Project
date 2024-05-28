@@ -52,3 +52,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f3b69c70ca0bb6b4792c30e461bc866c, type: 2}
   - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
   boss: {fileID: 0}
+  EncounterAudio: {fileID: -7987570379772523157, guid: a3ec235be672d7c4587c9bd64ee01282, type: 3}
+  WinAudio: {fileID: -7987570379772523157, guid: 127a1363af288f9489216014f7daa036, type: 3}
+  LoseAudio: {fileID: -7987570379772523157, guid: af489d115888cf84bb87d544ca87ec1d, type: 3}

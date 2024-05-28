@@ -14,4 +14,7 @@ public class Encounter : ScriptableObject
     public int RewardGold;
     public Card[] CardOffers; // you can choose one if you win
     public BossData boss = null;
+    public FMODUnity.StudioEventEmitter EncounterAudio;
+    public FMODUnity.StudioEventEmitter WinAudio;
+    public FMODUnity.StudioEventEmitter LoseAudio;
 }

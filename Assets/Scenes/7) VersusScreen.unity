@@ -609,6 +609,7 @@ GameObject:
   - component: {fileID: 600840447}
   - component: {fileID: 600840446}
   - component: {fileID: 600840450}
+  - component: {fileID: 600840451}
   m_Layer: 5
   m_Name: VersusScreen
   m_TagString: Untagged
@@ -725,6 +726,38 @@ MonoBehaviour:
   Background: {fileID: 583684506}
   enemyImageObject: {fileID: 770501531}
   enemyName: {fileID: 340808817}
+  AudioPlayer: {fileID: 600840451}
+--- !u!114 &600840451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 600840445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: -1
+  OverrideMaxDistance: -1
 --- !u!1 &770501531
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,7 +882,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1227559901}
   - component: {fileID: 1227559900}
-  - component: {fileID: 1227559899}
+  - component: {fileID: 1227559902}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -857,14 +890,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1227559899
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1227559898}
-  m_Enabled: 1
 --- !u!20 &1227559900
 Camera:
   m_ObjectHideFlags: 0
@@ -931,6 +956,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1227559902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227559898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attenuationObject: {fileID: 0}
 --- !u!1 &1268448872
 GameObject:
   m_ObjectHideFlags: 0
@@ -1338,6 +1376,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: VsState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: CurrentEncounter
+      value: 
+      objectReference: {fileID: 11400000, guid: 9dfccc11df378e44e9c0af910b013dad, type: 2}
     - target: {fileID: 8074719806751530725, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: m_Name
       value: PersistentData

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76be4abdea6030b47892b95441f5fa03, type: 3}
   m_Name: BossEncounter
   m_EditorClassIdentifier: 
+  EncounterName: 
   Settings:
     SameSettingsForBothPlayers: 0
     Player:
@@ -40,6 +41,7 @@ MonoBehaviour:
     ShowEnemyHand: 0
     DisableWinning: 0
   EnemyArt: {fileID: 21300000, guid: 14d9a4dac9edcf74f8b1317180f22d17, type: 3}
+  EnemyDecks: []
   EnemyDeck: {fileID: 11400000, guid: c77c60e166e08324785f01f5ec070d56, type: 2}
   RewardGold: 81
   CardOffers:
@@ -47,3 +49,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3f0de661135cb474dba2ca0dda7d84c7, type: 2}
   - {fileID: 11400000, guid: 7a5653329eba6434380b93bcb2540527, type: 2}
   boss: {fileID: 11400000, guid: 5cd26858f2f04494ea3f8332793a7ade, type: 2}
+  EncounterAudio: {fileID: -7987570379772523157, guid: 255b4290a3731ec4096805d3c908bcbe, type: 3}
+  WinAudio: {fileID: -7987570379772523157, guid: 298f1e77506e6b943849b657250960ab, type: 3}
+  LoseAudio: {fileID: -7987570379772523157, guid: 69ac0bb81f04c484aac9dbde463e1dc9, type: 3}

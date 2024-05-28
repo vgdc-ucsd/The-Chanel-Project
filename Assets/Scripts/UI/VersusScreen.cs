@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public enum VsScreenState {
     Win,
@@ -25,23 +26,28 @@ public class VersusScreen : MonoBehaviour
 
     public GameObject enemyImageObject;
     public TextMeshProUGUI enemyName;
-    private Encounter currentEncounter;
+    public FMODUnity.StudioEventEmitter AudioPlayer;
+    private FMODUnity.StudioEventEmitter characterAudio;
 
     void Start()
     {
         if(PersistentData.Instance.VsState == VsScreenState.Win) {
             Background.sprite = WinBG;
             Logo.sprite = WinLogo;
+            characterAudio = PersistentData.Instance.CurrentEncounter.WinAudio;
         }
         else if(PersistentData.Instance.VsState == VsScreenState.Lose) {
             Background.sprite = LoseBG;
             Logo.sprite = LoseLogo;
+            characterAudio = PersistentData.Instance.CurrentEncounter.LoseAudio;
         }
         else {
             PersistentData.Instance.SetEncounterStats();
 
             Background.sprite = VsBG;
             Logo.sprite = VsLogo;
+            characterAudio = PersistentData.Instance.CurrentEncounter.EncounterAudio;
+
         }
 
         enemyName.text = PersistentData.Instance.CurrentEncounter.EncounterName;
@@ -64,7 +70,17 @@ public class VersusScreen : MonoBehaviour
     }
 
     private IEnumerator LoadSceneCoroutine(VsScreenState state) {
-        yield return new WaitForSeconds(2f);
+        if(characterAudio != null) {
+            AudioPlayer = characterAudio;
+            AudioPlayer.Play();
+            AudioPlayer.EventDescription.getLength(out int audioLength);
+            float waitTime = audioLength/1000f; // milliseconds to seconds
+            yield return new WaitForSeconds(waitTime);
+        }
+        else {
+            Debug.LogWarning("Missing audio for this encounter");
+            yield return new WaitForSeconds(2f);
+        }
         LoadScene(state);
     }
 }
