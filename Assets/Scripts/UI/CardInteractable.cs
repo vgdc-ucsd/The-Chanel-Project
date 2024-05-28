@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public enum CIMode
 {
@@ -74,6 +75,9 @@ public abstract class CardInteractable : MonoBehaviour,
                 hoveredCard.transform.position = hoverPosition();
                 transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
             }
+        }else if ( mode == CIMode.Shop)
+        {
+            transform.DOShakePosition(0.2f, 1f);
         }
     }
 
@@ -109,7 +113,10 @@ public abstract class CardInteractable : MonoBehaviour,
         {
             if (eventData.button == PointerEventData.InputButton.Left)
             {
-                ShopManager.Instance.purchase(this);
+                if (!ShopManager.Instance.purchase(this))
+                {
+                    transform.DOShakePosition(0.5f, 1.3f);
+                }
             }
             else if (eventData.button == PointerEventData.InputButton.Right)
             {

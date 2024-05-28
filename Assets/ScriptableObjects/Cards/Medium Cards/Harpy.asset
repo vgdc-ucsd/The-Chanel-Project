@@ -18,7 +18,7 @@ MonoBehaviour:
   Artwork: {fileID: 21300000, guid: 38bcc03c5deefe345af4be118bbe90ab, type: 3}
   drawStatus: 0
   id: 0
-  description: 
+  description: Half human half bird.
   CurrentTeam: 2
   cardType: 1
   Health: 6

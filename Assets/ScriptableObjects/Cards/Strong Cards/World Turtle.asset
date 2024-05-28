@@ -18,7 +18,7 @@ MonoBehaviour:
   Artwork: {fileID: 21300000, guid: 39188155965b457469cb2f006063ba44, type: 3}
   drawStatus: 0
   id: 0
-  description: 
+  description: Big ol turtle
   CurrentTeam: 2
   cardType: 2
   Health: 10

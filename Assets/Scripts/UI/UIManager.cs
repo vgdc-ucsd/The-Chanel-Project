@@ -44,8 +44,10 @@ public class UIManager : MonoBehaviour
     public Canvas MainCanvas;
     public Image EndTurnButton;
     public Image EnemyArt;
-    public Sprite PlayerCardBorder;
-    public Sprite EnemyCardBorder;
+    public Sprite PlayerUnitCardBorder;
+    public Sprite PlayerSpellCardBorder;
+    public Sprite EnemyUnitCardBorder;
+    public Sprite EnemySpellCardBorder;
 
     public static UIManager Instance;
 
@@ -101,14 +103,14 @@ public class UIManager : MonoBehaviour
 
             if (c.CurrentTeam == Team.Player) {
                 ci.handInterface = Hand;
-                ci.image.sprite = PlayerCardBorder;
+                ci.image.sprite = PlayerUnitCardBorder;
             }
             else if (c.CurrentTeam == Team.Enemy) {
                 ci.handInterface = EnemyHand;
-                ci.image.sprite = EnemyCardBorder;
+                ci.image.sprite = EnemyUnitCardBorder;
             }
             else {
-                ci.image.sprite = PlayerCardBorder;
+                ci.image.sprite = PlayerUnitCardBorder;
                 return ci;
             }
 
@@ -122,15 +124,15 @@ public class UIManager : MonoBehaviour
             ci.mode = CIMode.Duel;
 
             if(c.CurrentTeam == Team.Player) {
-                ci.image.sprite = PlayerCardBorder;
+                ci.image.sprite = PlayerSpellCardBorder;
                 ci.handInterface = Hand;
             }
             else if (c.CurrentTeam == Team.Enemy) {
-                ci.image.sprite = EnemyCardBorder;
+                ci.image.sprite = EnemySpellCardBorder;
                 ci.handInterface = EnemyHand;
             }
             else {
-                ci.image.sprite = PlayerCardBorder;
+                ci.image.sprite = PlayerSpellCardBorder;
                 return ci;
             }
 

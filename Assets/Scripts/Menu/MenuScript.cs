@@ -16,8 +16,7 @@ public class MenuScript : MonoBehaviour
     public const int VERSUS_INDEX = 7;
     public const int REWARD_INDEX = 8;
 
-    [SerializeField]
-    private int PREV_INDEX;
+    public int PREV_INDEX;
 
     public void Awake()
     {
@@ -95,8 +94,15 @@ public class MenuScript : MonoBehaviour
 
     public void LoadInventory()
     {
-        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(INVENTORY_INDEX);
+        if (SceneManager.GetActiveScene().buildIndex == MAP_INDEX || SceneManager.GetActiveScene().buildIndex == SHOP_INDEX)
+        {
+            PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(INVENTORY_INDEX);
+        }
+        else
+        {
+            Debug.Log("Cannot Load Inventory from this Scene");
+        }
     }
 
     // Debug Only
@@ -113,9 +119,25 @@ public class MenuScript : MonoBehaviour
     }
 
     //Previous scene loaded from
-    public void LoadPrev    ()
+    public void LoadPrev()
     {
-        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(PREV_INDEX);
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
+        Debug.Log(PREV_INDEX);
+    }
+
+    public void LoadPrevFromInventory()
+    {
+        if (PREV_INDEX == MAP_INDEX || PREV_INDEX == SHOP_INDEX)
+        {
+            SceneManager.LoadScene(PREV_INDEX);
+            PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
+        }
+        else
+        {
+            Debug.Log("Cannot go back to this scene from Inventory");
+        }
+
+        Debug.Log(PREV_INDEX);
     }
 }
