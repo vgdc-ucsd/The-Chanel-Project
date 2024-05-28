@@ -128,7 +128,7 @@ public class AnimationManager : MonoBehaviour
         // animation
         yield return SimpleTranslate(cardTransform, windupPos, windupDuration, mode);
         yield return SimpleTranslate(cardTransform, launchPos, launchDuration, mode);
-        FMODUnity.RuntimeManager.PlayOneShot("event:/CardAttack", transform.position); // Damage SFX 
+        FMODUnity.RuntimeManager.PlayOneShot("event:/CardAttack", transform.position); // Damage SFX
 
 
         yield return SimpleTranslate(cardTransform, startPos, recoverDuration, mode);

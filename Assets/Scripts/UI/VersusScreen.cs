@@ -29,11 +29,6 @@ public class VersusScreen : MonoBehaviour
 
     void Start()
     {
-        PersistentData.Instance.SetEncounterStats();
-        currentEncounter = PersistentData.Instance.CurrentEncounter;
-        enemyName.text = currentEncounter.EncounterName;
-        enemyImageObject.GetComponent<Image>().sprite = currentEncounter.EnemyArt;
-
         if(PersistentData.Instance.VsState == VsScreenState.Win) {
             Background.sprite = WinBG;
             Logo.sprite = WinLogo;
@@ -43,9 +38,14 @@ public class VersusScreen : MonoBehaviour
             Logo.sprite = LoseLogo;
         }
         else {
+            PersistentData.Instance.SetEncounterStats();
+
             Background.sprite = VsBG;
             Logo.sprite = VsLogo;
         }
+
+        enemyName.text = PersistentData.Instance.CurrentEncounter.EncounterName;
+        enemyImageObject.GetComponent<Image>().sprite = PersistentData.Instance.CurrentEncounter.EnemyArt;
 
         StartCoroutine(LoadSceneCoroutine(PersistentData.Instance.VsState));
     }

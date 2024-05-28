@@ -45,10 +45,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 401195c6aeec5e04cb881bb7e5e32569, type: 2}
   - {fileID: 11400000, guid: d4b57f505f0047a45a90a31f53f7e079, type: 2}
   - {fileID: 11400000, guid: 2be6adea3eab8d94ca302a18d507aa09, type: 2}
-  EnemyDeck: {fileID: 0}
-  RewardGold: 30
+  EnemyDeck: {fileID: 11400000, guid: 2be6adea3eab8d94ca302a18d507aa09, type: 2}
+  RewardGold: 207
   CardOffers:
-  - {fileID: 11400000, guid: a88c7d8913880fd4aa37c9ba6619601b, type: 2}
-  - {fileID: 11400000, guid: 7a5653329eba6434380b93bcb2540527, type: 2}
-  - {fileID: 11400000, guid: f478542d8bd0ddb47aaf315da0ce8277, type: 2}
+  - {fileID: 11400000, guid: ec5f0323c276dc141bf415a48ede4a84, type: 2}
+  - {fileID: 11400000, guid: 575c3927bbdd81043bedbd79b3f941b4, type: 2}
+  - {fileID: 11400000, guid: 0fbf928ca99cf444d86b6bc34fb185af, type: 2}
   boss: {fileID: 11400000, guid: 5cd26858f2f04494ea3f8332793a7ade, type: 2}

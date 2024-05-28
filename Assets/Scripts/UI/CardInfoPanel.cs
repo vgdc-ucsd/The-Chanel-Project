@@ -81,5 +81,6 @@ public class CardInfoPanel : MonoBehaviour
         currentCard.transform.SetParent(CardHolder);
         currentCard.transform.localPosition = Vector3.zero;
         currentCard.transform.localScale = Vector3.one;
+        currentCard.CardCost.enabled = true;
     }
 }

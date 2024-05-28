@@ -7,8 +7,6 @@ public class OutlawEvent : MonoBehaviour
     public Transform Center;
     public List<Encounter> OutlawEncounters;
 
-    private int encounterIndex;
-
     public void Reach() { // + 3 hp on random card
         if(EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
@@ -37,10 +35,7 @@ public class OutlawEvent : MonoBehaviour
         if(EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
 
-        int randomIndex = UnityEngine.Random.Range(0, OutlawEncounters.Count);
-        PersistentData.Instance.CurrentEncounter = OutlawEncounters[randomIndex];
-
-        PersistentData.Instance.CurrentEncounter = OutlawEncounters[Math.Min(OutlawEncounters.Count - 1, encounterIndex++)];
+        PersistentData.Instance.CurrentEncounter = OutlawEncounters[OutlawEncounters.Count - 1];
         EventManager.Instance.FinishEvent(MenuScript.DUEL_INDEX);
     }
 }
