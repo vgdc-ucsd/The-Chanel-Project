@@ -375,8 +375,18 @@ public class DuelInstance
                 }
             }
         }
+        foreach (UnitCard card in DuelBoard.GetCardsOfTeam(team))
+        {
+            for (int i = card.Abilities.Count - 1; i >= 0; i--)
+            {
+                Ability ability = card.Abilities[i];
+                if (ability.Condition == ActivationCondition.OnBeginOppositeTurn)
+                {
+                    ability.Activate(card, info);
+                }
+            }
+        }
 
-        
         DrawCards(oppositeTeam, 1);
     }
 

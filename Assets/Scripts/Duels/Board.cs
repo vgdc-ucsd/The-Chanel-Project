@@ -159,6 +159,23 @@ public class Board
         }
         return cards;
     }
+    public BoardCoords GetFrontTile(BoardCoords pos,Team team)
+    {
+
+        BoardCoords result;
+        if (team == Team.Player) 
+        result = pos + new BoardCoords(0, 1);
+        else
+            result = pos + new BoardCoords(0, -1);
+        return result;
+    }
+
+    public UnitCard GetFrontCard(BoardCoords pos, Team team)
+    {
+        BoardCoords tile = GetFrontTile(pos, team);
+        UnitCard card = GetCard(tile);
+        return card;
+    }
 
     public List<BoardCoords> GetEmptyAdjacentTiles(BoardCoords pos)
     {
