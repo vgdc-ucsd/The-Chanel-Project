@@ -334,7 +334,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -25.5, y: -39}
+  m_AnchoredPosition: {x: -23.08, y: -38}
   m_SizeDelta: {x: 75, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8640594219438373096
@@ -1219,7 +1219,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 26.39, y: -39}
+  m_AnchoredPosition: {x: 24, y: -38}
   m_SizeDelta: {x: 75, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5272597417070482069
@@ -1582,7 +1582,6 @@ MonoBehaviour:
   raycaster: {fileID: 5767723507367173616}
   CardName: {fileID: 8775277688575511005}
   CardCost: {fileID: 1935634880742371814}
-  CardBorder: {fileID: 0}
   image: {fileID: 7934217333704476081}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   selectedColor: {r: 0.8443396, g: 0.8443396, b: 0.8443396, a: 1}
@@ -1794,7 +1793,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b8a02bc22e9d317439928b9770f97290, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1e69474d287873f4b9e417e932f669a7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
