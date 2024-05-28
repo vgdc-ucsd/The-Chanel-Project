@@ -8,7 +8,7 @@ public class RewardManager : MonoBehaviour
     public Transform CardContainer;
     public Canvas MainCanvas;
 
-    private float heightOffset = -250f;
+    private float heightOffset = -350f;
     private float duration = 0.6f;
     private float delay = 0.2f;
 
@@ -106,14 +106,14 @@ public class RewardManager : MonoBehaviour
         goldText.text = PersistentData.Instance.Inventory.Gold.ToString();
         incText.text = "+" + PersistentData.Instance.CurrentEncounter.RewardGold.ToString();
         incText.enabled = true;
-        incText.color = Color.yellow;
+        incText.color = Color.white;
         float elapsedTime = 0;
         float endTime = 1;
         float startTime = Time.time;
         while (elapsedTime < endTime)
         {
             elapsedTime = Time.time - startTime;
-            incText.color = Interpolation.Interpolate(Color.yellow, Color.clear,
+            incText.color = Interpolation.Interpolate(Color.white, Color.clear,
                     elapsedTime / endTime, InterpolationMode.Linear);
             yield return null;
         }
