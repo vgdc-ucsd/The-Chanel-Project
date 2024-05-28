@@ -1,16 +1,13 @@
-
-
-
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SpellCardInteractable : CardInteractable
 
 {
     public SpellCard card;
-
-
+    public Image CardArt;
 
     public override void SetCardInfo()
     {
@@ -20,6 +17,9 @@ public class SpellCardInteractable : CardInteractable
             return;
         }
         CardName.text = card.Name;
+        if(CardArt != null) {
+            CardArt.sprite = card.Artwork;
+        }
         UpdateCardInfo();
     }
 
@@ -30,6 +30,8 @@ public class SpellCardInteractable : CardInteractable
         if (!DuelManager.Instance.MainDuel.GetStatus(Team.Player).CanUseMana(card.ManaCost))
         {
             Debug.Log("Not enough Mana"); //TODO: UI feedback
+            FMODUnity.RuntimeManager.PlayOneShot("event:/NoMana"); // SFX
+
             return;
         }
 
@@ -80,7 +82,7 @@ public class SpellCardInteractable : CardInteractable
         base.OnPointerDown(eventData);
         if (mode == CIMode.Inventory)
         {
-            InventoryUI.Instance.HandleClick(this);
+            //InventoryUI.Instance.HandleClick(card);
         }
     }
 

@@ -477,6 +477,7 @@ public class AnimationManager : MonoBehaviour
         }
 
         text.color = normalColor;
+        FMODUnity.RuntimeManager.PlayOneShot("event:/PlayerHurt"); // SFX for when Player gets hurt
     }
 
     private IEnumerator DamageFlashPlayer(PlayerUI status, int newHealth, float duration) {
@@ -520,6 +521,8 @@ public class AnimationManager : MonoBehaviour
         }
 
         text.color = normalColor;
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/PlayerHurt"); // SFX for when Player gets hurt
     }
 
     private IEnumerator DrawArrows(UnitCardInteractable uci) {

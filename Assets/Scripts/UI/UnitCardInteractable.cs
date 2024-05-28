@@ -154,8 +154,7 @@ public class UnitCardInteractable : CardInteractable,
             //handInterface.OrganizeCards();
         }
 
-        //eventPath = "event:/PlacingCard";
-        FMODUnity.RuntimeManager.PlayOneShot("event:/PlacingCard", transform.position);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/CardPlace", transform.position);
     }
 
     public void UpdateCardPos()
@@ -200,6 +199,8 @@ public class UnitCardInteractable : CardInteractable,
             if (!charStatus.CanUseMana(card.ManaCost))
             {
                 Debug.Log("Not enough Mana"); //TODO: UI feedback
+                FMODUnity.RuntimeManager.PlayOneShot("event:/NoMana"); // SFX
+
                 return;
             }
             //if(card.team == Team.Enemy) MirrorAttacks(card); // this should only be called once per enemy card
@@ -219,6 +220,8 @@ public class UnitCardInteractable : CardInteractable,
             DrawArrows();
         }
         base.OnBeginDrag(eventData);
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/CardSlide", transform.position); // Only want for when clicked/moving from deck
     }
 
     public override void OnEndDrag(PointerEventData eventData)
@@ -242,8 +245,6 @@ public class UnitCardInteractable : CardInteractable,
                 PlayerInputController.Instance.InteractCard(card);
             }
         }
-
-        FMODUnity.RuntimeManager.PlayOneShot("event:/CardSlide", transform.position); // Only want for when clicked/moving from deck
     }
 
     public override void OnPointerEnter(PointerEventData eventData) {

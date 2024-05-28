@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Fairy
   ManaCost: 2
-  ShopCost: 0
+  ShopCost: 30
   Artwork: {fileID: 21300000, guid: aafcbf65f133ed74ba2bec03f16d42df, type: 3}
   drawStatus: 0
   id: 0

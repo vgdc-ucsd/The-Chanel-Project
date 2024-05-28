@@ -52,9 +52,7 @@ public class CardInfoPanel : MonoBehaviour
     public void UpdateInventoryInfoPanelUnitCard(UnitCard uc)
     {
         CardName.text = uc.Name;
-        if (Description.text == "") uc.description = "Description unwritten";
-        else Description.text = uc.description;
-
+        Description.text = uc.description;
         Mana.text = uc.ManaCost + "";
         Health.text = uc.Health + "";
         Atk.text = uc.BaseDamage + "";
@@ -63,14 +61,18 @@ public class CardInfoPanel : MonoBehaviour
         if (currentCard != null) Destroy(currentCard.gameObject);
         SetCardInteractable(uc);
         ((UnitCardInteractable)currentCard).DrawArrows();
+        currentCard.CanInteract = false;
     }
 
     public void UpdateInfoPanelSpellCard(SpellCard sc) {
         CardName.text = sc.Name;
         Description.text = "<B>Description:</B>\n" + (sc.description.Equals("") ? "None" : sc.description);
 
+        // Shows spell card
         if (currentCard != null) Destroy(currentCard.gameObject);
         SetCardInteractable(sc);
+
+        currentCard.CanInteract = false;
     }
 
     public void SetCardInteractable(Card c) {

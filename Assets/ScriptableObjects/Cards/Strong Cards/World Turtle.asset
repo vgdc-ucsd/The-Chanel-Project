@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: World Turtle
   ManaCost: 3
-  ShopCost: 50
+  ShopCost: 70
   Artwork: {fileID: 21300000, guid: 39188155965b457469cb2f006063ba44, type: 3}
   drawStatus: 0
   id: 0
-  description: Big ol turtle
+  description: Enourmas amount of health and able to attack on both sides, serving
+    as an extremely strong defensive card.
   CurrentTeam: 2
   cardType: 2
   Health: 10
