@@ -20,6 +20,7 @@ MonoBehaviour:
   id: 0
   description: If this card survives damage, it gains 1 attack.
   CurrentTeam: 2
+  cardType: 2
   Health: 6
   CanMove: 1
   CanAttack: 0
@@ -38,3 +39,4 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 8f6ec952687836146a247c6ea9ddd955, type: 2}
   StatusEffects: []
+  isTemp: 0

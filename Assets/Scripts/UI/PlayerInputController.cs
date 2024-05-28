@@ -4,7 +4,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
-enum ControlAction
+public enum ControlAction
 {
     None, Move
 }
@@ -17,11 +17,11 @@ public class PlayerInputController: MonoBehaviour
 
     public void Awake()
     {
-        Instance = this; 
+        Instance = this;
     }
 
     // Determines the pending action, i.e. what the next player interaction of a card/tile will do
-    private void SetAction(ControlAction action)
+    public void SetAction(ControlAction action)
     {
         switch (action)
         {
@@ -41,7 +41,7 @@ public class PlayerInputController: MonoBehaviour
                 return;
         }
     }
-    
+
     // Handle any input that involves clicking a card on the board
     public void InteractCard(UnitCard card)
     {
@@ -61,7 +61,7 @@ public class PlayerInputController: MonoBehaviour
             return;
         }
         SelectCard(card, true);
-        
+
         if(card.CanMove) {
             SetAction(ControlAction.Move);
         }
@@ -77,7 +77,7 @@ public class PlayerInputController: MonoBehaviour
             // unselect previous card
             selectedCard.SetSelected(false);
         }
-        
+
         if (toggle)
         {
             card.SetSelected(true);
@@ -118,6 +118,9 @@ public class PlayerInputController: MonoBehaviour
             SelectCard(selectedCard, false);
             selectedCard = null;
             SetAction(ControlAction.None);
+
+            // SFX
+            FMODUnity.RuntimeManager.PlayOneShot("event:/CardMove", transform.position);
         }
     }
 }

@@ -15,6 +15,10 @@ public abstract class SpellCard : Card
 
     public static int cloneCount = 0;
 
+    private void Awake()
+    {
+        cardType = CardType.Spell;
+    }
     public override Card Clone()
     {
         /*if (cloneCount > 10000)
@@ -57,6 +61,7 @@ public abstract class SpellCard : Card
         duel.GetStatus(CurrentTeam).UseMana(ManaCost);
         duel.GetStatus(CurrentTeam).RemoveFromHand(this);
         duel.GetStatus(CurrentTeam).Deck.Discard(this);
+        duel.GetStatus(CurrentTeam).discardPileCards = duel.GetStatus(CurrentTeam).Deck.DiscardPile();
 
         AnimationManager.Instance.SpellDiscardAnimation(duel, this);
     }

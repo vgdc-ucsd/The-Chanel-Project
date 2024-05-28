@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76be4abdea6030b47892b95441f5fa03, type: 3}
+  m_Name: RainEncounter
+  m_EditorClassIdentifier: 
+  EncounterName: Rain
+  Settings:
+    SameSettingsForBothPlayers: 1
+    Player:
+      StartingHealth: 10
+      MaxHealth: 10
+      MaxHealthEnabled: 0
+      StartingMana: 1
+      MaxMana: 5
+      MaxManaEnabled: 1
+      StartingCards: 4
+    Enemy:
+      StartingHealth: 10
+      MaxHealth: 10
+      MaxHealthEnabled: 0
+      StartingMana: 1
+      MaxMana: 5
+      MaxManaEnabled: 1
+      StartingCards: 4
+    BoardRows: 4
+    BoardCols: 4
+    EnemyGoesFirst: 0
+    DrawCardManaCost: 2
+    EnablePVPMode: 0
+    RestrictPlacement: 1
+    UnlimitedMana: 0
+    ShowEnemyHand: 0
+    DisableWinning: 0
+  EnemyArt: {fileID: 21300000, guid: 0f3724b61ccb2044db2bef172146bb13, type: 3}
+  EnemyDeck: {fileID: 11400000, guid: c77c60e166e08324785f01f5ec070d56, type: 2}
+  RewardGold: 30
+  CardOffers:
+  - {fileID: 11400000, guid: a88c7d8913880fd4aa37c9ba6619601b, type: 2}
+  - {fileID: 11400000, guid: 7a5653329eba6434380b93bcb2540527, type: 2}
+  - {fileID: 11400000, guid: f478542d8bd0ddb47aaf315da0ce8277, type: 2}

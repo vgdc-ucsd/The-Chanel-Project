@@ -12,6 +12,7 @@ public class PhoenixAbility : Ability
     {
         foreach (UnitCard cAdj in Info.Duel.DuelBoard.GetAdjacentCards(c.Pos)) {
             if (cAdj.CurrentTeam != c.CurrentTeam) {
+                AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
                 FireEffect effect = ScriptableObject.Instantiate(DuelManager.Instance.Effects.FireEffectTemplate);
                 effect.AddEffect(cAdj, Info);
 

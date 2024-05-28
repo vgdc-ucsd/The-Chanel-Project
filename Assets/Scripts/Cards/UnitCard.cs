@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -23,12 +24,13 @@ public struct UnitStats
 public class UnitCard : Card
 {
     public int Health;
-    
+
     [HideInInspector] public bool CanMove = false;
     [HideInInspector] public bool CanAttack = false;
     [HideInInspector] public BoardCoords Pos;
     [HideInInspector] public bool isSelected = false;
     [HideInInspector] public int BaseDamage = 1; // set in the custom card editor
+    [HideInInspector] public bool Processed = false;
     [HideInInspector] public override CardInteractable CardInteractableRef { get {return UnitCardInteractableRef;} set{UnitCardInteractableRef = (UnitCardInteractable)value;} }
     public UnitCardInteractable UnitCardInteractableRef;
 
@@ -39,6 +41,7 @@ public class UnitCard : Card
     public List<StatusEffect> StatusEffects = new List<StatusEffect>(); // for effect stacking calculations, order preserved
     public UnitStats baseStats = new UnitStats();
 
+    public bool isTemp = false;
 
     public override Card Clone() {
         UnitCard copy = (UnitCard) ScriptableObject.CreateInstance("UnitCard");
@@ -68,7 +71,7 @@ public class UnitCard : Card
         foreach (Ability ab in this.Abilities) {
             if (ab is StatusEffect s)
             {
-                StatusEffect newEffect = s.Clone(); 
+                StatusEffect newEffect = s.Clone();
                 copy.Abilities.Add(newEffect);
                 copy.StatusEffects.Add(newEffect);
             }
@@ -76,7 +79,7 @@ public class UnitCard : Card
                 copy.Abilities.Add(ab);
         }
 
-        
+
 
         return copy;
     }
@@ -103,11 +106,11 @@ public class UnitCard : Card
             info.OverkillDamage = Health*-1;
         }
 
-        AnimationManager.Instance.DamageCardAnimation(duel, this, Color.red);
-        
+        AnimationManager.Instance.DamageCardAnimation(duel, this, Color.red, damage);
+
         // On receive damage but still alive
         if (Health > 0) {
-            foreach (Ability a in Abilities) {      
+            foreach (Ability a in Abilities) {
                 if(a.Condition == ActivationCondition.OnReceiveDamage) a.Activate(this, info);
             }
         }
@@ -116,11 +119,16 @@ public class UnitCard : Card
             foreach(Ability a in Abilities) {
                 if (a.Condition == ActivationCondition.OnDeath) a.Activate(this, info);
             }
-            duel.GetStatus(CurrentTeam).Deck.Discard(this);
+            if (!isTemp){
+                duel.GetStatus(CurrentTeam).Deck.Discard(this);
+                duel.GetStatus(CurrentTeam).discardPileCards = duel.GetStatus(CurrentTeam).Deck.DiscardPile();
+            }
+
         }
     }
 
     public void ResetStats(){
+        StatusEffects.Clear();
         Health = baseStats.health;
     }
 

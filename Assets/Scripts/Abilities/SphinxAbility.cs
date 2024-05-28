@@ -13,6 +13,7 @@ public class SphinxAbility : Ability
     {
         if (info.OverkillDamage > 0)
         {
+            AnimationManager.Instance.AbilityActivateAnimation(info.Duel, c);
             c.Health = 1;
         }
 

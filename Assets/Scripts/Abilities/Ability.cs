@@ -13,9 +13,11 @@ public enum ActivationCondition {
     OnPlay,
     OnMove,
     OnReceiveDamage,
-    OnDealDamage, // triggers once after landing each separate attack
+    OnAttacksHitMe, // triggers when any Attacker hits you, gives Attacker reference
+    OnAttack,       // triggers just before Attack hits
+    OnDealDamage,   // triggers once after landing each separate attack
     OnFinishAttack, // triggers once per turn after landing at least one attack
-    OnTrigger, // can only be triggered externally
+    OnTrigger,      // can only be triggered externally
 }
 
 public struct ActivationInfo {
@@ -60,6 +62,13 @@ public abstract class StatusEffect : Ability
 
     public virtual void AddEffect(UnitCard c, ActivationInfo info)
     {
+        foreach (StatusEffect s in c.StatusEffects)
+        {
+            if (s.GetType() == this.GetType())
+            {
+                return;
+            }
+        }
         c.Abilities.Add(this);
         c.StatusEffects.Add(this);
         AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);

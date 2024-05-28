@@ -7,9 +7,14 @@ public class MenuScript : MonoBehaviour
 {
     public static MenuScript Instance { get; set; }
 
-    public static int TITLE_INDEX = 0;
-    public static int MAP_INDEX = 1;
-    public static int INVENTORY_INDEX = 6;
+    public const int TITLE_INDEX = 0;
+    public const int MAP_INDEX = 1;
+    public const int DUEL_INDEX = 2;
+    public const int SHOP_INDEX = 3;
+    public const int EVENT_INDEX = 4;
+    public const int INVENTORY_INDEX = 6;
+    public const int VERSUS_INDEX = 7;
+    public const int REWARD_INDEX = 8;
 
     public void Awake()
     {
@@ -36,10 +41,19 @@ public class MenuScript : MonoBehaviour
         {
             LoadInventory();
         }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            UIManager.Instance.PlayerWin();
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            LoadShop();
+        }
     }
 
     public void PlayGame()
     {
+        PersistentData.Instance.Init();
         SceneManager.LoadScene(1);
         PersistentData.Instance.mapInfo.nodePoints = new();
         PersistentData.Instance.mapInfo.nodeTypes = new();
@@ -50,6 +64,11 @@ public class MenuScript : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void LoadScene(int index)
+    {
+        SceneManager.LoadScene(index);
     }
 
     public void LoadNextScene()
@@ -70,5 +89,16 @@ public class MenuScript : MonoBehaviour
     public void LoadInventory()
     {
         SceneManager.LoadScene(INVENTORY_INDEX);
+    }
+
+    // Debug Only
+    public void LoadShop()
+    {
+        SceneManager.LoadScene(SHOP_INDEX);
+    }
+
+    public void LoadDuel()
+    {
+        SceneManager.LoadScene(DUEL_INDEX);
     }
 }

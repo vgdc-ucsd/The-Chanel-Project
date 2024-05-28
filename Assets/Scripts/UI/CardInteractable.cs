@@ -8,15 +8,15 @@ using UnityEngine.UI;
 
 public enum CIMode
 {
-    Duel, Inventory, Reward
+    Duel, Inventory, Reward, Shop
 }
 
 // The MonoBehavior counterpart for a Card, this is what the user actually interacts with
 public abstract class CardInteractable : MonoBehaviour,
-    IPointerEnterHandler, 
-    IPointerExitHandler, 
+    IPointerEnterHandler,
+    IPointerExitHandler,
     IPointerDownHandler,
-    IBeginDragHandler, 
+    IBeginDragHandler,
     IDragHandler,
     IEndDragHandler
 {
@@ -24,14 +24,14 @@ public abstract class CardInteractable : MonoBehaviour,
     [HideInInspector] public HandInterface handInterface;
 
     // fields set through inspector
-    public GraphicRaycaster raycaster; 
+    public GraphicRaycaster raycaster;
 
     // Text fields on the card
     public TextMeshProUGUI CardName;
     public TextMeshProUGUI CardCost;
 
     //Image object of the card
-    [SerializeField] private Image image;
+    [SerializeField] public Image image;
     [SerializeField] private Color defaultColor, selectedColor;
 
     // How much the card scales on hover
@@ -58,34 +58,45 @@ public abstract class CardInteractable : MonoBehaviour,
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
         if (mode == CIMode.Inventory) return;
-        else if (mode == CIMode.Reward) {
+        else if (mode == CIMode.Reward)
+        {
             transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
             return;
         }
-        if(inHand && CanInteract) {
-            hoveredCard = this;
-            hoveredCardIndex = transform.GetSiblingIndex();
-            hoveredCard.transform.SetAsLastSibling();
-            basePosition = transform.position;
-            hoveredCard.transform.position = hoverPosition();
-            transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+        else if (mode == CIMode.Duel)
+        {
+            if (inHand && CanInteract && transform.position.y < UIManager.Instance.PlayerDraw.position.y)
+            {
+                hoveredCard = this;
+                hoveredCardIndex = transform.GetSiblingIndex();
+                hoveredCard.transform.SetAsLastSibling();
+                basePosition = transform.position;
+                hoveredCard.transform.position = hoverPosition();
+                transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+            }
         }
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
         if (mode == CIMode.Inventory) return;
-        else if (mode == CIMode.Reward) {
+        else if (mode == CIMode.Reward)
+        {
             transform.localScale = Vector3.one;
             return;
         }
-        if (inHand) {
-            if(this == hoveredCard) {
-                transform.position = basePosition;
-                hoveredCard.transform.SetSiblingIndex(hoveredCardIndex);
-                hoveredCard = null;
+        else if (mode == CIMode.Duel)
+        {
+            if (inHand)
+            {
+                if (this == hoveredCard)
+                {
+                    transform.position = basePosition;
+                    hoveredCard.transform.SetSiblingIndex(hoveredCardIndex);
+                    hoveredCard = null;
+                }
+                transform.localScale = Vector3.one;
             }
-            transform.localScale = Vector3.one;
         }
     }
 
@@ -93,6 +104,10 @@ public abstract class CardInteractable : MonoBehaviour,
     {
         if(mode == CIMode.Reward && CanInteract) {
             RewardManager.Instance.SelectCard(this);
+        }
+        else if (mode == CIMode.Shop && CanInteract)
+        {
+            ShopManager.Instance.purchase(this);
         }
     }
 
@@ -136,13 +151,13 @@ public abstract class CardInteractable : MonoBehaviour,
             {
                 TryPlayCard(tile.location);
             }
-            // Reorganize the player's hand
-            if (handInterface == null)
-            {
-                Debug.Log("Could not organize hand, handInterface is uninitialized");
-                return;
-            }
+        }
 
+        // Reorganize the player's hand
+        if (handInterface == null)
+        {
+            Debug.Log("Could not organize hand, handInterface is uninitialized");
+            return;
         }
         handInterface.OrganizeCards();
     }
@@ -164,8 +179,8 @@ public abstract class CardInteractable : MonoBehaviour,
     private Vector3 hoverPosition() {
         if (mode != CIMode.Duel) return Vector3.zero;
         return new Vector3(
-            transform.position.x, 
-            transform.position.y+(50f*UIManager.Instance.MainCanvas.scaleFactor), 
+            transform.position.x,
+            transform.position.y+(50f*UIManager.Instance.MainCanvas.scaleFactor),
             transform.position.z
         );
     }

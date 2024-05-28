@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -42,6 +43,9 @@ public class UIManager : MonoBehaviour
     public CardInfoPanel InfoPanel;
     public Canvas MainCanvas;
     public Image EndTurnButton;
+    public Image EnemyArt;
+    public Sprite PlayerCardBorder;
+    public Sprite EnemyCardBorder;
 
     public static UIManager Instance;
 
@@ -76,6 +80,10 @@ public class UIManager : MonoBehaviour
             cardBack.transform.localScale = Vector3.one;
             EnemyDrawObjects.Add(cardBack);
         }
+
+        if(PersistentData.Instance.CurrentEncounter.EnemyArt != null) {
+            EnemyArt.sprite = PersistentData.Instance.CurrentEncounter.EnemyArt;
+        }
     }
 
     public void UpdateStatus(DuelInstance state) {
@@ -90,9 +98,18 @@ public class UIManager : MonoBehaviour
             ci.SetCardInfo();
             ci.mode = CIMode.Duel;
 
-            if (c.CurrentTeam == Team.Player) ci.handInterface = Hand;
-            else if (c.CurrentTeam == Team.Player) ci.handInterface = EnemyHand;
-            else return ci;
+            if (c.CurrentTeam == Team.Player) {
+                ci.handInterface = Hand;
+                ci.image.sprite = PlayerCardBorder;
+            }
+            else if (c.CurrentTeam == Team.Enemy) {
+                ci.handInterface = EnemyHand;
+                ci.image.sprite = EnemyCardBorder;
+            }
+            else {
+                ci.image.sprite = PlayerCardBorder;
+                return ci;
+            }
 
             ci.handInterface.cardObjects.Add(ci.gameObject);
             return ci;
@@ -103,9 +120,18 @@ public class UIManager : MonoBehaviour
             ci.SetCardInfo();
             ci.mode = CIMode.Duel;
 
-            if(c.CurrentTeam == Team.Player) ci.handInterface = Hand;
-            else if (c.CurrentTeam == Team.Enemy) ci.handInterface = EnemyHand;
-            else return ci;
+            if(c.CurrentTeam == Team.Player) {
+                ci.image.sprite = PlayerCardBorder;
+                ci.handInterface = Hand;
+            }
+            else if (c.CurrentTeam == Team.Enemy) {
+                ci.image.sprite = EnemyCardBorder;
+                ci.handInterface = EnemyHand;
+            }
+            else {
+                ci.image.sprite = PlayerCardBorder;
+                return ci;
+            }
 
             ci.handInterface.cardObjects.Add(ci.gameObject);
             return ci;
@@ -128,12 +154,15 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void HighlightEndTurnButton(bool enable) {
+    public void EnablePlayerControlUI(bool enable) {
         if(enable) {
             EndTurnButton.color = Color.white;
+            DrawCardButton.Instance.CanInteract = true;
         }
         else {
             EndTurnButton.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+            DrawCardButton.Instance.CanInteract = false;
+            DrawCardButton.Instance.StopCardHover();
         }
     }
 
@@ -172,11 +201,11 @@ public class UIManager : MonoBehaviour
     }
 
     public void ShowPlayerDraw() {
-        ShowDeckView(DuelManager.Instance.MainDuel.PlayerStatus.Deck.DrawPile());
+        ShowDeckView(DuelManager.Instance.MainDuel.PlayerStatus.drawPileCards);
     }
 
     public void ShowPlayerDiscard() {
-        ShowDeckView(DuelManager.Instance.MainDuel.PlayerStatus.Deck.DiscardPile());
+        ShowDeckView(DuelManager.Instance.MainDuel.PlayerStatus.discardPileCards);
     }
 
     public void ShowEnemyDiscard() {
@@ -184,11 +213,14 @@ public class UIManager : MonoBehaviour
     }
 
     public void PlayerWin() {
-
+        PersistentData.Instance.EncountersFinished++;
+        PersistentData.Instance.VsState = VsScreenState.Win;
+        SceneManager.LoadScene(MenuScript.VERSUS_INDEX);
     }
 
     public void PlayerLose() {
-
+        PersistentData.Instance.VsState = VsScreenState.Lose;
+        SceneManager.LoadScene(MenuScript.VERSUS_INDEX);
     }
 
     public void CheckProperInitialization() {
@@ -200,8 +232,6 @@ public class UIManager : MonoBehaviour
             Debug.LogError("Could not create hand, TemplateCard is uninitialized");
             return;
         }
-        TemplateUnitCard.CheckProperInitialization();
-
         if(BoardContainer == null) {
             Debug.LogError("Cannot create board, BoardContainer is uninitialized");
             return;

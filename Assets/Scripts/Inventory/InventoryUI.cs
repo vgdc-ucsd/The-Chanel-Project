@@ -21,6 +21,8 @@ public class InventoryUI : MonoBehaviour
     public CardInfoPanel inventoryInfoPanel;
     public TextMeshProUGUI cardCountText;
 
+    public TMP_Text goldCountText;
+
     PersistentData.InventoryData inventory;
 
     Coroutine deckSizeWarnCor;
@@ -33,7 +35,9 @@ public class InventoryUI : MonoBehaviour
         inventory = PersistentData.Instance.Inventory;
         InitCards();
         ArrangeCards();
-        
+
+        goldCountText.text = PersistentData.Instance.Inventory.Gold.ToString();
+
     }
 
     public void InitCards()
@@ -95,14 +99,16 @@ public class InventoryUI : MonoBehaviour
         cardCountText.text = inventory.CardCount() + "";
     }
 
-    public void HandleClick(Card card)
+    public void HandleClick(CardInteractable ci)
     {
+        Card card = ci.GetCard();
+        ciList.Remove(ci);
+        ciList.Add(ci);
         if (inventory.IsActive(card))
         {
             Unequip(card);
         }
         else 
-
         {
             if (inventory.ActiveCards.Count < GameData.DECK_SIZE)
                 Equip(card);

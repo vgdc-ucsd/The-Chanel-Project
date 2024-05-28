@@ -20,6 +20,7 @@ MonoBehaviour:
   id: 0
   description: Any unit damaged with an odd amount of health dies.
   CurrentTeam: 2
+  cardType: 2
   Health: 4
   CanMove: 1
   CanAttack: 0
@@ -34,3 +35,4 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: c9b85db700073c04c89cec568c290717, type: 2}
   StatusEffects: []
+  isTemp: 0

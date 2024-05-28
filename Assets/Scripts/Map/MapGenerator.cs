@@ -53,6 +53,8 @@ public class MapGenerator : MonoBehaviour
 
     void Start()
     {
+        PersistentData.Instance.VsState = VsScreenState.VS;
+
         if (PersistentData.Instance.mapInfo.nodePoints.Count != 0)
         {
             // THIS LINE IS FOR DEBUGGING PURPOSES

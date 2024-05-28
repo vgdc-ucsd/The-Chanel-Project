@@ -108,11 +108,11 @@ public class Board
 
     }
 
-    public void TeleportCard(UnitCard card, BoardCoords pos, DuelInstance duel)
+    public void TeleportCard(UnitCard card, BoardCoords pos, DuelInstance duel, bool clearPrev = true)
     {
         // move card and update board and card data
         if (IsOutOfBounds(pos)) return;
-        SetCard(null, card.Pos);
+        if (clearPrev) SetCard(null, card.Pos);
         SetCard(card, pos);
         card.Pos = pos;
         AnimationManager.Instance.MoveCardAnimation(duel, card, pos);
