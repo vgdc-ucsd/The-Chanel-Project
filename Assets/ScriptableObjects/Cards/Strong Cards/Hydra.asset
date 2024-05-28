@@ -39,3 +39,4 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 8f6ec952687836146a247c6ea9ddd955, type: 2}
   StatusEffects: []
+  isTemp: 0
