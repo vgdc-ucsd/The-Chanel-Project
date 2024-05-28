@@ -26,6 +26,7 @@ MonoBehaviour:
   CanAttack: 0
   isSelected: 0
   BaseDamage: 4
+  Processed: 0
   UnitCardInteractableRef: {fileID: 0}
   Attacks:
   - direction: {x: -1, y: 1}

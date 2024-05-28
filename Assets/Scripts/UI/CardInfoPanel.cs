@@ -52,7 +52,9 @@ public class CardInfoPanel : MonoBehaviour
     public void UpdateInventoryInfoPanelUnitCard(UnitCard uc)
     {
         CardName.text = uc.Name;
-        Description.text = uc.description;
+        if (Description.text == "") uc.description = "Description unwritten";
+        else Description.text = uc.description;
+
         Mana.text = uc.ManaCost + "";
         Health.text = uc.Health + "";
         Atk.text = uc.BaseDamage + "";
@@ -65,8 +67,10 @@ public class CardInfoPanel : MonoBehaviour
 
     public void UpdateInfoPanelSpellCard(SpellCard sc) {
         CardName.text = sc.Name;
-        Description.text = sc.description;
-        if(currentCard != null) Destroy(currentCard.gameObject);
+        if (Description.text == "") sc.description = "Description unwritten";
+        else Description.text = sc.description;
+
+        if (currentCard != null) Destroy(currentCard.gameObject);
         SetCardInteractable(sc);
     }
 

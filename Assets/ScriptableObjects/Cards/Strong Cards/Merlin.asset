@@ -18,7 +18,7 @@ MonoBehaviour:
   Artwork: {fileID: 21300000, guid: 504fe9dab6adb5c45a2a9c5ead355373, type: 3}
   drawStatus: 0
   id: 0
-  description: 
+  description: Merlin card
   CurrentTeam: 2
   cardType: 2
   Health: 5
