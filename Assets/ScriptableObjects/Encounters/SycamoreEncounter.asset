@@ -40,10 +40,10 @@ MonoBehaviour:
     UnlimitedMana: 0
     ShowEnemyHand: 0
     DisableWinning: 0
-  EnemyArt: {fileID: 21300000, guid: 968a401327356cc469b0cf0660cb919b, type: 3}
+  EnemyArt: {fileID: 21300000, guid: 180dba4d5b917e544a71b68dca83c2a8, type: 3}
   EnemyDecks:
-  - {fileID: 11400000, guid: 2f103750bab1841e78498b9b8577df1f, type: 2}
-  - {fileID: 11400000, guid: b593ed62dd8a84b48988b42213219923, type: 2}
+  - {fileID: 11400000, guid: b7c14b5ccec018646947a9a0b92bf996, type: 2}
+  - {fileID: 11400000, guid: 8a1ca539c506290459e83c65d7f4c612, type: 2}
   - {fileID: 11400000, guid: aefc31a421b4c4458bcaece6eeddf301, type: 2}
   EnemyDeck: {fileID: 0}
   RewardGold: 30

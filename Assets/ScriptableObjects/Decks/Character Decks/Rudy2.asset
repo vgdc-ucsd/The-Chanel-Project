@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rudy2
   m_EditorClassIdentifier: 
   CardList:
-  - {fileID: 11400000, guid: 3140f3a6a1ea936499c7203083f2c746, type: 2}
+  - {fileID: 11400000, guid: 5cb02669ba073604bafcd65f270c3c6c, type: 2}
   - {fileID: 11400000, guid: 3140f3a6a1ea936499c7203083f2c746, type: 2}
   - {fileID: 11400000, guid: c39ab0e8a3dfc1742a87be83397d457c, type: 2}
   - {fileID: 11400000, guid: c39ab0e8a3dfc1742a87be83397d457c, type: 2}

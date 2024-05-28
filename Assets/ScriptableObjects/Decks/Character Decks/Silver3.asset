@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Silver3
   m_EditorClassIdentifier: 
   CardList:
-  - {fileID: 11400000, guid: ec5f0323c276dc141bf415a48ede4a84, type: 2}
   - {fileID: 11400000, guid: 5cb02669ba073604bafcd65f270c3c6c, type: 2}
+  - {fileID: 11400000, guid: 6ae7309b1a2400649b240f056567c5ab, type: 2}
   - {fileID: 11400000, guid: 19b8442efe517214bbd9c36dc798cbf6, type: 2}
   - {fileID: 11400000, guid: f3b69c70ca0bb6b4792c30e461bc866c, type: 2}
   - {fileID: 11400000, guid: f478542d8bd0ddb47aaf315da0ce8277, type: 2}

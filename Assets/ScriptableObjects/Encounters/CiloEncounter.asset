@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76be4abdea6030b47892b95441f5fa03, type: 3}
   m_Name: CiloEncounter
   m_EditorClassIdentifier: 
-  EncounterName: Cilo
+  EncounterName: Clio
   Settings:
     SameSettingsForBothPlayers: 1
     Player:

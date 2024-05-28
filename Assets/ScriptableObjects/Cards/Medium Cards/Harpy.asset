@@ -21,7 +21,7 @@ MonoBehaviour:
   description: Half human half bird.
   CurrentTeam: 2
   cardType: 1
-  Health: 6
+  Health: 4
   CanMove: 1
   CanAttack: 0
   isSelected: 0
@@ -32,8 +32,6 @@ MonoBehaviour:
   - direction: {x: -1, y: 0}
     damage: 1
   - direction: {x: -1, y: 1}
-    damage: 1
-  - direction: {x: 0, y: 1}
     damage: 1
   - direction: {x: 1, y: 1}
     damage: 1

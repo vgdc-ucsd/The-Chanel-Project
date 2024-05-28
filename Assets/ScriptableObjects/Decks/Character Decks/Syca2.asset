@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: Syca2
   m_EditorClassIdentifier: 
   CardList:
+  - {fileID: 11400000, guid: ec5f0323c276dc141bf415a48ede4a84, type: 2}
+  - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
+  - {fileID: 11400000, guid: fa685b80750db4f48b5f6e247e663903, type: 2}
+  - {fileID: 11400000, guid: 2f3f33153d2e0c64b8243be3f800b6e7, type: 2}
+  - {fileID: 11400000, guid: 0e605c490a8d68f4b9fe05afbd2a4b61, type: 2}
+  - {fileID: 11400000, guid: 44a9c1b35ff4edd41806783a1a1f9474, type: 2}
+  - {fileID: 11400000, guid: a88c7d8913880fd4aa37c9ba6619601b, type: 2}
   - {fileID: 11400000, guid: 3140f3a6a1ea936499c7203083f2c746, type: 2}
   - {fileID: 11400000, guid: 3140f3a6a1ea936499c7203083f2c746, type: 2}
   - {fileID: 11400000, guid: c39ab0e8a3dfc1742a87be83397d457c, type: 2}
-  - {fileID: 11400000, guid: 0fbf928ca99cf444d86b6bc34fb185af, type: 2}
-  - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
-  - {fileID: 11400000, guid: 2f3f33153d2e0c64b8243be3f800b6e7, type: 2}
-  - {fileID: 11400000, guid: f478542d8bd0ddb47aaf315da0ce8277, type: 2}
-  - {fileID: 11400000, guid: c1af7b6de9f691a4ebd260c395c4f39f, type: 2}
-  - {fileID: 11400000, guid: c26f43099fad7b54f8df370c9f59dddf, type: 2}
-  - {fileID: 11400000, guid: 2c284dc844ac6964da4c0d7527b24de9, type: 2}
-  - {fileID: 11400000, guid: 0e605c490a8d68f4b9fe05afbd2a4b61, type: 2}
-  - {fileID: 11400000, guid: 19b8442efe517214bbd9c36dc798cbf6, type: 2}
+  - {fileID: 11400000, guid: 96538df7e080c6446bc14ab009715f80, type: 2}
+  - {fileID: 11400000, guid: eb1d07e946728c1458fd054a2804fb0f, type: 2}
   numAvailableCards: 0
