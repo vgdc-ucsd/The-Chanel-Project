@@ -201,11 +201,11 @@ public class UIManager : MonoBehaviour
     }
 
     public void ShowPlayerDraw() {
-        ShowDeckView(DuelManager.Instance.MainDuel.PlayerStatus.Deck.DrawPile());
+        ShowDeckView(DuelManager.Instance.MainDuel.PlayerStatus.drawPileCards);
     }
 
     public void ShowPlayerDiscard() {
-        ShowDeckView(DuelManager.Instance.MainDuel.PlayerStatus.Deck.DiscardPile());
+        ShowDeckView(DuelManager.Instance.MainDuel.PlayerStatus.discardPileCards);
     }
 
     public void ShowEnemyDiscard() {

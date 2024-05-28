@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -117,8 +118,11 @@ public class UnitCard : Card
             foreach(Ability a in Abilities) {
                 if (a.Condition == ActivationCondition.OnDeath) a.Activate(this, info);
             }
-            if (!isTemp)
+            if (!isTemp){
                 duel.GetStatus(CurrentTeam).Deck.Discard(this);
+                duel.GetStatus(CurrentTeam).discardPileCards = duel.GetStatus(CurrentTeam).Deck.DiscardPile();
+            }
+
         }
     }
 

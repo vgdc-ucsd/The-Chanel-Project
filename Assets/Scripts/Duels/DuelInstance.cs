@@ -289,6 +289,7 @@ public class DuelInstance
             if (drawnCard == null) break;
 
             drawnCard.drawStatus = DrawStatus.InPlay;
+            PlayerStatus.drawPileCards = PlayerStatus.Deck.DrawPile();
             deck.numAvailableCards--;
             // Debug.Log($"Team: {team}, cards: {deck.numAvailableCards}");
             Card c = drawnCard.Clone();
