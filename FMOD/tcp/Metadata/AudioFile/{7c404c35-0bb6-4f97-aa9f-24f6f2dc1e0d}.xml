@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{7c404c35-0bb6-4f97-aa9f-24f6f2dc1e0d}">
+		<property name="assetPath">
+			<value>2 - ArbiterResponse.mp3</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>20.63673469387755</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{a6c6dba1-e3fa-4a63-8ea6-7ab540bb5a48}</destination>
+		</relationship>
+	</object>
+</objects>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{6343f0fb-a26b-470c-ac1f-ed1b3ec5ac98}">
+		<property name="assetPath">
+			<value>1 - ClioOpener.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>3.2160000000000002</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{a6c6dba1-e3fa-4a63-8ea6-7ab540bb5a48}</destination>
+		</relationship>
+	</object>
+</objects>

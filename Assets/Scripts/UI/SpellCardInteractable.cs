@@ -1,13 +1,13 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SpellCardInteractable : CardInteractable
 
 {
     public SpellCard card;
-
-
+    public Image CardArt;
 
     public override void SetCardInfo()
     {
@@ -17,6 +17,9 @@ public class SpellCardInteractable : CardInteractable
             return;
         }
         CardName.text = card.Name;
+        if(CardArt != null) {
+            CardArt.sprite = card.Artwork;
+        }
         UpdateCardInfo();
     }
 
