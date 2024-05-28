@@ -53,6 +53,7 @@ public class MenuScript : MonoBehaviour
 
     public void PlayGame()
     {
+        PersistentData.Instance.Init();
         SceneManager.LoadScene(1);
         PersistentData.Instance.mapInfo.nodePoints = new();
         PersistentData.Instance.mapInfo.nodeTypes = new();
