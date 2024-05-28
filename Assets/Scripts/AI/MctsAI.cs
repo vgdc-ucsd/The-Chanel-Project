@@ -39,7 +39,7 @@ public class MctsAI
 
     const int MAX_TURNS = 100;
     const int CHILD_COUNT = 6;
-    const int MAX_ITERATIONS = 200;
+    const int MAX_ITERATIONS = 50; // Change to 200 - kiichi
 
     const int WEIGHTED_MAX_TURNS = 4;
     const int INITIAL_CHILD_COUNT = 15;

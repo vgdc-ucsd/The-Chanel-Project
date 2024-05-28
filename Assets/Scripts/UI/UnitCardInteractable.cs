@@ -203,6 +203,8 @@ public class UnitCardInteractable : CardInteractable,
             DrawArrows();
         }
         base.OnBeginDrag(eventData);
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/CardSlide", transform.position); // Only want for when clicked/moving from deck
     }
 
     public override void OnEndDrag(PointerEventData eventData)
@@ -226,8 +228,6 @@ public class UnitCardInteractable : CardInteractable,
                 PlayerInputController.Instance.InteractCard(card);
             }
         }
-
-        FMODUnity.RuntimeManager.PlayOneShot("event:/CardSlide", transform.position); // Only want for when clicked/moving from deck
     }
 
     public override void OnPointerEnter(PointerEventData eventData) {
