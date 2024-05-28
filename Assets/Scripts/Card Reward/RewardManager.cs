@@ -54,6 +54,7 @@ public class RewardManager : MonoBehaviour
         PersistentData.Instance.Inventory.Gold += PersistentData.Instance.CurrentEncounter.RewardGold;
         StartCoroutine(CardAppearAnimation());
         StartCoroutine(IncrementGold());
+
     }
 
     public void SelectCard(CardInteractable selected) {
@@ -75,6 +76,7 @@ public class RewardManager : MonoBehaviour
         }
 
         StartCoroutine(ChangeScene());
+        FMODUnity.RuntimeManager.PlayOneShot("event:/CardReward"); 
     }
 
     private IEnumerator CardAppearAnimation() {
@@ -89,6 +91,8 @@ public class RewardManager : MonoBehaviour
             QueueableAnimation qa = new QueueableAnimation(ie, delay);
             AnimationManager.Instance.Enqueue(qa);
         }
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/CardShuffle");
     }
 
     private IEnumerator ChangeScene() {

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{e6430e54-1e45-4dd1-94fa-80ab7917bc6a}">
+		<property name="assetPath">
+			<value>13 - Anamesa25Response.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>6.0960000000000001</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{a6c6dba1-e3fa-4a63-8ea6-7ab540bb5a48}</destination>
+		</relationship>
+	</object>
+</objects>

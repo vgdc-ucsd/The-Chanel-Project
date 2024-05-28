@@ -1110,6 +1110,7 @@ MonoBehaviour:
   CanInteract: 1
   mode: 0
   card: {fileID: 0}
+  CardArt: {fileID: 4305338717793736724}
 --- !u!1 &7194088516080703837
 GameObject:
   m_ObjectHideFlags: 0

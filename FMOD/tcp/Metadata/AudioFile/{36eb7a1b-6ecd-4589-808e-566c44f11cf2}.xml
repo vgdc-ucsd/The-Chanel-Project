@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{36eb7a1b-6ecd-4589-808e-566c44f11cf2}">
+		<property name="assetPath">
+			<value>2- EncounterSycamore.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>3.2653061224489797</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{a6c6dba1-e3fa-4a63-8ea6-7ab540bb5a48}</destination>
+		</relationship>
+	</object>
+</objects>
