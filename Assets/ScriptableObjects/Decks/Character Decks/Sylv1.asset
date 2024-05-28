@@ -20,9 +20,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b0588fcb2d650924aad9a7445cb13b24, type: 2}
   - {fileID: 11400000, guid: c39ab0e8a3dfc1742a87be83397d457c, type: 2}
   - {fileID: 11400000, guid: e68fa6cacd27d6d43a0edc774598ffbe, type: 2}
+  - {fileID: 11400000, guid: 7a5653329eba6434380b93bcb2540527, type: 2}
+  - {fileID: 11400000, guid: e7bb028145f1efc45ae1da90255731d8, type: 2}
   - {fileID: 11400000, guid: a73a0b4e116e3a34cbf23b7d5aadf05d, type: 2}
   - {fileID: 11400000, guid: c1af7b6de9f691a4ebd260c395c4f39f, type: 2}
-  - {fileID: 11400000, guid: f3b69c70ca0bb6b4792c30e461bc866c, type: 2}
-  - {fileID: 11400000, guid: 0fbf928ca99cf444d86b6bc34fb185af, type: 2}
   - {fileID: 11400000, guid: f478542d8bd0ddb47aaf315da0ce8277, type: 2}
   numAvailableCards: 0
