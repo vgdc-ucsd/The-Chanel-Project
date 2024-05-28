@@ -61,10 +61,12 @@ public class ShopCardInteractable : MonoBehaviour,
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (shopManager.purchase(card))
+            /*
+            if (shopManager.purchase(this))
             {
                 this.gameObject.SetActive(false);
             }
+            */
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {

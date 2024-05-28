@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
@@ -47,6 +48,7 @@ IPointerExitHandler
                     node.locked = false;
                     node.GetComponent<Image>().color = Color.white;
                 }
+
             }
             initialized = true;
         }
@@ -110,16 +112,16 @@ IPointerExitHandler
             //     PersistentData.Instance.CurrentEncounter = EncounterManager.Instance.Encounters[randomIndex];
             // }
 
-            PersistentData.Instance.SetEncounterData();
-            mapNodeTypeIdx = 2;
+
+            mapNodeTypeIdx = MenuScript.VERSUS_INDEX;
         }
         else if (mapNodeType == MapNodeType.Shop)
         {
-            mapNodeTypeIdx = 3;
+            mapNodeTypeIdx = MenuScript.SHOP_INDEX;
         }
         else if (mapNodeType == MapNodeType.Event)
         {
-            mapNodeTypeIdx = 4;
+            mapNodeTypeIdx = MenuScript.EVENT_INDEX;
         }
         else if (mapNodeType == MapNodeType.Boss)
         {
@@ -133,7 +135,7 @@ IPointerExitHandler
         if (mapNodeTypeIdx != -1)
         {
             mapGenerator.SaveMap();
-            FindObjectOfType<ChangeScene>().MoveToScene(mapNodeTypeIdx);
+            MenuScript.Instance.LoadScene(mapNodeTypeIdx);
         }
     }
 

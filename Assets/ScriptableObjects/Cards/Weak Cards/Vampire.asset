@@ -20,6 +20,7 @@ MonoBehaviour:
   id: 0
   description: 
   CurrentTeam: 2
+  cardType: 0
   Health: 3
   CanMove: 1
   CanAttack: 0
@@ -37,3 +38,4 @@ MonoBehaviour:
     damage: 1
   Abilities: []
   StatusEffects: []
+  isTemp: 0

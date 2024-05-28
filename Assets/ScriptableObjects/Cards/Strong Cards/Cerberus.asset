@@ -18,9 +18,9 @@ MonoBehaviour:
   Artwork: {fileID: 21300000, guid: ad86c94acdfb73e47a3247d6a1574972, type: 3}
   drawStatus: 0
   id: 0
-  description: new ability is being worked on
+  description: 
   CurrentTeam: 2
-  cardType: 2
+  cardType: 0
   Health: 5
   CanMove: 1
   CanAttack: 0
@@ -30,9 +30,10 @@ MonoBehaviour:
   Attacks:
   - direction: {x: -1, y: 1}
     damage: 1
-  - direction: {x: 0, y: 1}
-    damage: 1
   - direction: {x: 1, y: 1}
     damage: 1
-  Abilities: []
+  - direction: {x: 0, y: 1}
+    damage: 1
+  Abilities:
+  - {fileID: 11400000, guid: d0ec9963d2becf3459919a5bae0d7723, type: 2}
   StatusEffects: []

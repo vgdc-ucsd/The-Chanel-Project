@@ -26,11 +26,16 @@ public class DuelManager : MonoBehaviour
     private MctsAI ai;
     private bool awaitingAI;
     public Team currentTeam;
+    public Encounter CurrentEncounter;
 
     public bool loadDeckFromInventory = false;
 
+    //private FMODUnity.StudioEventEmitter emitter;
+    //private string eventPath = "";
+
 
     void Awake() {
+
         // Singleton
         if (Instance != null && Instance != this) {
             Debug.LogWarning("Tried to create more than one instance of the DuelManager singleton");
@@ -47,8 +52,9 @@ public class DuelManager : MonoBehaviour
             Debug.LogWarning("Could not load encounter data");
         }
         else {
-            Settings = PersistentData.Instance.CurrentEncounter.Settings;
-            EnemyDeck = PersistentData.Instance.CurrentEncounter.EnemyDeck;
+            CurrentEncounter = PersistentData.Instance.CurrentEncounter;
+            Settings = CurrentEncounter.Settings;
+            EnemyDeck = CurrentEncounter.EnemyDeck;
         }
 
         CheckProperInitialization();
@@ -59,7 +65,6 @@ public class DuelManager : MonoBehaviour
             PlayerDeck.LoadCards(PersistentData.Instance.Inventory.ActiveCards);
         }
         EnemyDeck = EnemyDeck.Clone();
-        
 
         // DuelInstance Setup
         CharStatus PlayerStatus = new CharStatus(Team.Player, PlayerDeck);
@@ -67,7 +72,7 @@ public class DuelManager : MonoBehaviour
         PlayerStatus.Deck.Init();
         EnemyStatus.Deck.Init();
         Board board = new Board(Settings.BoardRows, Settings.BoardCols);
-        MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, board);
+        MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, board, CurrentEncounter.boss, 1);
 
         // AI setup
         ai = new MctsAI();
@@ -114,12 +119,15 @@ public class DuelManager : MonoBehaviour
     // triggered by button
     public void DrawCardPlayer()
     {
+        if(!DrawCardButton.Instance.CanInteract) return;
         if (Settings.EnablePVPMode)
             throw new System.NotImplementedException();
 
         MainDuel.DrawCardWithMana(Team.Player);
 
         AnimationManager.Instance.UpdateUIAnimation(MainDuel);
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/DrawCard", transform.position);
     }
 
     // triggered by button
@@ -179,7 +187,7 @@ public class DuelManager : MonoBehaviour
     }
 
     public void EnablePlayerControl(bool enable) {
-        UIManager.Instance.HighlightEndTurnButton(enable);
+        UIManager.Instance.EnablePlayerControlUI(enable);
         List<Card> cards = new List<Card>();
         cards.AddRange(MainDuel.GetStatus(Team.Player).Cards);
         cards.AddRange(MainDuel.DuelBoard.CardSlots);

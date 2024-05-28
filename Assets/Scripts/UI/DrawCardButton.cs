@@ -10,6 +10,8 @@ public class DrawCardButton : MonoBehaviour,
     IPointerExitHandler
 {
 
+    public bool CanInteract = true;
+
     private static GameObject hoveredCard;
     private Vector3 basePosition;
     private Transform playerDrawPile;
@@ -32,14 +34,16 @@ public class DrawCardButton : MonoBehaviour,
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
-        if (DuelManager.Instance.MainDuel.GetStatus(Team.Player).Deck.DrawPileIsEmpty()) return;
+        if (!CanInteract || DuelManager.Instance.MainDuel.GetStatus(Team.Player).Deck.DrawPileIsEmpty()) return;
 
         AnimationManager.Instance.StartManaHover(DuelManager.Instance.Settings.DrawCardManaCost, Team.Player);
 
-         Transform cardTransform;
+        Transform cardTransform = null;
         if(!cardInUse) {
             playerDrawPile = UIManager.Instance.PlayerDraw;
-            cardTransform = playerDrawPile.GetChild(0);
+            if (playerDrawPile.childCount > 0) {
+                cardTransform = playerDrawPile.GetChild(0);
+            }
         }
         else {
             if(hoveredCard == null) return;
@@ -47,14 +51,14 @@ public class DrawCardButton : MonoBehaviour,
         }
 
         if(cardTransform != null && direction == false) {
-            if(hoverCoroutine != null) StopCoroutine(hoverCoroutine); 
+            if(hoverCoroutine != null) StopCoroutine(hoverCoroutine);
             hoveredCard = cardTransform.gameObject;
             hoveredCard.transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
             hoveredCard.transform.SetAsLastSibling();
             direction = true;
             cardInUse = true;
             hoverCoroutine = StartCoroutine(HoverSlideCoroutine(hoveredCard.transform, hoverPosition(), true));
-        } 
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData) {
@@ -62,7 +66,7 @@ public class DrawCardButton : MonoBehaviour,
 
         if (hoveredCard == null) return;
         if(hoverCoroutine != null && direction == true) {
-            StopCoroutine(hoverCoroutine); 
+            StopCoroutine(hoverCoroutine);
             direction = false;
             hoverCoroutine = StartCoroutine(HoverSlideCoroutine(hoveredCard.transform, basePosition, false));
         }
@@ -78,7 +82,7 @@ public class DrawCardButton : MonoBehaviour,
     private Vector3 hoverPosition() {
         return new Vector3(
             hoveredCard.transform.position.x,
-            hoveredCard.transform.position.y + (-15f*UIManager.Instance.MainCanvas.scaleFactor),
+            hoveredCard.transform.position.y + (15f*UIManager.Instance.MainCanvas.scaleFactor),
             hoveredCard.transform.position.z
         );
     }
@@ -86,9 +90,9 @@ public class DrawCardButton : MonoBehaviour,
     private IEnumerator HoverSlideCoroutine(Transform card, Vector3 targetPos, bool use) {
         float duration = 0.25f;
         yield return AnimationManager.Instance.SimpleTranslate(
-            card, 
-            targetPos, 
-            duration, 
+            card,
+            targetPos,
+            duration,
             InterpolationMode.Slerp
         );
 
