@@ -41,6 +41,11 @@ public class DuelInstance
     public void ProcessBoard(Team team) {
         // the team is whoever just activated end turn
 
+        foreach (UnitCard c in DuelBoard.GetAllCards())
+        {
+            c.Processed = false;
+        }
+
         // Process all cards
         for(int i = 0; i < DuelBoard.Cols; i++) {
             for(int j = 0; j < DuelBoard.Rows; j++) {
@@ -113,7 +118,8 @@ public class DuelInstance
     }
 
     private void ProcessCard(UnitCard card, Team team) {
-
+        if (card.Processed) return;
+        card.Processed = true;
 
         // Cards only take actions on their turn
         if (card.CurrentTeam == team) {
@@ -135,10 +141,11 @@ public class DuelInstance
                 List<Attack> queuedCharAttacks = new List<Attack>();
                 List<UnitCard> damagedCards = new List<UnitCard>();
                 bool attackLanded = false;
-
+                BoardCoords lastPos = card.Pos;
                 for (int i = card.Attacks.Count - 1; i >= 0; i--)
                 {
-
+                    if (card.Pos != lastPos) queuedCharAttacks.Clear(); // Merlin fix
+                    lastPos = card.Pos;
 
                     BoardCoords atkDest = card.Pos + new BoardCoords(card.Attacks[i].direction);
 
@@ -152,6 +159,8 @@ public class DuelInstance
                     if (target != null) attackLanded = true;
                     if (target != null && target.Health > 0) damagedCards.Add(target);
                 }
+
+                if (card.Pos != lastPos) queuedCharAttacks.Clear(); // Merlin fix
 
                 if (queuedCharAttacks.Count != 0)
                 {
@@ -206,8 +215,6 @@ public class DuelInstance
 
     private UnitCard ProcessAttack(UnitCard card, Attack atk) {
         BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
-
-
 
         // Do nothing if attack is out of bounds
         if(DuelBoard.IsOutOfBounds(atkDest)) return null;
