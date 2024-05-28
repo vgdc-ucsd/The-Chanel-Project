@@ -8,7 +8,7 @@ public class RewardManager : MonoBehaviour
     public Transform CardContainer;
     public Canvas MainCanvas;
 
-    private float heightOffset = -80f;
+    private float heightOffset = -250f;
     private float duration = 0.6f;
     private float delay = 0.2f;
 
@@ -45,7 +45,7 @@ public class RewardManager : MonoBehaviour
                 ((UnitCardInteractable)ci).DrawArrows();
             }
             ci.transform.SetParent(cardSlot.transform, false);
-            ci.transform.localPosition = new Vector3(0.0f, heightOffset*MainCanvas.scaleFactor, 0.0f);
+            ci.transform.localPosition = new Vector3(0.0f, heightOffset, 0.0f);
             ci.mode = CIMode.Reward;
             ci.CanInteract = true;
             cardInteractables.Add(ci);
@@ -67,7 +67,7 @@ public class RewardManager : MonoBehaviour
             else {
                 IEnumerator ie = AnimationManager.Instance.SimpleTranslate(
                 ci.transform,
-                new Vector3(ci.transform.position.x, heightOffset*MainCanvas.scaleFactor, 0.0f),
+                new Vector3(ci.transform.position.x, heightOffset, 0.0f),
                 duration,
                 InterpolationMode.Slerp);
                 QueueableAnimation qa = new QueueableAnimation(ie, delay);

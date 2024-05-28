@@ -37,29 +37,33 @@ public class MctsAI
         }
     }
 
-    const int MAX_TURNS = 100;
-    const int CHILD_COUNT = 6;
-    const int MAX_ITERATIONS = 50; // Change to 200 - kiichi
+    const int MAX_TURNS = 3;
+    const int CHILD_COUNT = 4;
+    const int MAX_ITERATIONS = 200;
 
-    const int WEIGHTED_MAX_TURNS = 4;
-    const int INITIAL_CHILD_COUNT = 15;
+    const int WEIGHTED_MAX_TURNS = 3;
+    const int INITIAL_CHILD_COUNT = 20;
+
+    const int MAX_CHILD_PER_NODE = 500;
 
     // probability that the AI will consider these actions
-    float aiMovementChance = 0.6f;
-    float aiPushChance = 0.7f;
+    float aiMovementChance = 0.3f;
+    float aiPushChance = 0.65f;
     float aiDrawChance = 0.1f;
 
     // probability that the AI will anticipate the player doing these actions
-    float playerMovementChance = 0.4f;
+    float playerMovementChance = 0.3f;
     float playerPushChance = 0.5f;
     float playerDrawChance = 0.1f;
 
     // how much the AI likes enemy/player cards positioned at corresponding y value
     // multiplied by mana cost of card
-    static float[] ENEMY_CARD_POSITIONING_WEIGHTS = { 400, 200, 100, 0 };
-    static float[] PLAYER_CARD_POSITIONING_WEIGHTS = { -50, -60, -80, -200 };
+    static float[] ENEMY_CARD_POSITIONING_WEIGHTS = { 30, 18, 16, 14 };
+    static float[] PLAYER_CARD_POSITIONING_WEIGHTS = { 10, 12, 25, 80 };
 
-    const float STATUS_DAMAGE_WEIGHT = 150; // weight bias/penalty per pt of damage taken by player/enemy
+    const int CARD_WEIGHTS = 2;
+
+    const float STATUS_DAMAGE_WEIGHT = 80; // weight bias/penalty per pt of damage taken by player/enemy
 
 
     private List<Node> nodes;
@@ -78,18 +82,22 @@ public class MctsAI
                 // Selection
                 Node selection = GreedySelection(root);
 
+                List<Node> curBatch = new List<Node>();
+
                 // Expansion
                 if (selection == root)
                 {
-                    selection.Children = RandomExpand(selection, INITIAL_CHILD_COUNT);
+                    curBatch = RandomExpand(selection, INITIAL_CHILD_COUNT);
+                    selection.Children.AddRange(curBatch);
                 }
                 else
                 {
-                    selection.Children = RandomExpand(selection, CHILD_COUNT);
+                    curBatch = RandomExpand(selection, CHILD_COUNT);
+                    selection.Children.AddRange(curBatch);
                 }
 
                 // Simulation
-                foreach(Node child in selection.Children) {
+                foreach(Node child in curBatch) {
                     //int result = RandomRollout(child);
                     int result = (int)WeightedRollout(child);
                     // Backpropagation
@@ -102,9 +110,26 @@ public class MctsAI
             yield return null;
         }
         UnityEngine.Debug.Log($"Iterations: {iterations}");
-        DuelInstance move = FindBestMove(root).State;
+
+        // Some Scores
+        System.Random rnd = new System.Random();
+        if (root.Children.Count > 0)
+        {
+            UnityEngine.Debug.Log($"Score: {root.Children[rnd.Next(0, root.Children.Count)].Score()}");
+            UnityEngine.Debug.Log($"Score: {root.Children[rnd.Next(0, root.Children.Count)].Score()}");
+            UnityEngine.Debug.Log($"Score: {root.Children[rnd.Next(0, root.Children.Count)].Score()}");
+            UnityEngine.Debug.Log($"Score: {root.Children[rnd.Next(0, root.Children.Count)].Score()}");
+            UnityEngine.Debug.Log($"Score: {root.Children[rnd.Next(0, root.Children.Count)].Score()}");
+        }
+        
+        UnityEngine.Debug.Log("Children: " + root.Children.Count);
+
+        Node bestMove = FindBestMove(root);
+        DuelInstance move = bestMove.State;
 
         UpdateUnitCardInteractableRefs(move);
+
+        UnityEngine.Debug.Log("Final Move Score " + bestMove.Score());
 
         DuelManager.Instance.EnemyMove(move);
     }
@@ -112,16 +137,18 @@ public class MctsAI
     private Node GreedySelection(Node root) {
         Node parent = root;
         Node selection = root;
-        
-
-
 
         while(parent.Children.Count != 0) {
-            parent = FindBestMove(parent);
-            if (parent == null || parent.Children == null)
+            Node curMove = FindBestMove(parent);
+            if (curMove == null || curMove.Children == null)
             {
                 UnityEngine.Debug.LogError("null node");
             }
+            if (parent.Children.Count < MAX_CHILD_PER_NODE){
+                return parent;
+            }
+            parent = curMove;
+            selection = curMove;
         }
 
         return selection;
@@ -177,7 +204,7 @@ public class MctsAI
             // On player win
             if (duel.Winner == Team.Player)
             {
-                score -= 10000;
+                score -= 80;
             }
 
             // Enemy move
@@ -187,8 +214,7 @@ public class MctsAI
             // One Enemy win
             if (duel.Winner == Team.Enemy)
             {
-                score += 10000;
-                
+                score += 80;
             }
         }
 
@@ -203,10 +229,11 @@ public class MctsAI
         float score = 0f;
         foreach (UnitCard card in duel.DuelBoard.GetAllCards())
         {
+            float cardValue = CARD_WEIGHTS * card.ManaCost;
             if (card.CurrentTeam == Team.Player) 
-                score += PLAYER_CARD_POSITIONING_WEIGHTS[card.Pos.y] * card.ManaCost * (card.Health / card.baseStats.health + 1) ;
+                score -= PLAYER_CARD_POSITIONING_WEIGHTS[card.Pos.y] + cardValue;
             else if (card.CurrentTeam == Team.Enemy) 
-                score += ENEMY_CARD_POSITIONING_WEIGHTS[card.Pos.y] * card.ManaCost * (card.Health / card.baseStats.health + 1);
+                score += ENEMY_CARD_POSITIONING_WEIGHTS[card.Pos.y] + cardValue;
         }
         score += (originalState.GetStatus(Team.Player).Health - duel.GetStatus(Team.Player).Health) * STATUS_DAMAGE_WEIGHT;
         score -= (originalState.GetStatus(Team.Enemy).Health - duel.GetStatus(Team.Enemy).Health) * STATUS_DAMAGE_WEIGHT;

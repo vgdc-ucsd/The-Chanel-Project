@@ -85,7 +85,7 @@ public class SpellCardInteractable : CardInteractable
 
     public override void UpdateCardInfo()
     {
-        CardCost.text = "Mana Cost: " + card.ManaCost;
+        CardCost.text = card.ManaCost.ToString();
     }
 
     public override Card GetCard()
