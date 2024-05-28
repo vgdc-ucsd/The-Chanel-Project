@@ -29,6 +29,9 @@ IPointerExitHandler
     private MapGenerator mapGenerator;
     private MapCharacterController character;
 
+    public Image image;
+    public Sprite encounterIcon, eventIcon, shopIcon, bossIcon;
+
     private void Start()
     {
         mapGenerator = FindObjectOfType<MapGenerator>();
@@ -54,6 +57,25 @@ IPointerExitHandler
         }
 
         if (!locked) StartCoroutine(ManaFlicker());
+    }
+
+    public void DrawMapNodeType()
+    {
+        switch (mapNodeType)
+        {
+            case MapNodeType.Encounter:
+                image.sprite = encounterIcon;
+                break;
+            case MapNodeType.Event:
+                image.sprite = eventIcon;
+                break;
+            case MapNodeType.Shop:
+                image.sprite = shopIcon;
+                break;
+            case MapNodeType.Boss:
+                image.sprite = bossIcon;
+                break;
+        }
     }
 
     /// <summary>

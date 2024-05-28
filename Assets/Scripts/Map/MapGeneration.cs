@@ -20,16 +20,24 @@ public class MapGeneration : MonoBehaviour
     private List<List<MapNode>> paths;
     private const int mapRow = 3;
 
-    private const float branchChance = 0.4f;
+    private const float branchChance = 0.6f;
     public MapNode mapNodeTemplate;
     public Transform mapContainer;
     public LineRenderer pathTemplate;
 
+    const int MIN_SHOP_DIST = 5;
+    const int MAX_SHOP_DIST = 8;
 
+    const int MIN_BRANCH_COUNT = 6;
+    const int MAX_BRANCH_COUNT = 7;
+    const int MIN_NODE_COUNT = 18;
+    const int MAX_NODE_COUNT = 21;
+
+    const float SHOP_CHANCE = 0.3f;
 
     void Start()
     {
-        
+        int iter = 0;
         bool mapAccepted = false;
         while (!mapAccepted)
         {
@@ -47,8 +55,9 @@ public class MapGeneration : MonoBehaviour
                     }
                 }
             }
-            mapAccepted = (branchCount >= 5 && branchCount <= 7) && 
-                          (nodeCount >= 15 && nodeCount <= 19);
+            mapAccepted = (branchCount >= MIN_BRANCH_COUNT && branchCount <= MAX_BRANCH_COUNT) && 
+                          (nodeCount >= MIN_NODE_COUNT && nodeCount <= MAX_NODE_COUNT);
+            if (iter > 100) mapAccepted = true;
             if (!mapAccepted)
             {
                 foreach (MapNode[] arr in mapNodes)
@@ -57,18 +66,21 @@ public class MapGeneration : MonoBehaviour
                     {
                         if (node != null)
                         {
-                            Destroy(node);
+                            Destroy(node.gameObject);
                         }
                     }
                 }
             }
+            iter++;
         }
+
+        PlaceEvents();
+        PlaceShops();
+
         DrawNodes();
         DrawPaths();
 
-        // 6 - 8 branch
-        // 19 - 23 total
-
+        Debug.Log($"Generated Map in {iter} iterations");
 
         PersistentData.Instance.VsState = VsScreenState.VS;
 
@@ -124,6 +136,64 @@ public class MapGeneration : MonoBehaviour
         // Set startInstace, exitInstance, lastVisitedNode
     }
 
+    private void PlaceEvents()
+    {
+        // cols 2-3, 5-6: force 3 events in 2 columns
+        PlaceEventWall(2, 3);
+        PlaceEventWall(5, 6);
+        
+    }
+
+    void PlaceEventWall(int col1, int col2)
+    {
+        List<MapNode> eventWall = new List<MapNode>();
+        eventWall.AddRange(mapNodes[col1]);
+        eventWall.AddRange(mapNodes[col2]);
+        for (int i = eventWall.Count - 1; i >= 0; i--)
+        {
+            if (eventWall[i] == null) eventWall.Remove(eventWall[i]);
+        }
+        int eventCount = Mathf.Min(3, eventWall.Count);
+
+        for (int i = 0; i < eventCount; i++)
+        {
+            int idx = Random.Range(0, eventWall.Count);
+            MapNode eventNode = eventWall[idx];
+            eventWall.RemoveAt(idx);
+            eventNode.mapNodeType = MapNodeType.Event;
+        }
+    }
+
+    private void PlaceShops()
+    {
+        int i = 0;
+        foreach (MapNode[] arr in mapNodes)
+        {
+            foreach (MapNode node in arr)
+            {
+                if (node != null)
+                {
+                    i++;
+                    if (node != null && node.mapNodeType != MapNodeType.Event)
+                    {
+                        if (i >= MAX_SHOP_DIST)
+                        {
+                            node.mapNodeType = MapNodeType.Shop;
+                            i = 0;
+                        }
+                        else if (i >= MIN_SHOP_DIST)
+                        {
+                            if (Random.value < SHOP_CHANCE)
+                            {
+                                node.mapNodeType = MapNodeType.Shop;
+                                i = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     private void CreatePath(MapNode node)
     {
@@ -193,6 +263,7 @@ public class MapGeneration : MonoBehaviour
                     {
                         newNode.transform.position += new Vector3(0, 50);
                     }
+                    newNode.DrawMapNodeType();
                 }
 
             }
