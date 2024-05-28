@@ -10,40 +10,29 @@ public class LancelotAbility : Ability
 
     public override void Activate(UnitCard c, ActivationInfo Info)
     {
-        Vector2Int forward;
-        //Vector2Int doubleforward;
-
-        if (c.CurrentTeam == Team.Player)
-        {
-            forward = new Vector2Int(0, 1);
-            //doubleforward = new Vector2Int(0, 2);
-        }
-        else
-        {
-            forward = new Vector2Int(0, -1);
-            //doubleforward = new Vector2Int(0, -2);
-        }
         if (Info.OverkillDamage > 0)
         {
-            UnitCard middleCard = Info.Duel.DuelBoard.GetFrontCard(Info.TargetCard.Pos, c.CurrentTeam);
-            Debug.Log(middleCard);
-            if (middleCard == null)
+            BoardCoords backTile = Info.Duel.DuelBoard.GetFrontTile(Info.TargetCard.Pos, c.CurrentTeam);
+            if (Info.Duel.DuelBoard.BeyondEnemyEdge(backTile) && c.CurrentTeam == Team.Player)
             {
-                return;
-            }//board.getpositiontargetcard then add forward direction to it
-            UnitCard backCard = Info.Duel.DuelBoard.GetFrontCard(middleCard.Pos, c.CurrentTeam);
-            Debug.Log(backCard);
-            /*
-            BoardCoords doubleForwardPos = Info.Duel.DuelBoard.GetFrontTile(middleCard.Pos, c.CurrentTeam);
-            UnitCard backCard = Info.Duel.DuelBoard.GetCard(doubleForwardPos);
-            */
-            if (backCard != null)
-            {
-                Info.Duel.DealDamage(backCard, Info.OverkillDamage);
+                Info.Duel.EnemyStatus.TakeDamage(Info.OverkillDamage);
             }
-
+            else if (Info.Duel.DuelBoard.BeyondPlayerEdge(backTile) && c.CurrentTeam == Team.Enemy)
+            {
+                Info.Duel.PlayerStatus.TakeDamage(Info.OverkillDamage);
+            }
+            else
+            {
+                UnitCard backCard = Info.Duel.DuelBoard.GetFrontCard(Info.TargetCard.Pos, c.CurrentTeam);
+                if (backCard != null)
+                {
+                    Info.Duel.DealDamage(backCard, Info.OverkillDamage);
+                }
+            }
+            AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
+            AnimationManager.Instance.UpdateUIAnimation(Info.Duel);
+            AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, c);
         }
 
-        AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, c);
     }
 }
