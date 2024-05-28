@@ -42,9 +42,6 @@ public class DuelManager : MonoBehaviour
             return;
         }
         else Instance = this;
-
-        PersistentData.Instance.SetEncounterStats();
-
     }
 
     // Start is called before the first frame update
@@ -66,7 +63,7 @@ public class DuelManager : MonoBehaviour
             PlayerDeck.LoadCards(PersistentData.Instance.Inventory.ActiveCards);
         }
         EnemyDeck = EnemyDeck.Clone();
-        
+
 
         // DuelInstance Setup
         CharStatus PlayerStatus = new CharStatus(Team.Player, PlayerDeck);

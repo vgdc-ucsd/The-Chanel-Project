@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Encounter", menuName = "Encounter")]
 public class Encounter : ScriptableObject
 {
+    public String EncounterName;
     public DuelSettings Settings;
     public Sprite EnemyArt;
     public Deck EnemyDeck;
