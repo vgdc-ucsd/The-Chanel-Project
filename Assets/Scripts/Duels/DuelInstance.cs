@@ -155,9 +155,9 @@ public class DuelInstance
             info.TargetCard = target;
             info.TotalDamage = atk.damage;
 
-            foreach (Ability a in card.Abilities)
+            for (int i = card.Abilities.Count - 1; i >= 0; i--)
             {
-                if (a.Condition == ActivationCondition.OnAttack) a.Activate(card, info); //BEFORE damage calculation
+                if (card.Abilities[i].Condition == ActivationCondition.OnAttack) card.Abilities[i].Activate(card, info);
             }
 
             info.OverkillDamage = DealDamage(target, atk.damage);
@@ -165,9 +165,9 @@ public class DuelInstance
                 if(card.Abilities[i].Condition == ActivationCondition.OnDealDamage) card.Abilities[i].Activate(card, info);
             }
 
-            foreach(Ability b in target.Abilities)
+            for(int i = target.Abilities.Count - 1; i >= 0; i--)
             {
-                if (b.Condition == ActivationCondition.OnAttacksHitMe) b.Activate(card, info);
+                if (target.Abilities[i].Condition == ActivationCondition.OnAttacksHitMe) target.Abilities[i].Activate(card, info);
             }
             return target;
         }

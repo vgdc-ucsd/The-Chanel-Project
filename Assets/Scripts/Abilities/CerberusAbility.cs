@@ -7,18 +7,17 @@ public class CerberusAbility : Ability
 {
     public override ActivationCondition Condition { get { return ActivationCondition.OnAttacksHitMe; } }
 
-    public FireEffect effectTemplate; // probably better to have a universal reference to all effects somewhere
     public override void Activate(UnitCard c, ActivationInfo info)
     {
-        ApplyFire(c, info);
+        AnimationManager.Instance.AbilityActivateAnimation(info.Duel, c);
         info.Duel.DealDamage(c, 1);
-
+        ApplyFire(c, info);
         AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
     }
 
     private void ApplyFire(UnitCard card, ActivationInfo info)
     {
-        FireEffect effect = ScriptableObject.Instantiate(effectTemplate);
+        FireEffect effect = ScriptableObject.Instantiate(DuelManager.Instance.Effects.FireEffectTemplate);
         effect.AddEffect(card, info);
     }
 }
