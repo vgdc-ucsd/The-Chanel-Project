@@ -14,6 +14,7 @@ public class MenuScript : MonoBehaviour
     public const int EVENT_INDEX = 4;
     public const int INVENTORY_INDEX = 6;
     public const int VERSUS_INDEX = 7;
+    public const int REWARD_INDEX = 8;
 
     public void Awake()
     {
