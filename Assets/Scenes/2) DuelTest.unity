@@ -1389,6 +1389,7 @@ MonoBehaviour:
   CardName: {fileID: 1883484595}
   Description: {fileID: 670124569}
   CardHolder: {fileID: 200615067}
+  blankCard: {fileID: 11400000, guid: ed8dcd2e80a000d4da793a986bc3b485, type: 2}
   Mana: {fileID: 0}
   Health: {fileID: 0}
   Atk: {fileID: 0}

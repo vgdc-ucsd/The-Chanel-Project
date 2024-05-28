@@ -107,7 +107,14 @@ public abstract class CardInteractable : MonoBehaviour,
         }
         else if (mode == CIMode.Shop && CanInteract)
         {
-            ShopManager.Instance.purchase(this);
+            if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                ShopManager.Instance.purchase(this);
+            }
+            else if (eventData.button == PointerEventData.InputButton.Right)
+            {
+                ShopManager.Instance.inspect(this);
+            }
         }
     }
 

@@ -6,13 +6,14 @@ using DG.Tweening;
 public class ShopCardTween : MonoBehaviour
 {
     [SerializeField]
-    private float animCycle = 3f;
+    private float animCycle = 3.5f;
     [SerializeField]
     private float offset = 600f;
     [SerializeField]
     private float elasticAmp = 0.1f;
     [SerializeField]
-    private float elasticDuration = 2.95f; //Generally should be same as animCycle
+    [Tooltip ("Keep same/close as animCycle")]
+    private float elasticDuration = 3.3f;
 
     void Awake()
     {
