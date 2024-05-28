@@ -18,7 +18,8 @@ MonoBehaviour:
   Artwork: {fileID: 21300000, guid: c1e295631c1953c4ab8c61779074ce61, type: 3}
   drawStatus: 0
   id: 0
-  description: Damage dealt directly in front is doubled.
+  description: Upon attack, Centaur deals Double Damage to the target card in front
+    of them.
   CurrentTeam: 2
   cardType: 1
   Health: 3

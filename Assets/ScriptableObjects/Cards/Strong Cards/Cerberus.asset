@@ -20,12 +20,13 @@ MonoBehaviour:
   id: 0
   description: 
   CurrentTeam: 2
-  cardType: 0
+  cardType: 2
   Health: 5
   CanMove: 1
   CanAttack: 0
   isSelected: 0
   BaseDamage: 1
+  Processed: 0
   UnitCardInteractableRef: {fileID: 0}
   Attacks:
   - direction: {x: -1, y: 1}

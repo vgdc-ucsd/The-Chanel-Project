@@ -18,7 +18,7 @@ MonoBehaviour:
   Artwork: {fileID: 0}
   drawStatus: 0
   id: 0
-  description: 
+  description: Applies Freeze to target card.
   CurrentTeam: 2
   cardType: 3
   SpellCardInteractableRef: {fileID: 0}

@@ -189,11 +189,11 @@ MonoBehaviour:
     UnlimitedMana: 0
     ShowEnemyHand: 0
     DisableWinning: 1
-  PlayerDeck: {fileID: 11400000, guid: c77c60e166e08324785f01f5ec070d56, type: 2}
+  PlayerDeck: {fileID: 11400000, guid: 8205a0479993b8f49a709d0d0c92917a, type: 2}
   EnemyDeck: {fileID: 11400000, guid: 4f6e7e01958be54499e3afc47d6960fa, type: 2}
   currentTeam: 0
   CurrentEncounter: {fileID: 0}
-  loadDeckFromInventory: 0
+  loadDeckFromInventory: 1
 --- !u!114 &37294270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -772,7 +772,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 50, y: -11.800003}
+  m_AnchoredPosition: {x: 50, y: -18.180008}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!1 &209123318
@@ -1564,7 +1564,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -8, y: -20.92}
+  m_AnchoredPosition: {x: -15, y: -27.3}
   m_SizeDelta: {x: 140, y: 110}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &670124569
@@ -1614,8 +1614,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 11
+  m_fontSizeBase: 11
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1650,7 +1650,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 0.6159469, w: 6.3821373}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1876,9 +1876,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: ImportDeck
+      value: 
+      objectReference: {fileID: 11400000, guid: 22819085b6b6e9847970a66ba359bb83, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: CurrentEncounter
       value: 
-      objectReference: {fileID: 11400000, guid: b1a9bde8e83068945bfe61e863dd133e, type: 2}
+      objectReference: {fileID: 11400000, guid: a92bed907e362f04f81c42e688defbb9, type: 2}
     - target: {fileID: 8074719806751530725, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: m_Name
       value: PersistentData
@@ -2033,7 +2037,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.89433956, g: 0.8928808, b: 0.8690281, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3749,7 +3753,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -3778,7 +3782,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -3.3921456, y: 0, z: 9.250977, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

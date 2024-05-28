@@ -41,7 +41,7 @@ public class CardInfoPanel : MonoBehaviour
 
     public void UpdateInfoPanelUnitCard(UnitCard uc) {
         CardName.text = uc.Name;
-        Description.text = "Abilities:\n" + (uc.description.Equals("") ? "None" : uc.description);
+        Description.text = "<B>Abilities:</B>\n\n" + (uc.description.Equals("") ? "None" : uc.description);
         if(currentCard != null) Destroy(currentCard.gameObject);
         SetCardInteractable(uc);
         ((UnitCardInteractable)currentCard).DrawArrows();
