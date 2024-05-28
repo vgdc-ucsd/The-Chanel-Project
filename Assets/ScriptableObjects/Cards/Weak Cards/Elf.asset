@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Elf
   ManaCost: 1
   ShopCost: 0
-  Artwork: {fileID: 0}
+  Artwork: {fileID: 21300000, guid: 142a3458b7e61594f82b2feeebd3d8f7, type: 3}
   drawStatus: 0
   id: 0
   description: 

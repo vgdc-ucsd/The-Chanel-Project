@@ -26,6 +26,7 @@ public class DuelManager : MonoBehaviour
     private MctsAI ai;
     private bool awaitingAI;
     public Team currentTeam;
+    public Encounter CurrentEncounter;
 
     public bool loadDeckFromInventory = false;
 
@@ -51,8 +52,9 @@ public class DuelManager : MonoBehaviour
             Debug.LogWarning("Could not load encounter data");
         }
         else {
-            Settings = PersistentData.Instance.CurrentEncounter.Settings;
-            EnemyDeck = PersistentData.Instance.CurrentEncounter.EnemyDeck;
+            CurrentEncounter = PersistentData.Instance.CurrentEncounter;
+            Settings = CurrentEncounter.Settings;
+            EnemyDeck = CurrentEncounter.EnemyDeck;
         }
 
         CheckProperInitialization();
@@ -64,14 +66,13 @@ public class DuelManager : MonoBehaviour
         }
         EnemyDeck = EnemyDeck.Clone();
 
-
         // DuelInstance Setup
         CharStatus PlayerStatus = new CharStatus(Team.Player, PlayerDeck);
         CharStatus EnemyStatus = new CharStatus(Team.Enemy, EnemyDeck);
         PlayerStatus.Deck.Init();
         EnemyStatus.Deck.Init();
         Board board = new Board(Settings.BoardRows, Settings.BoardCols);
-        MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, board);
+        MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, board, CurrentEncounter.boss, 1);
 
         // AI setup
         ai = new MctsAI();

@@ -15,6 +15,7 @@ public class PersistentData : MonoBehaviour
     public int EncountersFinished = 0;
     public List<Encounter> possibleEncounters;
     public List<Encounter> completedEncounters;
+    public int HealthOverride = -1;
 
     public List<Card> ShopOffers = new List<Card>();
 

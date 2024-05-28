@@ -44,6 +44,8 @@ public class UIManager : MonoBehaviour
     public Canvas MainCanvas;
     public Image EndTurnButton;
     public Image EnemyArt;
+    public Sprite PlayerCardBorder;
+    public Sprite EnemyCardBorder;
 
     public static UIManager Instance;
 
@@ -96,9 +98,18 @@ public class UIManager : MonoBehaviour
             ci.SetCardInfo();
             ci.mode = CIMode.Duel;
 
-            if (c.CurrentTeam == Team.Player) ci.handInterface = Hand;
-            else if (c.CurrentTeam == Team.Player) ci.handInterface = EnemyHand;
-            else return ci;
+            if (c.CurrentTeam == Team.Player) {
+                ci.handInterface = Hand;
+                ci.image.sprite = PlayerCardBorder;
+            }
+            else if (c.CurrentTeam == Team.Enemy) {
+                ci.handInterface = EnemyHand;
+                ci.image.sprite = EnemyCardBorder;
+            }
+            else {
+                ci.image.sprite = PlayerCardBorder;
+                return ci;
+            }
 
             ci.handInterface.cardObjects.Add(ci.gameObject);
             return ci;
@@ -109,9 +120,18 @@ public class UIManager : MonoBehaviour
             ci.SetCardInfo();
             ci.mode = CIMode.Duel;
 
-            if(c.CurrentTeam == Team.Player) ci.handInterface = Hand;
-            else if (c.CurrentTeam == Team.Enemy) ci.handInterface = EnemyHand;
-            else return ci;
+            if(c.CurrentTeam == Team.Player) {
+                ci.image.sprite = PlayerCardBorder;
+                ci.handInterface = Hand;
+            }
+            else if (c.CurrentTeam == Team.Enemy) {
+                ci.image.sprite = EnemyCardBorder;
+                ci.handInterface = EnemyHand;
+            }
+            else {
+                ci.image.sprite = PlayerCardBorder;
+                return ci;
+            }
 
             ci.handInterface.cardObjects.Add(ci.gameObject);
             return ci;
