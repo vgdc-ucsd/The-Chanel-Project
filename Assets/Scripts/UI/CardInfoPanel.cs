@@ -12,6 +12,8 @@ public class CardInfoPanel : MonoBehaviour
 
     private CardInteractable currentCard;
 
+    public Card blankCard; //temp fix for initialization
+
     // Leave blank if Combat
     [Header("Inventory")]
     [Space(10)]
@@ -20,7 +22,7 @@ public class CardInfoPanel : MonoBehaviour
     public TextMeshProUGUI Atk;
 
     void Awake() {
-        InitializeCardInfoPanel(DuelManager.Instance.PlayerDeck.RandomAvailableCard());
+        InitializeCardInfoPanel(blankCard);
     }
 
     public void InitializeCardInfoPanel(Card c) {
@@ -59,7 +61,6 @@ public class CardInfoPanel : MonoBehaviour
         if (currentCard != null) Destroy(currentCard.gameObject);
         SetCardInteractable(uc);
         ((UnitCardInteractable)currentCard).DrawArrows();
-
     }
 
     public void UpdateInfoPanelSpellCard(SpellCard sc) {

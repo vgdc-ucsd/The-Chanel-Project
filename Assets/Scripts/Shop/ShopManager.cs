@@ -29,6 +29,7 @@ public class ShopManager : MonoBehaviour
 
     // Inspect GameObject/Screen
     public GameObject inspectScreen;
+    public CardInfoPanel infoPanel;
 
     private void Awake()
     {
@@ -55,20 +56,6 @@ public class ShopManager : MonoBehaviour
             cardInteractables.Add(ci);
         }
     }
-
-    // Randomly Generates a Card Index from Player's Card Collection
-    /*public int generateNum(int collectionSize)
-    {
-        Debug.Log("CollectionSize: " + collectionSize);
-        int num = Random.Range(0, collectionSize);
-        while (shopCards.Contains(num))
-        {
-            num = Random.Range(0, collectionSize);
-        }
-        shopCards.Add(num);
-        return num;
-    }*/
-
     
     // OnClick Function from ShopCardInteractable
     public bool purchase(CardInteractable ci)
@@ -92,15 +79,22 @@ public class ShopManager : MonoBehaviour
     }
 
     // Inspect Function for ShopCardInteractable
-    public void inspect(Card card)
+    public void inspect(CardInteractable ci)
     {
         inspectScreen.SetActive(true);
-        // Gets GameObject Reference of Card
-        GameObject inspectCard = inspectScreen.transform.GetChild(0).gameObject;
-
-        CardDisplay display = inspectCard.GetComponent<CardDisplay>();
-        display.setDisplay((UnitCard)card); // TODO support spell cards
+        infoPanel.InitializeCardInfoPanel(ci.GetCard());
     }
+
+    public void toInventory()
+    {
+        MenuScript.Instance.LoadInventory();
+    }
+
+    public void toMap()
+    {
+        MenuScript.Instance.LoadMap();
+    }
+
 
     private IEnumerator SpendGoldAnim(int gold)
     {

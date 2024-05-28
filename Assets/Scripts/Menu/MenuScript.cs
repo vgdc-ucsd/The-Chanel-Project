@@ -16,6 +16,9 @@ public class MenuScript : MonoBehaviour
     public const int VERSUS_INDEX = 7;
     public const int REWARD_INDEX = 8;
 
+    [SerializeField]
+    private int PREV_INDEX;
+
     public void Awake()
     {
         if (Instance != this && Instance)
@@ -26,7 +29,7 @@ public class MenuScript : MonoBehaviour
         {
             Instance = this;
         }
-
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
         DontDestroyOnLoad(gameObject);
     }
 
@@ -68,37 +71,51 @@ public class MenuScript : MonoBehaviour
 
     public void LoadScene(int index)
     {
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(index);
     }
 
     public void LoadNextScene()
     {
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void LoadMap()
     {
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(MAP_INDEX);
     }
 
     public void LoadTitle()
     {
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(TITLE_INDEX);
     }
 
     public void LoadInventory()
     {
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(INVENTORY_INDEX);
     }
 
     // Debug Only
     public void LoadShop()
     {
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(SHOP_INDEX);
     }
 
     public void LoadDuel()
     {
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(DUEL_INDEX);
+    }
+
+    //Previous scene loaded from
+    public void LoadPrev    ()
+    {
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(PREV_INDEX);
     }
 }

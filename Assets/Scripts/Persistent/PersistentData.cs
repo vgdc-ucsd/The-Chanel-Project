@@ -196,7 +196,7 @@ public class PersistentData : MonoBehaviour
         int i = 0;
         int iter = 0;
         bool spellAdded = false;
-        while (i < 3)
+        while (i < 5)
         {
             Card cardToAdd = rewardPool[UnityEngine.Random.Range(0, rewardPool.Count)];
             if (!rewardCards.Contains(cardToAdd) &&
