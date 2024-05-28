@@ -25,6 +25,8 @@ public class MapGeneration : MonoBehaviour
     public Transform mapContainer;
     public LineRenderer pathTemplate;
 
+
+
     void Start()
     {
         
@@ -45,8 +47,8 @@ public class MapGeneration : MonoBehaviour
                     }
                 }
             }
-            mapAccepted = (branchCount >= 6 && branchCount <= 8) && 
-                          (nodeCount >= 19 && nodeCount <= 23);
+            mapAccepted = (branchCount >= 5 && branchCount <= 7) && 
+                          (nodeCount >= 15 && nodeCount <= 19);
             if (!mapAccepted)
             {
                 foreach (MapNode[] arr in mapNodes)
@@ -109,11 +111,6 @@ public class MapGeneration : MonoBehaviour
                     CreatePath(node);
             }
             
-        }
-        foreach (MapNode[] arr in mapNodes)
-        {
-            Debug.Log(arr.ToSeparatedString(","));
-
         }
 
         
