@@ -10,4 +10,5 @@ public class Encounter : ScriptableObject
     public Deck EnemyDeck;
     public int RewardGold;
     public Card[] CardOffers; // you can choose one if you win
+    public BossData boss = null;
 }
