@@ -199,9 +199,8 @@ public class MapGenerator : MonoBehaviour
             GameObject mapTypePrefab = null;
             switch (mapInfo.nodeTypes[i])
             {
-                case MapNodeType.StartOrExit:
-                    if (point.row == 0) mapTypePrefab = start;
-                    if (point.row == 2) mapTypePrefab = exit;
+                case MapNodeType.Start:
+                    mapTypePrefab = start;
                     break;
                 case MapNodeType.Encounter:
                     mapTypePrefab = Encounter;
@@ -214,6 +213,9 @@ public class MapGenerator : MonoBehaviour
                     break;
                 case MapNodeType.Boss:
                     mapTypePrefab = Boss;
+                    break;
+                case MapNodeType.Exit:
+                    mapTypePrefab = exit;
                     break;
             }
 

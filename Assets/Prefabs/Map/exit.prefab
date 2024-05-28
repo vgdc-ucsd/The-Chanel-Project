@@ -90,9 +90,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visited: 0
   locked: 1
-  mapNodeType: 4
+  mapNodeType: 5
   nextNodes: []
   prevNodes: []
+  connections: []
+  initialized: 0
   point:
     col: 0
     row: 0

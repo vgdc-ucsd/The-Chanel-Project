@@ -127,7 +127,11 @@ IPointerExitHandler
         {
             mapNodeTypeIdx = 5;
         }
-        else if (mapNodeType == MapNodeType.StartOrExit)
+        else if (mapNodeType == MapNodeType.Exit)
+        {
+            mapNodeTypeIdx = MenuScript.TITLE_INDEX;
+        }
+        else if (mapNodeType == MapNodeType.Start)
         {
             mapNodeTypeIdx = -1;
         }
@@ -190,11 +194,9 @@ IPointerExitHandler
 // This is an enum type to show all the possible node types
 public enum MapNodeType
 {
-    Encounter,
-    Event,
-    Shop,
-    Boss,
-    StartOrExit
+    Encounter, Event,
+    Shop, Boss,
+    Start, Exit
 }
 
 [Serializable]
