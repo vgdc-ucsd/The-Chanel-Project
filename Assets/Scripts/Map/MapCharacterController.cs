@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
+//using UnityEditor.Animations; Build error
 using UnityEngine;
 
 public class MapCharacterController : MonoBehaviour

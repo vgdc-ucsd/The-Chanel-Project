@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.PlayerSettings;
+//using static UnityEditor.PlayerSettings; Build error
 
 public class MapGenerator : MonoBehaviour
 {
