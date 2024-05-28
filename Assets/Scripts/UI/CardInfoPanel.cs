@@ -39,7 +39,6 @@ public class CardInfoPanel : MonoBehaviour
         if (currentCard != null) Destroy(currentCard.gameObject);
         SetCardInteractable(uc);
         ((UnitCardInteractable)currentCard).DrawArrows();
-
     }
 
     public void UpdateInfoPanelSpellCard(SpellCard sc) {
