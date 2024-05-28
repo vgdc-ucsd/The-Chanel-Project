@@ -168,7 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Center: {fileID: 6765381394224488128}
   OutlawEncounters:
-  - {fileID: 11400000, guid: a92bed907e362f04f81c42e688defbb9, type: 2}
+  - {fileID: 11400000, guid: 9dfccc11df378e44e9c0af910b013dad, type: 2}
 --- !u!1 &6986958356325204326
 GameObject:
   m_ObjectHideFlags: 0

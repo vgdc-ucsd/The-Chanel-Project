@@ -135,6 +135,7 @@ public class DuelManager : MonoBehaviour
         if(awaitingAI) return; // await AI
         if(!AnimationManager.Instance.DonePlaying()) return; // await animations
 
+        PlayerInputController.Instance.SetAction(ControlAction.None);
         if(Settings.EnablePVPMode) {
             if (currentTeam == Team.Player) {
                 MainDuel.ProcessBoard(Team.Player);
