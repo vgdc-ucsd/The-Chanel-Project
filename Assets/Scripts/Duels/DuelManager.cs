@@ -66,7 +66,6 @@ public class DuelManager : MonoBehaviour
             PlayerDeck.LoadCards(PersistentData.Instance.Inventory.ActiveCards);
         }
         EnemyDeck = EnemyDeck.Clone();
-        
 
         // DuelInstance Setup
         CharStatus PlayerStatus = new CharStatus(Team.Player, PlayerDeck);

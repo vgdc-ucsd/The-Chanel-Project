@@ -12,6 +12,7 @@ public class PersistentData : MonoBehaviour
 
     public Deck ImportDeck;
     public int EncountersFinished = 0;
+    public int HealthOverride = -1;
 
     public List<Card> ShopOffers = new List<Card>();
 

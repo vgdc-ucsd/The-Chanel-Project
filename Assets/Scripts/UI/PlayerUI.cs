@@ -23,6 +23,8 @@ public class PlayerUI : MonoBehaviour
     private List<Vector3> originalPositions;
     private List<Image> flickerSprites;
     private List<Color> originalColors;
+    private List<Card> drawPileCards; // TODO
+    private List<Card> discardPileCards;
 
     void Start() {
         shakeTransforms = new List<Transform>();
