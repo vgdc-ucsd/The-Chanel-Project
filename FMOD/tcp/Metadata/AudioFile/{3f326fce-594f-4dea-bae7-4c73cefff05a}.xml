@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="AudioFile" id="{4976b5e6-eb09-4c49-a5de-114d1ab3c8c6}">
+	<object class="AudioFile" id="{3f326fce-594f-4dea-bae7-4c73cefff05a}">
 		<property name="assetPath">
-			<value>CardShuffle.wav</value>
+			<value>PlayerHurt.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>96</value>
 		</property>
 		<property name="channelCount">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<property name="length">
-			<value>4.0735208333333333</value>
+			<value>5.3676145833333333</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{a6c6dba1-e3fa-4a63-8ea6-7ab540bb5a48}</destination>
