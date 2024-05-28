@@ -55,7 +55,6 @@ public class RewardManager : MonoBehaviour
         StartCoroutine(CardAppearAnimation());
         StartCoroutine(IncrementGold());
 
-        Debug.Log("Starting rewards");
     }
 
     public void SelectCard(CardInteractable selected) {
@@ -93,7 +92,6 @@ public class RewardManager : MonoBehaviour
             AnimationManager.Instance.Enqueue(qa);
         }
 
-        Debug.Log("Card Animating");
         FMODUnity.RuntimeManager.PlayOneShot("event:/CardShuffle");
     }
 

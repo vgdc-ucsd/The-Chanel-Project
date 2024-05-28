@@ -81,12 +81,15 @@ public class ShopManager : MonoBehaviour
             if (spendGoldCor != null) StopCoroutine(spendGoldCor);
             spendGoldCor = StartCoroutine(SpendGoldAnim(card.ShopCost));
             Destroy(ci.gameObject);
+
+            FMODUnity.RuntimeManager.PlayOneShot("event:/ShopBuy");
             return true;
         }
         else
         {
             //TODO: Set up Proper Response to Insufficient Funds
             Debug.Log("Insufficient Funds");
+            FMODUnity.RuntimeManager.PlayOneShot("event:/NoMana");
             return false;
         }
     }
@@ -100,6 +103,8 @@ public class ShopManager : MonoBehaviour
 
         CardDisplay display = inspectCard.GetComponent<CardDisplay>();
         display.setDisplay((UnitCard)card); // TODO support spell cards
+
+        FMODUnity.RuntimeManager.PlayOneShot("event:/CardDraw");
     }
 
     private IEnumerator SpendGoldAnim(int gold)
