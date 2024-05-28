@@ -23,6 +23,8 @@ public class PlayerUI : MonoBehaviour
     private List<Vector3> originalPositions;
     private List<Image> flickerSprites;
     private List<Color> originalColors;
+    private List<Card> drawPileCards; // TODO
+    private List<Card> discardPileCards;
 
     void Start() {
         shakeTransforms = new List<Transform>();
@@ -108,6 +110,20 @@ public class PlayerUI : MonoBehaviour
             else {
                 ManaSprites[i].sprite = ManaBlack;
                 ManaSprites[i].color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+            }
+        }
+    }
+    public void decreaseMana(int amount) {
+        int used = 0;
+        for(int i = ManaSprites.Length-1; i >= 0; i--) {
+            if(used == amount) {
+                return;
+            }
+            else {
+                if(ManaSprites[i].sprite == ManaBlue && ManaSprites[i].color == new Color(1.0f, 1.0f, 1.0f, 1.0f)) {
+                    ManaSprites[i].color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+                    used++;
+                }
             }
         }
     }

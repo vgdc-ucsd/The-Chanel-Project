@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Sphinx
   ManaCost: 3
   ShopCost: 50
-  Artwork: {fileID: 0}
+  Artwork: {fileID: 21300000, guid: f017c6b316d43474fb22095335725566, type: 3}
   drawStatus: 0
   id: 0
   description: Can only die to exact damage.
