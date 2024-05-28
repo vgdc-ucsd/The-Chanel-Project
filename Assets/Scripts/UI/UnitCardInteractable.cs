@@ -18,9 +18,11 @@ public class UnitCardInteractable : CardInteractable,
 
     public List<Image> Arrows = new List<Image>();
     public Sprite InactiveArrowOrthogonal;
-    public Sprite ActiveArrowOrthogonal;
+    public Sprite ActiveArrowOrthogonalPlayer;
+    public Sprite ActiveArrowOrthogonalEnemy;
     public Sprite InactiveArrowDiagonal;
-    public Sprite ActiveArrowDiagonal;
+    public Sprite ActiveArrowDiagonalPlayer;
+    public Sprite ActiveArrowDiagonalEnemy;
 
     public StatusIconManager icons;
 
@@ -88,6 +90,17 @@ public class UnitCardInteractable : CardInteractable,
 
     public void DrawArrows() {
         ResetArrows();
+
+        Sprite ActiveArrowDiagonal;
+        Sprite ActiveArrowOrthogonal;
+        if(card.CurrentTeam == Team.Enemy) {
+            ActiveArrowDiagonal = ActiveArrowDiagonalEnemy;
+            ActiveArrowOrthogonal = ActiveArrowOrthogonalEnemy;
+        }
+        else {
+            ActiveArrowDiagonal = ActiveArrowDiagonalPlayer;
+            ActiveArrowOrthogonal = ActiveArrowOrthogonalPlayer;
+        }
 
         foreach(Attack atk in card.Attacks) {
             Vector2Int dir = atk.direction;
