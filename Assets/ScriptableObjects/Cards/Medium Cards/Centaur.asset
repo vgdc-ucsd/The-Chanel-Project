@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Centaur
   ManaCost: 2
   ShopCost: 0
-  Artwork: {fileID: 0}
+  Artwork: {fileID: 21300000, guid: 8ab6213db95abde48a40fbc97e34647e, type: 3}
   drawStatus: 0
   id: 0
   description: 
@@ -35,3 +35,4 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 04e9a33c6d08e9046beaf8bfbedce1c6, type: 2}
   StatusEffects: []
+  isTemp: 0
