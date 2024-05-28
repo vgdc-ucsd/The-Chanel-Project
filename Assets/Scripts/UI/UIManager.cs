@@ -214,11 +214,13 @@ public class UIManager : MonoBehaviour
 
     public void PlayerWin() {
         PersistentData.Instance.EncountersFinished++;
-        SceneManager.LoadScene("CardReward");
+        PersistentData.Instance.VsState = VsScreenState.Win;
+        SceneManager.LoadScene(MenuScript.VERSUS_INDEX);
     }
 
     public void PlayerLose() {
-        SceneManager.LoadScene(MenuScript.TITLE_INDEX);
+        PersistentData.Instance.VsState = VsScreenState.Lose;
+        SceneManager.LoadScene(MenuScript.VERSUS_INDEX);
     }
 
     public void CheckProperInitialization() {

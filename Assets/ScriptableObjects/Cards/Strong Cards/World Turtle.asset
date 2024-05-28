@@ -12,21 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1ad278697cae34da6360ecf631cd87, type: 3}
   m_Name: World Turtle
   m_EditorClassIdentifier: 
-  Name: 
-  ManaCost: 0
+  Name: World Turtle
+  ManaCost: 3
   ShopCost: 50
-  Artwork: {fileID: 0}
+  Artwork: {fileID: 21300000, guid: 39188155965b457469cb2f006063ba44, type: 3}
   drawStatus: 0
   id: 0
   description: 
   CurrentTeam: 2
-  cardType: 0
-  Health: 0
+  cardType: 2
+  Health: 10
   CanMove: 0
   CanAttack: 0
   isSelected: 0
   BaseDamage: 1
   UnitCardInteractableRef: {fileID: 0}
-  Attacks: []
+  Attacks:
+  - direction: {x: -1, y: 0}
+    damage: 1
+  - direction: {x: 1, y: 0}
+    damage: 1
   Abilities: []
   StatusEffects: []
+  isTemp: 0

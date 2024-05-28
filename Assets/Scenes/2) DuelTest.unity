@@ -192,6 +192,7 @@ MonoBehaviour:
   PlayerDeck: {fileID: 11400000, guid: c77c60e166e08324785f01f5ec070d56, type: 2}
   EnemyDeck: {fileID: 11400000, guid: 4f6e7e01958be54499e3afc47d6960fa, type: 2}
   currentTeam: 0
+  CurrentEncounter: {fileID: 0}
   loadDeckFromInventory: 0
 --- !u!114 &37294270
 MonoBehaviour:

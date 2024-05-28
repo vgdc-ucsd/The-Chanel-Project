@@ -616,6 +616,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CardContainer: {fileID: 103770072}
+  MainCanvas: {fileID: 895861732}
   goldText: {fileID: 1137355304}
   incText: {fileID: 1825024548}
 --- !u!114 &895861735
