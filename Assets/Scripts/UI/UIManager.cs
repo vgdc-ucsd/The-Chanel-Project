@@ -97,6 +97,7 @@ public class UIManager : MonoBehaviour
             ci.card = (UnitCard) c;
             ci.SetCardInfo();
             ci.mode = CIMode.Duel;
+            ci.ResetArrows();
 
             if (c.CurrentTeam == Team.Player) {
                 ci.handInterface = Hand;

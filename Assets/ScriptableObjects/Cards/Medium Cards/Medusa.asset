@@ -18,7 +18,7 @@ MonoBehaviour:
   Artwork: {fileID: 21300000, guid: 6743f3f871d0b714bae300ecca07600b, type: 3}
   drawStatus: 2
   id: 0
-  description: Upon play, freezes enemy in front (freeze lasts 1 turn.)
+  description: Upon play, Medusa freezes the target card in front of them.
   CurrentTeam: 2
   cardType: 1
   Health: 3
@@ -36,6 +36,6 @@ MonoBehaviour:
   - direction: {x: 1, y: 0}
     damage: 2
   Abilities:
-  - {fileID: 11400000, guid: 5552cc1104484994185fe7633a524a74, type: 2}
+  - {fileID: 11400000, guid: 6d63dce7216354e4fa322fd87672f877, type: 2}
   StatusEffects: []
   isTemp: 0

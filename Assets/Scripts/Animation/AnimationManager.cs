@@ -351,7 +351,7 @@ public class AnimationManager : MonoBehaviour
                 unitRef.handInterface.cardObjects.Remove(unitRef.gameObject);
             }
             unitRef.transform.SetParent(tile.transform);
-            unitRef.transform.localScale = Vector3.one;
+            unitRef.transform.localScale = new Vector3(0.8f, 0.8f, 1.0f);
             unitRef.DrawArrows();
             unitRef.CardCost.enabled = false;
             unitRef.gameObject.SetActive(true);

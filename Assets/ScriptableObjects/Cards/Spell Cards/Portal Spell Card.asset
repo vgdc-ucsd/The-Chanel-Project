@@ -21,4 +21,5 @@ MonoBehaviour:
   description: Teleports an ally or enemy card to the frontmost row. If another card
     is blocking, swaps the position of two cards.
   CurrentTeam: 2
+  cardType: 3
   SpellCardInteractableRef: {fileID: 0}

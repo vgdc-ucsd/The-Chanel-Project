@@ -32,7 +32,7 @@ public class PersistentData : MonoBehaviour
 
 
         Init();
-        
+
     }
 
     public Encounter CurrentEncounter;
@@ -127,6 +127,7 @@ public class PersistentData : MonoBehaviour
         {
             CurrentEncounter = completedEncounters[UnityEngine.Random.Range(0, completedEncounters.Count - 1)];
         }
+        ++EncountersFinished;
 
         // Randomize gold reward
         CurrentEncounter.RewardGold = (int)((GameData.BASE_GOLD + EncountersFinished * GameData.GOLD_SCALING)
@@ -195,7 +196,7 @@ public class PersistentData : MonoBehaviour
         int i = 0;
         int iter = 0;
         bool spellAdded = false;
-        while (i < 3)
+        while (i < 5)
         {
             Card cardToAdd = rewardPool[UnityEngine.Random.Range(0, rewardPool.Count)];
             if (!rewardCards.Contains(cardToAdd) &&

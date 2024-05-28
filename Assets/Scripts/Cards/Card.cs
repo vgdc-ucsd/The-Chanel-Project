@@ -15,6 +15,7 @@ public abstract class Card: ScriptableObject
     public DrawStatus drawStatus = DrawStatus.Available;
     public int id;
 
+    [TextArea(2,10)]
     public string description;
 
     [HideInInspector] public Team CurrentTeam = Team.Neutral;

@@ -12,6 +12,8 @@ public class CardInfoPanel : MonoBehaviour
 
     private CardInteractable currentCard;
 
+    public Card blankCard; //temp fix for initialization
+
     // Leave blank if Combat
     [Header("Inventory")]
     [Space(10)]
@@ -20,7 +22,7 @@ public class CardInfoPanel : MonoBehaviour
     public TextMeshProUGUI Atk;
 
     void Awake() {
-        InitializeCardInfoPanel(DuelManager.Instance.PlayerDeck.RandomAvailableCard());
+        InitializeCardInfoPanel(blankCard);
     }
 
     public void InitializeCardInfoPanel(Card c) {
@@ -41,7 +43,7 @@ public class CardInfoPanel : MonoBehaviour
 
     public void UpdateInfoPanelUnitCard(UnitCard uc) {
         CardName.text = uc.Name;
-        Description.text = "Abilities:\n" + (uc.description.Equals("") ? "None" : uc.description);
+        Description.text = "<B>Abilities:</B>\n\n" + (uc.description.Equals("") ? "None" : uc.description);
         if(currentCard != null) Destroy(currentCard.gameObject);
         SetCardInteractable(uc);
         ((UnitCardInteractable)currentCard).DrawArrows();
@@ -50,7 +52,9 @@ public class CardInfoPanel : MonoBehaviour
     public void UpdateInventoryInfoPanelUnitCard(UnitCard uc)
     {
         CardName.text = uc.Name;
-        Description.text = uc.description;
+        if (Description.text == "") uc.description = "Description unwritten";
+        else Description.text = uc.description;
+
         Mana.text = uc.ManaCost + "";
         Health.text = uc.Health + "";
         Atk.text = uc.BaseDamage + "";
@@ -63,8 +67,10 @@ public class CardInfoPanel : MonoBehaviour
 
     public void UpdateInfoPanelSpellCard(SpellCard sc) {
         CardName.text = sc.Name;
-        Description.text = sc.description;
-        if(currentCard != null) Destroy(currentCard.gameObject);
+        if (Description.text == "") sc.description = "Description unwritten";
+        else Description.text = sc.description;
+
+        if (currentCard != null) Destroy(currentCard.gameObject);
         SetCardInteractable(sc);
     }
 

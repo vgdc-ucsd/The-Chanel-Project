@@ -16,6 +16,8 @@ public class MenuScript : MonoBehaviour
     public const int VERSUS_INDEX = 7;
     public const int REWARD_INDEX = 8;
 
+    public int PREV_INDEX;
+
     public void Awake()
     {
         if (Instance != this && Instance)
@@ -26,7 +28,7 @@ public class MenuScript : MonoBehaviour
         {
             Instance = this;
         }
-
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
         DontDestroyOnLoad(gameObject);
     }
 
@@ -68,37 +70,74 @@ public class MenuScript : MonoBehaviour
 
     public void LoadScene(int index)
     {
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(index);
     }
 
     public void LoadNextScene()
     {
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void LoadMap()
     {
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(MAP_INDEX);
     }
 
     public void LoadTitle()
     {
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(TITLE_INDEX);
     }
 
     public void LoadInventory()
     {
-        SceneManager.LoadScene(INVENTORY_INDEX);
+        if (SceneManager.GetActiveScene().buildIndex == MAP_INDEX || SceneManager.GetActiveScene().buildIndex == SHOP_INDEX)
+        {
+            PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(INVENTORY_INDEX);
+        }
+        else
+        {
+            Debug.Log("Cannot Load Inventory from this Scene");
+        }
     }
 
     // Debug Only
     public void LoadShop()
     {
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(SHOP_INDEX);
     }
 
     public void LoadDuel()
     {
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(DUEL_INDEX);
+    }
+
+    //Previous scene loaded from
+    public void LoadPrev()
+    {
+        SceneManager.LoadScene(PREV_INDEX);
+        PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
+        Debug.Log(PREV_INDEX);
+    }
+
+    public void LoadPrevFromInventory()
+    {
+        if (PREV_INDEX == MAP_INDEX || PREV_INDEX == SHOP_INDEX)
+        {
+            SceneManager.LoadScene(PREV_INDEX);
+            PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
+        }
+        else
+        {
+            Debug.Log("Cannot go back to this scene from Inventory");
+        }
+
+        Debug.Log(PREV_INDEX);
     }
 }

@@ -15,12 +15,15 @@ public class UnitCardInteractable : CardInteractable,
     public TextMeshProUGUI CardAttack;
     public Image CardArt;
     public Image Glow;
+    public Image Mana;
 
     public List<Image> Arrows = new List<Image>();
     public Sprite InactiveArrowOrthogonal;
-    public Sprite ActiveArrowOrthogonal;
+    public Sprite ActiveArrowOrthogonalPlayer;
+    public Sprite ActiveArrowOrthogonalEnemy;
     public Sprite InactiveArrowDiagonal;
-    public Sprite ActiveArrowDiagonal;
+    public Sprite ActiveArrowDiagonalPlayer;
+    public Sprite ActiveArrowDiagonalEnemy;
 
     public StatusIconManager icons;
 
@@ -35,6 +38,8 @@ public class UnitCardInteractable : CardInteractable,
 
     //private FMODUnity.StudioEventEmitter emitter;
     //private string eventPath = "";
+
+    private Vector3 scaleVector = new Vector3(0.8f, 0.8f, 1.0f);
 
     protected override void Awake()
     {
@@ -64,7 +69,7 @@ public class UnitCardInteractable : CardInteractable,
         if(CardArt != null) {
             CardArt.sprite = card.Artwork;
         }
-        if (inHand) CardCost.text = "Mana Cost: " + card.ManaCost;
+        if (inHand) CardCost.text = card.ManaCost.ToString();
         icons.RefreshIcons();
     }
 
@@ -88,6 +93,18 @@ public class UnitCardInteractable : CardInteractable,
 
     public void DrawArrows() {
         ResetArrows();
+        Mana.gameObject.SetActive(false);
+
+        Sprite ActiveArrowDiagonal;
+        Sprite ActiveArrowOrthogonal;
+        if(card.CurrentTeam == Team.Enemy) {
+            ActiveArrowDiagonal = ActiveArrowDiagonalEnemy;
+            ActiveArrowOrthogonal = ActiveArrowOrthogonalEnemy;
+        }
+        else {
+            ActiveArrowDiagonal = ActiveArrowDiagonalPlayer;
+            ActiveArrowOrthogonal = ActiveArrowOrthogonalPlayer;
+        }
 
         foreach(Attack atk in card.Attacks) {
             Vector2Int dir = atk.direction;
@@ -106,6 +123,7 @@ public class UnitCardInteractable : CardInteractable,
     }
 
     public void ResetArrows() {
+        Mana.gameObject.SetActive(true);
         for(int i = 0; i < 8; i++) {
             if(i == 1 || i == 3 || i == 4 || i == 6) {
                 Arrows[i].sprite = InactiveArrowOrthogonal;
@@ -124,13 +142,12 @@ public class UnitCardInteractable : CardInteractable,
             // TODO: move some actions here to PlaceCard in Board
             inHand = false;
             transform.localEulerAngles = Vector3.zero;
-            transform.localScale = Vector3.one;
             transform.position = tile.transform.position;
             if(handInterface != null) {
                 handInterface.cardObjects.Remove(this.gameObject);
             }
             transform.SetParent(tile.transform);
-            transform.localScale = Vector3.one;
+            transform.localScale = scaleVector;
             DrawArrows();
             CardCost.enabled = false;
             gameObject.SetActive(true);

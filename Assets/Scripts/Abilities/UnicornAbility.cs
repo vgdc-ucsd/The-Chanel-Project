@@ -15,8 +15,15 @@ public class UnicornAbility : Ability
 
     public override void Activate(UnitCard c, ActivationInfo info)
     {
-        Vector2Int forward = new Vector2Int(0, 1);
-
+        Vector2Int forward;
+        if (c.CurrentTeam == Team.Player)
+        {
+            forward = new Vector2Int(0, 1);
+        }
+        else
+        {
+            forward = new Vector2Int(0, -1);
+        }
         foreach (Attack attackdir in c.Attacks)
         {
             if (attackdir.direction == forward)
