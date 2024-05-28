@@ -18,7 +18,8 @@ MonoBehaviour:
   Artwork: {fileID: 0}
   drawStatus: 0
   id: 0
-  description: When cast on an ally, its next attack is in all directions.
+  description: When cast on an ally, it will be able to attack in any direction next
+    turn.
   CurrentTeam: 2
   cardType: 3
   SpellCardInteractableRef: {fileID: 0}

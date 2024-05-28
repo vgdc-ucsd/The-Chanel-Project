@@ -32,7 +32,7 @@ public class PersistentData : MonoBehaviour
 
 
         Init();
-        
+
     }
 
     public Encounter CurrentEncounter;
@@ -127,6 +127,7 @@ public class PersistentData : MonoBehaviour
         {
             CurrentEncounter = completedEncounters[UnityEngine.Random.Range(0, completedEncounters.Count - 1)];
         }
+        ++EncountersFinished;
 
         // Randomize gold reward
         CurrentEncounter.RewardGold = (int)((GameData.BASE_GOLD + EncountersFinished * GameData.GOLD_SCALING)

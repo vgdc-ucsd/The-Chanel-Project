@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
+
 public class ShopManager : MonoBehaviour
 {
     public static ShopManager Instance;
