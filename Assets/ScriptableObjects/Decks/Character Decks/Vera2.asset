@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f15f282beda789c4686a2671c4e99758, type: 3}
-  m_Name: VeraLateDeck
+  m_Name: Vera2
   m_EditorClassIdentifier: 
   CardList:
-  - {fileID: 11400000, guid: ec5f0323c276dc141bf415a48ede4a84, type: 2}
-  - {fileID: 11400000, guid: 6ae7309b1a2400649b240f056567c5ab, type: 2}
   - {fileID: 11400000, guid: 1d48d989ca3948047a7fef5049a79173, type: 2}
   - {fileID: 11400000, guid: f3b69c70ca0bb6b4792c30e461bc866c, type: 2}
   - {fileID: 11400000, guid: f478542d8bd0ddb47aaf315da0ce8277, type: 2}
   - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
   - {fileID: 11400000, guid: 2c284dc844ac6964da4c0d7527b24de9, type: 2}
+  - {fileID: 11400000, guid: f478542d8bd0ddb47aaf315da0ce8277, type: 2}
+  - {fileID: 11400000, guid: b0588fcb2d650924aad9a7445cb13b24, type: 2}
   - {fileID: 11400000, guid: a88c7d8913880fd4aa37c9ba6619601b, type: 2}
   - {fileID: 11400000, guid: a88c7d8913880fd4aa37c9ba6619601b, type: 2}
   - {fileID: 11400000, guid: c39ab0e8a3dfc1742a87be83397d457c, type: 2}

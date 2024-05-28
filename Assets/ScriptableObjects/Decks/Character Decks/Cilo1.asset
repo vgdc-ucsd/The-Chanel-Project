@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f15f282beda789c4686a2671c4e99758, type: 3}
-  m_Name: CiloEarlyDeck
+  m_Name: Cilo1
   m_EditorClassIdentifier: 
   CardList:
   - {fileID: 11400000, guid: e841bf25629185c49a1481dce02f44f1, type: 2}

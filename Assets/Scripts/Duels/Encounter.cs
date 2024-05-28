@@ -9,6 +9,7 @@ public class Encounter : ScriptableObject
     public String EncounterName;
     public DuelSettings Settings;
     public Sprite EnemyArt;
+    public Deck[] EnemyDecks;
     public Deck EnemyDeck;
     public int RewardGold;
     public Card[] CardOffers; // you can choose one if you win
