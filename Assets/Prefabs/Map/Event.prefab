@@ -228,4 +228,8 @@ MonoBehaviour:
   mapNodeType: 1
   nextNodes: []
   prevNodes: []
-  row: 0
+  connections: []
+  initialized: 0
+  point:
+    x: 0
+    y: 0

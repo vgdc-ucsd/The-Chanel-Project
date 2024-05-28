@@ -202,12 +202,17 @@ public enum MapNodeType
 [Serializable]
 public class Point
 {
-    public int col;
-    public int row;
+    public int x;
+    public int y;
 
-    public Point(int col, int row)
+    public Point(int x, int y)
     {
-        this.col = col;
-        this.row = row;
+        this.x = x;
+        this.y = y;
+    }
+
+    public override string ToString()
+    {
+        return $"({x}, {y})";
     }
 }
