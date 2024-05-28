@@ -365,6 +365,7 @@ public class AnimationManager : MonoBehaviour
             // SFX
             FMODUnity.RuntimeManager.PlayOneShot("event:/CardPlace", transform.position);
 
+            UIManager.Instance.Enemy.decreaseMana(c.ManaCost);
             // translation animation
             yield return SimpleTranslate(unitRef.transform, tile.transform.position, speed, InterpolationMode.EaseOut);
         }

@@ -43,9 +43,6 @@ public class DuelManager : MonoBehaviour
             return;
         }
         else Instance = this;
-
-        PersistentData.Instance.SetEncounterStats();
-
     }
 
     // Start is called before the first frame update

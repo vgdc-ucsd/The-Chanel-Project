@@ -12,10 +12,10 @@ public class VersusScreen : MonoBehaviour
 
     void Start()
     {
+        PersistentData.Instance.SetEncounterStats();
         currentEncounter = PersistentData.Instance.CurrentEncounter;
-        enemyName.text = currentEncounter.name;
-        // TODO: Uncomment this line when characters are implemented
-        // enemyImageObject.GetComponent<Image>().sprite = currentEncounter.EnemyArt;
+        enemyName.text = currentEncounter.EncounterName;
+        enemyImageObject.GetComponent<Image>().sprite = currentEncounter.EnemyArt;
         Invoke("LoadScene", 2f);
     }
 
