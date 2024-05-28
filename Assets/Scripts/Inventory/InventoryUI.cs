@@ -137,7 +137,7 @@ public class InventoryUI : MonoBehaviour
             deckSizeWarnCor = StartCoroutine(DeckSizeWarn());
             return;
         }
-        MenuScript.Instance.LoadMap();
+        MenuScript.Instance.LoadPrev();
 
     }
 

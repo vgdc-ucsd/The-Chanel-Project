@@ -423,7 +423,6 @@ GameObject:
   - component: {fileID: 225614050}
   - component: {fileID: 225614049}
   - component: {fileID: 225614048}
-  - component: {fileID: 225614047}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -440,28 +439,16 @@ RectTransform:
   m_GameObject: {fileID: 225614045}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: -1.2, y: 1.2, z: 1.2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1709800420}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -59.758057, y: -30.526245}
+  m_AnchoredPosition: {x: -31.5, y: -177.9}
   m_SizeDelta: {x: 42.24951, y: 39.95331}
   m_Pivot: {x: 0.49999908, y: 0.4999991}
---- !u!114 &225614047
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 225614045}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6ac6c3c766231246850379556e73e66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &225614048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -506,9 +493,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 225614047}
-        m_TargetAssemblyTypeName: ShopChangeScene, Assembly-CSharp
-        m_MethodName: leaveShop
+      - m_Target: {fileID: 1543817344}
+        m_TargetAssemblyTypeName: MenuScript, Assembly-CSharp
+        m_MethodName: LoadMap
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -777,7 +764,6 @@ GameObject:
   - component: {fileID: 697989893}
   - component: {fileID: 697989892}
   - component: {fileID: 697989891}
-  - component: {fileID: 697989890}
   m_Layer: 5
   m_Name: InventoryButton
   m_TagString: Untagged
@@ -802,21 +788,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 88.8562, y: 69.93381}
+  m_AnchoredPosition: {x: 51, y: 70}
   m_SizeDelta: {x: 139.4781, y: 28.1517}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &697989890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 697989888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6ac6c3c766231246850379556e73e66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &697989891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -861,9 +835,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 697989890}
-        m_TargetAssemblyTypeName: ShopChangeScene, Assembly-CSharp
-        m_MethodName: openDeck
+      - m_Target: {fileID: 1543817344}
+        m_TargetAssemblyTypeName: MenuScript, Assembly-CSharp
+        m_MethodName: LoadInventory
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1774,6 +1748,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+--- !u!114 &1543817344 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5186411577442620811, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+  m_PrefabInstance: {fileID: 1543817343}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6028c2346c136b4693468fffb7aa725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1647077299
 GameObject:
   m_ObjectHideFlags: 0

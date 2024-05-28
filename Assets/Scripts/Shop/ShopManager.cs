@@ -85,6 +85,16 @@ public class ShopManager : MonoBehaviour
         infoPanel.InitializeCardInfoPanel(ci.GetCard());
     }
 
+    public void toInventory()
+    {
+        MenuScript.Instance.LoadInventory();
+    }
+
+    public void toMap()
+    {
+        MenuScript.Instance.LoadMap();
+    }
+
 
     private IEnumerator SpendGoldAnim(int gold)
     {
