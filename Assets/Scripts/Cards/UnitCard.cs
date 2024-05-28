@@ -115,8 +115,8 @@ public class UnitCard : Card
         }
         // On death
         else {
-            foreach(Ability a in Abilities) {
-                if (a.Condition == ActivationCondition.OnDeath) a.Activate(this, info);
+            for (int i = 0; i < Abilities.Count; ++i) {
+                if (Abilities[i].Condition == ActivationCondition.OnDeath) Abilities[i].Activate(this, info);
             }
             if (!isTemp){
                 duel.GetStatus(CurrentTeam).Deck.Discard(this);
