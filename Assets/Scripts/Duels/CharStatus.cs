@@ -17,6 +17,8 @@ public class CharStatus
     public Team CharTeam;
     public Deck Deck;
     public List<Card> Cards = new List<Card>();
+    public List<Card> drawPileCards = new List<Card>();
+    public List<Card> discardPileCards = new List<Card>();
 
     PlayerSettings playerSettings;
     DuelSettings duelSettings;
@@ -48,6 +50,8 @@ public class CharStatus
             --Mana;
             --ManaCapacity;
         }
+
+        drawPileCards = deck.DrawPile();
     }
 
     private CharStatus() {}
@@ -63,6 +67,8 @@ public class CharStatus
         copy.CharTeam = this.CharTeam;
         copy.Deck = this.Deck.Clone();
         copy.Cards = new List<Card>();
+        copy.drawPileCards = this.drawPileCards;
+        copy.discardPileCards = this.discardPileCards;
         foreach(Card c in this.Cards) {
             Card cc = c.Clone();
             if (cc ==  null)
@@ -183,5 +189,10 @@ public class CharStatus
             default:
                 return Team.Neutral;
         }
+    }
+
+    public void updateShuffle(){
+        drawPileCards = new List<Card>(Deck.DrawPile());
+        discardPileCards.Clear();
     }
  }

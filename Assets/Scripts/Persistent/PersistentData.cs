@@ -31,7 +31,50 @@ public class PersistentData : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
 
+        Init();
+        
+    }
 
+    public Encounter CurrentEncounter;
+
+    [Serializable]
+    public class InventoryData
+    {
+        public List<Card> InactiveCards = new List<Card>();
+        public List<Card> ActiveCards = new List<Card>();
+
+        public int Gold = 0;
+        public InventoryData()
+        {
+            InactiveCards = new List<Card>();
+            ActiveCards = new List<Card>();
+            Gold = 0;
+        }
+
+        public int CardCount()
+        {
+            return InactiveCards.Count + ActiveCards.Count;
+        }
+
+        public void Remove(Card card)
+        {
+            if (InactiveCards.Remove(card)) return;
+            if (ActiveCards.Remove(card)) return;
+            Debug.LogError("Failed to remove card");
+        }
+
+        public bool IsActive(Card card)
+        {
+            if (ActiveCards.Contains(card)) return true;
+            if (InactiveCards.Contains(card)) return false;
+            Debug.LogError("Inventory does not contain card");
+            return false;
+        }
+    }
+
+    public void Init()
+    {
+        Inventory = new InventoryData();
         if (ImportDeck != null)
         {
             Deck newDeck = ImportDeck.Clone();
@@ -66,41 +109,7 @@ public class PersistentData : MonoBehaviour
         EncountersFinished = 0;
     }
 
-    public Encounter CurrentEncounter;
 
-    [Serializable]
-    public class InventoryData
-    {
-        public List<Card> InactiveCards = new List<Card>();
-        public List<Card> ActiveCards = new List<Card>();
-
-        public int Gold = 0;
-        public InventoryData()
-        {
-            InactiveCards = new List<Card>();
-            ActiveCards = new List<Card>();
-        }
-
-        public int CardCount()
-        {
-            return InactiveCards.Count + ActiveCards.Count;
-        }
-
-        public void Remove(Card card)
-        {
-            if (InactiveCards.Remove(card)) return;
-            if (ActiveCards.Remove(card)) return;
-            Debug.LogError("Failed to remove card");
-        }
-
-        public bool IsActive(Card card)
-        {
-            if (ActiveCards.Contains(card)) return true;
-            if (InactiveCards.Contains(card)) return false;
-            Debug.LogError("Inventory does not contain card");
-            return false;
-        }
-    }
 
     /*
      * Sets the variable encounter data (rewards, difficulty etc) immediately before

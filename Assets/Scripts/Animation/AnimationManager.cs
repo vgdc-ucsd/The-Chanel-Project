@@ -322,6 +322,7 @@ public class AnimationManager : MonoBehaviour
                 Destroy(drawPile.GetChild(childIndex).gameObject);
                 childIndex++;
             }
+            // DuelManager.Instance.MainDuel.GetStatus(team).drawPileCards = DuelManager.Instance.MainDuel.GetStatus(team).Deck.DrawPile();
         }
         // no draw
         else {
@@ -575,6 +576,7 @@ public class AnimationManager : MonoBehaviour
             Destroy(t.gameObject);
             yield return SimpleTranslate(cardBack.transform, draw.position, 0.2f, InterpolationMode.EaseOut);
         }
+        DuelManager.Instance.MainDuel.GetStatus(Team.Player).updateShuffle();
     }
 
     private IEnumerator Shake(Transform obj, float intensity, float duration) {
