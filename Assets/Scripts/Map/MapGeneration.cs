@@ -55,7 +55,7 @@ public class MapGeneration : MonoBehaviour
                     }
                 }
             }
-            mapAccepted = (branchCount >= MIN_BRANCH_COUNT && branchCount <= MAX_BRANCH_COUNT) && 
+            mapAccepted = (branchCount >= MIN_BRANCH_COUNT && branchCount <= MAX_BRANCH_COUNT) &&
                           (nodeCount >= MIN_NODE_COUNT && nodeCount <= MAX_NODE_COUNT);
             if (iter > 100) mapAccepted = true;
             if (!mapAccepted)
@@ -98,7 +98,7 @@ public class MapGeneration : MonoBehaviour
     public void GenerateMap()
     {
         mapNodes = new List<MapNode[]>();
-        for (int i = 0; i < mapCol; i++)
+        for (int i = 0; i <= mapCol; i++)
         {
             mapNodes.Add(new MapNode[mapRow]);
         }
@@ -107,12 +107,16 @@ public class MapGeneration : MonoBehaviour
         MapNode startNode = CreateMapNode(0, startNodeRow);
         startNode.mapNodeType = MapNodeType.Start;
 
-        MapNode node1 = CreateMapNode(1,1);
+        MapNode node1 = CreateMapNode(1, 1);
         startNode.nextNodes.Add(node1);
         node1.prevNodes.Add(startNode);
-        MapNode node2 = CreateMapNode(1,0);
+        MapNode node2 = CreateMapNode(1, 0);
         startNode.nextNodes.Add(node2);
         node2.prevNodes.Add(startNode);
+
+        int exitNodeRow = Random.Range(0, mapRow);
+        MapNode exitNode = CreateMapNode(mapCol, exitNodeRow);
+        exitNode.mapNodeType = MapNodeType.Boss;
 
         for (int i = 1; i < mapCol - 1; i++)
         {
@@ -120,12 +124,20 @@ public class MapGeneration : MonoBehaviour
             foreach (MapNode node in mapNodes[i])
             {
                 if (node != null)
-                    CreatePath(node);
+                    CreatePath(node, exitNode);
             }
-            
         }
 
-        
+        foreach (var node in mapNodes[mapCol - 1])
+        {
+            if (node != null)
+            {
+                node.nextNodes.Add(exitNode);
+                exitNode.prevNodes.Add(node);
+            }
+        }
+
+
 
         // Instantiate nodes at correct points
         // Instantiate the connections/lines between nodes
@@ -141,7 +153,7 @@ public class MapGeneration : MonoBehaviour
         // cols 2-3, 5-6: force 3 events in 2 columns
         PlaceEventWall(2, 3);
         PlaceEventWall(5, 6);
-        
+
     }
 
     void PlaceEventWall(int col1, int col2)
@@ -195,11 +207,11 @@ public class MapGeneration : MonoBehaviour
         }
     }
 
-    private void CreatePath(MapNode node)
+    private void CreatePath(MapNode node, MapNode exitNode)
     {
         List<Point> possiblePoints = new();
         possiblePoints.Add(new Point(node.point.x + 1, node.point.y));
-        if (node.point.x % 2 == 0 && node.point.y != 0) 
+        if (node.point.x % 2 == 0 && node.point.y != 0)
         {
             possiblePoints.Add(new Point(node.point.x + 1, node.point.y - 1));
         }
@@ -207,6 +219,8 @@ public class MapGeneration : MonoBehaviour
         {
             possiblePoints.Add(new Point(node.point.x + 1, node.point.y + 1));
         }
+
+        possiblePoints = CheckForExit(possiblePoints, node, exitNode);
 
         if (Random.value > branchChance)
         {
@@ -250,8 +264,8 @@ public class MapGeneration : MonoBehaviour
 
     void DrawNodes()
     {
-        foreach (MapNode[] nodeArr in mapNodes) 
-        { 
+        foreach (MapNode[] nodeArr in mapNodes)
+        {
             foreach (MapNode newNode in nodeArr)
             {
                 if (newNode != null)
@@ -267,7 +281,7 @@ public class MapGeneration : MonoBehaviour
                 }
 
             }
-        
+
         }
     }
 
@@ -278,13 +292,13 @@ public class MapGeneration : MonoBehaviour
             foreach (MapNode node in arr)
             {
                 if (node != null)
-                foreach (MapNode nextNode in node.nextNodes)
-                {
-                    LineRenderer lr = Instantiate(pathTemplate);
-                    lr.transform.SetParent(node.transform);
-                    lr.SetPosition(0, node.transform.position);
-                    lr.SetPosition(1, nextNode.transform.position);
-                }
+                    foreach (MapNode nextNode in node.nextNodes)
+                    {
+                        LineRenderer lr = Instantiate(pathTemplate);
+                        lr.transform.SetParent(node.transform);
+                        lr.SetPosition(0, node.transform.position);
+                        lr.SetPosition(1, nextNode.transform.position);
+                    }
             }
         }
     }
@@ -312,4 +326,41 @@ public class MapGeneration : MonoBehaviour
         }
     }
     */
+    private List<Point> CheckForExit(List<Point> possiblePoints, MapNode node, MapNode exitNode)
+    {
+        int horDist = Mathf.Abs(exitNode.point.x - 1 - node.point.x);
+        int vertDist = exitNode.point.y - node.point.y;
+
+
+        if ((vertDist + 1) >= horDist)
+        {
+            for (int i = 0; i < possiblePoints.Count; i++)
+            {
+                if (node.point.x % 2 == 0)
+                {
+                    if (possiblePoints[i].y == node.point.y - 1) { possiblePoints.Remove(possiblePoints[i]); }
+                }
+                else if (node.point.x % 2 == 1)
+                {
+                    if (possiblePoints[i].y == node.point.y) { possiblePoints.Remove(possiblePoints[i]); }
+                }
+            }
+        }
+        else if ((vertDist - 2) <= -horDist)
+        {
+            for (int i = 0; i < possiblePoints.Count; i++)
+            {
+                if (node.point.x % 2 == 0)
+                {
+                    if (possiblePoints[i].y == node.point.y) { possiblePoints.Remove(possiblePoints[i]); }
+                }
+                else if (node.point.x % 2 == 1)
+                {
+                    if (possiblePoints[i].y == node.point.y + 1) { possiblePoints.Remove(possiblePoints[i]); }
+                }
+            }
+        }
+
+        return possiblePoints;
+    }
 }
