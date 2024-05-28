@@ -372,10 +372,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d78035031e597a545bf4faade64316e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animCycle: 5
+  animCycle: 3.5
   offset: 600
   elasticAmp: 0.1
-  elasticDuration: 4.9
+  elasticDuration: 3.3
 --- !u!1 &210033538
 GameObject:
   m_ObjectHideFlags: 0
