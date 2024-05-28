@@ -1314,6 +1314,10 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.ActiveCards.Array.size
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: possibleEncounters.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: 147b637de0f6327479c22febc516e9b8, type: 2}
@@ -1341,6 +1345,58 @@ PrefabInstance:
       propertyPath: possibleEncounters.Array.data[6]
       value: 
       objectReference: {fileID: 11400000, guid: 0bf78d829afae514c90ee22cb6debf39, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.InactiveCards.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.ActiveCards.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: f3b69c70ca0bb6b4792c30e461bc866c, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.ActiveCards.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0fbf928ca99cf444d86b6bc34fb185af, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.ActiveCards.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 44a9c1b35ff4edd41806783a1a1f9474, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.ActiveCards.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: a88c7d8913880fd4aa37c9ba6619601b, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.ActiveCards.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3140f3a6a1ea936499c7203083f2c746, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.ActiveCards.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3140f3a6a1ea936499c7203083f2c746, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.ActiveCards.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3f0de661135cb474dba2ca0dda7d84c7, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.ActiveCards.Array.data[7]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3f0de661135cb474dba2ca0dda7d84c7, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.ActiveCards.Array.data[8]
+      value: 
+      objectReference: {fileID: 11400000, guid: e7bb028145f1efc45ae1da90255731d8, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.ActiveCards.Array.data[9]
+      value: 
+      objectReference: {fileID: 11400000, guid: e7bb028145f1efc45ae1da90255731d8, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.ActiveCards.Array.data[10]
+      value: 
+      objectReference: {fileID: 11400000, guid: c26f43099fad7b54f8df370c9f59dddf, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.ActiveCards.Array.data[11]
+      value: 
+      objectReference: {fileID: 11400000, guid: a73a0b4e116e3a34cbf23b7d5aadf05d, type: 2}
     - target: {fileID: 8074719806751530725, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: m_Name
       value: PersistentData
