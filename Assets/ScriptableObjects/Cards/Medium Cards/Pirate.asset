@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Pirate
   ManaCost: 2
-  ShopCost: 50
+  ShopCost: 30
   Artwork: {fileID: 21300000, guid: 1f098e99806b0e34184ee9de651d0d32, type: 3}
   drawStatus: 0
   id: 0
-  description: ARGGHHH
+  description: ARRGH!!!! A pirate from the seas.
   CurrentTeam: 2
   cardType: 1
   Health: 2

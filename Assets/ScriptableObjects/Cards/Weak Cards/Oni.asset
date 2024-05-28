@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Oni
   ManaCost: 2
-  ShopCost: 0
+  ShopCost: 20
   Artwork: {fileID: 21300000, guid: 380d38d0f35f67243ad48f16a39f7fd6, type: 3}
   drawStatus: 0
   id: 0
-  description: Oni
+  description: Monsters from Eastern lands weilding large amounts of health and stronger
+    attacking on it's left side.
   CurrentTeam: 2
   cardType: 0
   Health: 3
