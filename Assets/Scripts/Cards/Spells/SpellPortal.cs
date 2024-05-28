@@ -22,8 +22,8 @@ public class SpellPortal : SpellCard, ISpellTypeUnit
             UnitCard unit2 = board.GetCard(targetPos);
 
             BoardCoords oldPos = unit2.Pos;
-            board.TeleportCard(unit2, card.Pos, duel);
-            board.TeleportCard(card, oldPos, duel);
+            board.TeleportCard(unit2, card.Pos, duel, false);
+            board.TeleportCard(card, oldPos, duel, false);
         }
 
         else

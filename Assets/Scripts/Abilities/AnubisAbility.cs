@@ -24,6 +24,8 @@ public class AnubisAbility : Ability
 
             c.Health = c.baseStats.health;
             AnimationManager.Instance.DamageCardAnimation(Info.Duel, c, Color.yellow, -1 * c.baseStats.health);
+
+            c.Abilities.Remove(this);
         }
 
         AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, c);

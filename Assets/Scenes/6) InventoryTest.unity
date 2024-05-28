@@ -778,6 +778,8 @@ MonoBehaviour:
   MainCanvas: {fileID: 0}
   EndTurnButton: {fileID: 0}
   EnemyArt: {fileID: 0}
+  PlayerCardBorder: {fileID: 21300000, guid: b8a02bc22e9d317439928b9770f97290, type: 3}
+  EnemyCardBorder: {fileID: 21300000, guid: 6d9afba870e95ad429e45d09040e4ee0, type: 3}
 --- !u!1 &326865092
 GameObject:
   m_ObjectHideFlags: 0

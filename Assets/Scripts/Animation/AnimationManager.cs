@@ -174,6 +174,8 @@ public class AnimationManager : MonoBehaviour
     }
 
     public IEnumerator SimpleTranslateThenRotate(Transform origin, Vector3 dest, float duration, InterpolationMode mode) {
+        float maxRotationDegrees = 20f;
+
         if(origin == null) yield break;
         CardInteractable ci = origin.gameObject.GetComponent<CardInteractable>();
         bool couldInteract = false;
@@ -196,14 +198,12 @@ public class AnimationManager : MonoBehaviour
 
         if(origin != null) {
             origin.position = dest;
-            origin.localEulerAngles = new Vector3(0, 0, Random.Range(-40, 40));
+            origin.localEulerAngles = new Vector3(0, 0, Random.Range(-maxRotationDegrees, maxRotationDegrees));
         }
         if(ci != null) {
             ci.CanInteract = true;
             // ci.CanInteract = couldInteract;
         }
-
-
     }
 
     private IEnumerator SpellDiscard(SpellCard card) {
@@ -322,6 +322,7 @@ public class AnimationManager : MonoBehaviour
                 Destroy(drawPile.GetChild(childIndex).gameObject);
                 childIndex++;
             }
+            // DuelManager.Instance.MainDuel.GetStatus(team).drawPileCards = DuelManager.Instance.MainDuel.GetStatus(team).Deck.DrawPile();
         }
         // no draw
         else {
@@ -365,6 +366,7 @@ public class AnimationManager : MonoBehaviour
             // SFX
             FMODUnity.RuntimeManager.PlayOneShot("event:/CardPlace", transform.position);
 
+            UIManager.Instance.Enemy.decreaseMana(c.ManaCost);
             // translation animation
             yield return SimpleTranslate(unitRef.transform, tile.transform.position, speed, InterpolationMode.EaseOut);
         }
@@ -574,6 +576,7 @@ public class AnimationManager : MonoBehaviour
             Destroy(t.gameObject);
             yield return SimpleTranslate(cardBack.transform, draw.position, 0.2f, InterpolationMode.EaseOut);
         }
+        DuelManager.Instance.MainDuel.GetStatus(Team.Player).updateShuffle();
     }
 
     private IEnumerator Shake(Transform obj, float intensity, float duration) {

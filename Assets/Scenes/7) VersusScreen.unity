@@ -715,6 +715,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e0c643057d971c44b15278edb8a2736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VsBG: {fileID: 21300000, guid: ac45030d7dd3ccc47b0b7d77241398f1, type: 3}
+  WinBG: {fileID: 21300000, guid: 5f7936426ce3e55488cb7ba78c55a19d, type: 3}
+  LoseBG: {fileID: 21300000, guid: 4c15792d97a443d4b9222e24034394f9, type: 3}
+  VsLogo: {fileID: 21300000, guid: 9746f3d3a1397fd44ab1e4a53f0353cb, type: 3}
+  WinLogo: {fileID: 21300000, guid: 27e069d8ac3262048bf79babe3abf307, type: 3}
+  LoseLogo: {fileID: 21300000, guid: e4585f071ef264b4db98f2514afd554a, type: 3}
+  Logo: {fileID: 1549830981}
+  Background: {fileID: 583684506}
   enemyImageObject: {fileID: 770501531}
   enemyName: {fileID: 340808817}
 --- !u!1 &770501531

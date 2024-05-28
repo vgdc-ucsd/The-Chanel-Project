@@ -14,6 +14,7 @@ public class MenuScript : MonoBehaviour
     public const int EVENT_INDEX = 4;
     public const int INVENTORY_INDEX = 6;
     public const int VERSUS_INDEX = 7;
+    public const int REWARD_INDEX = 8;
 
     public void Awake()
     {
@@ -52,6 +53,7 @@ public class MenuScript : MonoBehaviour
 
     public void PlayGame()
     {
+        PersistentData.Instance.Init();
         SceneManager.LoadScene(1);
         PersistentData.Instance.mapInfo.nodePoints = new();
         PersistentData.Instance.mapInfo.nodeTypes = new();

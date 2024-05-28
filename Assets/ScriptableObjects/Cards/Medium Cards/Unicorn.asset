@@ -26,6 +26,7 @@ MonoBehaviour:
   CanAttack: 0
   isSelected: 0
   BaseDamage: 2
+  Processed: 0
   UnitCardInteractableRef: {fileID: 0}
   Attacks:
   - direction: {x: 0, y: 1}
@@ -39,3 +40,4 @@ MonoBehaviour:
   Abilities:
   - {fileID: 11400000, guid: 42d7c65101470674298116dc52e2251d, type: 2}
   StatusEffects: []
+  isTemp: 0

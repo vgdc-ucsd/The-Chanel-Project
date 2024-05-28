@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -29,6 +30,7 @@ public class UnitCard : Card
     [HideInInspector] public BoardCoords Pos;
     [HideInInspector] public bool isSelected = false;
     [HideInInspector] public int BaseDamage = 1; // set in the custom card editor
+    [HideInInspector] public bool Processed = false;
     [HideInInspector] public override CardInteractable CardInteractableRef { get {return UnitCardInteractableRef;} set{UnitCardInteractableRef = (UnitCardInteractable)value;} }
     public UnitCardInteractable UnitCardInteractableRef;
 
@@ -39,6 +41,7 @@ public class UnitCard : Card
     public List<StatusEffect> StatusEffects = new List<StatusEffect>(); // for effect stacking calculations, order preserved
     public UnitStats baseStats = new UnitStats();
 
+    public bool isTemp = false;
 
     public override Card Clone() {
         UnitCard copy = (UnitCard) ScriptableObject.CreateInstance("UnitCard");
@@ -113,10 +116,14 @@ public class UnitCard : Card
         }
         // On death
         else {
-            foreach(Ability a in Abilities) {
-                if (a.Condition == ActivationCondition.OnDeath) a.Activate(this, info);
+            for (int i = 0; i < Abilities.Count; ++i) {
+                if (Abilities[i].Condition == ActivationCondition.OnDeath) Abilities[i].Activate(this, info);
             }
-            duel.GetStatus(CurrentTeam).Deck.Discard(this);
+            if (!isTemp){
+                duel.GetStatus(CurrentTeam).Deck.Discard(this);
+                duel.GetStatus(CurrentTeam).discardPileCards = duel.GetStatus(CurrentTeam).Deck.DiscardPile();
+            }
+
         }
     }
 
