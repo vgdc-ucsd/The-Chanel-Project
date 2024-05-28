@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76be4abdea6030b47892b95441f5fa03, type: 3}
   m_Name: SycamoreEncounter
   m_EditorClassIdentifier: 
+  EncounterName: Sycamore
   Settings:
     SameSettingsForBothPlayers: 1
     Player:
@@ -39,7 +40,7 @@ MonoBehaviour:
     UnlimitedMana: 0
     ShowEnemyHand: 0
     DisableWinning: 0
-  EnemyArt: {fileID: 0}
+  EnemyArt: {fileID: 21300000, guid: 968a401327356cc469b0cf0660cb919b, type: 3}
   EnemyDeck: {fileID: 11400000, guid: c77c60e166e08324785f01f5ec070d56, type: 2}
   RewardGold: 30
   CardOffers:

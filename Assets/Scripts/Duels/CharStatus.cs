@@ -17,6 +17,8 @@ public class CharStatus
     public Team CharTeam;
     public Deck Deck;
     public List<Card> Cards = new List<Card>();
+    public List<Card> drawPileCards = new List<Card>();
+    public List<Card> discardPileCards = new List<Card>();
 
     PlayerSettings playerSettings;
     DuelSettings duelSettings;
@@ -32,6 +34,10 @@ public class CharStatus
 
         Mana = playerSettings.StartingMana;
         Health = playerSettings.StartingHealth;
+        if(team == Team.Player && PersistentData.Instance.HealthOverride > 0) {
+            Health = PersistentData.Instance.HealthOverride;
+            PersistentData.Instance.HealthOverride = -1;
+        }
         IsAlive = true;
         MaxHealth = playerSettings.MaxHealth;
         MaxMana = playerSettings.MaxMana;
@@ -39,6 +45,13 @@ public class CharStatus
         this.CharTeam = team;
         Deck = deck;
         Cards = new List<Card>();
+
+        if (team == Team.Enemy) {
+            --Mana;
+            --ManaCapacity;
+        }
+
+        drawPileCards = deck.DrawPile();
     }
 
     private CharStatus() {}
@@ -54,14 +67,16 @@ public class CharStatus
         copy.CharTeam = this.CharTeam;
         copy.Deck = this.Deck.Clone();
         copy.Cards = new List<Card>();
+        copy.drawPileCards = this.drawPileCards;
+        copy.discardPileCards = this.discardPileCards;
         foreach(Card c in this.Cards) {
             Card cc = c.Clone();
-            if (cc ==  null) 
+            if (cc ==  null)
             {
                 Debug.LogError("added null clone to CharStatus");
             }
             copy.Cards.Add(cc);
-            
+
         }
         copy.playerSettings = this.playerSettings;
         copy.duelSettings = this.duelSettings;
@@ -84,7 +99,7 @@ public class CharStatus
 
     public void RemoveFromHand(Card card)
     {
-        if (!Cards.Contains(card)) 
+        if (!Cards.Contains(card))
         {
             //Debug.Log($"Tried to remove {card.Name} but was not in hand");
             return;
@@ -174,5 +189,10 @@ public class CharStatus
             default:
                 return Team.Neutral;
         }
+    }
+
+    public void updateShuffle(){
+        drawPileCards = new List<Card>(Deck.DrawPile());
+        discardPileCards.Clear();
     }
  }

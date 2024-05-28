@@ -82,7 +82,7 @@ public class DrawCardButton : MonoBehaviour,
     private Vector3 hoverPosition() {
         return new Vector3(
             hoveredCard.transform.position.x,
-            hoveredCard.transform.position.y + (-15f*UIManager.Instance.MainCanvas.scaleFactor),
+            hoveredCard.transform.position.y + (15f*UIManager.Instance.MainCanvas.scaleFactor),
             hoveredCard.transform.position.z
         );
     }

@@ -61,6 +61,7 @@ public abstract class SpellCard : Card
         duel.GetStatus(CurrentTeam).UseMana(ManaCost);
         duel.GetStatus(CurrentTeam).RemoveFromHand(this);
         duel.GetStatus(CurrentTeam).Deck.Discard(this);
+        duel.GetStatus(CurrentTeam).discardPileCards = duel.GetStatus(CurrentTeam).Deck.DiscardPile();
 
         AnimationManager.Instance.SpellDiscardAnimation(duel, this);
     }

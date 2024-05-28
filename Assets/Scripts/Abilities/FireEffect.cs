@@ -17,7 +17,6 @@ public class FireEffect : StatusEffect
 
     public override void Activate(UnitCard c, ActivationInfo info)
     {
-
         info.Duel.DealDamage(c, 1);
         duration--;
         if (duration == 0)
@@ -25,7 +24,6 @@ public class FireEffect : StatusEffect
             RemoveEffect(c, info);
         }
         AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
-
     }
 
     public override void AddEffect(UnitCard c, ActivationInfo info)
@@ -34,7 +32,6 @@ public class FireEffect : StatusEffect
         duration = initialDuration;
         ReapplyEffect(c, info);
     }
-
 
     public override void ReapplyEffect(UnitCard c, ActivationInfo info)
     {

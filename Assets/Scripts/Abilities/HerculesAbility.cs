@@ -11,7 +11,8 @@ public class HerculesAbility : Ability
 
     public override void Activate(UnitCard c, ActivationInfo Info)
     {
-        if (Info.TargetCard.Health <= c.BaseDamage) {
+        if (Info.TargetCard.Health == 0 || (!Info.TargetCard.Name.Equals("Sphinx") && Info.TargetCard.Health < 0))
+        {
             c.baseStats.baseDamage++;
             foreach(Attack atk in c.baseStats.attacks) {
                 atk.damage++;

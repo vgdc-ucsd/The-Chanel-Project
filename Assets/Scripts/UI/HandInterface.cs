@@ -11,6 +11,11 @@ public class HandInterface : MonoBehaviour
 {
     [HideInInspector] public List<GameObject> cardObjects = new List<GameObject>();
     public Team myTeam;
+    private RectTransform box;
+
+    void Start() {
+        box = GetComponent<RectTransform>();
+    }
 
     // Determines how much the cards rotate in the player's hand
     private float maxRotationDegrees = 0;
@@ -34,16 +39,13 @@ public class HandInterface : MonoBehaviour
 
         for(int i = 0; i < cardObjects.Count; i++) {
             GameObject card = cardObjects[i].gameObject;
-
-            // index
-            float normalizedIndex = -1 + (2 * (float)i/(cardObjects.Count-1)); // Ranges between -1 and 1
-            if(cardObjects.Count == 1) normalizedIndex = 0;
-
-            // arc
-            float arcValue = arcIntensity * (1-Mathf.Abs(normalizedIndex)); // Ranges between 0 and arcIntensity
             
             // Target Position
-            Vector3 targetPosition = new Vector3(-normalizedIndex * cardDistance, arcValue, 0);
+            float xVal = (float)(1+i)/(cardObjects.Count+1) * box.rect.width;
+            if(myTeam == Team.Player) xVal -= box.rect.width/2f;
+            xVal *= UIManager.Instance.MainCanvas.scaleFactor;
+
+            Vector3 targetPosition = new Vector3(xVal, 0, 0);
             targetPosition = Quaternion.Euler(new Vector3(0, 0, transform.localEulerAngles.z)) * targetPosition; // rotate
             targetPosition += transform.position;
 
@@ -53,7 +55,8 @@ public class HandInterface : MonoBehaviour
                 if(card.transform.parent != this.transform) {
                     card.transform.SetParent(this.transform);
                     card.transform.localScale = Vector3.one;
-                    card.transform.localEulerAngles = new Vector3(0, 0, normalizedIndex * maxRotationDegrees);
+                    //card.transform.localEulerAngles = new Vector3(0, 0, normalizedIndex * maxRotationDegrees);
+                    card.transform.localEulerAngles = new Vector3(0, 0, 0);
                     IEnumerator animation = AnimationManager.Instance.SimpleTranslate(
                         card.transform,
                         targetPosition,

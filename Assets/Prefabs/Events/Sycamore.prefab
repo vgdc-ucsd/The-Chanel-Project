@@ -130,10 +130,10 @@ MonoBehaviour:
   - Line: Its usual serenity is long gone, with a saddle on its back and a harness
       around its head, the world turtle trudges mindlessly forward.
     TextSpeed: 20
-  - Line: ' A hooded figure sat atop snickers sharply. His eyes scan you several
-      times, almost appalled at what he sees.'
+  - Line: A hooded figure sat atop snickers sharply. His eyes scan you several times,
+      almost appalled at what he sees.
     TextSpeed: 20
-  - Line: "Oh dear\u2026 you think you\u2019re going to defeat the cult leader?\u201D
+  - Line: "\"Oh dear\u2026 you think you\u2019re going to defeat the cult leader?\"
       He sighs deeply and plants his forehead in his palm, appearing lost in thought."
     TextSpeed: 20
   - Line: "After a brief moment, he looks up again, and breaks into an uncontrollably

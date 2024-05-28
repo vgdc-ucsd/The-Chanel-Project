@@ -32,10 +32,8 @@ public class ClioEvent : MonoBehaviour
     {
         if (EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
-        Debug.Log("misery");
 
-        // TODO
-
+        PersistentData.Instance.HealthOverride = 7;
 
         EventManager.Instance.FinishEvent();
     }
