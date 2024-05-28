@@ -26,7 +26,7 @@ IPointerExitHandler
     [HideInInspector] public bool initialized;
     // public int row = 1;
     public Point point;
-    private MapGenerator mapGenerator;
+    private MapGeneration mapGenerator;
     private MapCharacterController character;
 
     public Image image;
@@ -34,7 +34,7 @@ IPointerExitHandler
 
     private void Start()
     {
-        mapGenerator = FindObjectOfType<MapGenerator>();
+        mapGenerator = FindObjectOfType<MapGeneration>();
         character = mapGenerator.character;
     }
 
@@ -43,7 +43,7 @@ IPointerExitHandler
         // Initialize here because it is called after Start
         if (!initialized)
         {
-            visited = gameObject == mapGenerator.startInstace;
+            visited = gameObject == mapGenerator.startInstance;
             if (visited == true)
             {
                 foreach (var node in nextNodes)
