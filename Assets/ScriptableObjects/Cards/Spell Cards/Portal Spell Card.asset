@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Warping Portal
   ManaCost: 2
   ShopCost: 0
-  Artwork: {fileID: 0}
+  Artwork: {fileID: 21300000, guid: a4c9d39309f695941be261ed2ab7fd67, type: 3}
   drawStatus: 0
   id: 0
   description: Teleports an ally or enemy card to the frontmost row. If another card

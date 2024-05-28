@@ -127,6 +127,16 @@ public class PersistentData : MonoBehaviour
         {
             CurrentEncounter = completedEncounters[UnityEngine.Random.Range(0, completedEncounters.Count - 1)];
         }
+
+        // Choose deck of strength 1 to 3 if not preset, difficulty depends on encounters finished
+        if (CurrentEncounter.EnemyDeck == null) {
+            int deckIndex;
+            if (EncountersFinished < 1) deckIndex = 0;
+            else if (EncountersFinished < 3) deckIndex = 1;
+            else deckIndex = 2;
+            CurrentEncounter.EnemyDeck = CurrentEncounter.EnemyDecks[deckIndex];
+        }
+
         ++EncountersFinished;
 
         // Randomize gold reward

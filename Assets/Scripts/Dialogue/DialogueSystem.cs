@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +24,7 @@ public class DialogueSystem : MonoBehaviour
     public TextMeshProUGUI CharacterNameText;
     public Image CharacterImage;
 
-    private Queue<Dialogue> dialogueQueue;    
+    private Queue<Dialogue> dialogueQueue;
     private Coroutine dialogueCoroutineRef;
     private float startTime;
     private bool finishedText;
@@ -48,7 +50,7 @@ public class DialogueSystem : MonoBehaviour
     void Update()
     {
         // TODO use button name from input manager instead of hard coded button
-        if(Input.GetKeyDown(KeyCode.Space)) {
+        if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
             AdvanceDialogue();
         }
     }

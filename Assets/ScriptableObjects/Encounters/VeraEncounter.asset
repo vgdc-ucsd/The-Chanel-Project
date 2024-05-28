@@ -41,7 +41,11 @@ MonoBehaviour:
     ShowEnemyHand: 0
     DisableWinning: 0
   EnemyArt: {fileID: 21300000, guid: fc17f1c8c2ec552438215c0392cc4fe9, type: 3}
-  EnemyDeck: {fileID: 11400000, guid: 1ae85ab867b12cb458ccb53e082d8a90, type: 2}
+  EnemyDecks:
+  - {fileID: 11400000, guid: a25c8435e9e32fc4681d71e0f9dbdf41, type: 2}
+  - {fileID: 11400000, guid: 1ae85ab867b12cb458ccb53e082d8a90, type: 2}
+  - {fileID: 11400000, guid: 11d3ec80c27be2742af4b6227418997a, type: 2}
+  EnemyDeck: {fileID: 0}
   RewardGold: 118
   CardOffers:
   - {fileID: 11400000, guid: c39ab0e8a3dfc1742a87be83397d457c, type: 2}
