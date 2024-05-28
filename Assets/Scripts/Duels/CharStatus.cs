@@ -32,6 +32,10 @@ public class CharStatus
 
         Mana = playerSettings.StartingMana;
         Health = playerSettings.StartingHealth;
+        if(team == Team.Player && PersistentData.Instance.HealthOverride > 0) {
+            Health = PersistentData.Instance.HealthOverride;
+            PersistentData.Instance.HealthOverride = -1;
+        }
         IsAlive = true;
         MaxHealth = playerSettings.MaxHealth;
         MaxMana = playerSettings.MaxMana;

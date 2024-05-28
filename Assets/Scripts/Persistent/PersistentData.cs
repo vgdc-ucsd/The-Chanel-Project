@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,6 +13,9 @@ public class PersistentData : MonoBehaviour
 
     public Deck ImportDeck;
     public int EncountersFinished = 0;
+    public List<Encounter> possibleEncounters;
+    public List<Encounter> completedEncounters;
+    public int HealthOverride = -1;
 
     public List<Card> ShopOffers = new List<Card>();
 
@@ -25,7 +29,7 @@ public class PersistentData : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
 
-        
+
 
         if (ImportDeck != null)
         {
@@ -57,6 +61,7 @@ public class PersistentData : MonoBehaviour
                 Inventory.InactiveCards.Add(card);
             }
         }
+
         EncountersFinished = 0;
     }
 
@@ -96,19 +101,30 @@ public class PersistentData : MonoBehaviour
         }
     }
 
-    /* 
+    /*
      * Sets the variable encounter data (rewards, difficulty etc) immediately before
      * starting the next encounter
      */
     public void SetEncounterStats()
     {
+        if (possibleEncounters.Count > 0)
+        {
+            CurrentEncounter = possibleEncounters[UnityEngine.Random.Range(0, possibleEncounters.Count - 1)];
+            possibleEncounters.Remove(CurrentEncounter);
+            completedEncounters.Add(CurrentEncounter);
+        }
+        else if (completedEncounters.Count > 0)
+        {
+            CurrentEncounter = completedEncounters[UnityEngine.Random.Range(0, completedEncounters.Count - 1)];
+        }
+
         // Randomize gold reward
         CurrentEncounter.RewardGold = (int)((GameData.BASE_GOLD + EncountersFinished * GameData.GOLD_SCALING)
                                         * UnityEngine.Random.Range(1 - GameData.GOLD_VARIANCE, 1 + GameData.GOLD_VARIANCE));
-        
+
         // Randomize card reward based on progression
         List<Card> rewardPool;
-        if (EncountersFinished < GameData.MED_CARDS_CUTOFF) 
+        if (EncountersFinished < GameData.MED_CARDS_CUTOFF)
             rewardPool = GameData.Instance.GetCardsOfTypes(new List<CardType> { CardType.Weak });
         else if (EncountersFinished < GameData.STRONG_CARDS_CUTOFF)
             rewardPool = GameData.Instance.GetCardsOfTypes(new List<CardType> { CardType.Weak, CardType.Medium });
@@ -128,7 +144,7 @@ public class PersistentData : MonoBehaviour
         while (i < GameData.CARD_REWARD_CHOICES)
         {
             Card cardToAdd = rewardPool[UnityEngine.Random.Range(0, rewardPool.Count)];
-            if (!rewardCards.Contains(cardToAdd) && 
+            if (!rewardCards.Contains(cardToAdd) &&
                 !(spellAdded && cardToAdd.cardType == CardType.Spell)) // prevent more than 1 spell card per reward
             {
                 if (cardToAdd.cardType == CardType.Spell) spellAdded = true;

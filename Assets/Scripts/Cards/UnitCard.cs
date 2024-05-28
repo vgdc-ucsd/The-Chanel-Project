@@ -39,6 +39,7 @@ public class UnitCard : Card
     public List<StatusEffect> StatusEffects = new List<StatusEffect>(); // for effect stacking calculations, order preserved
     public UnitStats baseStats = new UnitStats();
 
+    public bool isTemp = false;
 
     public override Card Clone() {
         UnitCard copy = (UnitCard) ScriptableObject.CreateInstance("UnitCard");
@@ -116,7 +117,8 @@ public class UnitCard : Card
             foreach(Ability a in Abilities) {
                 if (a.Condition == ActivationCondition.OnDeath) a.Activate(this, info);
             }
-            duel.GetStatus(CurrentTeam).Deck.Discard(this);
+            if (!isTemp)
+                duel.GetStatus(CurrentTeam).Deck.Discard(this);
         }
     }
 

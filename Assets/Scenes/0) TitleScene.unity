@@ -1305,6 +1305,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: possibleEncounters.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: possibleEncounters.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 147b637de0f6327479c22febc516e9b8, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: possibleEncounters.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: b1a9bde8e83068945bfe61e863dd133e, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: possibleEncounters.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 36cb253a118ae5c4399172ee9d3952bd, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: possibleEncounters.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f2f6be4fe8994947934ad3dd0a89365, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: possibleEncounters.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: e8838c3944b1cc34d86089e60b1a7e32, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: possibleEncounters.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9dfccc11df378e44e9c0af910b013dad, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: possibleEncounters.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0bf78d829afae514c90ee22cb6debf39, type: 2}
     - target: {fileID: 8074719806751530725, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: m_Name
       value: PersistentData
