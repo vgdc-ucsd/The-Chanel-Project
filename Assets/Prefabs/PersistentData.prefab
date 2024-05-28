@@ -146,9 +146,12 @@ MonoBehaviour:
     - {fileID: 11400000, guid: e7bb028145f1efc45ae1da90255731d8, type: 2}
     - {fileID: 11400000, guid: c1af7b6de9f691a4ebd260c395c4f39f, type: 2}
     - {fileID: 11400000, guid: 96538df7e080c6446bc14ab009715f80, type: 2}
+    Gold: 0
   mapInfo: {fileID: 11400000, guid: 63f54fb4a911fb647896b2ddea38335e, type: 2}
   ImportDeck: {fileID: 0}
   EncountersFinished: 0
+  HealthOverride: -1
+  ShopOffers: []
   CurrentEncounter: {fileID: 11400000, guid: a92bed907e362f04f81c42e688defbb9, type: 2}
 --- !u!114 &5186411577442620811
 MonoBehaviour:
