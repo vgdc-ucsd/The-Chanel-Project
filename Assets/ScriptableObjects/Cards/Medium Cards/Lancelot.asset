@@ -18,7 +18,7 @@ MonoBehaviour:
   Artwork: {fileID: 21300000, guid: df4fca44c96fd7648811c9ec1c97298e, type: 3}
   drawStatus: 2
   id: 0
-  description: 'Overkill damage pierces through targets and damages the enemy behind
+  description: 'Overkill damage pierces through target and damages the enemy behind
     them. '
   CurrentTeam: 2
   cardType: 0

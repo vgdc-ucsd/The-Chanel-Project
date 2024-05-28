@@ -18,7 +18,7 @@ MonoBehaviour:
   Artwork: {fileID: 21300000, guid: f017c6b316d43474fb22095335725566, type: 3}
   drawStatus: 0
   id: 0
-  description: Upon taking damage, Sphinx will only die if also taking Overkill Damage.
+  description: Can only die to exact damage.
   CurrentTeam: 2
   cardType: 1
   Health: 4
