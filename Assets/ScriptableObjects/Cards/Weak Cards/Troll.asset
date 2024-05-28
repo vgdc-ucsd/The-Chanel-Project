@@ -34,3 +34,4 @@ MonoBehaviour:
     damage: 2
   Abilities: []
   StatusEffects: []
+  isTemp: 0

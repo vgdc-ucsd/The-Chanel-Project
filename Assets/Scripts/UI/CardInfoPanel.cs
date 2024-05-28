@@ -19,9 +19,29 @@ public class CardInfoPanel : MonoBehaviour
     public TextMeshProUGUI Health;
     public TextMeshProUGUI Atk;
 
+    void Awake() {
+        InitializeCardInfoPanel(DuelManager.Instance.PlayerDeck.RandomAvailableCard());
+    }
+
+    public void InitializeCardInfoPanel(Card c) {
+        if (c is UnitCard) {
+            UpdateInfoPanelUnitCard((UnitCard)c);
+        }
+        else if (c is SpellCard) {
+            UpdateInfoPanelSpellCard((SpellCard)c);
+        }
+        else {
+            CardName.text = "";
+            Description.text = "";
+            Mana.text = "";
+            Health.text = "";
+            Atk.text = "";
+        }
+    }
+
     public void UpdateInfoPanelUnitCard(UnitCard uc) {
         CardName.text = uc.Name;
-        Description.text = uc.description;
+        Description.text = "Abilities:\n" + (uc.description.Equals("") ? "None" : uc.description);
         if(currentCard != null) Destroy(currentCard.gameObject);
         SetCardInteractable(uc);
         ((UnitCardInteractable)currentCard).DrawArrows();
