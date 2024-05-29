@@ -163,6 +163,8 @@ public class MapGeneration : MonoBehaviour
         DrawNodes();
         DrawPaths();
 
+        LockSiblingNodes(lastVisitedNode);
+
         Vector2 charPos = startNode.GetComponent<RectTransform>().localPosition;
         character.SetPosition(charPos);
 
@@ -198,68 +200,6 @@ public class MapGeneration : MonoBehaviour
 
     public void LoadMap(MapInfo mapInfo)
     {
-        // for (int i = 0; i < mapInfo.nodePoints.Count; i++)
-        // {
-        //     Point point = mapInfo.nodePoints[i];
-        //     newNode.GetComponent<RectTransform>().localPosition += new Vector3(newNode.point.x * 120, newNode.point.y * 100, 0);
-        //     if (newNode.point.x % 2 == 1)
-        //     {
-        //         newNode.GetComponent<RectTransform>().localPosition += new Vector3(0, 50);
-        //     }
-
-        //     Vector2 pos = new Vector2(OrientingPosition.x + (point.x * distanceBetweenNodes) + (point.y * XOffsetDistanceBetweenRows), OrientingPosition.y + (point.y * heightBetweenRows));
-        //     GameObject mapTypePrefab = null;
-        //     switch (mapInfo.nodeTypes[i])
-        //     {
-        //         case MapNodeType.Start:
-        //             mapTypePrefab = start;
-        //             break;
-        //         case MapNodeType.Encounter:
-        //             mapTypePrefab = Encounter;
-        //             break;
-        //         case MapNodeType.Event:
-        //             mapTypePrefab = Event;
-        //             break;
-        //         case MapNodeType.Shop:
-        //             mapTypePrefab = Shop;
-        //             break;
-        //         case MapNodeType.Boss:
-        //             mapTypePrefab = Boss;
-        //             break;
-        //         case MapNodeType.Exit:
-        //             mapTypePrefab = exit;
-        //             break;
-        //     }
-
-        //     if (mapTypePrefab == null)
-        //     {
-        //         Debug.Log("MapTypePrefab is null in LoadMap()");
-        //     }
-
-        //     GameObject instantiated = Instantiate(mapTypePrefab, pos, transform.rotation, contents.transform);
-        //     MapNode instantiatedMapNode = instantiated.GetComponent<MapNode>();
-
-        //     if (point.y == 0) row1.Add(instantiated);
-        //     else if (point.y == 1) row2.Add(instantiated);
-        //     else if (point.y == 2) row3.Add(instantiated);
-
-        //     allNodes.Add(instantiated);
-
-        //     if (mapTypePrefab == start) startInstace = instantiated;
-        //     if (mapTypePrefab == exit) exitInstace = instantiated;
-
-        //     instantiatedMapNode.point = point;
-        //     instantiatedMapNode.connections = mapInfo.nodeConnections[i].connections;
-        //     instantiatedMapNode.visited = mapInfo.nodeVisited[i];
-        //     instantiatedMapNode.initialized = true;
-        //     instantiated.tag = "UsedNodes";
-
-        //     instantiated.GetComponent<RectTransform>().localPosition += offsetPosition;
-        // }
-
-        // the code block above checks node type, instantiates the correct map node at the correct position, adds to allNodes list, ensures all mapNode fields are set
-        // it also sets startInstance and exitInstance
-
         // Initialize mapNodes list to be non-null
         mapNodes = new List<MapNode[]>();
         for (int i = 0; i <= mapCol; i++)
@@ -465,10 +405,10 @@ public class MapGeneration : MonoBehaviour
                 {
                     newNode.transform.SetParent(mapContainer);
 
-                    newNode.GetComponent<RectTransform>().localPosition += new Vector3(newNode.point.x * 104, newNode.point.y * 100, 0);
+                    newNode.GetComponent<RectTransform>().localPosition += new Vector3(newNode.point.x * 80, newNode.point.y * 90, 0);
                     if (newNode.point.x % 2 == 1)
                     {
-                        newNode.GetComponent<RectTransform>().localPosition += new Vector3(0, 50);
+                        newNode.GetComponent<RectTransform>().localPosition += new Vector3(0, 45);
                     }
                     newNode.DrawMapNodeType();
                 }
@@ -545,5 +485,4 @@ public class MapGeneration : MonoBehaviour
             nextNode.locked = false;
         }
     }
-
 }
