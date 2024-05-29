@@ -27,10 +27,20 @@ public class EventManager : MonoBehaviour
             FinishEvent();
             return;
         }
-        int randomIndex = Random.Range(0, PersistentData.Instance.PossibleEvents.Count);
-        GameObject selectedEvent = Instantiate(PersistentData.Instance.PossibleEvents[randomIndex]);
-        PersistentData.Instance.CompletedEvents.Add(PersistentData.Instance.PossibleEvents[randomIndex]);
-        PersistentData.Instance.PossibleEvents.RemoveAt(randomIndex);
+
+        GameObject selectedEvent;
+        
+        if(PersistentData.Instance.FirstEvent) {
+            PersistentData.Instance.FirstEvent = false;
+            selectedEvent = Instantiate(PersistentData.Instance.OutlawEvent);
+        }
+        else {
+            int randomIndex = Random.Range(0, PersistentData.Instance.PossibleEvents.Count);
+            selectedEvent = Instantiate(PersistentData.Instance.PossibleEvents[randomIndex]);
+            PersistentData.Instance.CompletedEvents.Add(PersistentData.Instance.PossibleEvents[randomIndex]);
+            PersistentData.Instance.PossibleEvents.RemoveAt(randomIndex);
+        }
+        
         selectedEvent.transform.SetParent(this.transform);
     }
 

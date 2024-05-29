@@ -17,10 +17,12 @@ public class PersistentData : MonoBehaviour
     public List<Encounter> completedEncounters;
     public List<GameObject> PossibleEvents;
     public List<GameObject> CompletedEvents;
+    public GameObject OutlawEvent;
     public int HealthOverride = -1;
     public VsScreenState VsState;
 
     public List<Card> ShopOffers = new List<Card>();
+    public bool FirstEvent = true;
 
     private void Awake()
     {
