@@ -94,7 +94,7 @@ public class DuelManager : MonoBehaviour
 
         // Draw staring cards
         AnimationManager.Instance.Enqueue(MainDuel.DrawStartingCards());
-        FMODUnity.RuntimeManager.PlayOneShot("event:/CardShuffle", transform.position);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardShuffle", transform.position);
 
         // Music
         if(CurrentEncounter.boss != null) {
@@ -139,7 +139,7 @@ public class DuelManager : MonoBehaviour
 
         AnimationManager.Instance.UpdateUIAnimation(MainDuel);
 
-        FMODUnity.RuntimeManager.PlayOneShot("event:/CardDraw", transform.position);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardDraw", transform.position);
     }
 
     // triggered by button

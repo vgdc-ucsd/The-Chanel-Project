@@ -18,6 +18,7 @@ public class RewardManager : MonoBehaviour
 
     public TMP_Text goldText;
     public TMP_Text incText;
+    public TextMeshProUGUI ManaCostText;
 
     void Awake() {
         // Singleton
@@ -76,23 +77,30 @@ public class RewardManager : MonoBehaviour
         }
 
         StartCoroutine(ChangeScene());
-        FMODUnity.RuntimeManager.PlayOneShot("event:/CardReward"); 
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardReward"); 
     }
 
     private IEnumerator CardAppearAnimation() {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardShuffle");
+
         yield return null;
 
         foreach(CardInteractable ci in cardInteractables) {
-            IEnumerator ie = AnimationManager.Instance.SimpleTranslate(
+            yield return AnimationManager.Instance.SimpleTranslate(
                 ci.transform,
                 ci.transform.parent.position,
                 duration,
                 InterpolationMode.Slerp);
-            QueueableAnimation qa = new QueueableAnimation(ie, delay);
-            AnimationManager.Instance.Enqueue(qa);
-        }
+            //QueueableAnimation qa = new QueueableAnimation(ie, delay);
+            //AnimationManager.Instance.Enqueue(qa);
 
-        FMODUnity.RuntimeManager.PlayOneShot("event:/CardShuffle");
+            // Mana cost
+            TextMeshProUGUI manaCost = Instantiate(ManaCostText);
+            manaCost.gameObject.SetActive(true);
+            manaCost.transform.SetParent(ci.transform.parent);
+            manaCost.text = "Mana Cost: " + ci.GetCard().ManaCost;
+            manaCost.transform.localPosition = new Vector3(0.0f, 60f, 0.0f);
+        }
     }
 
     private IEnumerator ChangeScene() {

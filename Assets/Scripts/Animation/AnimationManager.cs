@@ -128,7 +128,7 @@ public class AnimationManager : MonoBehaviour
         // animation
         yield return SimpleTranslate(cardTransform, windupPos, windupDuration, mode);
         yield return SimpleTranslate(cardTransform, launchPos, launchDuration, mode);
-        FMODUnity.RuntimeManager.PlayOneShot("event:/CardAttack", transform.position); // Damage SFX
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardAttack", transform.position); // Damage SFX
 
 
         yield return SimpleTranslate(cardTransform, startPos, recoverDuration, mode);
@@ -168,7 +168,7 @@ public class AnimationManager : MonoBehaviour
         }
 
         // Card Death
-        FMODUnity.RuntimeManager.PlayOneShot("event:/CardDeath", transform.position); // SFX
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardDeath", transform.position); // SFX
 
         yield return SimpleTranslateThenRotate(cardTransform, discardPile.position, duration, InterpolationMode.EaseOut);
     }
@@ -275,7 +275,7 @@ public class AnimationManager : MonoBehaviour
                 }
             }
 
-            FMODUnity.RuntimeManager.PlayOneShot("event:/CardDraw", transform.position); // SFX
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardDraw", transform.position); // SFX
         }
         // draw then shuffle then draw
         else if(drawPile.childCount < cards.Count && drawPile.childCount+discardPile.childCount >= cards.Count) {
@@ -364,7 +364,7 @@ public class AnimationManager : MonoBehaviour
             Destroy(cardBack);
 
             // SFX
-            FMODUnity.RuntimeManager.PlayOneShot("event:/CardPlace", transform.position);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardPlace", transform.position);
 
             UIManager.Instance.Enemy.decreaseMana(c.ManaCost);
             // translation animation
@@ -411,7 +411,7 @@ public class AnimationManager : MonoBehaviour
             Destroy(cardBack);
 
             // SFX
-            FMODUnity.RuntimeManager.PlayOneShot("event:/CardPlace", transform.position);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardPlace", transform.position);
 
             // translation animation
             yield return SimpleTranslate(scRef.transform, tile.transform.position, speed, InterpolationMode.EaseOut);
@@ -420,7 +420,7 @@ public class AnimationManager : MonoBehaviour
 
     public IEnumerator MoveCard(UnitCard uc, Transform targetPos, float speed) {
         // SFX
-        FMODUnity.RuntimeManager.PlayOneShot("event:/CardMove", transform.position);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardMove", transform.position);
 
         yield return SimpleTranslate(uc.UnitCardInteractableRef.transform, targetPos.position, speed, InterpolationMode.EaseOut);
         uc.UnitCardInteractableRef.UpdateCardPos();
@@ -477,7 +477,7 @@ public class AnimationManager : MonoBehaviour
         }
 
         text.color = normalColor;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/PlayerHurt"); // SFX for when Player gets hurt
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/PlayerHurt"); // SFX for when Player gets hurt
     }
 
     private IEnumerator DamageFlashPlayer(PlayerUI status, int newHealth, float duration) {
@@ -522,7 +522,7 @@ public class AnimationManager : MonoBehaviour
 
         text.color = normalColor;
 
-        FMODUnity.RuntimeManager.PlayOneShot("event:/PlayerHurt"); // SFX for when Player gets hurt
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/PlayerHurt"); // SFX for when Player gets hurt
     }
 
     private IEnumerator DrawArrows(UnitCardInteractable uci) {
@@ -657,7 +657,7 @@ public class AnimationManager : MonoBehaviour
         }
 
         uc.UnitCardInteractableRef.Glow.color = Color.white;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/CardAbility");
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardAbility");
 
         // fade out
         startTime = Time.time;

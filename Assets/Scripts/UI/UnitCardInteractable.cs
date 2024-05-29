@@ -154,7 +154,7 @@ public class UnitCardInteractable : CardInteractable,
             //handInterface.OrganizeCards();
         }
 
-        FMODUnity.RuntimeManager.PlayOneShot("event:/CardPlace", transform.position);
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardPlace", transform.position);
     }
 
     public void UpdateCardPos()
@@ -199,7 +199,7 @@ public class UnitCardInteractable : CardInteractable,
             if (!charStatus.CanUseMana(card.ManaCost))
             {
                 Debug.Log("Not enough Mana"); //TODO: UI feedback
-                FMODUnity.RuntimeManager.PlayOneShot("event:/NoMana"); // SFX
+                FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/NoMana"); // SFX
 
                 return;
             }
@@ -221,7 +221,7 @@ public class UnitCardInteractable : CardInteractable,
         }
         base.OnBeginDrag(eventData);
 
-        FMODUnity.RuntimeManager.PlayOneShot("event:/CardSlide", transform.position); // Only want for when clicked/moving from deck
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardSlide", transform.position); // Only want for when clicked/moving from deck
     }
 
     public override void OnEndDrag(PointerEventData eventData)
