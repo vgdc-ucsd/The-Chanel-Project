@@ -14,6 +14,8 @@ public class MapGeneration : MonoBehaviour
     [Header("Map Settings")]
     public int mapCol;
     public Vector3 mapOffset;
+    [Range(0, 1f)]
+    public float lineLength;
 
     [Header("References")]
     public MapNode mapNodeTemplate;
@@ -164,6 +166,7 @@ public class MapGeneration : MonoBehaviour
         DrawPaths();
 
         LockSiblingNodes(lastVisitedNode);
+        lastVisitedNode.GetComponent<Image>().color = Color.white;
 
         Vector2 charPos = startNode.GetComponent<RectTransform>().localPosition;
         character.SetPosition(charPos);
@@ -299,8 +302,9 @@ public class MapGeneration : MonoBehaviour
     private void PlaceShops()
     {
         int i = 0;
-        foreach (MapNode[] arr in mapNodes)
+        for (int j = 0; j < mapNodes.Count - 1; j++)
         {
+            MapNode[] arr = mapNodes[j];
             foreach (MapNode node in arr)
             {
                 if (node != null)
@@ -325,6 +329,33 @@ public class MapGeneration : MonoBehaviour
                 }
             }
         }
+
+        // foreach (MapNode[] arr in mapNodes)
+        // {
+        //     foreach (MapNode node in arr)
+        //     {
+        //         if (node != null)
+        //         {
+        //             i++;
+        //             if (node != null && node.mapNodeType != MapNodeType.Event)
+        //             {
+        //                 if (i >= MAX_SHOP_DIST)
+        //                 {
+        //                     node.mapNodeType = MapNodeType.Shop;
+        //                     i = 0;
+        //                 }
+        //                 else if (i >= MIN_SHOP_DIST)
+        //                 {
+        //                     if (Random.value < SHOP_CHANCE)
+        //                     {
+        //                         node.mapNodeType = MapNodeType.Shop;
+        //                         i = 0;
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     private void CreatePath(MapNode node, MapNode exitNode)
@@ -432,14 +463,13 @@ public class MapGeneration : MonoBehaviour
                         Vector3 vector = nextNode.GetComponent<RectTransform>().localPosition - node.GetComponent<RectTransform>().localPosition;
                         vector.z = 0;
 
-                        // MAGIC NUMBERS HERE (0.2f)
-                        Vector3 pos1 = node.transform.position + (0.2f * vector);
-                        Vector3 pos2 = nextNode.transform.position - (0.2f * vector);
+                        Vector3 pos1 = node.transform.position + ((1 - lineLength) / 2f * vector);
+                        Vector3 pos2 = nextNode.transform.position - ((1 - lineLength) / 2f * vector);
 
-                        // lr.SetPosition(0, node.transform.position);
                         lr.SetPosition(0, pos1);
-                        // lr.SetPosition(1, nextNode.transform.position);
                         lr.SetPosition(1, pos2);
+                        // lr.SetPosition(0, node.transform.position);
+                        // lr.SetPosition(1, nextNode.transform.position);
                     }
             }
         }
