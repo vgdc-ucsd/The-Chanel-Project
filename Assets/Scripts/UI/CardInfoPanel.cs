@@ -21,18 +21,23 @@ public class CardInfoPanel : MonoBehaviour
     public TextMeshProUGUI Health;
     public TextMeshProUGUI Atk;
 
-    void Awake() {
-        //InitializeCardInfoPanel(blankCard);
+    void Awake()
+    {
+        InitializeCardInfoPanel(null);
     }
 
-    public void InitializeCardInfoPanel(Card c) {
-        if (c is UnitCard) {
+    public void InitializeCardInfoPanel(Card c)
+    {
+        if (c is UnitCard)
+        {
             UpdateInfoPanelUnitCard((UnitCard)c);
         }
-        else if (c is SpellCard) {
+        else if (c is SpellCard)
+        {
             UpdateInfoPanelSpellCard((SpellCard)c);
         }
-        else {
+        else
+        {
             CardName.text = "";
             Description.text = "";
             Mana.text = "";
@@ -41,11 +46,12 @@ public class CardInfoPanel : MonoBehaviour
         }
     }
 
-    public void UpdateInfoPanelUnitCard(UnitCard uc) {
+    public void UpdateInfoPanelUnitCard(UnitCard uc)
+    {
         EnablePanel();
         CardName.text = uc.Name;
         Description.text = "<B>Description:</B>\n" + (uc.description.Equals("") ? "None" : uc.description);
-        if(currentCard != null) Destroy(currentCard.gameObject);
+        if (currentCard != null) Destroy(currentCard.gameObject);
         SetCardInteractable(uc);
         ((UnitCardInteractable)currentCard).DrawArrows();
     }
@@ -66,7 +72,8 @@ public class CardInfoPanel : MonoBehaviour
         currentCard.CanInteract = false;
     }
 
-    public void UpdateInfoPanelSpellCard(SpellCard sc) {
+    public void UpdateInfoPanelSpellCard(SpellCard sc)
+    {
         EnablePanel();
         CardName.text = sc.Name;
         Description.text = "<B>Description:</B>\n" + (sc.description.Equals("") ? "None" : sc.description);
@@ -78,7 +85,8 @@ public class CardInfoPanel : MonoBehaviour
         currentCard.CanInteract = false;
     }
 
-    public void SetCardInteractable(Card c) {
+    public void SetCardInteractable(Card c)
+    {
         // TODO use base stats
         Card card = c.Clone();
         card.CurrentTeam = Team.Neutral;
@@ -89,7 +97,8 @@ public class CardInfoPanel : MonoBehaviour
         currentCard.CardCost.enabled = true;
     }
 
-    public void EnablePanel() {
+    public void EnablePanel()
+    {
         CardName.gameObject.SetActive(true);
         Description.gameObject.SetActive(true);
     }
