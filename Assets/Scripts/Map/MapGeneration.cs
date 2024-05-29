@@ -405,10 +405,11 @@ public class MapGeneration : MonoBehaviour
                 {
                     newNode.transform.SetParent(mapContainer);
 
-                    newNode.GetComponent<RectTransform>().localPosition += new Vector3(newNode.point.x * 80, newNode.point.y * 90, 0);
+                    // MAGIC NUMBERS HERE
+                    newNode.GetComponent<RectTransform>().localPosition += new Vector3(newNode.point.x * 79.16f, newNode.point.y * 91.703f, 0);
                     if (newNode.point.x % 2 == 1)
                     {
-                        newNode.GetComponent<RectTransform>().localPosition += new Vector3(0, 45);
+                        newNode.GetComponent<RectTransform>().localPosition += new Vector3(0, 91.703f / 2f);
                     }
                     newNode.DrawMapNodeType();
                 }
@@ -427,8 +428,18 @@ public class MapGeneration : MonoBehaviour
                     {
                         LineRenderer lr = Instantiate(pathTemplate);
                         lr.transform.SetParent(node.transform);
-                        lr.SetPosition(0, node.transform.position);
-                        lr.SetPosition(1, nextNode.transform.position);
+
+                        Vector3 vector = nextNode.GetComponent<RectTransform>().localPosition - node.GetComponent<RectTransform>().localPosition;
+                        vector.z = 0;
+
+                        // MAGIC NUMBERS HERE (0.2f)
+                        Vector3 pos1 = node.transform.position + (0.2f * vector);
+                        Vector3 pos2 = nextNode.transform.position - (0.2f * vector);
+
+                        // lr.SetPosition(0, node.transform.position);
+                        lr.SetPosition(0, pos1);
+                        // lr.SetPosition(1, nextNode.transform.position);
+                        lr.SetPosition(1, pos2);
                     }
             }
         }
