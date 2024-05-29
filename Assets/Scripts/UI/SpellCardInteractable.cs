@@ -67,6 +67,13 @@ public class SpellCardInteractable : CardInteractable
     public override void OnPointerEnter(PointerEventData eventData)
     {
         base.OnPointerEnter(eventData);
+
+        // Inventory stuff
+        if (mode == CIMode.Inventory)
+        {
+            InventoryUI.Instance.inventoryInfoPanel.UpdateInfoPanelSpellCard(this.card);
+        }
+
         if (mode != CIMode.Duel) return;
         UIManager.Instance.InfoPanel.UpdateInfoPanelSpellCard(this.card);
         if (!CanInteract || !inHand) return;
