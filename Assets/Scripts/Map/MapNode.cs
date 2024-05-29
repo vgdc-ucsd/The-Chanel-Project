@@ -95,6 +95,7 @@ IPointerExitHandler
         // Character script moves and then loads new scene
         Vector2 endPos = GetComponent<RectTransform>().localPosition + transform.parent.GetComponent<RectTransform>().localPosition;
         character.Move(endPos, this);
+        PersistentData.Instance.SetEncounterStats();
     }
 
     /// <summary>

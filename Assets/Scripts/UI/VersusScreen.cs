@@ -42,8 +42,6 @@ public class VersusScreen : MonoBehaviour
             characterAudio = PersistentData.Instance.CurrentEncounter.LoseAudio;
         }
         else {
-            PersistentData.Instance.SetEncounterStats();
-
             Background.sprite = VsBG;
             Logo.sprite = VsLogo;
             characterAudio = PersistentData.Instance.CurrentEncounter.EncounterAudio;

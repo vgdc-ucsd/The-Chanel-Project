@@ -2030,7 +2030,7 @@ PrefabInstance:
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: possibleEncounters.Array.data[5]
       value: 
-      objectReference: {fileID: 11400000, guid: 9dfccc11df378e44e9c0af910b013dad, type: 2}
+      objectReference: {fileID: 11400000, guid: 238f92a85bf11dd498c29d617429abb7, type: 2}
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: possibleEncounters.Array.data[6]
       value: 

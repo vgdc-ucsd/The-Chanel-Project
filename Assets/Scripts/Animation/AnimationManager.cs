@@ -223,7 +223,7 @@ public class AnimationManager : MonoBehaviour
         card.SpellCardInteractableRef.CanInteract = false;
         cardTransform.SetParent(discardPile);
         cardTransform.transform.localScale = new Vector3(0.8f, 0.8f, 1.0f);
-        yield return SimpleTranslate(cardTransform, discardPile.position, 0.5f, InterpolationMode.Linear);
+        yield return SimpleTranslateThenRotate(cardTransform, discardPile.position, 0.5f, InterpolationMode.Linear);
     }
 
     public IEnumerator OrganizeCards(Team team) {

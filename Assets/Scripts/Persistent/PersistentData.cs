@@ -15,6 +15,8 @@ public class PersistentData : MonoBehaviour
     public int EncountersFinished = 0;
     public List<Encounter> possibleEncounters;
     public List<Encounter> completedEncounters;
+    public List<GameObject> PossibleEvents;
+    public List<GameObject> CompletedEvents;
     public int HealthOverride = -1;
     public VsScreenState VsState;
 
