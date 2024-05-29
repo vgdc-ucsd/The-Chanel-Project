@@ -252,11 +252,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -457318928
-      Data2: 1126485167
-      Data3: -940003961
-      Data4: -2018091342
-    Path: event:/duel-ver1-draft1
+      Data1: -506123890
+      Data2: 1229595687
+      Data3: 1244530313
+      Data4: 1979800751
+    Path: event:/Music/tcp-duel
   Event: 
   PlayEvent: 1
   StopEvent: 2
