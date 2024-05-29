@@ -31,7 +31,7 @@ public class SycamoreEvent : MonoBehaviour
         PersistentData.Instance.Inventory.InactiveCards.Add(rewardCard2Template.Clone());
         PersistentData.Instance.SetNextEncounter(sycamoreEncounter);
         StartCoroutine(AnimationManager.Instance.ShowChangedCards(
-            new List<Card> { rewardCard2Template }, center, MenuScript.DUEL_INDEX));
+            new List<Card> { rewardCard2Template }, center, MenuScript.VERSUS_INDEX));
 
     }
 }

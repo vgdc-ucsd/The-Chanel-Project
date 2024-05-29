@@ -36,6 +36,6 @@ public class OutlawEvent : MonoBehaviour
         else EventManager.Instance.OptionSelected = true;
 
         PersistentData.Instance.CurrentEncounter = OutlawEncounters[OutlawEncounters.Count - 1];
-        EventManager.Instance.FinishEvent(MenuScript.DUEL_INDEX);
+        EventManager.Instance.FinishEvent(MenuScript.VERSUS_INDEX);
     }
 }
