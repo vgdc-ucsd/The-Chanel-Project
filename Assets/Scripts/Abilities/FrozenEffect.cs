@@ -11,7 +11,7 @@ public class FrozenEffect : StatusEffect
 
     public override ActivationCondition Condition
     {
-        get { return ActivationCondition.OnBeginOppositeTurn; }
+        get { return ActivationCondition.OnBeginTurn; }
     }
 
 
