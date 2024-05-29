@@ -167,6 +167,7 @@ MonoBehaviour:
   - {fileID: 3759208247752327063, guid: 2a8d6bd5e93cb074d810f920580448d8, type: 3}
   - {fileID: 3759208247752327063, guid: 4bf8fc3c837b91a4aae40eed91cc5c25, type: 3}
   - {fileID: 3759208247752327063, guid: 28565dd499ab23f41803654915da7740, type: 3}
+  - {fileID: 3759208247752327063, guid: 11e078d7c465408429cf65c1c6cf6e91, type: 3}
   CompletedEvents: []
   HealthOverride: -1
   VsState: 0
