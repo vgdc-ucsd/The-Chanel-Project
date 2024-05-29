@@ -60,6 +60,7 @@ public class MenuScript : MonoBehaviour
         PersistentData.Instance.mapInfo.nodePoints = new();
         PersistentData.Instance.mapInfo.nodeTypes = new();
         PersistentData.Instance.mapInfo.nodeConnections = new();
+        PersistentData.Instance.mapInfo.nodeVisited = new();
         PersistentData.Instance.mapInfo.lastVisitedNode = new(0, 0);
     }
 

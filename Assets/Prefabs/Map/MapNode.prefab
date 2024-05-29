@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3899294230495701110
+--- !u!1 &7941678108802521201
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,25 +8,25 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3978797309825805018}
-  - component: {fileID: 4875820179865913861}
-  - component: {fileID: 6526498930656038144}
-  - component: {fileID: -3056327477249450791}
-  m_Layer: 0
-  m_Name: exit (1)
-  m_TagString: UsedNodes
+  - component: {fileID: 4488964386436719839}
+  - component: {fileID: 3786758602018667026}
+  - component: {fileID: 8494616518609302664}
+  - component: {fileID: 6510261502548582068}
+  m_Layer: 5
+  m_Name: MapNode
+  m_TagString: NotUsed
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &3978797309825805018
+--- !u!224 &4488964386436719839
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3899294230495701110}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_GameObject: {fileID: 7941678108802521201}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -35,38 +35,38 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1100, y: 173.2}
-  m_SizeDelta: {x: 101.9835, y: 101.9835}
+  m_AnchoredPosition: {x: -110.5, y: -44.2}
+  m_SizeDelta: {x: 45, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &4875820179865913861
+--- !u!222 &3786758602018667026
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3899294230495701110}
+  m_GameObject: {fileID: 7941678108802521201}
   m_CullTransparentMesh: 1
---- !u!114 &6526498930656038144
+--- !u!114 &8494616518609302664
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3899294230495701110}
+  m_GameObject: {fileID: 7941678108802521201}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.23529412, g: 0.90588236, b: 0.85490197, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 424b894d98118ad4eb00dbcc205dd444, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 86fa7a66a65f9c845970876921c3da31, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -76,23 +76,30 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-3056327477249450791
+--- !u!114 &6510261502548582068
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3899294230495701110}
+  m_GameObject: {fileID: 7941678108802521201}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a611f26dbe5fc447846fce99027751c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   visited: 0
-  locked: 1
-  mapNodeType: 4
+  locked: 0
+  mapNodeType: 0
   nextNodes: []
   prevNodes: []
+  connections: []
+  initialized: 0
   point:
-    col: 0
-    row: 0
+    x: 0
+    y: 0
+  image: {fileID: 8494616518609302664}
+  encounterIcon: {fileID: 21300000, guid: 86fa7a66a65f9c845970876921c3da31, type: 3}
+  eventIcon: {fileID: 21300000, guid: 0574a83bbcd88024295650ce54cf147f, type: 3}
+  shopIcon: {fileID: 21300000, guid: d3849ceaf878ee248b9c3af5c25c22b5, type: 3}
+  bossIcon: {fileID: 21300000, guid: 3e48dfddc83149c438c18f64bcbf640e, type: 3}

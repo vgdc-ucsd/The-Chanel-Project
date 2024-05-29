@@ -168,6 +168,7 @@ public class MapGenerator : MonoBehaviour
         List<MapNodeType> nodeTypes = new();
         List<Point> nodePoints = new();
         List<ConnectionsList> nodeConnections = new();
+        List<bool> nodeVisited = new();
         for (int i = 0; i < allNodes.Count; i++)
         {
             MapNode curNode = allNodes[i].GetComponent<MapNode>();
@@ -178,12 +179,14 @@ public class MapGenerator : MonoBehaviour
                 nodePoints.Add(curNode.point);
                 connectionsList.connections = curNode.connections;
                 nodeConnections.Add(connectionsList);
+                nodeVisited.Add(curNode.visited);
             }
         }
 
         PersistentData.Instance.mapInfo.nodeTypes = nodeTypes;
         PersistentData.Instance.mapInfo.nodePoints = nodePoints;
         PersistentData.Instance.mapInfo.nodeConnections = nodeConnections;
+        PersistentData.Instance.mapInfo.nodeVisited = nodeVisited;
         PersistentData.Instance.mapInfo.lastVisitedNode = lastVisitedNode.point;
     }
 
@@ -192,13 +195,12 @@ public class MapGenerator : MonoBehaviour
         for (int i = 0; i < mapInfo.nodePoints.Count; i++)
         {
             Point point = mapInfo.nodePoints[i];
-            Vector2 pos = new Vector2(OrientingPosition.x + (point.col * distanceBetweenNodes) + (point.row * XOffsetDistanceBetweenRows), OrientingPosition.y + (point.row * heightBetweenRows));
+            Vector2 pos = new Vector2(OrientingPosition.x + (point.x * distanceBetweenNodes) + (point.y * XOffsetDistanceBetweenRows), OrientingPosition.y + (point.y * heightBetweenRows));
             GameObject mapTypePrefab = null;
             switch (mapInfo.nodeTypes[i])
             {
-                case MapNodeType.StartOrExit:
-                    if (point.row == 0) mapTypePrefab = start;
-                    if (point.row == 2) mapTypePrefab = exit;
+                case MapNodeType.Start:
+                    mapTypePrefab = start;
                     break;
                 case MapNodeType.Encounter:
                     mapTypePrefab = Encounter;
@@ -212,6 +214,9 @@ public class MapGenerator : MonoBehaviour
                 case MapNodeType.Boss:
                     mapTypePrefab = Boss;
                     break;
+                case MapNodeType.Exit:
+                    mapTypePrefab = exit;
+                    break;
             }
 
             if (mapTypePrefab == null)
@@ -222,9 +227,9 @@ public class MapGenerator : MonoBehaviour
             GameObject instantiated = Instantiate(mapTypePrefab, pos, transform.rotation, contents.transform);
             MapNode instantiatedMapNode = instantiated.GetComponent<MapNode>();
 
-            if (point.row == 0) row1.Add(instantiated);
-            else if (point.row == 1) row2.Add(instantiated);
-            else if (point.row == 2) row3.Add(instantiated);
+            if (point.y == 0) row1.Add(instantiated);
+            else if (point.y == 1) row2.Add(instantiated);
+            else if (point.y == 2) row3.Add(instantiated);
 
             allNodes.Add(instantiated);
 
@@ -233,8 +238,7 @@ public class MapGenerator : MonoBehaviour
 
             instantiatedMapNode.point = point;
             instantiatedMapNode.connections = mapInfo.nodeConnections[i].connections;
-            // instantiatedMapNode.visited = mapInfo.nodeVisited[i];
-            // instantiatedMapNode.locked = mapInfo.nodeLocked[i];
+            instantiatedMapNode.visited = mapInfo.nodeVisited[i];
             instantiatedMapNode.initialized = true;
             instantiated.tag = "UsedNodes";
 
@@ -245,7 +249,7 @@ public class MapGenerator : MonoBehaviour
         {
             foreach (var connection in node.GetComponent<MapNode>().connections)
             {
-                GameObject nextNode = allNodes.Find(x => x.GetComponent<MapNode>().point.col == connection.point2.col && x.GetComponent<MapNode>().point.row == connection.point2.row);
+                GameObject nextNode = allNodes.Find(x => x.GetComponent<MapNode>().point.x == connection.point2.x && x.GetComponent<MapNode>().point.y == connection.point2.y);
                 if (!node.GetComponent<MapNode>().nextNodes.Contains(nextNode.GetComponent<MapNode>()))
                 {
                     node.GetComponent<MapNode>().nextNodes.Add(nextNode.GetComponent<MapNode>());
@@ -258,16 +262,19 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        lastVisitedNode = allNodes.Find(x => x.GetComponent<MapNode>().point.col == mapInfo.lastVisitedNode.col && x.GetComponent<MapNode>().point.row == mapInfo.lastVisitedNode.row).GetComponent<MapNode>();
+        lastVisitedNode = allNodes.Find(x => x.GetComponent<MapNode>().point.x == mapInfo.lastVisitedNode.x && x.GetComponent<MapNode>().point.y == mapInfo.lastVisitedNode.y).GetComponent<MapNode>();
         LockSiblingNodes(lastVisitedNode);
 
-        foreach(GameObject obj in allNodes){
+        foreach (GameObject obj in allNodes)
+        {
             MapNode n = obj.GetComponent<MapNode>();
-            if(n.locked) {
-                n.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
-            }
-            else {
+            if (!n.locked || n.visited)
+            {
                 n.GetComponent<Image>().color = Color.white;
+            }
+            else
+            {
+                n.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
             }
         }
 
@@ -379,7 +386,7 @@ public class MapGenerator : MonoBehaviour
             {
                 float random = UnityEngine.Random.Range(0f, 1f);
                 GameObject lastNode = pathNodes[i - 1];
-                if (lastNode.GetComponent<MapNode>().point.row == 0)
+                if (lastNode.GetComponent<MapNode>().point.y == 0)
                 {
                     if (lastNode == row1[0])
                     {
@@ -408,7 +415,7 @@ public class MapGenerator : MonoBehaviour
                         }
                     }
                 }
-                else if (lastNode.GetComponent<MapNode>().point.row == 1)
+                else if (lastNode.GetComponent<MapNode>().point.y == 1)
                 {
                     if (random < 0.5f && i < numberOfRooms + 1)
                     {
@@ -544,11 +551,11 @@ public class MapGenerator : MonoBehaviour
             MapNode mapNode = node.GetComponent<MapNode>();
             foreach (var nextNode in mapNode.nextNodes)
             {
-                float yDist = nextNode.point.row == mapNode.point.row ? 0f : heightBetweenRows;
+                float yDist = nextNode.point.y == mapNode.point.y ? 0f : heightBetweenRows;
                 float zAngle = Mathf.Atan2(yDist, XOffsetDistanceBetweenRows) * Mathf.Rad2Deg;
                 Vector3 angle = new Vector3(0, 0, zAngle);
                 GameObject stairObj = Instantiate(stair, node.transform.position, Quaternion.Euler(angle), node.transform);
-                if (nextNode.point.row == mapNode.point.row)
+                if (nextNode.point.y == mapNode.point.y)
                 {
                     stairObj.GetComponent<RectTransform>().localPosition = horStairOffset;
                 }

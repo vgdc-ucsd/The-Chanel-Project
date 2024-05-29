@@ -26,12 +26,15 @@ IPointerExitHandler
     [HideInInspector] public bool initialized;
     // public int row = 1;
     public Point point;
-    private MapGenerator mapGenerator;
+    private MapGeneration mapGenerator;
     private MapCharacterController character;
+
+    public Image image;
+    public Sprite encounterIcon, eventIcon, shopIcon, bossIcon;
 
     private void Start()
     {
-        mapGenerator = FindObjectOfType<MapGenerator>();
+        mapGenerator = FindObjectOfType<MapGeneration>();
         character = mapGenerator.character;
     }
 
@@ -40,7 +43,7 @@ IPointerExitHandler
         // Initialize here because it is called after Start
         if (!initialized)
         {
-            visited = gameObject == mapGenerator.startInstace;
+            visited = gameObject == mapGenerator.startInstance;
             if (visited == true)
             {
                 foreach (var node in nextNodes)
@@ -51,6 +54,27 @@ IPointerExitHandler
 
             }
             initialized = true;
+        }
+
+        if (!locked) StartCoroutine(ManaFlicker());
+    }
+
+    public void DrawMapNodeType()
+    {
+        switch (mapNodeType)
+        {
+            case MapNodeType.Encounter:
+                image.sprite = encounterIcon;
+                break;
+            case MapNodeType.Event:
+                image.sprite = eventIcon;
+                break;
+            case MapNodeType.Shop:
+                image.sprite = shopIcon;
+                break;
+            case MapNodeType.Boss:
+                image.sprite = bossIcon;
+                break;
         }
     }
 
@@ -125,7 +149,11 @@ IPointerExitHandler
         {
             mapNodeTypeIdx = 5;
         }
-        else if (mapNodeType == MapNodeType.StartOrExit)
+        else if (mapNodeType == MapNodeType.Exit)
+        {
+            mapNodeTypeIdx = MenuScript.TITLE_INDEX;
+        }
+        else if (mapNodeType == MapNodeType.Start)
         {
             mapNodeTypeIdx = -1;
         }
@@ -136,27 +164,77 @@ IPointerExitHandler
             MenuScript.Instance.LoadScene(mapNodeTypeIdx);
         }
     }
+
+    private IEnumerator ManaFlicker()
+    {
+        float startTime = Time.time;
+        float duration = 1.0f;
+        bool direction = true;
+        Color white = Color.white;
+        Color flicker = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+        Color col = Color.white;
+        Vector2 initScale = GetComponent<RectTransform>().sizeDelta;
+        Vector2 flickerScale = initScale * 1.1f;
+        Vector2 scale = initScale;
+
+        while (true)
+        {
+            float elapsedTime = Time.time - startTime;
+            float t = elapsedTime / duration;
+
+            if (direction)
+            {
+                col = Interpolation.Interpolate(white, flicker, t, InterpolationMode.Linear);
+                scale = Vector2.Lerp(flickerScale, initScale, t);
+
+                if (elapsedTime > duration)
+                {
+                    direction = false;
+                    startTime = Time.time;
+                }
+            }
+            else
+            {
+                col = Interpolation.Interpolate(flicker, white, t, InterpolationMode.Linear);
+                scale = Vector2.Lerp(initScale, flickerScale, t);
+
+                if (elapsedTime > duration)
+                {
+                    direction = true;
+                    startTime = Time.time;
+                }
+            }
+
+            GetComponent<Image>().color = col;
+            GetComponent<RectTransform>().sizeDelta = scale;
+
+            yield return null;
+        }
+    }
 }
 
 // This is an enum type to show all the possible node types
 public enum MapNodeType
 {
-    Encounter,
-    Event,
-    Shop,
-    Boss,
-    StartOrExit
+    Encounter, Event,
+    Shop, Boss,
+    Start, Exit
 }
 
 [Serializable]
 public class Point
 {
-    public int col;
-    public int row;
+    public int x;
+    public int y;
 
-    public Point(int col, int row)
+    public Point(int x, int y)
     {
-        this.col = col;
-        this.row = row;
+        this.x = x;
+        this.y = y;
+    }
+
+    public override string ToString()
+    {
+        return $"({x}, {y})";
     }
 }

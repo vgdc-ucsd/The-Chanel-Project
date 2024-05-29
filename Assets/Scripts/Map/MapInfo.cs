@@ -8,7 +8,6 @@ public class MapInfo : ScriptableObject
     public List<MapNodeType> nodeTypes;
     public List<Point> nodePoints;
     public List<ConnectionsList> nodeConnections;
-    // public List<bool> nodeVisited;
-    // public List<bool> nodeLocked;
+    public List<bool> nodeVisited;
     public Point lastVisitedNode;
 }
