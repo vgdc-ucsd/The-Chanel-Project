@@ -752,6 +752,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapCol: 8
   mapOffset: {x: -155, y: -55, z: 0}
+  lineLength: 0.6
   mapNodeTemplate: {fileID: 6510261502548582068, guid: 66b632cbc40f96149bf143f57ca746ee, type: 3}
   mapContainer: {fileID: 1166223307}
   pathTemplate: {fileID: 739000565268711568, guid: 01a2c1c7ee679f94ba59019a715b4dea, type: 3}

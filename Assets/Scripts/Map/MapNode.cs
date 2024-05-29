@@ -56,7 +56,7 @@ IPointerExitHandler
             initialized = true;
         }
 
-        if (!locked) StartCoroutine(ManaFlicker());
+        if (!locked && !character.isMoving) StartCoroutine(ManaFlicker());
     }
 
     public void DrawMapNodeType()
