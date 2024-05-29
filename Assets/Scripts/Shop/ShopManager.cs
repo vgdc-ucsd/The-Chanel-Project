@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -93,7 +94,7 @@ public class ShopManager : MonoBehaviour
 
     public void toMap()
     {
-        MenuScript.Instance.LoadMap();
+        SceneManager.LoadScene(MenuScript.MAP_INDEX);
     }
 
 

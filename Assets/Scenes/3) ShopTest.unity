@@ -662,9 +662,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1543817344}
-        m_TargetAssemblyTypeName: MenuScript, Assembly-CSharp
-        m_MethodName: LoadMap
+      - m_Target: {fileID: 1709800415}
+        m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
+        m_MethodName: toMap
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1646,17 +1646,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
---- !u!114 &1543817344 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5186411577442620811, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
-  m_PrefabInstance: {fileID: 1543817343}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6028c2346c136b4693468fffb7aa725, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1647077299
 GameObject:
   m_ObjectHideFlags: 0

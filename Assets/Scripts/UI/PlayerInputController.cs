@@ -120,7 +120,7 @@ public class PlayerInputController: MonoBehaviour
             SetAction(ControlAction.None);
 
             // SFX
-            FMODUnity.RuntimeManager.PlayOneShot("event:/CardMove", transform.position);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardMove", transform.position);
         }
     }
 }

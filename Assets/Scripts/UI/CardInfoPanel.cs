@@ -22,7 +22,7 @@ public class CardInfoPanel : MonoBehaviour
     public TextMeshProUGUI Atk;
 
     void Awake() {
-        InitializeCardInfoPanel(blankCard);
+        //InitializeCardInfoPanel(blankCard);
     }
 
     public void InitializeCardInfoPanel(Card c) {
@@ -42,6 +42,7 @@ public class CardInfoPanel : MonoBehaviour
     }
 
     public void UpdateInfoPanelUnitCard(UnitCard uc) {
+        EnablePanel();
         CardName.text = uc.Name;
         Description.text = "<B>Description:</B>\n" + (uc.description.Equals("") ? "None" : uc.description);
         if(currentCard != null) Destroy(currentCard.gameObject);
@@ -51,6 +52,7 @@ public class CardInfoPanel : MonoBehaviour
 
     public void UpdateInventoryInfoPanelUnitCard(UnitCard uc)
     {
+        EnablePanel();
         CardName.text = uc.Name;
         Description.text = uc.description;
         Mana.text = uc.ManaCost + "";
@@ -65,6 +67,7 @@ public class CardInfoPanel : MonoBehaviour
     }
 
     public void UpdateInfoPanelSpellCard(SpellCard sc) {
+        EnablePanel();
         CardName.text = sc.Name;
         Description.text = "<B>Description:</B>\n" + (sc.description.Equals("") ? "None" : sc.description);
 
@@ -84,5 +87,10 @@ public class CardInfoPanel : MonoBehaviour
         currentCard.transform.localPosition = Vector3.zero;
         currentCard.transform.localScale = Vector3.one;
         currentCard.CardCost.enabled = true;
+    }
+
+    public void EnablePanel() {
+        CardName.gameObject.SetActive(true);
+        Description.gameObject.SetActive(true);
     }
 }
