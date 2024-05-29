@@ -47,11 +47,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: -968585062
-      Data2: 1279614899
-      Data3: -50305121
-      Data4: -1941622776
-    Path: event:/VA/Sycamore/SycamoreEncounter
+      Data1: 1829060159
+      Data2: 1126156510
+      Data3: 926272394
+      Data4: 74701285
+    Path: event:/VA/Onyx/OnyxEncounter
   Event: 
   PlayEvent: 1
   StopEvent: 2

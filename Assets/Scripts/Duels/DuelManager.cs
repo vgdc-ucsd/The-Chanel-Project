@@ -28,6 +28,9 @@ public class DuelManager : MonoBehaviour
     public Team currentTeam;
     public Encounter CurrentEncounter;
 
+    public GameObject DuelMusic;
+    public GameObject BossMusic;
+
     public bool loadDeckFromInventory = false;
 
     //private FMODUnity.StudioEventEmitter emitter;
@@ -92,6 +95,14 @@ public class DuelManager : MonoBehaviour
         // Draw staring cards
         AnimationManager.Instance.Enqueue(MainDuel.DrawStartingCards());
         FMODUnity.RuntimeManager.PlayOneShot("event:/CardShuffle", transform.position);
+
+        // Music
+        if(CurrentEncounter.boss != null) {
+            Instantiate(BossMusic);
+        }
+        else {
+            Instantiate(DuelMusic);
+        }
     }
 
     private void Update()
