@@ -30,7 +30,7 @@ public class InventoryUI : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) 
+        if (Instance == null)
             Instance = this;
         inventory = PersistentData.Instance.Inventory;
         InitCards();
@@ -47,7 +47,7 @@ public class InventoryUI : MonoBehaviour
             CardInteractable ci = UIManager.Instance.GenerateCardInteractable(card);
             ci.mode = CIMode.Inventory;
             ciList.Add(ci);
-         
+
         }
         foreach (Card card in inventory.ActiveCards)
         {
@@ -61,7 +61,7 @@ public class InventoryUI : MonoBehaviour
     {
         int i = 0;
         int invIndex = 0, deckIndex = 0;
-        while (i < inventory.CardCount()) 
+        while (i < inventory.CardCount())
         {
             CardInteractable ci = ciList[i];
             Card c = ci.GetCard();
@@ -87,8 +87,8 @@ public class InventoryUI : MonoBehaviour
                 ci.transform.SetParent(inventoryContainer.transform.GetChild(invIndex));
                 invIndex++;
             }
-            
-            
+
+
             ci.transform.localScale = Vector3.one * 2;
             ci.transform.localPosition = Vector3.zero;
             i++;
@@ -108,7 +108,7 @@ public class InventoryUI : MonoBehaviour
         {
             Unequip(card);
         }
-        else 
+        else
         {
             if (inventory.ActiveCards.Count < GameData.DECK_SIZE)
                 Equip(card);
@@ -170,8 +170,8 @@ public class InventoryUI : MonoBehaviour
         //}
 
         // Add Instantiate all cards in inventory to the UI
-        
-        foreach (UnitCard card in PersistentData.Instance.Inventory.InactiveCards) 
+
+        foreach (UnitCard card in PersistentData.Instance.Inventory.InactiveCards)
         {
 
         }

@@ -17,7 +17,8 @@ public class SpellCardInteractable : CardInteractable
             return;
         }
         CardName.text = card.Name;
-        if(CardArt != null) {
+        if (CardArt != null)
+        {
             CardArt.sprite = card.Artwork;
         }
         UpdateCardInfo();
@@ -63,15 +64,17 @@ public class SpellCardInteractable : CardInteractable
         Destroy(gameObject); */
     }
 
-    public override void OnPointerEnter(PointerEventData eventData) {
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
         base.OnPointerEnter(eventData);
         if (mode != CIMode.Duel) return;
         UIManager.Instance.InfoPanel.UpdateInfoPanelSpellCard(this.card);
-        if(!CanInteract || !inHand) return;
+        if (!CanInteract || !inHand) return;
         AnimationManager.Instance.StartManaHover(card.ManaCost, card.CurrentTeam);
     }
 
-    public override void OnPointerExit(PointerEventData eventData) {
+    public override void OnPointerExit(PointerEventData eventData)
+    {
         base.OnPointerExit(eventData);
         if (mode != CIMode.Duel) return;
         AnimationManager.Instance.StopManaHover(card.CurrentTeam);
@@ -82,7 +85,7 @@ public class SpellCardInteractable : CardInteractable
         base.OnPointerDown(eventData);
         if (mode == CIMode.Inventory)
         {
-            //InventoryUI.Instance.HandleClick(card);
+            InventoryUI.Instance.HandleClick(this);
         }
     }
 
