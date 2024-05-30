@@ -7,7 +7,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Abilites/FrozenEffect")]
 public class FrozenEffect : StatusEffect
 {
-    static int initialDuration = 0;
+    static int initialDuration = 1;
 
     public override ActivationCondition Condition
     {
@@ -15,7 +15,7 @@ public class FrozenEffect : StatusEffect
     }
 
 
-    public override void Activate(UnitCard c, ActivationInfo info)  
+    public override void Activate(UnitCard c, ActivationInfo info)
     {
         if (duration == 0)
         {
