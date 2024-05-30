@@ -5,15 +5,16 @@ using UnityEngine;
 
 public class InventoryUI : MonoBehaviour
 {
-    const int ROW_SIZE = 6;
+    const int INV_ROW_SIZE = 5;
 
 
     public static InventoryUI Instance;
     [SerializeField] InventoryManager inventoryManager;
     [SerializeField] Transform inventoryContainer;
-    public int invContainerSize = ROW_SIZE * 2;
+    public int invContainerSize = INV_ROW_SIZE * 2;
     [SerializeField] Transform deckContainer;
     [SerializeField] GameObject inventoryTemplateCardPrefab;
+    [SerializeField] GameObject slotPrefab;
 
     List<CardInteractable> ciList = new List<CardInteractable>();
 
@@ -35,6 +36,7 @@ public class InventoryUI : MonoBehaviour
         inventory = PersistentData.Instance.Inventory;
         InitCards();
         ArrangeCards();
+        invContainerSize = INV_ROW_SIZE * 2;
 
         goldCountText.text = PersistentData.Instance.Inventory.Gold.ToString();
 
@@ -75,13 +77,15 @@ public class InventoryUI : MonoBehaviour
             {
                 if (invIndex >= invContainerSize)
                 {
-                    for (int j = 0; j < ROW_SIZE; j++)
+                    for (int j = 0; j < INV_ROW_SIZE; j++)
                     {
-                        GameObject slot = new GameObject();
+                        GameObject slot = Instantiate(slotPrefab, inventoryContainer.transform);
                         slot.AddComponent<RectTransform>();
                         slot.transform.SetParent(inventoryContainer.transform);
+                        // slot.GetComponent<RectTransform>().localScale = Vector3.one;
+                        // slot.transform.localScale = Vector3.one;
                     }
-                    invContainerSize += ROW_SIZE;
+                    invContainerSize += INV_ROW_SIZE;
                 }
 
                 ci.transform.SetParent(inventoryContainer.transform.GetChild(invIndex));

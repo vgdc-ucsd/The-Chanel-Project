@@ -49,7 +49,7 @@ public abstract class CardInteractable : MonoBehaviour,
     public CIMode mode = CIMode.Duel;
     protected virtual void Awake()
     {
-        if(DuelManager.Instance != null) raycaster = DuelManager.Instance.GetComponent<GraphicRaycaster>();
+        if (DuelManager.Instance != null) raycaster = DuelManager.Instance.GetComponent<GraphicRaycaster>();
     }
 
     // Updates the card's text fields with data from card
@@ -75,7 +75,8 @@ public abstract class CardInteractable : MonoBehaviour,
                 hoveredCard.transform.position = hoverPosition();
                 transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
             }
-        }else if ( mode == CIMode.Shop)
+        }
+        else if (mode == CIMode.Shop)
         {
             transform.DOShakePosition(0.2f, 1f);
         }
@@ -106,7 +107,9 @@ public abstract class CardInteractable : MonoBehaviour,
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        if(mode == CIMode.Reward && CanInteract) {
+        if (!CanInteract) return;
+        if (mode == CIMode.Reward && CanInteract)
+        {
             RewardManager.Instance.SelectCard(this);
         }
         else if (mode == CIMode.Shop && CanInteract)
@@ -128,7 +131,8 @@ public abstract class CardInteractable : MonoBehaviour,
     public virtual void OnDrag(PointerEventData eventData)
     {
         if (mode != CIMode.Duel) return;
-        if (inHand && CanInteract) {
+        if (inHand && CanInteract)
+        {
             transform.position = eventData.position;
         }
     }
@@ -136,7 +140,8 @@ public abstract class CardInteractable : MonoBehaviour,
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
         if (mode != CIMode.Duel) return;
-        if (inHand && CanInteract) {
+        if (inHand && CanInteract)
+        {
             transform.localEulerAngles = Vector3.zero;
         }
     }
@@ -190,11 +195,12 @@ public abstract class CardInteractable : MonoBehaviour,
         }
     }
 
-    private Vector3 hoverPosition() {
+    private Vector3 hoverPosition()
+    {
         if (mode != CIMode.Duel) return Vector3.zero;
         return new Vector3(
             transform.position.x,
-            transform.position.y+(50f*UIManager.Instance.MainCanvas.scaleFactor),
+            transform.position.y + (50f * UIManager.Instance.MainCanvas.scaleFactor),
             transform.position.z
         );
     }
