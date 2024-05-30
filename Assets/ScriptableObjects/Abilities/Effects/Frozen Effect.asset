@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d5b08a400156fc449bcb5d2addc7de6, type: 3}
   m_Name: Frozen Effect
   m_EditorClassIdentifier: 
-  duration: 0
+  duration: 1
   icon: {fileID: 21300000, guid: 4eff8c175fb6e7c479f870c5bc47f58b, type: 3}
