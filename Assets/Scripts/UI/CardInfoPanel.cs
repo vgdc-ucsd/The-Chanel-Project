@@ -112,11 +112,27 @@ public class CardInfoPanel : MonoBehaviour
         currentCard.CardCost.enabled = true;
         currentCard.Mana.gameObject.SetActive(false);
 
-        if (c is UnitCard) {
-            currentCard.image.sprite = c.CurrentTeam == Team.Enemy ? UIManager.Instance.EnemyUnitCardBorder : UIManager.Instance.PlayerUnitCardBorder;
+        if (UIManager.Instance == null && InventoryUI.Instance != null)
+        {
+            if (c is UnitCard)
+            {
+                currentCard.image.sprite = c.CurrentTeam == Team.Enemy ? InventoryUI.Instance.EnemyUnitCardBorder : InventoryUI.Instance.PlayerUnitCardBorder;
+            }
+            else
+            {
+                currentCard.image.sprite = c.CurrentTeam == Team.Enemy ? InventoryUI.Instance.EnemySpellCardBorder : InventoryUI.Instance.PlayerSpellCardBorder;
+            }
         }
-        else {
-            currentCard.image.sprite = c.CurrentTeam == Team.Enemy ? UIManager.Instance.EnemySpellCardBorder : UIManager.Instance.PlayerSpellCardBorder;
+        else
+        {
+            if (c is UnitCard)
+            {
+                currentCard.image.sprite = c.CurrentTeam == Team.Enemy ? UIManager.Instance.EnemyUnitCardBorder : UIManager.Instance.PlayerUnitCardBorder;
+            }
+            else
+            {
+                currentCard.image.sprite = c.CurrentTeam == Team.Enemy ? UIManager.Instance.EnemySpellCardBorder : UIManager.Instance.PlayerSpellCardBorder;
+            }
         }
     }
 

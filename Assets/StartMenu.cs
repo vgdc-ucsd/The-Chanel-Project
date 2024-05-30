@@ -18,15 +18,17 @@ public class StartMenu : MonoBehaviour
         if (PersistentData.Instance != null)
         {
             Destroy(PersistentData.Instance.gameObject);
+            PersistentData.Instance = null;
+            Debug.Log("old persistent data destroyed");
         }
         Instantiate(startDataTemplate);
 
         PersistentData.Instance.Init();
-        SceneManager.LoadScene(1);
         PersistentData.Instance.mapInfo.nodePoints = new();
         PersistentData.Instance.mapInfo.nodeTypes = new();
         PersistentData.Instance.mapInfo.nodeConnections = new();
         PersistentData.Instance.mapInfo.nodeVisited = new();
         PersistentData.Instance.mapInfo.lastVisitedNode = new(0, 0);
+        SceneManager.LoadScene(1);
     }
 }
