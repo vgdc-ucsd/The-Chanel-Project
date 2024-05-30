@@ -711,7 +711,7 @@ public class AnimationManager : MonoBehaviour
         if(duel.GetStatus(team).Deck.DrawPile().Count < cards.Count) {
             shuffledCount = duel.GetStatus(team).Deck.DiscardPile().Count;
         }
-        float delay = shuffledCount * 0.2f;
+        float delay = (shuffledCount * 0.2f) + 0.4f; // 0.4 for organizing time ?
         QueueableAnimation qa = new QueueableAnimation(ie, delay);
         duel.Animations.Enqueue(qa);
     }
