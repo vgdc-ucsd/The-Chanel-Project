@@ -59,6 +59,8 @@ public class UnitCard : Card
         copy.CurrentTeam = this.CurrentTeam;
         copy.UnitCardInteractableRef = this.UnitCardInteractableRef;
         copy.baseStats = this.baseStats;
+        copy.baseStats.attacks = new List<Attack>();
+        if (this.Attacks != null) copy.baseStats.attacks.AddRange(this.Attacks);
         copy.drawStatus = this.drawStatus;
         copy.id = this.id;
 

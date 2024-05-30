@@ -117,10 +117,11 @@ public class MctsAI
             }
             yield return null;
         }
-        UnityEngine.Debug.Log($"Iterations: {iterations}");
+        //UnityEngine.Debug.Log($"Iterations: {iterations}");
 
         // Some Scores
         System.Random rnd = new System.Random();
+        /*
         if (root.Children.Count > 0)
         {
             UnityEngine.Debug.Log($"Score: {root.Children[rnd.Next(0, root.Children.Count)].Score()}");
@@ -129,15 +130,16 @@ public class MctsAI
             UnityEngine.Debug.Log($"Score: {root.Children[rnd.Next(0, root.Children.Count)].Score()}");
             UnityEngine.Debug.Log($"Score: {root.Children[rnd.Next(0, root.Children.Count)].Score()}");
         }
+        */
         
-        UnityEngine.Debug.Log("Children: " + root.Children.Count);
+        //UnityEngine.Debug.Log("Children: " + root.Children.Count);
 
         Node bestMove = FindBestMove(root);
         DuelInstance move = bestMove.State;
 
         UpdateUnitCardInteractableRefs(move);
 
-        UnityEngine.Debug.Log("Final Move Score " + bestMove.Score());
+        //UnityEngine.Debug.Log("Final Move Score " + bestMove.Score());
 
         DuelManager.Instance.EnemyMove(move);
     }
