@@ -219,7 +219,6 @@ public class DuelManager : MonoBehaviour
 
     public void EnablePlayerControl(bool enable)
     {
-        Debug.Log(enable);
         UIManager.Instance.EnablePlayerControlUI(enable);
         List<Card> cards = new List<Card>();
         cards.AddRange(MainDuel.GetStatus(Team.Player).Cards);

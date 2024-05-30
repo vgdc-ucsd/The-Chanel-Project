@@ -259,7 +259,6 @@ public class UnitCardInteractable : CardInteractable,
 
     public override void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log(CanInteract);
         base.OnPointerDown(eventData);
         if (mode == CIMode.Inventory)
         {
