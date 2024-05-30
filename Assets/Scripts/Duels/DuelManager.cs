@@ -78,7 +78,7 @@ public class DuelManager : MonoBehaviour
         MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, board, CurrentEncounter.boss, 1);
 
         // AI setup
-        ai = new MctsAI();
+        ai = new MctsAI(CurrentEncounter.AIAggression, CurrentEncounter.AIDefense);
         awaitingAI = false;
 
         // Set Starting Team

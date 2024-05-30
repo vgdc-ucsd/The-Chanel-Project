@@ -271,11 +271,11 @@ PrefabInstance:
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: ImportDeck
       value: 
-      objectReference: {fileID: 11400000, guid: 1b62fd89b8fe4734eb4697de89df34b7, type: 2}
+      objectReference: {fileID: 11400000, guid: 8205a0479993b8f49a709d0d0c92917a, type: 2}
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: CurrentEncounter
       value: 
-      objectReference: {fileID: 11400000, guid: a92bed907e362f04f81c42e688defbb9, type: 2}
+      objectReference: {fileID: 11400000, guid: 0bf78d829afae514c90ee22cb6debf39, type: 2}
     - target: {fileID: 8074719806751530725, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: m_Name
       value: PersistentData
