@@ -56,10 +56,9 @@ public class ShopManager : MonoBehaviour
             ci.mode = CIMode.Shop;
             ci.CanInteract = true;
             cardInteractables.Add(ci);
-            ci.transform.parent.GetChild(1).GetComponent<TextMeshProUGUI>().text = c.ShopCost.ToString();
         }
     }
-    
+
     // OnClick Function from ShopCardInteractable
     public bool purchase(CardInteractable ci)
     {

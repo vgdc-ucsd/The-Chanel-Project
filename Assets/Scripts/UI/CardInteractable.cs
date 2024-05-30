@@ -108,22 +108,25 @@ public abstract class CardInteractable : MonoBehaviour,
     public virtual void OnPointerDown(PointerEventData eventData)
     {
         if (!CanInteract) return;
-        if (mode == CIMode.Reward && CanInteract)
+        else if (eventData.button == PointerEventData.InputButton.Left)
         {
-            RewardManager.Instance.SelectCard(this);
-        }
-        else if (mode == CIMode.Shop && CanInteract)
-        {
-            if (eventData.button == PointerEventData.InputButton.Left)
-            {
+            if (mode == CIMode.Shop) {
                 if (!ShopManager.Instance.purchase(this))
                 {
                     transform.DOShakePosition(0.5f, 1.3f);
                 }
             }
-            else if (eventData.button == PointerEventData.InputButton.Right)
-            {
+            else if (mode == CIMode.Reward) {
+                RewardManager.Instance.SelectCard(this);
+            }
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            if (mode == CIMode.Shop) {
                 ShopManager.Instance.inspect(this);
+            }
+            else if (mode == CIMode.Reward) {
+                RewardManager.Instance.inspect(this);
             }
         }
     }

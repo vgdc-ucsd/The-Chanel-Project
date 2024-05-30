@@ -20,6 +20,9 @@ public class RewardManager : MonoBehaviour
     public TMP_Text incText;
     public TextMeshProUGUI ManaCostText;
 
+    public GameObject inspectScreen;
+    public CardInfoPanel infoPanel;
+
     void Awake() {
         // Singleton
         if (Instance != null && Instance != this) {
@@ -77,7 +80,7 @@ public class RewardManager : MonoBehaviour
         }
 
         StartCoroutine(ChangeScene());
-        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardReward"); 
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardReward");
     }
 
     private IEnumerator CardAppearAnimation() {
@@ -106,6 +109,12 @@ public class RewardManager : MonoBehaviour
     private IEnumerator ChangeScene() {
         yield return new WaitForSeconds(1.0f);
         MenuScript.Instance.LoadMap();
+    }
+
+    public void inspect(CardInteractable ci)
+    {
+        inspectScreen.SetActive(true);
+        infoPanel.InitializeCardInfoPanel(ci.GetCard());
     }
 
     private IEnumerator IncrementGold()
