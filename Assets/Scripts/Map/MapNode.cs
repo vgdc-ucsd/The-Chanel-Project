@@ -134,8 +134,6 @@ IPointerExitHandler
             //     //int randomIndex = UnityEngine.Random.Range(0, EncounterManager.Instance.Encounters.Count);
             //     PersistentData.Instance.CurrentEncounter = EncounterManager.Instance.Encounters[randomIndex];
             // }
-
-
             mapNodeTypeIdx = MenuScript.VERSUS_INDEX;
         }
         else if (mapNodeType == MapNodeType.Shop)
@@ -148,7 +146,9 @@ IPointerExitHandler
         }
         else if (mapNodeType == MapNodeType.Boss)
         {
-            mapNodeTypeIdx = 5;
+            PersistentData.Instance.CurrentEncounter = PersistentData.Instance.bossEncounters[1];
+
+            mapNodeTypeIdx = MenuScript.VERSUS_INDEX;
         }
         else if (mapNodeType == MapNodeType.Exit)
         {

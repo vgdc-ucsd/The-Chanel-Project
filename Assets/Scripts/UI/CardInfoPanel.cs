@@ -52,7 +52,7 @@ public class CardInfoPanel : MonoBehaviour
         EnablePanel();
         CardName.text = uc.Name;
         Description.text = "<B>Description:</B>\n" + (uc.description.Equals("") ? "None" : uc.description);
-        Mana.text = uc.ManaCost + "";
+        if (Mana != null) Mana.text = uc.ManaCost + "";
         if (currentCard != null) Destroy(currentCard.gameObject);
         SetCardInteractable(uc);
         ((UnitCardInteractable)currentCard).DrawArrows();

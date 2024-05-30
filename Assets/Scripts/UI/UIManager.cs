@@ -94,7 +94,7 @@ public class UIManager : MonoBehaviour
     }
 
     /* !! README !!
-     * The GenerateCardInteractable method used in inventory screen has been moved 
+     * The GenerateCardInteractable method used in inventory screen has been moved
      * to InventoryUI, please make changes there for inventory CardInteractables.
      */
     public CardInteractable GenerateCardInteractable(Card c) {
@@ -220,9 +220,14 @@ public class UIManager : MonoBehaviour
     }
 
     public void PlayerWin() {
-        PersistentData.Instance.EncountersFinished++;
-        PersistentData.Instance.VsState = VsScreenState.Win;
-        SceneManager.LoadScene(MenuScript.VERSUS_INDEX);
+        if (PersistentData.Instance.CurrentEncounter.boss.finalBoss) {
+            SceneManager.LoadScene(MenuScript.TITLE_INDEX);
+        }
+        else {
+            PersistentData.Instance.EncountersFinished++;
+            PersistentData.Instance.VsState = VsScreenState.Win;
+            SceneManager.LoadScene(MenuScript.VERSUS_INDEX);
+        }
     }
 
     public void PlayerLose() {
