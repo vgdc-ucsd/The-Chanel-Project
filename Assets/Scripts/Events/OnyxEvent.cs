@@ -51,7 +51,7 @@ public class OnyxEvent : MonoBehaviour
 
         int randomIndex = Random.Range(0, cardList.Count);
         UnitCard selectedCard = cardList[randomIndex];
-        selectedCard.Health++;
+        selectedCard.Health += 3;
         List<Card> changedCards = new List<Card>();
         changedCards.Add(selectedCard);
         StartCoroutine(AnimationManager.Instance.ShowChangedCards(changedCards, center));        
