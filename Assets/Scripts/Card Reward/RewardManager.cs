@@ -119,13 +119,13 @@ public class RewardManager : MonoBehaviour
 
     private IEnumerator IncrementGold()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         goldText.text = PersistentData.Instance.Inventory.Gold.ToString();
         incText.text = "+" + PersistentData.Instance.CurrentEncounter.RewardGold.ToString();
         incText.enabled = true;
         incText.color = Color.white;
         float elapsedTime = 0;
-        float endTime = 1;
+        float endTime = 5;
         float startTime = Time.time;
         while (elapsedTime < endTime)
         {
