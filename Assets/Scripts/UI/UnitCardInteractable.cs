@@ -50,8 +50,10 @@ public class UnitCardInteractable : CardInteractable,
         //emitter = GetComponent<FMODUnity.StudioEventEmitter>();
     }
 
-    public override void SetCardInfo() {
-        if(card == null) {
+    public override void SetCardInfo()
+    {
+        if (card == null)
+        {
             Debug.Log("Could not set card info, card is uninitialzied");
             return;
         }
@@ -61,74 +63,89 @@ public class UnitCardInteractable : CardInteractable,
         UpdateCardInfo();
     }
 
-    public override void UpdateCardInfo() {
+    public override void UpdateCardInfo()
+    {
         //CardAttack.text = "Attack: " + card.BaseDamage;
         CardAttack.text = card.BaseDamage.ToString();
         //CardHealth.text = "Health: " + card.Health;
         CardHealth.text = card.Health.ToString();
-        if(CardArt != null) {
+        if (CardArt != null)
+        {
             CardArt.sprite = card.Artwork;
         }
         if (inHand) CardCost.text = card.ManaCost.ToString();
         icons.RefreshIcons();
     }
 
-    public void UpdateCardInfoDamage(int damage) {
+    public void UpdateCardInfoDamage(int damage)
+    {
         //CardAttack.text = "Attack: " + card.BaseDamage;
         CardAttack.text = card.BaseDamage.ToString();
         //CardHealth.text = "Health: " + card.Health;
         int newHealth = int.Parse(CardHealth.text) - damage;
-        if (newHealth < 0) {
+        if (newHealth < 0)
+        {
             CardHealth.text = "0";
         }
-        else {
+        else
+        {
             CardHealth.text = newHealth.ToString();
         }
-        if(CardArt != null) {
+        if (CardArt != null)
+        {
             CardArt.sprite = card.Artwork;
         }
         if (inHand) CardCost.text = "Mana Cost: " + card.ManaCost;
         icons.RefreshIcons();
     }
 
-    public void DrawArrows() {
+    public void DrawArrows()
+    {
         ResetArrows();
         Mana.gameObject.SetActive(false);
 
         Sprite ActiveArrowDiagonal;
         Sprite ActiveArrowOrthogonal;
-        if(card.CurrentTeam == Team.Enemy) {
+        if (card.CurrentTeam == Team.Enemy)
+        {
             ActiveArrowDiagonal = ActiveArrowDiagonalEnemy;
             ActiveArrowOrthogonal = ActiveArrowOrthogonalEnemy;
         }
-        else {
+        else
+        {
             ActiveArrowDiagonal = ActiveArrowDiagonalPlayer;
             ActiveArrowOrthogonal = ActiveArrowOrthogonalPlayer;
         }
 
-        foreach(Attack atk in card.Attacks) {
+        foreach (Attack atk in card.Attacks)
+        {
             Vector2Int dir = atk.direction;
-            if(dir == UpLeft) Arrows[0].sprite = ActiveArrowDiagonal;
-            else if(dir == UpMid) Arrows[1].sprite = ActiveArrowOrthogonal;
-            else if(dir == UpRight) Arrows[2].sprite = ActiveArrowDiagonal;
-            else if(dir == Left) Arrows[3].sprite = ActiveArrowOrthogonal;
-            else if(dir == Right) Arrows[4].sprite = ActiveArrowOrthogonal;
-            else if(dir == DownLeft) Arrows[5].sprite = ActiveArrowDiagonal;
-            else if(dir == DownMid) Arrows[6].sprite = ActiveArrowOrthogonal;
-            else if(dir == DownRight) Arrows[7].sprite = ActiveArrowDiagonal;
-            else {
+            if (dir == UpLeft) Arrows[0].sprite = ActiveArrowDiagonal;
+            else if (dir == UpMid) Arrows[1].sprite = ActiveArrowOrthogonal;
+            else if (dir == UpRight) Arrows[2].sprite = ActiveArrowDiagonal;
+            else if (dir == Left) Arrows[3].sprite = ActiveArrowOrthogonal;
+            else if (dir == Right) Arrows[4].sprite = ActiveArrowOrthogonal;
+            else if (dir == DownLeft) Arrows[5].sprite = ActiveArrowDiagonal;
+            else if (dir == DownMid) Arrows[6].sprite = ActiveArrowOrthogonal;
+            else if (dir == DownRight) Arrows[7].sprite = ActiveArrowDiagonal;
+            else
+            {
                 Debug.LogWarning($"Could not draw arrows for attack direction {dir}");
             }
         }
     }
 
-    public void ResetArrows() {
+    public void ResetArrows()
+    {
         Mana.gameObject.SetActive(true);
-        for(int i = 0; i < 8; i++) {
-            if(i == 1 || i == 3 || i == 4 || i == 6) {
+        for (int i = 0; i < 8; i++)
+        {
+            if (i == 1 || i == 3 || i == 4 || i == 6)
+            {
                 Arrows[i].sprite = InactiveArrowOrthogonal;
             }
-            else {
+            else
+            {
                 Arrows[i].sprite = InactiveArrowDiagonal;
             }
         }
@@ -138,12 +155,14 @@ public class UnitCardInteractable : CardInteractable,
     public void UIPlaceCard(BoardCoords pos)
     {
         TileInteractable tile = BoardInterface.Instance.GetTile(pos);
-        if (tile != null) {
+        if (tile != null)
+        {
             // TODO: move some actions here to PlaceCard in Board
             inHand = false;
             transform.localEulerAngles = Vector3.zero;
             transform.position = tile.transform.position;
-            if(handInterface != null) {
+            if (handInterface != null)
+            {
                 handInterface.cardObjects.Remove(this.gameObject);
             }
             transform.SetParent(tile.transform);
@@ -172,11 +191,13 @@ public class UnitCardInteractable : CardInteractable,
         if (!DuelManager.Instance.Settings.RestrictPlacement || pos.y <= 1)
         {
             // Check out of bounds
-            if (DuelManager.Instance.MainDuel.DuelBoard.IsOutOfBounds(pos)) {
+            if (DuelManager.Instance.MainDuel.DuelBoard.IsOutOfBounds(pos))
+            {
                 ResetArrows();
                 return;
             }
-            if (DuelManager.Instance.MainDuel.DuelBoard.IsOccupied(pos)) {
+            if (DuelManager.Instance.MainDuel.DuelBoard.IsOccupied(pos))
+            {
                 ResetArrows();
                 return;
             }
@@ -187,11 +208,13 @@ public class UnitCardInteractable : CardInteractable,
             //    return;
             //}
             CharStatus charStatus;
-            if (card.CurrentTeam == Team.Player) {
+            if (card.CurrentTeam == Team.Player)
+            {
                 charStatus = DuelManager.Instance.MainDuel.PlayerStatus;
                 UIManager.Instance.Player.UnhoverMana(charStatus);
             }
-            else {
+            else
+            {
                 charStatus = DuelManager.Instance.MainDuel.EnemyStatus;
                 UIManager.Instance.Enemy.UnhoverMana(charStatus);
             }
@@ -216,7 +239,8 @@ public class UnitCardInteractable : CardInteractable,
 
     public override void OnBeginDrag(PointerEventData eventData)
     {
-        if (inHand && CanInteract &&  mode == CIMode.Duel) {
+        if (inHand && CanInteract && mode == CIMode.Duel)
+        {
             DrawArrows();
         }
         base.OnBeginDrag(eventData);
@@ -226,7 +250,8 @@ public class UnitCardInteractable : CardInteractable,
 
     public override void OnEndDrag(PointerEventData eventData)
     {
-        if (inHand && CanInteract && mode == CIMode.Duel) {
+        if (inHand && CanInteract && mode == CIMode.Duel)
+        {
             ResetArrows();
         }
         base.OnEndDrag(eventData);
@@ -239,7 +264,8 @@ public class UnitCardInteractable : CardInteractable,
         {
             InventoryUI.Instance.HandleClick(this);
         }
-        else if (mode == CIMode.Duel) {
+        else if (mode == CIMode.Duel)
+        {
             if (!inHand)
             {
                 PlayerInputController.Instance.InteractCard(card);
@@ -247,7 +273,8 @@ public class UnitCardInteractable : CardInteractable,
         }
     }
 
-    public override void OnPointerEnter(PointerEventData eventData) {
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
         base.OnPointerEnter(eventData);
 
         // Inventory stuff
@@ -257,12 +284,13 @@ public class UnitCardInteractable : CardInteractable,
         }
 
         if (mode != CIMode.Duel) return;
-        UIManager.Instance.InfoPanel.UpdateInfoPanelUnitCard(this.card);
-        if(!CanInteract || !inHand) return;
+        if (UIManager.Instance.InfoPanel != null) { UIManager.Instance.InfoPanel.UpdateInfoPanelUnitCard(this.card); }
+        if (!CanInteract || !inHand) return;
         AnimationManager.Instance.StartManaHover(card.ManaCost, card.CurrentTeam);
     }
 
-    public override void OnPointerExit(PointerEventData eventData) {
+    public override void OnPointerExit(PointerEventData eventData)
+    {
         base.OnPointerExit(eventData);
         if (mode != CIMode.Duel) return;
         AnimationManager.Instance.StopManaHover(card.CurrentTeam);

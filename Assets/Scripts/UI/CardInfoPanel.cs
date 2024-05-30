@@ -70,6 +70,7 @@ public class CardInfoPanel : MonoBehaviour
         SetCardInteractable(uc);
         ((UnitCardInteractable)currentCard).DrawArrows();
         currentCard.CanInteract = false;
+        currentCard.mode = CIMode.Inventory;
     }
 
     public void UpdateInfoPanelSpellCard(SpellCard sc)
