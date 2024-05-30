@@ -106,6 +106,7 @@ public class MenuScript : MonoBehaviour
         SceneManager.LoadScene(TITLE_INDEX);
     }
 
+    /*
     public void LoadInventory()
     {
         if (SceneManager.GetActiveScene().buildIndex == MAP_INDEX || SceneManager.GetActiveScene().buildIndex == SHOP_INDEX)
@@ -118,6 +119,8 @@ public class MenuScript : MonoBehaviour
             Debug.Log("Cannot Load Inventory from this Scene");
         }
     }
+    */
+
 
     public void OpenInventory()
     {
