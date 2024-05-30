@@ -7,7 +7,7 @@ public class NavButtons : MonoBehaviour
 {
     public void PlayGame()
     {
-        MenuScript.Instance.PlayGame();
+        StartMenu.Instance.PlayGame();
     }
 
     public void QuitGame()

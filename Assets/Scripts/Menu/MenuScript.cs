@@ -20,6 +20,8 @@ public class MenuScript : MonoBehaviour
 
     public InventoryUI inventoryPrefab;
 
+    public PersistentData startDataTemplate;
+
     private static List<int> allowedInventoryScenes = new List<int>
     {
         MAP_INDEX,
@@ -68,6 +70,12 @@ public class MenuScript : MonoBehaviour
 
     public void PlayGame()
     {
+        if (PersistentData.Instance != null)
+        {
+            Destroy(PersistentData.Instance.gameObject);
+        }
+        Instantiate(startDataTemplate);
+
         PersistentData.Instance.Init();
         SceneManager.LoadScene(1);
         PersistentData.Instance.mapInfo.nodePoints = new();
