@@ -151,7 +151,6 @@ public class AnimationManager : MonoBehaviour
             discardPile = UIManager.Instance.EnemyDiscard;
         }
 
-        card.UnitCardInteractableRef.CanInteract = false;
         cardTransform.SetParent(discardPile);
 
         // Reset stats
@@ -167,6 +166,8 @@ public class AnimationManager : MonoBehaviour
             }
         }
 
+        card.UnitCardInteractableRef.CanInteract = false;
+
         // Card Death
         FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardDeath", transform.position); // SFX
 
@@ -178,10 +179,10 @@ public class AnimationManager : MonoBehaviour
 
         if(origin == null) yield break;
         CardInteractable ci = origin.gameObject.GetComponent<CardInteractable>();
-        bool couldInteract = false;
+        //bool couldInteract = false;
         if(ci != null) {
-            couldInteract = ci.CanInteract;
-            ci.CanInteract = false;
+            //couldInteract = ci.CanInteract;
+            //ci.CanInteract = false;
         }
         float startTime = Time.time;
         Vector3 startPos = origin.position;
@@ -201,7 +202,7 @@ public class AnimationManager : MonoBehaviour
             origin.localEulerAngles = new Vector3(0, 0, Random.Range(-maxRotationDegrees, maxRotationDegrees));
         }
         if(ci != null) {
-            ci.CanInteract = true;
+            // ci.CanInteract = true;
             // ci.CanInteract = couldInteract;
         }
     }
