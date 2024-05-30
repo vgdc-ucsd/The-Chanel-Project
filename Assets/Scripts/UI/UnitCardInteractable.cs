@@ -15,7 +15,6 @@ public class UnitCardInteractable : CardInteractable,
     public TextMeshProUGUI CardAttack;
     public Image CardArt;
     public Image Glow;
-    public Image Mana;
 
     public List<Image> Arrows = new List<Image>();
     public Sprite InactiveArrowOrthogonal;

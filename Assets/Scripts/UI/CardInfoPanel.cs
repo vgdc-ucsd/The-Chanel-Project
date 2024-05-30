@@ -52,6 +52,7 @@ public class CardInfoPanel : MonoBehaviour
         EnablePanel();
         CardName.text = uc.Name;
         Description.text = "<B>Description:</B>\n" + (uc.description.Equals("") ? "None" : uc.description);
+        Mana.text = uc.ManaCost + "";
         if (currentCard != null) Destroy(currentCard.gameObject);
         SetCardInteractable(uc);
         ((UnitCardInteractable)currentCard).DrawArrows();
@@ -79,6 +80,7 @@ public class CardInfoPanel : MonoBehaviour
         EnablePanel();
         CardName.text = sc.Name;
         Description.text = "<B>Description:</B>\n" + (sc.description.Equals("") ? "None" : sc.description);
+        Mana.text = sc.ManaCost + "";
 
         // Shows spell card
         if (currentCard != null) Destroy(currentCard.gameObject);
@@ -108,6 +110,7 @@ public class CardInfoPanel : MonoBehaviour
         currentCard.transform.localPosition = Vector3.zero;
         currentCard.transform.localScale = Vector3.one;
         currentCard.CardCost.enabled = true;
+        currentCard.Mana.gameObject.SetActive(false);
     }
 
     public void EnablePanel()

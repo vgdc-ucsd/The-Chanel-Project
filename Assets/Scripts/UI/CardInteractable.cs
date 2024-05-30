@@ -30,6 +30,7 @@ public abstract class CardInteractable : MonoBehaviour,
     // Text fields on the card
     public TextMeshProUGUI CardName;
     public TextMeshProUGUI CardCost;
+    public Image Mana;
 
     //Image object of the card
     [SerializeField] public Image image;
