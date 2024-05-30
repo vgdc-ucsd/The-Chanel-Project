@@ -52,7 +52,7 @@ public class CardInfoPanel : MonoBehaviour
         EnablePanel();
         CardName.text = uc.Name;
         Description.text = "<B>Description:</B>\n" + (uc.description.Equals("") ? "None" : uc.description);
-        Mana.text = uc.ManaCost + "";
+        if (Mana != null) Mana.text = uc.ManaCost + "";
         if (currentCard != null) Destroy(currentCard.gameObject);
         SetCardInteractable(uc);
         ((UnitCardInteractable)currentCard).DrawArrows();
@@ -80,7 +80,7 @@ public class CardInfoPanel : MonoBehaviour
         EnablePanel();
         CardName.text = sc.Name;
         Description.text = "<B>Description:</B>\n" + (sc.description.Equals("") ? "None" : sc.description);
-        Mana.text = sc.ManaCost + "";
+        if (Mana != null) Mana.text = sc.ManaCost + "";
 
         // Shows spell card
         if (currentCard != null) Destroy(currentCard.gameObject);
