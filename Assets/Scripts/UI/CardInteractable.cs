@@ -111,22 +111,26 @@ public abstract class CardInteractable : MonoBehaviour,
         if (!CanInteract) return;
         else if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (mode == CIMode.Shop) {
+            if (mode == CIMode.Shop)
+            {
                 if (!ShopManager.Instance.purchase(this))
                 {
                     transform.DOShakePosition(0.5f, 1.3f);
                 }
             }
-            else if (mode == CIMode.Reward) {
+            else if (mode == CIMode.Reward)
+            {
                 RewardManager.Instance.SelectCard(this);
             }
         }
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
-            if (mode == CIMode.Shop) {
+            if (mode == CIMode.Shop)
+            {
                 ShopManager.Instance.inspect(this);
             }
-            else if (mode == CIMode.Reward) {
+            else if (mode == CIMode.Reward)
+            {
                 RewardManager.Instance.inspect(this);
             }
         }

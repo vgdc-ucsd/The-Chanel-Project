@@ -37,10 +37,12 @@ public class DuelManager : MonoBehaviour
     //private string eventPath = "";
 
 
-    void Awake() {
+    void Awake()
+    {
 
         // Singleton
-        if (Instance != null && Instance != this) {
+        if (Instance != null && Instance != this)
+        {
             Debug.LogWarning("Tried to create more than one instance of the DuelManager singleton");
             Destroy(this);
             return;
@@ -51,10 +53,12 @@ public class DuelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(PersistentData.Instance == null) {
+        if (PersistentData.Instance == null)
+        {
             Debug.LogWarning("Could not load encounter data");
         }
-        else {
+        else
+        {
             CurrentEncounter = PersistentData.Instance.CurrentEncounter;
             Settings = CurrentEncounter.Settings;
             EnemyDeck = CurrentEncounter.EnemyDeck;
@@ -88,7 +92,8 @@ public class DuelManager : MonoBehaviour
         // UI Setup
         UIManager.Instance.Initialize();
         UIManager.Instance.UpdateStatus(MainDuel);
-        if (Settings.EnablePVPMode || Settings.ShowEnemyHand) {
+        if (Settings.EnablePVPMode || Settings.ShowEnemyHand)
+        {
             UIManager.Instance.EnemyHand.gameObject.SetActive(true);
         }
 
@@ -97,17 +102,20 @@ public class DuelManager : MonoBehaviour
         FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardShuffle", transform.position);
 
         // Music
-        if(CurrentEncounter.boss != null) {
+        if (CurrentEncounter.boss != null)
+        {
             Instantiate(BossMusic);
         }
-        else {
+        else
+        {
             Instantiate(DuelMusic);
         }
     }
 
     private void Update()
     {
-        if(MainDuel.Animations.Count != 0) {
+        if (MainDuel.Animations.Count != 0)
+        {
             AnimationManager.Instance.Enqueue(MainDuel.Animations);
             MainDuel.Animations.Clear();
         }
@@ -115,14 +123,17 @@ public class DuelManager : MonoBehaviour
         //Debug.Log(MainDuel.PlayerStatus.Cards.ToCommaSeparatedString());
     }
 
-    private void CheckProperInitialization() {
+    private void CheckProperInitialization()
+    {
         UIManager.Instance.CheckProperInitialization();
 
-        if(PlayerDeck == null || EnemyDeck == null) {
+        if (PlayerDeck == null || EnemyDeck == null)
+        {
             Debug.LogError("Could not start duel, decks are uninitalized");
             return;
         }
-        if(Settings == null) {
+        if (Settings == null)
+        {
             Debug.LogError("Could not start duel, the DuelSettings are uninitialized");
             return;
         }
@@ -131,11 +142,12 @@ public class DuelManager : MonoBehaviour
     // triggered by button
     public void DrawCardPlayer()
     {
-        if(!DrawCardButton.Instance.CanInteract) return;
+        if (!DrawCardButton.Instance.CanInteract) return;
         if (Settings.EnablePVPMode)
             throw new System.NotImplementedException();
 
-        if(MainDuel.PlayerStatus.Mana >= 2 && awaitingAI == false) {
+        if (MainDuel.PlayerStatus.Mana >= 2 && awaitingAI == false)
+        {
             MainDuel.DrawCardWithMana(Team.Player);
             AnimationManager.Instance.UpdateUIAnimation(MainDuel);
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardDraw", transform.position);
@@ -143,22 +155,27 @@ public class DuelManager : MonoBehaviour
     }
 
     // triggered by button
-    public void EndTurnPlayer() {
-        if(awaitingAI) return; // await AI
-        if(!AnimationManager.Instance.DonePlaying()) return; // await animations
+    public void EndTurnPlayer()
+    {
+        if (awaitingAI) return; // await AI
+        if (!AnimationManager.Instance.DonePlaying()) return; // await animations
 
         PlayerInputController.Instance.SetAction(ControlAction.None);
-        if(Settings.EnablePVPMode) {
-            if (currentTeam == Team.Player) {
+        if (Settings.EnablePVPMode)
+        {
+            if (currentTeam == Team.Player)
+            {
                 MainDuel.ProcessBoard(Team.Player);
                 currentTeam = Team.Enemy;
             }
-            else {
+            else
+            {
                 MainDuel.ProcessBoard(Team.Enemy);
                 currentTeam = Team.Player;
             }
         }
-        else {
+        else
+        {
             EnablePlayerControl(false);
             MainDuel.ProcessBoard(Team.Player);
             currentTeam = Team.Enemy;
@@ -169,7 +186,8 @@ public class DuelManager : MonoBehaviour
     }
 
 
-    public void EnemyMove(DuelInstance state) {
+    public void EnemyMove(DuelInstance state)
+    {
         state.ProcessBoard(Team.Enemy);
         MainDuel = state;
         //state.DebugBoard();
@@ -199,14 +217,18 @@ public class DuelManager : MonoBehaviour
         */
     }
 
-    public void EnablePlayerControl(bool enable) {
+    public void EnablePlayerControl(bool enable)
+    {
+        Debug.Log(enable);
         UIManager.Instance.EnablePlayerControlUI(enable);
         List<Card> cards = new List<Card>();
         cards.AddRange(MainDuel.GetStatus(Team.Player).Cards);
         cards.AddRange(MainDuel.DuelBoard.CardSlots);
 
-        foreach (Card card in cards) {
-            if (card != null && card.CardInteractableRef != null) {
+        foreach (Card card in cards)
+        {
+            if (card != null && card.CardInteractableRef != null)
+            {
                 card.CardInteractableRef.CanInteract = enable;
             }
         }
