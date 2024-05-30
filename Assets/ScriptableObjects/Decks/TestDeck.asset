@@ -13,8 +13,16 @@ MonoBehaviour:
   m_Name: TestDeck
   m_EditorClassIdentifier: 
   CardList:
-  - {fileID: 11400000, guid: 0fbf928ca99cf444d86b6bc34fb185af, type: 2}
-  - {fileID: 11400000, guid: 0fbf928ca99cf444d86b6bc34fb185af, type: 2}
-  - {fileID: 11400000, guid: 0fbf928ca99cf444d86b6bc34fb185af, type: 2}
-  - {fileID: 11400000, guid: 0fbf928ca99cf444d86b6bc34fb185af, type: 2}
+  - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
+  - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
+  - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
+  - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
+  - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
+  - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
+  - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
+  - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
+  - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
+  - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
+  - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
+  - {fileID: 11400000, guid: 691e97ed91cb82348b0971a95ad201be, type: 2}
   numAvailableCards: 0

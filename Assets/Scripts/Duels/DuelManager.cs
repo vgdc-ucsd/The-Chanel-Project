@@ -135,11 +135,11 @@ public class DuelManager : MonoBehaviour
         if (Settings.EnablePVPMode)
             throw new System.NotImplementedException();
 
-        MainDuel.DrawCardWithMana(Team.Player);
-
-        AnimationManager.Instance.UpdateUIAnimation(MainDuel);
-
-        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardDraw", transform.position);
+        if(MainDuel.PlayerStatus.Mana >= 2 && awaitingAI == false) {
+            MainDuel.DrawCardWithMana(Team.Player);
+            AnimationManager.Instance.UpdateUIAnimation(MainDuel);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardDraw", transform.position);
+        }
     }
 
     // triggered by button

@@ -14,7 +14,8 @@ public class HerculesAbility : Ability
         if (Info.TargetCard.Health == 0 || (!Info.TargetCard.Name.Equals("Sphinx") && Info.TargetCard.Health < 0))
         {
             c.baseStats.baseDamage++;
-            foreach(Attack atk in c.baseStats.attacks) {
+            foreach(Attack atk in c.Attacks) {
+            //foreach(Attack atk in c.baseStats.attacks) {
                 atk.damage++;
             }
 

@@ -72,6 +72,7 @@ public class PlayerInputController: MonoBehaviour
     {
         if (card == null) return;
         if (card.CurrentTeam == Team.Enemy && !DuelManager.Instance.Settings.EnablePVPMode) return;
+        if(!card.CardInteractableRef.CanInteract) return;
         if (toggle && selectedCard != null && selectedCard != card)
         {
             // unselect previous card
