@@ -8,11 +8,14 @@ public class StatusIcon : MonoBehaviour
 {
     public TMP_Text durationText;
     public Image image;
+    public Image imageOutline;
+
     public static int spacing = 25;
 
     public void SetStatus(StatusEffect effect, int position)
     {
         image.sprite = effect.icon;
+        imageOutline.sprite = image.sprite;
         if (effect.duration != -1)
             durationText.text = effect.duration.ToString();
         else
@@ -20,5 +23,6 @@ public class StatusIcon : MonoBehaviour
         image.rectTransform.anchoredPosition = new Vector2(
             image.rectTransform.anchoredPosition.x + position * spacing,
             image.rectTransform.anchoredPosition.y);
+        imageOutline.rectTransform.anchoredPosition = image.rectTransform.anchoredPosition;
     }
 }

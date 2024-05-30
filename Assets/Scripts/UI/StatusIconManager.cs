@@ -16,6 +16,7 @@ public class StatusIconManager : MonoBehaviour
         foreach (StatusEffect effect in ci.card.StatusEffects)
         {
             StatusIcon icon = Instantiate(statusIconTemplate, transform);
+            icon.gameObject.SetActive(true);
             icon.SetStatus(effect, i);
             icons.Add(icon);
             i++;

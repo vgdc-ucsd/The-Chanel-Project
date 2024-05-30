@@ -271,7 +271,7 @@ PrefabInstance:
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: ImportDeck
       value: 
-      objectReference: {fileID: 11400000, guid: bb0fd6f66e25e4549b5b3a6e285a9bdd, type: 2}
+      objectReference: {fileID: 11400000, guid: 26edb99768f06574d895036ce188b122, type: 2}
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: CurrentEncounter
       value: 
