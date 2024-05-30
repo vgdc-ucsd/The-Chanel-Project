@@ -41,9 +41,9 @@ public class CardInfoPanel : MonoBehaviour
         {
             CardName.text = "";
             Description.text = "";
-            Mana.text = "";
-            Health.text = "";
-            Atk.text = "";
+            if (Mana != null) Mana.text = "";
+            if (Health != null) Health.text = "";
+            if (Atk != null) Atk.text = "";
         }
     }
 
@@ -61,7 +61,7 @@ public class CardInfoPanel : MonoBehaviour
     {
         EnablePanel();
         CardName.text = uc.Name;
-        Description.text = uc.description;
+        Description.text = "<B>Description:</B>\n" + (uc.description.Equals("") ? "None" : uc.description);
         Mana.text = uc.ManaCost + "";
         Health.text = uc.Health + "";
         Atk.text = uc.BaseDamage + "";

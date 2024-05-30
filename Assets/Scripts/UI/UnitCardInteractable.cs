@@ -44,7 +44,7 @@ public class UnitCardInteractable : CardInteractable,
     protected override void Awake()
     {
         base.Awake();
-        icons.ci = this;
+        if (icons != null) icons.ci = this;
 
         // Audio
         //emitter = GetComponent<FMODUnity.StudioEventEmitter>();
