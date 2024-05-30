@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9971f1ea77cf8f4d9a1540cfb5f1e69, type: 3}
   m_Name: Lotus Flower Ability
   m_EditorClassIdentifier: 
-  duration: 1
+  initialDuration: 1
+  duration: 0
   icon: {fileID: 21300000, guid: ae088fa8d56c9024981dec432a0732b1, type: 3}

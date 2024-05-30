@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f466bab1020aa14099e19b226a0459e, type: 3}
   m_Name: Red Spider Lily Ability
   m_EditorClassIdentifier: 
-  duration: 1
+  initialDuration: 1
+  duration: 0
   icon: {fileID: 21300000, guid: ae088fa8d56c9024981dec432a0732b1, type: 3}

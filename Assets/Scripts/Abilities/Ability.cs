@@ -46,6 +46,7 @@ public abstract class Ability : ScriptableObject
 
 public abstract class StatusEffect : Ability
 {
+    public int initialDuration;
     public int duration;
     public Sprite icon;
 
@@ -75,7 +76,7 @@ public abstract class StatusEffect : Ability
     }
 
 
-    public void RemoveEffect(UnitCard c, ActivationInfo info)
+    virtual public void RemoveEffect(UnitCard c, ActivationInfo info)
     {
         c.Abilities.Remove(this);
         c.StatusEffects.Remove(this);

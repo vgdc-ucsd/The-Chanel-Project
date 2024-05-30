@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f15f282beda789c4686a2671c4e99758, type: 3}
-  m_Name: PlayerDeck
+  m_Name: WeakCardsOnly
   m_EditorClassIdentifier: 
   CardList:
-  - {fileID: 11400000, guid: 0fbf928ca99cf444d86b6bc34fb185af, type: 2}
   - {fileID: 11400000, guid: a88c7d8913880fd4aa37c9ba6619601b, type: 2}
   - {fileID: 11400000, guid: 3140f3a6a1ea936499c7203083f2c746, type: 2}
   - {fileID: 11400000, guid: c39ab0e8a3dfc1742a87be83397d457c, type: 2}
@@ -23,6 +22,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e7bb028145f1efc45ae1da90255731d8, type: 2}
   - {fileID: 11400000, guid: 7b426a659073e4043b5abdf92114df9a, type: 2}
   - {fileID: 11400000, guid: e68fa6cacd27d6d43a0edc774598ffbe, type: 2}
-  - {fileID: 11400000, guid: a73a0b4e116e3a34cbf23b7d5aadf05d, type: 2}
-  - {fileID: 11400000, guid: c26f43099fad7b54f8df370c9f59dddf, type: 2}
   numAvailableCards: 0

@@ -271,7 +271,7 @@ PrefabInstance:
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: ImportDeck
       value: 
-      objectReference: {fileID: 11400000, guid: 8205a0479993b8f49a709d0d0c92917a, type: 2}
+      objectReference: {fileID: 11400000, guid: bb0fd6f66e25e4549b5b3a6e285a9bdd, type: 2}
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: CurrentEncounter
       value: 
@@ -1659,13 +1659,13 @@ MonoBehaviour:
     UnlimitedMana: 0
     ShowEnemyHand: 0
     DisableWinning: 1
-  PlayerDeck: {fileID: 11400000, guid: 4f6e7e01958be54499e3afc47d6960fa, type: 2}
-  EnemyDeck: {fileID: 11400000, guid: 4f6e7e01958be54499e3afc47d6960fa, type: 2}
+  PlayerDeck: {fileID: 11400000, guid: bb0fd6f66e25e4549b5b3a6e285a9bdd, type: 2}
+  EnemyDeck: {fileID: 11400000, guid: b3a15971f8904584aa21cf0afd07b9f1, type: 2}
   currentTeam: 0
-  CurrentEncounter: {fileID: 0}
+  CurrentEncounter: {fileID: 11400000, guid: a92bed907e362f04f81c42e688defbb9, type: 2}
   DuelMusic: {fileID: 5458430580489171999, guid: d15cd42e7162b2647b492918868de3fd, type: 3}
   BossMusic: {fileID: 5458430580489171999, guid: d7949661fc83ab04fa0a4ec2f647162e, type: 3}
-  loadDeckFromInventory: 1
+  loadDeckFromInventory: 0
 --- !u!222 &1244177896668772318
 CanvasRenderer:
   m_ObjectHideFlags: 0
