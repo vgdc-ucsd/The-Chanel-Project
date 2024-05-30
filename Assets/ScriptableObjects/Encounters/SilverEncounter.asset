@@ -55,3 +55,5 @@ MonoBehaviour:
   EncounterAudio: {fileID: -7987570379772523157, guid: 9c66ca709e1cebb44a22501cef272820, type: 3}
   WinAudio: {fileID: -7987570379772523157, guid: c125064b2a9379644820979f286b1b3e, type: 3}
   LoseAudio: {fileID: -7987570379772523157, guid: ff59b2db834fdca47a2fb990c6ef370b, type: 3}
+  AIAggression: 0.55
+  AIDefense: 0.7

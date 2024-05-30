@@ -17,4 +17,9 @@ public class Encounter : ScriptableObject
     public FMODUnity.StudioEventEmitter EncounterAudio;
     public FMODUnity.StudioEventEmitter WinAudio;
     public FMODUnity.StudioEventEmitter LoseAudio;
+
+    [Header("Slightly affects AI behavior")]
+    [Header("Aggression: 0.5-0.9, Defense: 0.5-0.7")]
+    public float AIAggression = 0.7f;   
+    public float AIDefense = 0.6f;      
 }

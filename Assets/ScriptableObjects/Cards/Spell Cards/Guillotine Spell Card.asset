@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Guillotine Spell Card
   m_EditorClassIdentifier: 
   Name: Guillotine
-  ManaCost: 2
+  ManaCost: 3
   ShopCost: 50
   Artwork: {fileID: 21300000, guid: 07ae70798d06b51429f1df41b2dcd1f1, type: 3}
   drawStatus: 0

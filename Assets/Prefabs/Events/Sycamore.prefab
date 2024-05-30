@@ -171,7 +171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   center: {fileID: 6765381394224488128}
   rewardCard1Template: {fileID: 11400000, guid: e7bb028145f1efc45ae1da90255731d8, type: 2}
-  rewardCard2Template: {fileID: 11400000, guid: 7b426a659073e4043b5abdf92114df9a, type: 2}
+  rewardCard2Template: {fileID: 11400000, guid: 19b8442efe517214bbd9c36dc798cbf6, type: 2}
   sycamoreEncounter: {fileID: 11400000, guid: 238f92a85bf11dd498c29d617429abb7, type: 2}
 --- !u!1 &6986958356325204326
 GameObject:

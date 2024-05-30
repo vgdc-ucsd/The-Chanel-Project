@@ -6,6 +6,8 @@ using Unity.VisualScripting; // for testing
 
 public class MctsAI
 {
+
+
     private class Node
     {
         public int NumWins = 0;
@@ -48,12 +50,12 @@ public class MctsAI
 
     // probability that the AI will consider these actions
     float aiMovementChance = 0.3f;
-    float aiPushChance = 0.65f;
+    float aiPushChance = 0.7f;
     float aiDrawChance = 0.1f;
 
     // probability that the AI will anticipate the player doing these actions
     float playerMovementChance = 0.3f;
-    float playerPushChance = 0.5f;
+    float playerPushChance = 0.7f;
     float playerDrawChance = 0.1f;
 
     // how much the AI likes enemy/player cards positioned at corresponding y value
@@ -67,6 +69,12 @@ public class MctsAI
 
 
     private List<Node> nodes;
+
+    public MctsAI(float aggression, float defense)
+    {
+        aiPushChance = aggression;
+        playerPushChance = defense;
+    }
 
     public IEnumerator MCTS(DuelInstance state) {
         float maxTime = 0.008f; // <= 120 fps
