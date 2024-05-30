@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stages: 2
   clearBoard: 1
-  buffCards: 0
+  buffCards: 1
   finalBoss: 1
