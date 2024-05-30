@@ -90,7 +90,7 @@ public class ShopManager : MonoBehaviour
 
     public void toInventory()
     {
-        MenuScript.Instance.LoadInventory();
+        MenuScript.Instance.OpenInventory();
     }
 
     public void toMap()

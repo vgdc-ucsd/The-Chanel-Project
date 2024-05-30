@@ -21,6 +21,7 @@ public class SpellCardInteractable : CardInteractable
         {
             CardArt.sprite = card.Artwork;
         }
+        card.CardInteractableRef = this;
         UpdateCardInfo();
     }
 
@@ -67,7 +68,7 @@ public class SpellCardInteractable : CardInteractable
     public override void OnPointerEnter(PointerEventData eventData)
     {
         base.OnPointerEnter(eventData);
-
+        if (mode == CIMode.Display) return;
         // Inventory stuff
         if (mode == CIMode.Inventory)
         {

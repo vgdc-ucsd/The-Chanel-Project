@@ -26,8 +26,4 @@ public class NavButtons : MonoBehaviour
         MenuScript.Instance.LoadTitle();
     }
 
-    public void LoadInventory()
-    {
-        MenuScript.Instance.LoadInventory();
-    }
 }
