@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   center: {fileID: 6765381394224488128}
-  lancelot: {fileID: 11400000, guid: eb7d38ae15c928b48a3de6fc238291a2, type: 2}
+  lancelot: {fileID: 11400000, guid: fa685b80750db4f48b5f6e247e663903, type: 2}
 --- !u!1 &6986958356325204326
 GameObject:
   m_ObjectHideFlags: 0
