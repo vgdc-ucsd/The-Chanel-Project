@@ -60,7 +60,7 @@ public class VersusScreen : MonoBehaviour
             SceneManager.LoadScene(MenuScript.REWARD_INDEX);
         }
         else if(state == VsScreenState.Lose) {
-            SceneManager.LoadScene(MenuScript.TITLE_INDEX);
+            MenuScript.Instance.LoadTitle();
         }
         else {
             SceneManager.LoadScene(MenuScript.DUEL_INDEX);

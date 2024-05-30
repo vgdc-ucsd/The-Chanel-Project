@@ -31,6 +31,7 @@ public class PersistentData : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            
             return;
         }
         DontDestroyOnLoad(gameObject);

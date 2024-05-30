@@ -66,24 +66,13 @@ public class MenuScript : MonoBehaviour
         {
             LoadShop();
         }
-    }
-
-    public void PlayGame()
-    {
-        if (PersistentData.Instance != null)
+        if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            Destroy(PersistentData.Instance.gameObject);
+            LoadTitle();
         }
-        Instantiate(startDataTemplate);
-
-        PersistentData.Instance.Init();
-        SceneManager.LoadScene(1);
-        PersistentData.Instance.mapInfo.nodePoints = new();
-        PersistentData.Instance.mapInfo.nodeTypes = new();
-        PersistentData.Instance.mapInfo.nodeConnections = new();
-        PersistentData.Instance.mapInfo.nodeVisited = new();
-        PersistentData.Instance.mapInfo.lastVisitedNode = new(0, 0);
     }
+
+
 
     public void QuitGame()
     {
@@ -112,6 +101,10 @@ public class MenuScript : MonoBehaviour
     {
         PREV_INDEX = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(TITLE_INDEX);
+        PersistentData pd = PersistentData.Instance;
+        PersistentData.Instance = null;
+        Instance = null;
+        Destroy(pd.gameObject);
     }
 
     /*
