@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
+// UNUSED
 public class InventoryManager : MonoBehaviour
 {
     // IGNORE THIS maxItems. IT IS FOR TESTING PURPOSES

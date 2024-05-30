@@ -187,3 +187,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PREV_INDEX: 0
+  inventoryPrefab: {fileID: 3892158801743308258, guid: 1f1f343d8bb76404bb3590a658b0c9d7, type: 3}

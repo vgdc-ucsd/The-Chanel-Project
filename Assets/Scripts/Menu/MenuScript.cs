@@ -18,6 +18,15 @@ public class MenuScript : MonoBehaviour
 
     public int PREV_INDEX;
 
+    public InventoryUI inventoryPrefab;
+
+    private static List<int> allowedInventoryScenes = new List<int>
+    {
+        MAP_INDEX,
+        SHOP_INDEX,
+        // EVENT_INDEX, 
+    };
+    
     public void Awake()
     {
         if (Instance != this && Instance)
@@ -41,7 +50,11 @@ public class MenuScript : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.I))
         {
-            LoadInventory();
+            if (allowedInventoryScenes.Contains(SceneManager.GetActiveScene().buildIndex))
+            {
+                OpenInventory();
+            }
+            
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
@@ -106,7 +119,13 @@ public class MenuScript : MonoBehaviour
         }
     }
 
-    // Debug Only
+    public void OpenInventory()
+    {
+        if (InventoryUI.Instance == null) // only 1 inventory allowed
+            Instantiate(inventoryPrefab);
+    }
+
+
     public void LoadShop()
     {
         PREV_INDEX = SceneManager.GetActiveScene().buildIndex;

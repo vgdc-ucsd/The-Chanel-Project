@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -29,6 +30,12 @@ public class InventoryUI : MonoBehaviour
     Coroutine deckSizeWarnCor;
     public TMP_Text deckSizeWarningText;
 
+    // mini UI manager
+    public UnitCardInteractable TemplateUnitCard;
+    public SpellCardInteractable TemplateSpellCard;
+    public Sprite PlayerUnitCardBorder;
+    public Sprite PlayerSpellCardBorder;
+
     private void Awake()
     {
         if (Instance == null)
@@ -42,19 +49,49 @@ public class InventoryUI : MonoBehaviour
 
     }
 
+    // lobotomized version of UIManager.GenerateCardInteractable
+    public CardInteractable GenerateCardInteractable(Card c)
+    {
+        if (c is UnitCard)
+        {
+            UnitCardInteractable ci = Instantiate(TemplateUnitCard);
+            ci.card = (UnitCard)c;
+            ci.SetCardInfo();
+            ci.mode = CIMode.Inventory;
+            ci.ResetArrows();
+            ci.image.sprite = PlayerUnitCardBorder;
+            return ci;
+
+        }
+        else if (c is SpellCard)
+        {
+            SpellCardInteractable ci = Instantiate(TemplateSpellCard);
+            ci.card = (SpellCard)c;
+            ci.SetCardInfo();
+            ci.mode = CIMode.Inventory;
+
+            ci.image.sprite = PlayerSpellCardBorder;
+            return ci;
+
+        }
+        else
+        {
+            Debug.LogError("Unidentified card type");
+            return null;
+        }
+    }
+
     public void InitCards()
     {
         foreach (Card card in inventory.InactiveCards)
         {
-            CardInteractable ci = UIManager.Instance.GenerateCardInteractable(card);
-            ci.mode = CIMode.Inventory;
+            CardInteractable ci = GenerateCardInteractable(card);
             ciList.Add(ci);
 
         }
         foreach (Card card in inventory.ActiveCards)
         {
-            CardInteractable ci = UIManager.Instance.GenerateCardInteractable(card);
-            ci.mode = CIMode.Inventory;
+            CardInteractable ci = GenerateCardInteractable(card);
             ciList.Add(ci);
         }
     }
@@ -142,7 +179,9 @@ public class InventoryUI : MonoBehaviour
             return;
         }
 
-        MenuScript.Instance.LoadPrevFromInventory();
+        Destroy(gameObject);
+
+        //MenuScript.Instance.LoadPrevFromInventory();
     }
 
     IEnumerator DeckSizeWarn()

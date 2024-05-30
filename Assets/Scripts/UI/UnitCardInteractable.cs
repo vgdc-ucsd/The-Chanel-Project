@@ -276,7 +276,7 @@ public class UnitCardInteractable : CardInteractable,
     public override void OnPointerEnter(PointerEventData eventData)
     {
         base.OnPointerEnter(eventData);
-
+        if (mode == CIMode.Display) return;
         // Inventory stuff
         if (mode == CIMode.Inventory)
         {
@@ -292,6 +292,7 @@ public class UnitCardInteractable : CardInteractable,
     public override void OnPointerExit(PointerEventData eventData)
     {
         base.OnPointerExit(eventData);
+        if (mode == CIMode.Display) return;
         if (mode != CIMode.Duel) return;
         AnimationManager.Instance.StopManaHover(card.CurrentTeam);
     }

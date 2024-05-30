@@ -23,7 +23,8 @@ public class CardInfoPanel : MonoBehaviour
 
     void Awake()
     {
-        InitializeCardInfoPanel(null);
+        if (InventoryUI.Instance != null) { }
+            InitializeCardInfoPanel(null);
     }
 
     public void InitializeCardInfoPanel(Card c)
@@ -70,7 +71,7 @@ public class CardInfoPanel : MonoBehaviour
         SetCardInteractable(uc);
         ((UnitCardInteractable)currentCard).DrawArrows();
         currentCard.CanInteract = false;
-        currentCard.mode = CIMode.Inventory;
+        currentCard.mode = CIMode.Display;
     }
 
     public void UpdateInfoPanelSpellCard(SpellCard sc)
@@ -91,7 +92,18 @@ public class CardInfoPanel : MonoBehaviour
         // TODO use base stats
         Card card = c.Clone();
         card.CurrentTeam = Team.Neutral;
-        currentCard = UIManager.Instance.GenerateCardInteractable(card);
+        if (card.CardInteractableRef.mode == CIMode.Inventory)
+        {
+            currentCard = InventoryUI.Instance.GenerateCardInteractable(card);
+        }
+        else
+        {
+            currentCard = UIManager.Instance.GenerateCardInteractable(card);
+        }
+        currentCard.mode = CIMode.Display;
+
+        currentCard.GetComponent<GraphicRaycaster>().enabled = false;
+
         currentCard.transform.SetParent(CardHolder);
         currentCard.transform.localPosition = Vector3.zero;
         currentCard.transform.localScale = Vector3.one;

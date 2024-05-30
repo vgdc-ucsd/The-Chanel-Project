@@ -93,6 +93,10 @@ public class UIManager : MonoBehaviour
         Enemy.UpdateUI(state.EnemyStatus);
     }
 
+    /* !! README !!
+     * The GenerateCardInteractable method used in inventory screen has been moved 
+     * to InventoryUI, please make changes there for inventory CardInteractables.
+     */
     public CardInteractable GenerateCardInteractable(Card c) {
         if(c is UnitCard) {
             UnitCardInteractable ci = Instantiate(TemplateUnitCard);
