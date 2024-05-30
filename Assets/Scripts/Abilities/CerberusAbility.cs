@@ -10,14 +10,15 @@ public class CerberusAbility : Ability
     public override void Activate(UnitCard c, ActivationInfo info)
     {
         AnimationManager.Instance.AbilityActivateAnimation(info.Duel, c);
-        info.Duel.DealDamage(c, 1);
-        ApplyFire(c, info);
-        AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
+        if (c.Health > 0) {
+            ApplyFire(c, info);
+        }
     }
 
     private void ApplyFire(UnitCard card, ActivationInfo info)
     {
         FireEffect effect = ScriptableObject.Instantiate(DuelManager.Instance.Effects.FireEffectTemplate);
+        effect.initialDuration = 3;
         effect.AddEffect(card, info);
     }
 }

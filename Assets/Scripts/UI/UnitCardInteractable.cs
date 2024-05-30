@@ -76,6 +76,11 @@ public class UnitCardInteractable : CardInteractable,
         icons.RefreshIcons();
     }
 
+    public void UpdateStatusEffectInfo()
+    {
+        icons.RefreshIcons();
+    }
+
     public void UpdateCardInfoDamage(int damage)
     {
         //CardAttack.text = "Attack: " + card.BaseDamage;

@@ -18,7 +18,7 @@ MonoBehaviour:
   Artwork: {fileID: 21300000, guid: ad86c94acdfb73e47a3247d6a1574972, type: 3}
   drawStatus: 0
   id: 0
-  description: Upon taking damage, attacker takes 1 dmg and is burned for 3 turns.
+  description: Upon taking damage, attacker is applied Burning for 3 turns.
   CurrentTeam: 2
   cardType: 2
   Health: 5

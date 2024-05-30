@@ -5,14 +5,12 @@ public class FrozenEffect : StatusEffect
 {
     public override ActivationCondition Condition
     {
-        get { return ActivationCondition.OnBeginTurn; }
+        get { return ActivationCondition.OnEndTurn; }
     }
 
     public override void Activate(UnitCard c, ActivationInfo info)
     {
-        duration--;
-        if (duration < 1)
-        {
+        if (--duration < 1) {
             RemoveEffect(c, info);
         }
         c.CanMove = false;
@@ -22,25 +20,16 @@ public class FrozenEffect : StatusEffect
 
     public override void AddEffect(UnitCard c, ActivationInfo info)
     {
-        duration = initialDuration;
-        bool hasEffect = false;
-        foreach (StatusEffect s in c.StatusEffects)
-        {
-            if (s.GetType() == this.GetType())
-            {
-                s.duration += initialDuration;
-                hasEffect = true;
-                Debug.Log(s.duration);
-                AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
-                return;
-            }
+        StatusEffect cardStatus = c.GetStatusEffect(this);
+        if (cardStatus != null) {
+            cardStatus.duration += initialDuration;
         }
-        if (!hasEffect) {
+        else {
+            duration = initialDuration;
             c.Abilities.Add(this);
             c.StatusEffects.Add(this);
         }
         AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
-        Debug.Log(duration);
     }
 
     public override void RemoveEffect(UnitCard c, ActivationInfo info)

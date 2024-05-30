@@ -175,6 +175,18 @@ public class UnitCard : Card
 
     }
 
+    public StatusEffect GetStatusEffect(StatusEffect statusEffect)
+    {
+        foreach (StatusEffect s in StatusEffects)
+        {
+            if (s.GetType() == statusEffect.GetType())
+            {
+                return s;
+            }
+        }
+        return null;
+    }
+
     // DO NOT USE THIS INSIDE DUELS, use this for visual card objects outside of duels only
     public override CardInteractable GenerateCardInteractable()
     {
