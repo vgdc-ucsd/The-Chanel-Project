@@ -34,7 +34,9 @@ public class InventoryUI : MonoBehaviour
     public UnitCardInteractable TemplateUnitCard;
     public SpellCardInteractable TemplateSpellCard;
     public Sprite PlayerUnitCardBorder;
+    public Sprite EnemyUnitCardBorder;
     public Sprite PlayerSpellCardBorder;
+    public Sprite EnemySpellCardBorder;
 
     private void Awake()
     {

@@ -111,6 +111,13 @@ public class CardInfoPanel : MonoBehaviour
         currentCard.transform.localScale = Vector3.one;
         currentCard.CardCost.enabled = true;
         currentCard.Mana.gameObject.SetActive(false);
+
+        if (c is UnitCard) {
+            currentCard.image.sprite = c.CurrentTeam == Team.Enemy ? UIManager.Instance.EnemyUnitCardBorder : UIManager.Instance.PlayerUnitCardBorder;
+        }
+        else {
+            currentCard.image.sprite = c.CurrentTeam == Team.Enemy ? UIManager.Instance.EnemySpellCardBorder : UIManager.Instance.PlayerSpellCardBorder;
+        }
     }
 
     public void EnablePanel()
