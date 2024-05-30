@@ -245,7 +245,7 @@ public class UnitCardInteractable : CardInteractable,
         base.OnBeginDrag(eventData);
 
         if (mode == CIMode.Inventory) return;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardSlide", transform.position); // Only want for when clicked/moving from deck
+        // FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardSlide", transform.position); // Only want for when clicked/moving from deck
     }
 
     public override void OnEndDrag(PointerEventData eventData)
