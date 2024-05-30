@@ -119,11 +119,10 @@ public class UnitCard : Card
             for (int i = 0; i < Abilities.Count; ++i) {
                 if (Abilities[i].Condition == ActivationCondition.OnDeath) Abilities[i].Activate(this, info);
             }
-            if (!isTemp){
+            if (Health <= 0 && !isTemp){
                 duel.GetStatus(CurrentTeam).Deck.Discard(this);
                 duel.GetStatus(CurrentTeam).discardPileCards = duel.GetStatus(CurrentTeam).Deck.DiscardPile();
             }
-
         }
     }
 
