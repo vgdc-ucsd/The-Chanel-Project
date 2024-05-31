@@ -174,7 +174,7 @@ public class InventoryUI : MonoBehaviour
 
     public void TryExit()
     {
-        if (inventory.ActiveCards.Count != Deck.DECK_SIZE)
+        if (inventory.InactiveCards.Count > 0 && inventory.ActiveCards.Count != Deck.DECK_SIZE)
         {
             if (deckSizeWarnCor != null) StopCoroutine(deckSizeWarnCor);
             deckSizeWarnCor = StartCoroutine(DeckSizeWarn());
