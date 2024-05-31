@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4934dd1a2e696e4085ca926b60f5b56, type: 3}
   m_Name: Nessus Favor Ability
   m_EditorClassIdentifier: 
-  initialDuration: 1
+  initialDuration: 3
   duration: 0
-  icon: {fileID: 21300000, guid: f6049c71f58a3694e8c5476030d02ca1, type: 3}
+  icon: {fileID: 21300000, guid: 38b94df78191ccc4b9f9f738d040481e, type: 3}
