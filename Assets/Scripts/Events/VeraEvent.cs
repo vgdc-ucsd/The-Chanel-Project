@@ -24,14 +24,14 @@ public class VeraEvent : MonoBehaviour
             }
         }
 
-        if (cardsWithAbilities.Count > 0)
+        if (cardsWithAbilities.Count > 0 && PersistentData.Instance.Inventory.InactiveCards.Count > 0)
         {
             List<Card> removedCards = new List<Card>();
             int randomIndex = Random.Range(0, cardsWithAbilities.Count);
             Card removed = PersistentData.Instance.Inventory.ActiveCards[cardsWithAbilities[randomIndex]];
             removedCards.Add(removed);
-            PersistentData.Instance.Inventory.ActiveCards.RemoveAt(cardsWithAbilities[randomIndex]);
-            StartCoroutine(AnimationManager.Instance.ShowChangedCards(removedCards, center, MenuScript.INVENTORY_INDEX));
+            PersistentData.Instance.Inventory.ActiveCards.Remove(removed);
+            StartCoroutine(AnimationManager.Instance.ShowChangedCards(removedCards, center, MenuScript.MAP_INDEX));
         }
         else
         {

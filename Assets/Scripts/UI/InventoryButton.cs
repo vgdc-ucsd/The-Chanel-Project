@@ -18,6 +18,10 @@ public class InventoryButton : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         BookImage.sprite = ClosedBook;
         BookImage.transform.localScale = closedScale;
+
+        if (PersistentData.Instance.Inventory.ActiveCards.Count < 12) {
+            MenuScript.Instance.OpenInventory();
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
