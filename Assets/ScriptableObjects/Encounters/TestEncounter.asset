@@ -42,7 +42,7 @@ MonoBehaviour:
     DisableWinning: 0
   EnemyArt: {fileID: 21300000, guid: 14d9a4dac9edcf74f8b1317180f22d17, type: 3}
   EnemyDecks: []
-  EnemyDeck: {fileID: 11400000, guid: bb0fd6f66e25e4549b5b3a6e285a9bdd, type: 2}
+  EnemyDeck: {fileID: 11400000, guid: ceb8fa2fe36f7a843adda2eb70167a64, type: 2}
   RewardGold: 80
   CardOffers:
   - {fileID: 11400000, guid: b0588fcb2d650924aad9a7445cb13b24, type: 2}

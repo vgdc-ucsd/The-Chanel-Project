@@ -67,7 +67,7 @@ public class DuelInstance
             {
                 EnemyStatus.Health = (int)(DuelManager.Instance.CurrentEncounter.Settings.Enemy.MaxHealth * 1.5);
             }
-            
+
             if (boss.clearBoard)
             {
                 foreach (UnitCard c in DuelBoard.GetCardsOfTeam(Team.Player))
@@ -174,7 +174,7 @@ public class DuelInstance
                     {
                         interrupt = interrupt || TryWin(winner);
                     }
-                        
+
                 }
                 if (attackLanded)
                 {
@@ -188,7 +188,7 @@ public class DuelInstance
 
 
             }
-            
+
         }
     }
 
@@ -365,10 +365,12 @@ public class DuelInstance
         {
             for (int i = card.Abilities.Count - 1; i >= 0; i--)
             {
-                Ability ability = card.Abilities[i];
-                if (ability.Condition == ActivationCondition.OnBeginTurn)
-                {
-                    ability.Activate(card, info);
+                if (i < card.Abilities.Count) {
+                    Ability ability = card.Abilities[i];
+                    if (ability.Condition == ActivationCondition.OnBeginTurn)
+                    {
+                        ability.Activate(card, info);
+                    }
                 }
             }
         }
