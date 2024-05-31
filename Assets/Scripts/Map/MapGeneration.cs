@@ -272,7 +272,7 @@ public class MapGeneration : MonoBehaviour
     private void PlaceEvents()
     {
         // cols 2-3, 5-6: force 3 events in 2 columns
-        PlaceEventWall(2, 3);
+        PlaceEventWall(3, 4);
         PlaceEventWall(5, 6);
     }
 

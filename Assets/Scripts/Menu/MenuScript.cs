@@ -46,11 +46,13 @@ public class MenuScript : MonoBehaviour
     // For Debugging & Swapping Scenes Easily
     private void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.M))
         {
             LoadMap();
         }
-        else if (Input.GetKeyDown(KeyCode.I))
+        */
+        if (Input.GetKeyDown(KeyCode.I))
         {
             if (allowedInventoryScenes.Contains(SceneManager.GetActiveScene().buildIndex))
             {
@@ -62,6 +64,7 @@ public class MenuScript : MonoBehaviour
         {
             UIManager.Instance.PlayerWin();
         }
+        /*
         if (Input.GetKeyDown(KeyCode.S))
         {
             LoadShop();
@@ -70,6 +73,7 @@ public class MenuScript : MonoBehaviour
         {
             LoadTitle();
         }
+        */
     }
 
 

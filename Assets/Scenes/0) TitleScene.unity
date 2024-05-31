@@ -715,7 +715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a74659cb8bc6ea24eb8a3a00877d9f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startDataTemplate: {fileID: 1199062109977073591, guid: 6a1780c07fc6da1498625c41f2ddfd4f, type: 3}
+  startDataTemplate: {fileID: 1199062109977073591, guid: a3cd80dbab2501f4a921b6937619f9c5, type: 3}
 --- !u!114 &461333458
 MonoBehaviour:
   m_ObjectHideFlags: 0
