@@ -727,6 +727,7 @@ MonoBehaviour:
   enemyImageObject: {fileID: 770501531}
   enemyName: {fileID: 340808817}
   AudioPlayer: {fileID: 600840451}
+  characterAudio: {fileID: 0}
 --- !u!114 &600840451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -901,6 +902,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9510af2ff444004dba0bc2a4e442502, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vsc: {fileID: 600840450}
 --- !u!4 &1144378230
 Transform:
   m_ObjectHideFlags: 0

@@ -27,7 +27,7 @@ public class VersusScreen : MonoBehaviour
     public GameObject enemyImageObject;
     public TextMeshProUGUI enemyName;
     public FMODUnity.StudioEventEmitter AudioPlayer;
-    private FMODUnity.StudioEventEmitter characterAudio;
+    public FMODUnity.StudioEventEmitter characterAudio;
 
     void Start()
     {
