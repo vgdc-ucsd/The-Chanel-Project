@@ -336,9 +336,12 @@ public class DuelInstance
         {
             for (int i = card.Abilities.Count - 1; i >= 0; i--)
             {
+                Debug.Log($"Activating ability on card: {card.Name}");
                 Ability ability = card.Abilities[i];
+
                 if (ability.Condition == ActivationCondition.OnEndTurn)
                 {
+                    
                     ability.Activate(card, info);
                 }
             }

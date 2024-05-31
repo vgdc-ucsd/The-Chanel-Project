@@ -272,8 +272,7 @@ public class MapGeneration : MonoBehaviour
     private void PlaceEvents()
     {
         // cols 2-3, 5-6: force 3 events in 2 columns
-        PlaceEventWall(3, 4);
-        PlaceEventWall(5, 6);
+        PlaceEventWall(2, 5);
     }
 
     void PlaceEventWall(int col1, int col2)
@@ -285,7 +284,7 @@ public class MapGeneration : MonoBehaviour
         {
             if (eventWall[i] == null) eventWall.Remove(eventWall[i]);
         }
-        int eventCount = Mathf.Min(3, eventWall.Count);
+        int eventCount = Mathf.Min(5, eventWall.Count);
 
         for (int i = 0; i < eventCount; i++)
         {
@@ -323,6 +322,14 @@ public class MapGeneration : MonoBehaviour
                             }
                         }
                     }
+                }
+            }
+
+            if (j == 3)
+            {
+                foreach (MapNode node in arr)
+                {
+                    if (node != null) node.mapNodeType = MapNodeType.Shop;
                 }
             }
         }

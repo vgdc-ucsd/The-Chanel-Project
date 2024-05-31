@@ -70,7 +70,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: beb5b9423d8ffd14b99bf7816faedff0, type: 2}
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: possibleEncounters.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: completedEncounters.Array.size
