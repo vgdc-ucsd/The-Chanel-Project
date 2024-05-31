@@ -29,7 +29,7 @@ public class EventManager : MonoBehaviour
         }
 
         GameObject selectedEvent;
-        
+
         if(PersistentData.Instance.FirstEvent) {
             PersistentData.Instance.FirstEvent = false;
             selectedEvent = Instantiate(PersistentData.Instance.OutlawEvent);
@@ -40,7 +40,7 @@ public class EventManager : MonoBehaviour
             PersistentData.Instance.CompletedEvents.Add(PersistentData.Instance.PossibleEvents[randomIndex]);
             PersistentData.Instance.PossibleEvents.RemoveAt(randomIndex);
         }
-        
+
         selectedEvent.transform.SetParent(this.transform);
     }
 

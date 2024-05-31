@@ -35,7 +35,8 @@ public class OutlawEvent : MonoBehaviour
         if(EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
 
-        PersistentData.Instance.CurrentEncounter = OutlawEncounters[OutlawEncounters.Count - 1];
+        PersistentData.Instance.CurrentEncounter = PersistentData.Instance.bossEncounters[0];
+        PersistentData.Instance.bossEncounters.Remove(PersistentData.Instance.CurrentEncounter);
         EventManager.Instance.FinishEvent(MenuScript.VERSUS_INDEX);
     }
 }
