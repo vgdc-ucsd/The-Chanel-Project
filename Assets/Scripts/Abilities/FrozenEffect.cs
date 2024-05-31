@@ -5,7 +5,7 @@ public class FrozenEffect : StatusEffect
 {
     public override ActivationCondition Condition
     {
-        get { return ActivationCondition.OnEndTurn; }
+        get { return ActivationCondition.OnBeginTurn; }
     }
 
     public override void Activate(UnitCard c, ActivationInfo info)
@@ -20,6 +20,8 @@ public class FrozenEffect : StatusEffect
 
     public override void AddEffect(UnitCard c, ActivationInfo info)
     {
+        c.CanMove = false;
+        c.CanAttack = false;
         StatusEffect cardStatus = c.GetStatusEffect(this);
         if (cardStatus != null) {
             cardStatus.duration += initialDuration;

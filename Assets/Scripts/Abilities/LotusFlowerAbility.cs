@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Abilites/LotusFlowerAbility")]
 public class LotusFlowerAbility : StatusEffect
 {
-    
+
 
     public override ActivationCondition Condition
     {

@@ -11,10 +11,10 @@ public class NessusFavorAbility : StatusEffect
 
     public override void Activate(UnitCard c, ActivationInfo info)
     {
-        if (--duration < 1) {
-            RemoveEffect(c, info);
-        }
         if (info.TargetCard.Health > 0) {
+            if (--duration < 1) {
+                RemoveEffect(c, info);
+            }
             PoisonEffect effect = ScriptableObject.Instantiate(DuelManager.Instance.Effects.PoisonEffectTemplate);
             effect.AddEffect(info.TargetCard, info);
         }

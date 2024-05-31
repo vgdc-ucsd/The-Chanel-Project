@@ -5,21 +5,22 @@ public class PoisonEffect : StatusEffect
 {
     public override ActivationCondition Condition
     {
-        get { return ActivationCondition.OnBeginOppositeTurn; }
+        get { return ActivationCondition.OnBeginTurn; }
     }
 
     public override void Activate(UnitCard c, ActivationInfo info)
     {
-        // if (c.baseStats.baseDamage > 1) {
-        //     c.baseStats.baseDamage--;
-        //     foreach(Attack atk in c.baseStats.attacks) {
-        //         atk.damage--;
-        //     }
-        // }
         info.Duel.DealDamage(c, 1);
+        if (c.baseStats.baseDamage > 1) {
+            c.baseStats.baseDamage--;
+            foreach(Attack atk in c.baseStats.attacks) {
+                atk.damage--;
+            }
+        }
         if (--duration < 1) {
             RemoveEffect(c, info);
         }
+        AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
     }
 
     public override void AddEffect(UnitCard c, ActivationInfo info)

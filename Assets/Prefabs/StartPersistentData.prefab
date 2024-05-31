@@ -127,11 +127,11 @@ PrefabInstance:
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: Inventory.ActiveCards.Array.data[10]
       value: 
-      objectReference: {fileID: 11400000, guid: c26f43099fad7b54f8df370c9f59dddf, type: 2}
+      objectReference: {fileID: 11400000, guid: a73a0b4e116e3a34cbf23b7d5aadf05d, type: 2}
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: Inventory.ActiveCards.Array.data[11]
       value: 
-      objectReference: {fileID: 11400000, guid: a73a0b4e116e3a34cbf23b7d5aadf05d, type: 2}
+      objectReference: {fileID: 11400000, guid: c1af7b6de9f691a4ebd260c395c4f39f, type: 2}
     - target: {fileID: 8074719806751530725, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: m_Name
       value: StartPersistentData

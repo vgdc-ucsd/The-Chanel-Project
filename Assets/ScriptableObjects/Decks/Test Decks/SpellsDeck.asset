@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f15f282beda789c4686a2671c4e99758, type: 3}
-  m_Name: SpellsOnly
+  m_Name: SpellsDeck
   m_EditorClassIdentifier: 
   CardList:
   - {fileID: 11400000, guid: 8c7da54017624ab4ea2c64f891423225, type: 2}
@@ -22,4 +22,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d65e097d8fcb33942b8417f52d92af94, type: 2}
   - {fileID: 11400000, guid: eb1d07e946728c1458fd054a2804fb0f, type: 2}
   - {fileID: 11400000, guid: c1af7b6de9f691a4ebd260c395c4f39f, type: 2}
+  - {fileID: 11400000, guid: e7bb028145f1efc45ae1da90255731d8, type: 2}
+  - {fileID: 11400000, guid: e7bb028145f1efc45ae1da90255731d8, type: 2}
+  - {fileID: 11400000, guid: e7bb028145f1efc45ae1da90255731d8, type: 2}
   numAvailableCards: 0

@@ -24,7 +24,7 @@ public class SpellFreeze : SpellCard , ISpellTypeEnemy
         FrozenEffect effect = ScriptableObject.Instantiate(DuelManager.Instance.Effects.FrozenEffectTemplate);
         ActivationInfo info = new ActivationInfo(duel);
         effect.AddEffect(card, info);
-        
+
         FinishCast(duel);
         return true;
     }

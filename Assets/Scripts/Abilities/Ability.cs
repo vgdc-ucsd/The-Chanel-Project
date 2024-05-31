@@ -81,8 +81,8 @@ public abstract class StatusEffect : Ability
         c.Abilities.Remove(this);
         c.StatusEffects.Remove(this);
 
-        AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
         c.RecalculateStats(info); // very poorly optimized, consider recalculating stats once per turn
+        AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
     }
 
     public abstract void ReapplyEffect(UnitCard c, ActivationInfo info);

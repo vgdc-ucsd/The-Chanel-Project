@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +8,7 @@ public class StatusIcon : MonoBehaviour
     public Image image;
     public Image imageOutline;
 
-    public static int spacing = 25;
+    public static int spacing = 55;
 
     public void SetStatus(StatusEffect effect, int position)
     {
@@ -20,9 +18,9 @@ public class StatusIcon : MonoBehaviour
             durationText.text = effect.duration.ToString();
         else
             durationText.text = "";
-        image.rectTransform.anchoredPosition = new Vector2(
-            image.rectTransform.anchoredPosition.x + position * spacing,
-            image.rectTransform.anchoredPosition.y);
-        imageOutline.rectTransform.anchoredPosition = image.rectTransform.anchoredPosition;
+        RectTransform transform = GetComponent<RectTransform>();
+        transform.anchoredPosition = new Vector2(
+            transform.anchoredPosition.x + position * spacing,
+            transform.anchoredPosition.y);
     }
 }

@@ -95,7 +95,6 @@ IPointerExitHandler
         // Character script moves and then loads new scene
         Vector2 endPos = GetComponent<RectTransform>().localPosition + transform.parent.GetComponent<RectTransform>().localPosition;
         character.Move(endPos, this);
-        PersistentData.Instance.SetEncounterStats();
     }
 
     /// <summary>
@@ -134,6 +133,8 @@ IPointerExitHandler
             //     //int randomIndex = UnityEngine.Random.Range(0, EncounterManager.Instance.Encounters.Count);
             //     PersistentData.Instance.CurrentEncounter = EncounterManager.Instance.Encounters[randomIndex];
             // }
+            PersistentData.Instance.SetEncounterStats();
+
             mapNodeTypeIdx = MenuScript.VERSUS_INDEX;
         }
         else if (mapNodeType == MapNodeType.Shop)
