@@ -225,7 +225,6 @@ public class UnitCardInteractable : CardInteractable,
             }
             //if(card.team == Team.Enemy) MirrorAttacks(card); // this should only be called once per enemy card
             DuelManager.Instance.MainDuel.DuelBoard.PlayCard(card, pos, charStatus, DuelManager.Instance.MainDuel);
-            Debug.Log("yur");
             IEnumerator ie = AnimationManager.Instance.PlaceUnitCard(card, pos, 0.0f);
             AnimationManager.Instance.Play(ie);
             UIManager.Instance.UpdateStatus(DuelManager.Instance.MainDuel);

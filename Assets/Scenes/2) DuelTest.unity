@@ -1659,8 +1659,8 @@ MonoBehaviour:
     UnlimitedMana: 0
     ShowEnemyHand: 0
     DisableWinning: 1
-  PlayerDeck: {fileID: 11400000, guid: c00d6d869247ec74c8a31e1b60c5d08f, type: 2}
-  EnemyDeck: {fileID: 11400000, guid: b3a15971f8904584aa21cf0afd07b9f1, type: 2}
+  PlayerDeck: {fileID: 11400000, guid: 8205a0479993b8f49a709d0d0c92917a, type: 2}
+  EnemyDeck: {fileID: 11400000, guid: 1ae85ab867b12cb458ccb53e082d8a90, type: 2}
   currentTeam: 0
   CurrentEncounter: {fileID: 11400000, guid: a92bed907e362f04f81c42e688defbb9, type: 2}
   DuelMusic: {fileID: 5458430580489171999, guid: d15cd42e7162b2647b492918868de3fd, type: 3}
