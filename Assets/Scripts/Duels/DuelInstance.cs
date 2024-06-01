@@ -14,6 +14,7 @@ public class DuelInstance
     public CharStatus PlayerStatus, EnemyStatus;
     public Queue<QueueableAnimation> Animations;
     public Team Winner = Team.Neutral;
+    [HideInInspector] public bool iteration = true;
 
     BossData boss;
     public int currBossStage = -1;

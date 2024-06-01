@@ -70,10 +70,10 @@ public class RewardManager : MonoBehaviour
             }
             else {
                 IEnumerator ie = AnimationManager.Instance.SimpleTranslate(
-                ci.transform,
-                new Vector3(ci.transform.position.x, heightOffset, 0.0f),
-                duration,
-                InterpolationMode.Slerp);
+                    ci.transform,
+                    new Vector3(ci.transform.position.x, heightOffset, 0.0f),
+                    duration,
+                    InterpolationMode.EaseIn);
                 QueueableAnimation qa = new QueueableAnimation(ie, delay);
                 AnimationManager.Instance.Enqueue(qa);
             }
@@ -89,13 +89,13 @@ public class RewardManager : MonoBehaviour
         yield return null;
 
         foreach(CardInteractable ci in cardInteractables) {
-            yield return AnimationManager.Instance.SimpleTranslate(
+            IEnumerator ie = AnimationManager.Instance.SimpleTranslate(
                 ci.transform,
                 ci.transform.parent.position,
                 duration,
-                InterpolationMode.Slerp);
-            //QueueableAnimation qa = new QueueableAnimation(ie, delay);
-            //AnimationManager.Instance.Enqueue(qa);
+                InterpolationMode.EaseOut);
+            QueueableAnimation qa = new QueueableAnimation(ie, delay);
+            AnimationManager.Instance.Enqueue(qa);
 
             // Mana cost
             TextMeshProUGUI manaCost = Instantiate(ManaCostText);

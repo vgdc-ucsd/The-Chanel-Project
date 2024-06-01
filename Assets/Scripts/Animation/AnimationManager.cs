@@ -35,7 +35,7 @@ public class AnimationManager : MonoBehaviour
     // Plays the animation immediately
     public void Play(IEnumerator animation)
     {
-        StartCoroutine(animation);
+        if (animation != null) StartCoroutine(animation);
     }
 
     // Plays the animation when the delay from the previous animation has finished
@@ -381,7 +381,7 @@ public class AnimationManager : MonoBehaviour
         }
     }
 
-    public IEnumerator PlaceUnitCard(UnitCard c, BoardCoords pos, float speed)
+    public IEnumerator PlaceUnitCard(UnitCard c, BoardCoords pos, float speed, int health = 0)
     {
         UnitCardInteractable unitRef = c.UnitCardInteractableRef;
 
@@ -410,6 +410,11 @@ public class AnimationManager : MonoBehaviour
             unitRef.DrawArrows();
             unitRef.CardCost.enabled = false;
             unitRef.gameObject.SetActive(true);
+
+            if (health != 0) {
+                unitRef.CardHealth.text = health.ToString();
+            }
+            unitRef.icons.ClearIcons();
 
             // remove card from hand
             int randomIndex = Random.Range(0, UIManager.Instance.EnemyHand.cardObjects.Count);
@@ -703,10 +708,10 @@ public class AnimationManager : MonoBehaviour
             ci.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             ci.transform.localPosition = Vector3.zero;
             ci.transform.position = new Vector3(center.position.x, center.position.y - (heightOffset * scaleFactor), center.position.z);
-            yield return Instance.SimpleTranslate(ci.transform, center.position, duration, InterpolationMode.Slerp);
+            yield return Instance.SimpleTranslate(ci.transform, center.position, duration, InterpolationMode.EaseIn);
             Vector3 targetPos = new Vector3(center.position.x, center.position.y + (heightOffset * scaleFactor), center.position.z);
             yield return new WaitForSeconds(0.5f);
-            yield return SimpleTranslate(ci.transform, targetPos, duration, InterpolationMode.Slerp);
+            yield return SimpleTranslate(ci.transform, targetPos, duration, InterpolationMode.EaseOut);
         }
         EventManager.Instance.FinishEvent(nextScene);
     }
@@ -819,10 +824,10 @@ public class AnimationManager : MonoBehaviour
         duel.Animations.Enqueue(qa);
     }
 
-    public void PlaceUnitCardAnimation(DuelInstance duel, UnitCard c, BoardCoords pos)
+    public void PlaceUnitCardAnimation(DuelInstance duel, UnitCard c, BoardCoords pos, int health = 0)
     {
         float speed = 0.5f; // time of animation in seconds
-        IEnumerator ie = PlaceUnitCard(c, pos, speed);
+        IEnumerator ie = PlaceUnitCard(c, pos, speed, health);
         QueueableAnimation qa = new QueueableAnimation(ie, speed);
         duel.Animations.Enqueue(qa);
     }
@@ -877,6 +882,27 @@ public class AnimationManager : MonoBehaviour
         IEnumerator ie = DamageFlash(c, duration, col, damage);
         QueueableAnimation qa = new QueueableAnimation(ie, duration);
         duel.Animations.Enqueue(qa);
+    }
+
+    public void DamageCardAnimation(DuelInstance duel, List<UnitCard> cards, Color col, int damage)
+    {
+        // Don't shake card when it's healed
+        if (!col.Equals(Color.yellow))
+        {
+            foreach (UnitCard uc in cards) {
+                IEnumerator shake = ShakeCard(uc, 2.0f, 0.2f);
+                QueueableAnimation shakeAnim = new QueueableAnimation(shake, 0.0f);
+                duel.Animations.Enqueue(shakeAnim);
+            }
+        }
+
+        float duration = 0.75f;
+        foreach (UnitCard uc in cards) {
+            IEnumerator ie = DamageFlash(uc, duration, col, damage);
+            QueueableAnimation qa = new QueueableAnimation(ie, 0);
+            duel.Animations.Enqueue(qa);
+        }
+        duel.Animations.Enqueue(new QueueableAnimation(null, duration));
     }
 
     public void DamagePlayerAnimation(DuelInstance duel, CharStatus status)
@@ -953,5 +979,14 @@ public class AnimationManager : MonoBehaviour
         IEnumerator ie = ActivateAbility(uc);
         QueueableAnimation qa = new QueueableAnimation(ie, 0.5f);
         duel.Animations.Enqueue(qa);
+    }
+
+    public void AbilityActivateAnimation(DuelInstance duel, List<UnitCard> cards)
+    {
+        foreach (UnitCard uc in cards) {
+            IEnumerator ie = ActivateAbility(uc);
+            duel.Animations.Enqueue(new QueueableAnimation(ie, 0.0f));
+        }
+        duel.Animations.Enqueue(new QueueableAnimation(null, 0.5f));
     }
 }

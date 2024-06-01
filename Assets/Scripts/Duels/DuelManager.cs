@@ -80,6 +80,7 @@ public class DuelManager : MonoBehaviour
         EnemyStatus.Deck.Init();
         Board board = new Board(Settings.BoardRows, Settings.BoardCols);
         MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, board, CurrentEncounter.boss, 1);
+        MainDuel.iteration = false;
 
         // AI setup
         ai = new MctsAI(CurrentEncounter.AIAggression, CurrentEncounter.AIDefense);
@@ -190,6 +191,7 @@ public class DuelManager : MonoBehaviour
     {
         state.ProcessBoard(Team.Enemy);
         MainDuel = state;
+        MainDuel.iteration = false;
         //state.DebugBoard();
         AnimationManager.Instance.DrawCardsAnimation(MainDuel, new List<Card>(), Team.Enemy);
         AnimationManager.Instance.UpdateUIAnimation(MainDuel);

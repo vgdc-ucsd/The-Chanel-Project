@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using Unity.VisualScripting;
 
 public class UnitCardInteractable : CardInteractable,
     IEndDragHandler,
@@ -225,7 +226,7 @@ public class UnitCardInteractable : CardInteractable,
             }
             //if(card.team == Team.Enemy) MirrorAttacks(card); // this should only be called once per enemy card
             DuelManager.Instance.MainDuel.DuelBoard.PlayCard(card, pos, charStatus, DuelManager.Instance.MainDuel);
-            IEnumerator ie = AnimationManager.Instance.PlaceUnitCard(card, pos, 0.0f);
+            IEnumerator ie = AnimationManager.Instance.PlaceUnitCard((UnitCard)card.Clone(), pos, 0.0f);
             AnimationManager.Instance.Play(ie);
             UIManager.Instance.UpdateStatus(DuelManager.Instance.MainDuel);
         }

@@ -160,7 +160,7 @@ public class UnitCard : Card
         baseStats.baseDamage = this.BaseDamage;
 
         if(CurrentTeam == Team.Enemy) {
-            AnimationManager.Instance.PlaceUnitCardAnimation(duel, this, pos);
+            AnimationManager.Instance.PlaceUnitCardAnimation(duel, this, pos, Health);
         }
     }
 
