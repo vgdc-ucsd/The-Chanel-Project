@@ -59,7 +59,7 @@ public abstract class CardInteractable : MonoBehaviour,
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        if (mode == CIMode.Inventory || mode == CIMode.Display || mode == CIMode.Reward) return;
+        if (mode == CIMode.Inventory || mode == CIMode.Display) return;
         // else if (mode == CIMode.Reward)
         // {
         //     transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
@@ -77,7 +77,7 @@ public abstract class CardInteractable : MonoBehaviour,
                 transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
             }
         }
-        else if (mode == CIMode.Shop)
+        else if (mode == CIMode.Shop || mode == CIMode.Reward && AnimationManager.Instance.DonePlaying())
         {
             transform.DOShakePosition(0.2f, 1f);
         }

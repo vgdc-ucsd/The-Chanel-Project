@@ -98,11 +98,11 @@ public class RewardManager : MonoBehaviour
             AnimationManager.Instance.Enqueue(qa);
 
             // Mana cost
-            TextMeshProUGUI manaCost = Instantiate(ManaCostText);
-            manaCost.gameObject.SetActive(true);
-            manaCost.transform.SetParent(ci.transform.parent);
-            manaCost.text = "Mana Cost: " + ci.GetCard().ManaCost;
-            manaCost.transform.localPosition = new Vector3(0.0f, 60f, 0.0f);
+            // TextMeshProUGUI manaCost = Instantiate(ManaCostText);
+            // manaCost.gameObject.SetActive(true);
+            // manaCost.transform.SetParent(ci.transform.parent);
+            // manaCost.text = "Mana Cost: " + ci.GetCard().ManaCost;
+            // manaCost.transform.localPosition = new Vector3(0.0f, 60f, 0.0f);
         }
     }
 
