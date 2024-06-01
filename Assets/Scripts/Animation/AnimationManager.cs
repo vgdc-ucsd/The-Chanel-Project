@@ -91,7 +91,7 @@ public class AnimationManager : MonoBehaviour
     {
         if (origin == null) yield break;
         CardInteractable ci = origin.gameObject.GetComponent<CardInteractable>();
-        bool couldInteract = false;
+        // bool couldInteract = false;
         // if (ci != null)
         // {
         //     couldInteract = ci.CanInteract;
@@ -115,7 +115,7 @@ public class AnimationManager : MonoBehaviour
         // if (ci != null)
         // {
         //     // These 2 lines caused a bug
-        //     // ci.CanInteract = true;
+        // ci.CanInteract = true;
         //     // This sometimes freezes the cards if the animation is cancelled prematurely
         //     ci.CanInteract = couldInteract;
         // }
@@ -703,7 +703,7 @@ public class AnimationManager : MonoBehaviour
             c.CurrentTeam = Team.Neutral;
             CardInteractable ci = UIManager.Instance.GenerateCardInteractable(c);
             ci.CanInteract = false;
-            ci.mode = CIMode.Reward;
+            ci.mode = CIMode.Display;
             ci.transform.SetParent(center);
             ci.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             ci.transform.localPosition = Vector3.zero;

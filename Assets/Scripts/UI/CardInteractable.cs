@@ -77,7 +77,7 @@ public abstract class CardInteractable : MonoBehaviour,
                 transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
             }
         }
-        else if (mode == CIMode.Shop || mode == CIMode.Reward && AnimationManager.Instance.DonePlaying())
+        else if (mode == CIMode.Shop || (mode == CIMode.Reward && transform.position.y > transform.parent.position.y - 50))
         {
             transform.DOShakePosition(0.2f, 1f);
         }
