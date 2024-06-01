@@ -92,11 +92,11 @@ public class AnimationManager : MonoBehaviour
         if (origin == null) yield break;
         CardInteractable ci = origin.gameObject.GetComponent<CardInteractable>();
         bool couldInteract = false;
-        if (ci != null)
-        {
-            couldInteract = ci.CanInteract;
-            ci.CanInteract = false;
-        }
+        // if (ci != null)
+        // {
+        //     couldInteract = ci.CanInteract;
+        //     ci.CanInteract = false;
+        // }
         float startTime = Time.time;
         Vector3 startPos = origin.position;
         float elapsedTime = Time.time - startTime;
@@ -112,13 +112,13 @@ public class AnimationManager : MonoBehaviour
         }
 
         if (origin != null) origin.position = dest;
-        if (ci != null)
-        {
-            // These 2 lines caused a bug
-            // ci.CanInteract = true;
-            // This sometimes freezes the cards if the animation is cancelled prematurely
-            ci.CanInteract = couldInteract;
-        }
+        // if (ci != null)
+        // {
+        //     // These 2 lines caused a bug
+        //     // ci.CanInteract = true;
+        //     // This sometimes freezes the cards if the animation is cancelled prematurely
+        //     ci.CanInteract = couldInteract;
+        // }
     }
 
     // Animation that plays when a card makes an attack in a direction
@@ -177,6 +177,7 @@ public class AnimationManager : MonoBehaviour
         // Reset stats
         card.ResetStats();
         card.UnitCardInteractableRef.UpdateCardInfo();
+        card.UnitCardInteractableRef.icons.ClearIcons();
 
         // Hide arrows
         for (int i = 0; i < card.UnitCardInteractableRef.transform.childCount; i++)
@@ -491,6 +492,24 @@ public class AnimationManager : MonoBehaviour
     private IEnumerator UpdateCardInfoDamage(UnitCard c, int damage)
     {
         if (c.UnitCardInteractableRef != null) { c.UnitCardInteractableRef.UpdateCardInfoDamage(damage); }
+        yield return null;
+    }
+
+    private IEnumerator UpdateCardAttack(UnitCard c, int amount)
+    {
+        if (c.UnitCardInteractableRef != null) { c.UnitCardInteractableRef.UpdateCardAttack(amount); }
+        yield return null;
+    }
+
+    private IEnumerator AddCardStatusEffectIcon(UnitCard c, StatusEffect statusEffect)
+    {
+        if (c.UnitCardInteractableRef != null) { c.UnitCardInteractableRef.AddStatusEffectIcon(statusEffect); }
+        yield return null;
+    }
+
+    private IEnumerator UpdateCardStatusEffectIcon(UnitCard c, StatusEffect statusEffect, int amount)
+    {
+        if (c.UnitCardInteractableRef != null) { c.UnitCardInteractableRef.UpdateStatusEffectIcon(statusEffect, amount); }
         yield return null;
     }
 
@@ -826,9 +845,20 @@ public class AnimationManager : MonoBehaviour
         duel.Animations.Enqueue(qa);
     }
 
-    public void UpdateCardInfoAnimation(DuelInstance duel, UnitCard c)
-    {
-        IEnumerator ie = UpdateCardInfo(c);
+    public void AddCardStatusEffectIconAnimation(DuelInstance duel, UnitCard uc, StatusEffect se) {
+        IEnumerator ie = AddCardStatusEffectIcon(uc, se);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+        duel.Animations.Enqueue(qa);
+    }
+
+    public void UpdateCardStatusEffectIconAnimation(DuelInstance duel, UnitCard uc, StatusEffect se, int amount) {
+        IEnumerator ie = UpdateCardStatusEffectIcon(uc, se, amount);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+        duel.Animations.Enqueue(qa);
+    }
+
+    public void UpdateCardAttackAnimation(DuelInstance duel, UnitCard uc, int amount) {
+        IEnumerator ie = UpdateCardAttack(uc, amount);
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
         duel.Animations.Enqueue(qa);
     }

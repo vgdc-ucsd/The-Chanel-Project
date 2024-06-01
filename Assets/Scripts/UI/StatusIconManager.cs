@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class StatusIconManager : MonoBehaviour
 {
@@ -29,5 +32,38 @@ public class StatusIconManager : MonoBehaviour
             Destroy(icon.gameObject);
         }
         icons.Clear();
+    }
+    public void AddIcon(StatusEffect effect)
+    {
+        StatusIcon icon = Instantiate(statusIconTemplate, transform);
+        icon.gameObject.SetActive(true);
+        icon.SetStatus(effect, icons.Count);
+        icons.Add(icon);
+    }
+    public void RemoveIcon(StatusIcon statusIcon)
+    {
+        int index = icons.IndexOf(statusIcon);
+        icons.Remove(statusIcon);
+        Destroy(statusIcon.gameObject);
+        for (int i = index; i < icons.Count; ++i) {
+            icons[i].ShiftStatus(-1);
+        }
+    }
+    public void UpdateIcon(StatusEffect effect, int amount)
+    {
+        int currentDuration = 0;
+        foreach (StatusIcon statusIcon in icons) {
+            if (statusIcon.statusEffect.GetType() == effect.GetType()) {
+                if (!statusIcon.durationText.text.Equals("")) {
+                    currentDuration = Math.Max(int.Parse(statusIcon.durationText.text) + amount, 0);
+                    statusIcon.durationText.text = currentDuration.ToString();
+                    if (currentDuration > 0) {
+                        return;
+                    }
+                }
+                RemoveIcon(statusIcon);
+                return;
+            }
+        }
     }
 }

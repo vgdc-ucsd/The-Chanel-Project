@@ -16,7 +16,5 @@ public class AthenaAbility : Ability
                 AnimationManager.Instance.DamageCardAnimation(Info.Duel, cAdj, Color.yellow, -1);
             }
         }
-
-        AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, c);
     }
 }

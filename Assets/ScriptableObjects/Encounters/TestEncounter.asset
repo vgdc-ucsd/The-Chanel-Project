@@ -17,12 +17,12 @@ MonoBehaviour:
     SameSettingsForBothPlayers: 0
     Player:
       StartingHealth: 999
-      MaxHealth: 10
+      MaxHealth: 999
       MaxHealthEnabled: 0
-      StartingMana: 5
-      MaxMana: 5
+      StartingMana: 100
+      MaxMana: 100
       MaxManaEnabled: 1
-      StartingCards: 4
+      StartingCards: 6
     Enemy:
       StartingHealth: 10
       MaxHealth: 10
@@ -37,10 +37,10 @@ MonoBehaviour:
     DrawCardManaCost: 2
     EnablePVPMode: 0
     RestrictPlacement: 1
-    UnlimitedMana: 0
-    ShowEnemyHand: 0
-    DisableWinning: 0
-  EnemyArt: {fileID: 21300000, guid: 14d9a4dac9edcf74f8b1317180f22d17, type: 3}
+    UnlimitedMana: 1
+    ShowEnemyHand: 1
+    DisableWinning: 1
+  EnemyArt: {fileID: 21300000, guid: 0432293b91a0b994e8b6f7d5dbfee256, type: 3}
   EnemyDecks: []
   EnemyDeck: {fileID: 11400000, guid: ceb8fa2fe36f7a843adda2eb70167a64, type: 2}
   RewardGold: 80

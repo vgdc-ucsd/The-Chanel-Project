@@ -31,7 +31,5 @@ public class UnicornAbility : Ability
                 attackdir.damage *= 2;
             }
         }
-
-        AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
     }
 }

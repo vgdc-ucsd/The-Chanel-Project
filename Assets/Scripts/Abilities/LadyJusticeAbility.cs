@@ -13,7 +13,5 @@ public class LadyJusticeAbility : Ability
             AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
             Info.Duel.DealDamage(Info.TargetCard, Info.TargetCard.Health);
         }
-
-        AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, c);
     }
 }

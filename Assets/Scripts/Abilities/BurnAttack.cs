@@ -11,8 +11,6 @@ public class BurnAttack : Ability
     public override void Activate(UnitCard c, ActivationInfo info)
     {
         ApplyFire(info.TargetCard, info);
-
-        AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
     }
 
     private void ApplyFire(UnitCard card, ActivationInfo info)

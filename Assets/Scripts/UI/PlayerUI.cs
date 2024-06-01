@@ -48,12 +48,19 @@ public class PlayerUI : MonoBehaviour
         ManaText.text = status.Mana.ToString();
 
         UpdateMana(status);
-        
+
         if(status.Health <= 0 && !DuelManager.Instance.Settings.DisableWinning) {
             if(status.CharTeam == Team.Enemy) UIManager.Instance.PlayerWin();
             else UIManager.Instance.PlayerLose();
 
             AnimationManager.Instance.ClearQueue();
+
+            // Sometimes cards in the player's hand freeze due to animations being cancelled above
+            foreach (Card card in status.Cards) {
+                if (card != null && card.CardInteractableRef != null) {
+                    card.CardInteractableRef.CanInteract = true;
+                }
+            }
         }
     }
 
@@ -159,7 +166,7 @@ public class PlayerUI : MonoBehaviour
             }
             else {
                 col = Interpolation.Interpolate(flicker, white, t, InterpolationMode.Linear);
-                
+
                 if(elapsedTime > duration) {
                     direction = true;
                     startTime = Time.time;

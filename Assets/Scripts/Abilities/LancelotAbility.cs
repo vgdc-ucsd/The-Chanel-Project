@@ -31,7 +31,6 @@ public class LancelotAbility : Ability
             }
             AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
             AnimationManager.Instance.UpdateUIAnimation(Info.Duel);
-            AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, c);
         }
 
     }

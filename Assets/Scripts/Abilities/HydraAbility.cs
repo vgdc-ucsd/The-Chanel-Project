@@ -21,6 +21,6 @@ public class HydraAbility : Ability
 
         AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
         c.RecalculateStats(Info);
-        AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, c);
+        AnimationManager.Instance.UpdateCardAttackAnimation(Info.Duel, c, 1);
     }
 }

@@ -5,40 +5,19 @@ public class PoisonEffect : StatusEffect
 {
     public override ActivationCondition Condition
     {
-        get { return ActivationCondition.OnBeginTurn; }
+        get { return ActivationCondition.OnEndTurn; }
     }
 
     public override void Activate(UnitCard c, ActivationInfo info)
     {
         info.Duel.DealDamage(c, 1);
-        if (c.baseStats.baseDamage > 1) {
-            c.baseStats.baseDamage--;
-            foreach(Attack atk in c.baseStats.attacks) {
+        if (c.BaseDamage > 1) {
+            c.BaseDamage--;
+            foreach(Attack atk in c.Attacks) {
                 atk.damage--;
             }
         }
-        if (--duration < 1) {
-            RemoveEffect(c, info);
-        }
-        AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
-    }
-
-    public override void AddEffect(UnitCard c, ActivationInfo info)
-    {
-        StatusEffect cardStatus = c.GetStatusEffect(this);
-        if (cardStatus != null) {
-            cardStatus.duration += initialDuration;
-        }
-        else {
-            duration = initialDuration;
-            c.Abilities.Add(this);
-            c.StatusEffects.Add(this);
-        }
-        AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
-    }
-
-
-    public override void ReapplyEffect(UnitCard c, ActivationInfo info)
-    {
+        AnimationManager.Instance.UpdateCardAttackAnimation(info.Duel, c, -1);
+        base.Activate(c, info);
     }
 }

@@ -9,7 +9,7 @@ public class CerberusAbility : Ability
 
     public override void Activate(UnitCard c, ActivationInfo info)
     {
-        AnimationManager.Instance.AbilityActivateAnimation(info.Duel, c);
+        AnimationManager.Instance.AbilityActivateAnimation(info.Duel, info.TargetCard);
         if (c.Health > 0) {
             ApplyFire(c, info);
         }

@@ -129,8 +129,17 @@ public class UnitCard : Card
     }
 
     public void ResetStats(){
+        Abilities.RemoveAll(ability => ability is StatusEffect && StatusEffects.Contains((StatusEffect)ability));
         StatusEffects.Clear();
+
         Health = baseStats.health;
+
+        Attacks.Clear();
+        foreach (Attack atk in baseStats.attacks)
+        {
+            Attacks.Add(new Attack(atk.direction, atk.damage));
+        }
+        BaseDamage = baseStats.baseDamage;
     }
 
     public void Place(BoardCoords pos, DuelInstance duel)

@@ -16,7 +16,6 @@ public class SpellFlameStrike : SpellCard , ISpellTypeTile
             ActivationInfo info = new ActivationInfo(duel);
             FireEffect effect = ScriptableObject.Instantiate(DuelManager.Instance.Effects.FireEffectTemplate);
             effect.AddEffect(card, info);
-            AnimationManager.Instance.UpdateCardInfoAnimation(duel,card);
         }
 
 

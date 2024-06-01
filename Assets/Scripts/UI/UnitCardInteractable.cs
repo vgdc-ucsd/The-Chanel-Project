@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class UnitCardInteractable : CardInteractable,
     IEndDragHandler,
@@ -64,9 +65,7 @@ public class UnitCardInteractable : CardInteractable,
 
     public override void UpdateCardInfo()
     {
-        //CardAttack.text = "Attack: " + card.BaseDamage;
         CardAttack.text = card.BaseDamage.ToString();
-        //CardHealth.text = "Health: " + card.Health;
         CardHealth.text = card.Health.ToString();
         if (CardArt != null)
         {
@@ -76,31 +75,25 @@ public class UnitCardInteractable : CardInteractable,
         icons.RefreshIcons();
     }
 
-    public void UpdateStatusEffectInfo()
-    {
-        icons.RefreshIcons();
-    }
-
     public void UpdateCardInfoDamage(int damage)
     {
-        //CardAttack.text = "Attack: " + card.BaseDamage;
-        CardAttack.text = card.BaseDamage.ToString();
-        //CardHealth.text = "Health: " + card.Health;
-        int newHealth = int.Parse(CardHealth.text) - damage;
-        if (newHealth < 0)
-        {
-            CardHealth.text = "0";
-        }
-        else
-        {
-            CardHealth.text = newHealth.ToString();
-        }
-        if (CardArt != null)
-        {
-            CardArt.sprite = card.Artwork;
-        }
-        if (inHand) CardCost.text = "Mana Cost: " + card.ManaCost;
-        icons.RefreshIcons();
+        CardHealth.text = Math.Max(int.Parse(CardHealth.text) - damage, 0).ToString();
+    }
+
+    public void UpdateCardAttack(int amount = 0)
+    {
+        int currentAttack = int.Parse(CardAttack.text);
+        CardAttack.text = (currentAttack + amount).ToString();
+    }
+
+    public void AddStatusEffectIcon(StatusEffect statusEffect)
+    {
+        icons.AddIcon(statusEffect);
+    }
+
+    public void UpdateStatusEffectIcon(StatusEffect statusEffect, int amount)
+    {
+        icons.UpdateIcon(statusEffect, amount);
     }
 
     public void DrawArrows()

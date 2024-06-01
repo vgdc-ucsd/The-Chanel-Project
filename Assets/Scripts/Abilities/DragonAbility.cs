@@ -25,8 +25,6 @@ public class DragonAbility : Ability
                 }
             }
         }
-
-        AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, c);
     }
 
     private void ApplyFire(UnitCard card, ActivationInfo info)
