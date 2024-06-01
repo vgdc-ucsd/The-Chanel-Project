@@ -14,6 +14,7 @@ public class NessusFavorAbility : StatusEffect
         if (info.TargetCard.Health > 0) {
             PoisonEffect effect = ScriptableObject.Instantiate(DuelManager.Instance.Effects.PoisonEffectTemplate);
             effect.AddEffect(info.TargetCard, info);
+            base.Activate(c, info);
         }
     }
 }

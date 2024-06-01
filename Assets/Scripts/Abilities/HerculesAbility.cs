@@ -13,6 +13,7 @@ public class HerculesAbility : Ability
     {
         if (Info.TargetCard.Health == 0 || (!Info.TargetCard.Name.Equals("Sphinx") && Info.TargetCard.Health < 0))
         {
+            AnimationManager.Instance.UpdateCardAttackAnimation(Info.Duel, c, 1);
             c.baseStats.baseDamage++;
             //foreach(Attack atk in c.Attacks) {
             foreach(Attack atk in c.baseStats.attacks) {
@@ -21,7 +22,6 @@ public class HerculesAbility : Ability
 
             AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
             c.RecalculateStats(Info);
-            AnimationManager.Instance.UpdateCardAttackAnimation(Info.Duel, c, 1);
 
             c.Abilities.Remove(this);
         }

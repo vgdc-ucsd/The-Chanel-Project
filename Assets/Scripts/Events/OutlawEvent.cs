@@ -11,6 +11,8 @@ public class OutlawEvent : MonoBehaviour
         if(EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
 
+        PersistentData.Instance.bossEncounters.Remove(PersistentData.Instance.bossEncounters[0]);
+
         List<UnitCard> UnitCards = new List<UnitCard>();
         foreach(Card c in PersistentData.Instance.Inventory.ActiveCards) {
             if(c is UnitCard uc) UnitCards.Add(uc);
