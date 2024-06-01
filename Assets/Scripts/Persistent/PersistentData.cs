@@ -16,8 +16,8 @@ public class PersistentData : MonoBehaviour
     public List<Encounter> possibleEncounters;
     public List<Encounter> completedEncounters;
     public List<Encounter> bossEncounters;
-    public List<GameObject> PossibleEvents;
-    public List<GameObject> CompletedEvents;
+    public List<Event> PossibleEvents;
+    public List<Event> CompletedEvents;
     public GameObject OutlawEvent;
     public int HealthOverride = -1;
     public VsScreenState VsState;
@@ -127,8 +127,7 @@ public class PersistentData : MonoBehaviour
             if (possibleEncounters.Count > 0)
             {
                 CurrentEncounter = possibleEncounters[UnityEngine.Random.Range(0, possibleEncounters.Count - 1)];
-                possibleEncounters.Remove(CurrentEncounter);
-                completedEncounters.Add(CurrentEncounter);
+                MeetCharacter(CurrentEncounter);
             }
             else if (completedEncounters.Count > 0)
             {
@@ -184,6 +183,19 @@ public class PersistentData : MonoBehaviour
             }
 
             CurrentEncounter.CardOffers = rewardCards.ToArray();
+        }
+    }
+
+    private void MeetCharacter(Encounter encounter) {
+        possibleEncounters.Remove(encounter);
+        completedEncounters.Add(encounter);
+
+        foreach (Event e in PossibleEvents) {
+            if (e.encounter.Equals(encounter) && PossibleEvents.Contains(e)) {
+                PossibleEvents.Remove(e);
+                CompletedEvents.Add(e);
+                return;
+            }
         }
     }
 

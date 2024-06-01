@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VeraEvent : MonoBehaviour
+public class VeraEvent : Event
 {
-    public Transform center;
-
     private List<Card> removedCards = new List<Card>();
 
     public void Listen()
     {
         if (EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
+        AcknowledgeCharacter();
 
         List<int> cardsWithAbilities = new List<int>();
         for (int i = 0; i < PersistentData.Instance.Inventory.ActiveCards.Count; i++)
@@ -43,6 +42,7 @@ public class VeraEvent : MonoBehaviour
     {
         if (EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
+        AcknowledgeCharacter();
 
         PersistentData.Instance.Inventory.Gold = 0;
         // TODO sound effect or animation

@@ -10,6 +10,7 @@ public class SunWukongAbility : Ability
     public override void Activate(UnitCard c, ActivationInfo Info)
     {
         if (Info.OverkillDamage > 0) {
+            AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
             if(c.CurrentTeam == Team.Player) {
                 Team winner = Info.Duel.EnemyStatus.TakeDamage(Info.OverkillDamage);
                 if (winner != Team.Neutral) Info.Duel.Winner = winner;
@@ -18,8 +19,6 @@ public class SunWukongAbility : Ability
                 Team winner = Info.Duel.PlayerStatus.TakeDamage(Info.OverkillDamage);
                 if (winner != Team.Neutral) Info.Duel.Winner = winner;
             }
-            AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
-            AnimationManager.Instance.UpdateUIAnimation(Info.Duel);
         }
     }
 }

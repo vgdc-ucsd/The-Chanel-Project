@@ -57,9 +57,37 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 8205a0479993b8f49a709d0d0c92917a, type: 2}
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: PossibleEvents.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: bossEncounters.Array.size
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: PossibleEvents.Array.data[0]
+      value: 
+      objectReference: {fileID: 6719543524797682378, guid: 316a5535962910445838de71e66cc315, type: 3}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: PossibleEvents.Array.data[1]
+      value: 
+      objectReference: {fileID: 5696413354063715868, guid: 15122422398b99840bd5b4fcd54c4e9e, type: 3}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: PossibleEvents.Array.data[2]
+      value: 
+      objectReference: {fileID: -4609863304341088362, guid: 3d0efe83f332dc447b7fe90290f22631, type: 3}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: PossibleEvents.Array.data[3]
+      value: 
+      objectReference: {fileID: 2197921562720878901, guid: 2a8d6bd5e93cb074d810f920580448d8, type: 3}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: PossibleEvents.Array.data[4]
+      value: 
+      objectReference: {fileID: 3660099411637726011, guid: 4bf8fc3c837b91a4aae40eed91cc5c25, type: 3}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: PossibleEvents.Array.data[5]
+      value: 
+      objectReference: {fileID: 3476419135882579771, guid: 28565dd499ab23f41803654915da7740, type: 3}
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: bossEncounters.Array.data[0]
       value: 

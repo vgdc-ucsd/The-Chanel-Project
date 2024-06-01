@@ -12,6 +12,7 @@ public class LancelotAbility : Ability
     {
         if (Info.OverkillDamage > 0)
         {
+            AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
             BoardCoords backTile = Info.Duel.DuelBoard.GetFrontTile(Info.TargetCard.Pos, c.CurrentTeam);
             if (Info.Duel.DuelBoard.BeyondEnemyEdge(backTile) && c.CurrentTeam == Team.Player)
             {
@@ -29,7 +30,6 @@ public class LancelotAbility : Ability
                     Info.Duel.DealDamage(backCard, Info.OverkillDamage);
                 }
             }
-            AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
             AnimationManager.Instance.UpdateUIAnimation(Info.Duel);
         }
 

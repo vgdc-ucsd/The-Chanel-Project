@@ -36,7 +36,7 @@ public class EventManager : MonoBehaviour
         }
         else {
             int randomIndex = Random.Range(0, PersistentData.Instance.PossibleEvents.Count);
-            selectedEvent = Instantiate(PersistentData.Instance.PossibleEvents[randomIndex]);
+            selectedEvent = Instantiate(PersistentData.Instance.PossibleEvents[randomIndex].gameObject);
             PersistentData.Instance.CompletedEvents.Add(PersistentData.Instance.PossibleEvents[randomIndex]);
             PersistentData.Instance.PossibleEvents.RemoveAt(randomIndex);
         }

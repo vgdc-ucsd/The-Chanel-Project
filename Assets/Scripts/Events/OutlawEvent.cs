@@ -2,11 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OutlawEvent : MonoBehaviour
+public class OutlawEvent : Event
 {
-    public Transform Center;
-    public List<Encounter> OutlawEncounters;
-
     public void Reach() { // + 3 hp on random card
         if(EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
@@ -26,7 +23,7 @@ public class OutlawEvent : MonoBehaviour
             UnitCard uc = UnitCards[randomIndex];
             uc.Health += 3;
             List<Card> changedCards = new List<Card>{uc};
-            StartCoroutine(AnimationManager.Instance.ShowChangedCards(changedCards, Center));
+            StartCoroutine(AnimationManager.Instance.ShowChangedCards(changedCards, center));
         }
         else {
             EventManager.Instance.FinishEvent();

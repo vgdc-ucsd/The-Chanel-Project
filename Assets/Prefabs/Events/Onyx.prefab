@@ -156,6 +156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   center: {fileID: 6765381394224488128}
+  encounter: {fileID: 11400000, guid: b1a9bde8e83068945bfe61e863dd133e, type: 2}
 --- !u!1 &6986958356325204326
 GameObject:
   m_ObjectHideFlags: 0

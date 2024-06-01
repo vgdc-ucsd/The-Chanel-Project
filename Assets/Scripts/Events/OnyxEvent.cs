@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OnyxEvent : MonoBehaviour
+public class OnyxEvent : Event
 {
-    public Transform center;
-
     private List<Card> removedCards = new List<Card>();
     private float heightOffset = 300f;
     private float duration = 0.6f;
@@ -13,6 +11,7 @@ public class OnyxEvent : MonoBehaviour
     public void DoNothing() {
         if(EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
+        AcknowledgeCharacter();
 
         int gold = PersistentData.Instance.Inventory.Gold;
         gold -= 100;
@@ -27,8 +26,8 @@ public class OnyxEvent : MonoBehaviour
         foreach(Card c in PersistentData.Instance.Inventory.InactiveCards) {
             if(c is UnitCard uc) InactiveUnitCards.Add(uc);
         }
-        
-        List<UnitCard> cardList;        
+
+        List<UnitCard> cardList;
         if(ActiveUnitCards.Count > 0 && InactiveUnitCards.Count > 0) {
             int randomList = Random.Range(0, 2);
             if(randomList == 0) {
@@ -54,13 +53,14 @@ public class OnyxEvent : MonoBehaviour
         selectedCard.Health += 3;
         List<Card> changedCards = new List<Card>();
         changedCards.Add(selectedCard);
-        StartCoroutine(AnimationManager.Instance.ShowChangedCards(changedCards, center));        
+        StartCoroutine(AnimationManager.Instance.ShowChangedCards(changedCards, center));
     }
 
     public void Rotate() {
         if(EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
-    
+        AcknowledgeCharacter();
+
         int gold = PersistentData.Instance.Inventory.Gold;
         gold -= 100;
         if(gold < 0) gold = 0;
@@ -74,13 +74,13 @@ public class OnyxEvent : MonoBehaviour
         foreach(Card c in PersistentData.Instance.Inventory.InactiveCards) {
             if(c is UnitCard uc) InactiveUnitCards.Add(uc);
         }
-        
+
         if(ActiveUnitCards.Count + InactiveUnitCards.Count <= 0) {
             EventManager.Instance.FinishEvent();
             return;
         }
 
-        List<UnitCard> cardList;     
+        List<UnitCard> cardList;
         List<Card> changedCards = new List<Card>();
         for(int i = 0; i < 3; i++) {
             if(ActiveUnitCards.Count > 0 && InactiveUnitCards.Count > 0) {
@@ -107,8 +107,8 @@ public class OnyxEvent : MonoBehaviour
             cardList.Remove(selectedCard);
             selectedCard.Health++;
             changedCards.Add(selectedCard);
-        }   
-        
-        StartCoroutine(AnimationManager.Instance.ShowChangedCards(changedCards, center)); 
+        }
+
+        StartCoroutine(AnimationManager.Instance.ShowChangedCards(changedCards, center));
     }
 }
