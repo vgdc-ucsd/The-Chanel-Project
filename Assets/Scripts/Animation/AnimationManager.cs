@@ -501,9 +501,9 @@ public class AnimationManager : MonoBehaviour
         yield return null;
     }
 
-    private IEnumerator AddCardStatusEffectIcon(UnitCard c, StatusEffect statusEffect)
+    private IEnumerator AddCardStatusEffectIcon(UnitCard c, StatusEffect statusEffect, int duration)
     {
-        if (c.UnitCardInteractableRef != null) { c.UnitCardInteractableRef.AddStatusEffectIcon(statusEffect); }
+        if (c.UnitCardInteractableRef != null) { c.UnitCardInteractableRef.AddStatusEffectIcon(statusEffect, duration); }
         yield return null;
     }
 
@@ -845,8 +845,8 @@ public class AnimationManager : MonoBehaviour
         duel.Animations.Enqueue(qa);
     }
 
-    public void AddCardStatusEffectIconAnimation(DuelInstance duel, UnitCard uc, StatusEffect se) {
-        IEnumerator ie = AddCardStatusEffectIcon(uc, se);
+    public void AddCardStatusEffectIconAnimation(DuelInstance duel, UnitCard uc, StatusEffect se, int duration) {
+        IEnumerator ie = AddCardStatusEffectIcon(uc, se, duration);
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
         duel.Animations.Enqueue(qa);
     }

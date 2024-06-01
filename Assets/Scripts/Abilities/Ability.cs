@@ -81,7 +81,7 @@ public abstract class StatusEffect : Ability
             duration = initialDuration;
             c.Abilities.Add(this);
             c.StatusEffects.Add(this);
-            AnimationManager.Instance.AddCardStatusEffectIconAnimation(info.Duel, c, this);
+            AnimationManager.Instance.AddCardStatusEffectIconAnimation(info.Duel, c, this, initialDuration);
         }
     }
 

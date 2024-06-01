@@ -5,26 +5,27 @@ public class FrozenEffect : StatusEffect
 {
     public override ActivationCondition Condition
     {
-        get { return ActivationCondition.OnBeginTurn; }
+        get { return ActivationCondition.OnEndTurn; }
     }
 
     public override void Activate(UnitCard c, ActivationInfo info) {
-        base.Activate(c, info);
-        c.CanMove = false;
+        c.frozen = true;
         c.CanAttack = false;
+        c.CanMove = false;
+        base.Activate(c, info);
     }
 
     public override void AddEffect(UnitCard c, ActivationInfo info)
     {
-        base.AddEffect(c, info);
-        c.CanMove = false;
+        c.frozen = true;
         c.CanAttack = false;
+        c.CanMove = false;
+        base.AddEffect(c, info);
     }
 
     public override void RemoveEffect(UnitCard c, ActivationInfo info)
     {
+        c.frozen = false;
         base.RemoveEffect(c, info);
-        c.CanMove = true;
-        c.CanAttack = true;
     }
 }

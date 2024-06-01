@@ -147,7 +147,7 @@ IPointerExitHandler
         }
         else if (mapNodeType == MapNodeType.Boss)
         {
-            PersistentData.Instance.CurrentEncounter = PersistentData.Instance.bossEncounters[1];
+            PersistentData.Instance.CurrentEncounter = PersistentData.Instance.bossEncounters[0];
 
             mapNodeTypeIdx = MenuScript.VERSUS_INDEX;
         }

@@ -11,13 +11,13 @@ public class StatusIcon : MonoBehaviour
 
     public static int spacing = 55;
 
-    public void SetStatus(StatusEffect se, int position)
+    public void SetStatus(StatusEffect se, int position, int duration)
     {
         statusEffect = se;
         image.sprite = statusEffect.icon;
         imageOutline.sprite = image.sprite;
         if (statusEffect.duration != -1)
-            durationText.text = statusEffect.duration.ToString();
+            durationText.text = duration.ToString();
         else
             durationText.text = "";
         RectTransform transform = GetComponent<RectTransform>();

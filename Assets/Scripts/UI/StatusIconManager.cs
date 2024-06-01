@@ -20,7 +20,7 @@ public class StatusIconManager : MonoBehaviour
         {
             StatusIcon icon = Instantiate(statusIconTemplate, transform);
             icon.gameObject.SetActive(true);
-            icon.SetStatus(effect, i);
+            icon.SetStatus(effect, i, effect.duration);
             icons.Add(icon);
             i++;
         }
@@ -33,11 +33,11 @@ public class StatusIconManager : MonoBehaviour
         }
         icons.Clear();
     }
-    public void AddIcon(StatusEffect effect)
+    public void AddIcon(StatusEffect effect, int duration)
     {
         StatusIcon icon = Instantiate(statusIconTemplate, transform);
         icon.gameObject.SetActive(true);
-        icon.SetStatus(effect, icons.Count);
+        icon.SetStatus(effect, icons.Count, duration);
         icons.Add(icon);
     }
     public void RemoveIcon(StatusIcon statusIcon)

@@ -124,7 +124,7 @@ public class Board
                 BoardCoords pos = new BoardCoords(i,j);
                 if (IsOccupied(pos)) {
                     UnitCard c = GetCard(pos);
-                    if (c.CurrentTeam == t)
+                    if (c.CurrentTeam == t && !c.frozen)
                     {
                         c.CanAttack = true;
                         c.CanMove = true;
@@ -163,7 +163,7 @@ public class Board
     {
 
         BoardCoords result;
-        if (team == Team.Player) 
+        if (team == Team.Player)
         result = pos + new BoardCoords(0, 1);
         else
             result = pos + new BoardCoords(0, -1);
@@ -292,7 +292,7 @@ public class Board
     {
         int xTile = Random.Range(0, Cols);
         int yTile = Random.Range(0, Rows);
-        return new BoardCoords(xTile, yTile);   
+        return new BoardCoords(xTile, yTile);
     }
 
     public UnitCard GetRandomCard()

@@ -27,6 +27,7 @@ public class UnitCard : Card
 
     [HideInInspector] public bool CanMove = false;
     [HideInInspector] public bool CanAttack = false;
+    [HideInInspector] public bool frozen = false;
     [HideInInspector] public BoardCoords Pos;
     [HideInInspector] public bool isSelected = false;
     [HideInInspector] public int BaseDamage = 1; // set in the custom card editor
@@ -131,6 +132,7 @@ public class UnitCard : Card
     public void ResetStats(){
         Abilities.RemoveAll(ability => ability is StatusEffect && StatusEffects.Contains((StatusEffect)ability));
         StatusEffects.Clear();
+        frozen = false;
 
         Health = baseStats.health;
 

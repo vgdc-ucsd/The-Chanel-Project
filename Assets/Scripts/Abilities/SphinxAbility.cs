@@ -15,7 +15,7 @@ public class SphinxAbility : Ability
         {
             AnimationManager.Instance.AbilityActivateAnimation(info.Duel, c);
             c.Health = 1;
-            AnimationManager.Instance.DamageCardAnimation(info.Duel, c, Color.yellow, -1 * (info.OverkillDamage + 1));
+            AnimationManager.Instance.DamageCardAnimation(info.Duel, c, Color.yellow, -1);
         }
     }
 }
