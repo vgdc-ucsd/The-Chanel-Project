@@ -24,5 +24,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3f0de661135cb474dba2ca0dda7d84c7, type: 2}
   - {fileID: 11400000, guid: 8a266833b02d6d048b380e1fff69867d, type: 2}
   - {fileID: 11400000, guid: eb1d07e946728c1458fd054a2804fb0f, type: 2}
-  - {fileID: 11400000, guid: 34690e13dc6b06544aceb4d763edda1c, type: 2}
+  - {fileID: 11400000, guid: c26f43099fad7b54f8df370c9f59dddf, type: 2}
   numAvailableCards: 0
