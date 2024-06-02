@@ -652,7 +652,7 @@ public class AnimationManager : MonoBehaviour
         FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/PlayerHurt"); // SFX for when Player gets hurt
     }
 
-    private IEnumerator DamageFlashPlayer(PlayerUI status, int newHealth, float duration)
+    private IEnumerator DamageFlashPlayer(PlayerUI status, int amount, float duration)
     {
         Color normalColor = Color.black;
 
@@ -678,7 +678,7 @@ public class AnimationManager : MonoBehaviour
             yield return null;
         }
 
-        status.HealthText.text = newHealth.ToString();
+        status.HealthText.text = (int.Parse(status.HealthText.text) - amount).ToString();
 
         // red to black
         startTime = Time.time;
@@ -1039,7 +1039,7 @@ public class AnimationManager : MonoBehaviour
         duel.Animations.Enqueue(new QueueableAnimation(null, duration));
     }
 
-    public void DamagePlayerAnimation(DuelInstance duel, CharStatus status)
+    public void DamagePlayerAnimation(DuelInstance duel, CharStatus status, int amount)
     {
         float duration = 0.75f;
         PlayerUI ui;
@@ -1056,7 +1056,7 @@ public class AnimationManager : MonoBehaviour
         QueueableAnimation shakeAnim = new QueueableAnimation(shake, 0.0f);
         duel.Animations.Enqueue(shakeAnim);
 
-        IEnumerator ie = DamageFlashPlayer(ui, status.Health, duration);
+        IEnumerator ie = DamageFlashPlayer(ui, amount, duration);
         QueueableAnimation qa = new QueueableAnimation(ie, duration);
         duel.Animations.Enqueue(qa);
     }
