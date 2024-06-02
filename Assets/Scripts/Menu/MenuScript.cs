@@ -46,7 +46,7 @@ public class MenuScript : MonoBehaviour
     // For Debugging & Swapping Scenes Easily
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
+  /*       if (Input.GetKeyDown(KeyCode.M))
         {
             LoadMap();
         }
@@ -69,7 +69,7 @@ public class MenuScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
             LoadTitle();
-        }
+        } */
     }
 
 
