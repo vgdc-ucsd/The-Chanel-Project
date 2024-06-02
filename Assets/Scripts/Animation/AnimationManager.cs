@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using FMODUnity;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class AnimationManager : MonoBehaviour
 {
@@ -678,7 +679,7 @@ public class AnimationManager : MonoBehaviour
             yield return null;
         }
 
-        status.HealthText.text = (int.Parse(status.HealthText.text) - amount).ToString();
+        status.HealthText.text = Math.Max(int.Parse(status.HealthText.text) - amount, 0).ToString();
 
         // red to black
         startTime = Time.time;

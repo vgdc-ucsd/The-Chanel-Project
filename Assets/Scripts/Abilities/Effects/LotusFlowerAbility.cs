@@ -19,7 +19,7 @@ public class LotusFlowerAbility : StatusEffect
 
     public override void AddEffect(UnitCard c, ActivationInfo info)
     {
-        AnimationManager.Instance.DrawAllArrowsAnimation(info.Duel, c);
+        AnimationManager.Instance.DrawArrowsAnimation(info.Duel, c);
         base.AddEffect(c, info);
         duration = -1;
         ReapplyEffect(c, info);
