@@ -221,7 +221,7 @@ public class UIManager : MonoBehaviour
 
     public void PlayerWin() {
         if (PersistentData.Instance.CurrentEncounter.boss != null && PersistentData.Instance.CurrentEncounter.boss.finalBoss) {
-            MenuScript.Instance.LoadTitle();
+            SceneManager.LoadScene(5);
         }
         else {
             PersistentData.Instance.EncountersFinished++;
