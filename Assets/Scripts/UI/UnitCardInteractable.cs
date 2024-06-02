@@ -87,14 +87,19 @@ public class UnitCardInteractable : CardInteractable,
         CardAttack.text = (currentAttack + amount).ToString();
     }
 
-    public void AddStatusEffectIcon(StatusEffect statusEffect, int duration)
+    public StatusIcon AddStatusEffectIcon(StatusEffect statusEffect, int duration)
     {
-        icons.AddIcon(statusEffect, duration);
+        return icons.AddIcon(statusEffect, duration);
     }
 
     public void UpdateStatusEffectIcon(StatusEffect statusEffect, int amount)
     {
         icons.UpdateIcon(statusEffect, amount);
+    }
+
+    public bool RemoveStatusEffect(StatusEffect statusEffect)
+    {
+        return icons.RemoveIcon(statusEffect);
     }
 
     public void DrawArrows()

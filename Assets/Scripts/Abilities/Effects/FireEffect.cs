@@ -11,7 +11,7 @@ public class FireEffect : StatusEffect
 
     public override void Activate(UnitCard c, ActivationInfo info)
     {
-        info.Duel.DealDamage(c, 1);
         base.Activate(c, info);
+        info.Duel.DealDamage(c, 1);
     }
 }

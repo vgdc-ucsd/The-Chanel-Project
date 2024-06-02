@@ -14,12 +14,13 @@ public class SpellBomb : SpellCard , ISpellTypeTile
         if (duel.DuelBoard.GetCard(pos) != null) damagedCards.Add(duel.DuelBoard.GetCard(pos));
         damagedCards.AddRange(duel.DuelBoard.GetAdjacentCards(pos));
 
+        FinishCast(duel);
+
         foreach(UnitCard card in damagedCards)
         {
             duel.DealDamage(card, damage, true);
         }
 
-        FinishCast(duel);
         return true;
 
     }

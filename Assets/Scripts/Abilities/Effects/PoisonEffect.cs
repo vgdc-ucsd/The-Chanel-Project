@@ -10,14 +10,14 @@ public class PoisonEffect : StatusEffect
 
     public override void Activate(UnitCard c, ActivationInfo info)
     {
-        info.Duel.DealDamage(c, 1);
+        base.Activate(c, info);
         if (c.BaseDamage > 1) {
+            AnimationManager.Instance.UpdateCardAttackAnimation(info.Duel, c, -1);
             c.BaseDamage--;
             foreach(Attack atk in c.Attacks) {
                 atk.damage--;
             }
         }
-        AnimationManager.Instance.UpdateCardAttackAnimation(info.Duel, c, -1);
-        base.Activate(c, info);
+        info.Duel.DealDamage(c, 1);
     }
 }

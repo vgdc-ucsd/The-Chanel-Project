@@ -8,6 +8,7 @@ public class StatusIcon : MonoBehaviour
     public TMP_Text durationText;
     public Image image;
     public Image imageOutline;
+    public Image statusBackground;
 
     public static int spacing = 55;
 

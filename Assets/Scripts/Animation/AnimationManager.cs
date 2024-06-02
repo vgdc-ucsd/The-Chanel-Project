@@ -193,10 +193,10 @@ public class AnimationManager : MonoBehaviour
         // Card Death
         FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardDeath", transform.position); // SFX
 
-        yield return SimpleTranslateThenRotate(cardTransform, discardPile.position, duration, InterpolationMode.EaseOut);
+        yield return SimpleTranslateThenRotate(cardTransform, discardPile.position, card.UnitCardInteractableRef.transform.localScale, duration, InterpolationMode.EaseOut);
     }
 
-    public IEnumerator SimpleTranslateThenRotate(Transform origin, Vector3 dest, float duration, InterpolationMode mode)
+    public IEnumerator SimpleTranslateThenRotate(Transform origin, Vector3 dest, Vector3 endScale, float duration, InterpolationMode mode)
     {
         float maxRotationDegrees = 20f;
 
@@ -210,7 +210,9 @@ public class AnimationManager : MonoBehaviour
         }
         float startTime = Time.time;
         Vector3 startPos = origin.position;
+        Vector3 startScale = origin.localScale;
         float elapsedTime = Time.time - startTime;
+        float randomAngle = Random.Range(-maxRotationDegrees, maxRotationDegrees);
 
         // Interpolates between two positions until elapsedTime reaches duration
         while (elapsedTime < duration)
@@ -218,15 +220,18 @@ public class AnimationManager : MonoBehaviour
             if (origin == null) yield break;
             float t = elapsedTime / duration;
             origin.position = Interpolation.Interpolate(startPos, dest, t, mode);
+            origin.localScale = Interpolation.Interpolate(startScale, endScale, t, mode);
+            origin.localEulerAngles = new Vector3(0, 0, Interpolation.Interpolate(0, randomAngle, t, mode));
             elapsedTime = Time.time - startTime;
             yield return null;
         }
 
-        if (origin != null)
-        {
-            origin.position = dest;
-            origin.localEulerAngles = new Vector3(0, 0, Random.Range(-maxRotationDegrees, maxRotationDegrees));
-        }
+        // Changed to rotate while in motion
+        // if (origin != null)
+        // {
+        //     origin.position = dest;
+        //     origin.localEulerAngles = new Vector3(0, 0, Random.Range(-maxRotationDegrees, maxRotationDegrees));
+        // }
         if (ci != null)
         {
             // ci.CanInteract = true;
@@ -253,8 +258,8 @@ public class AnimationManager : MonoBehaviour
 
         card.SpellCardInteractableRef.CanInteract = false;
         cardTransform.SetParent(discardPile);
-        cardTransform.transform.localScale = new Vector3(0.8f, 0.8f, 1.0f);
-        yield return SimpleTranslateThenRotate(cardTransform, discardPile.position, 0.5f, InterpolationMode.Linear);
+        Vector3 targetScale = new Vector3(0.8f, 0.8f, 1.0f);
+        yield return SimpleTranslateThenRotate(cardTransform, discardPile.position, targetScale, 0.5f, InterpolationMode.EaseOut);
     }
 
     public IEnumerator OrganizeCards(Team team)
@@ -500,15 +505,97 @@ public class AnimationManager : MonoBehaviour
         yield return null;
     }
 
-    private IEnumerator UpdateCardAttack(UnitCard c, int amount)
+    private IEnumerator CardAttackUpdateFlash(UnitCard c, float duration, Color damage, int points)
     {
-        if (c.UnitCardInteractableRef != null) { c.UnitCardInteractableRef.UpdateCardAttack(amount); }
-        yield return null;
+        Color normalColor = Color.red;
+
+        float damageTime = duration * 0.25f;
+        float restoreTime = duration * 0.75f;
+
+        InterpolationMode mode = InterpolationMode.Linear;
+        float startTime = Time.time;
+        float elapsedTime = Time.time - startTime;
+
+        TextMeshProUGUI text = c.UnitCardInteractableRef.CardAttack;
+
+        Color from = normalColor;
+        Color to = damage;
+        while (elapsedTime < damageTime)
+        {
+            if (text == null) break;
+            float t = elapsedTime / damageTime;
+            elapsedTime = Time.time - startTime;
+            Color col = Interpolation.Interpolate(from, to, t, mode);
+            text.color = col;
+            yield return null;
+        }
+
+        c.UnitCardInteractableRef.UpdateCardAttack(points);
+
+        startTime = Time.time;
+        elapsedTime = Time.time - startTime;
+        from = damage;
+        to = normalColor;
+        while (elapsedTime < restoreTime)
+        {
+            if (text == null) break;
+            float t = elapsedTime / restoreTime;
+            elapsedTime = Time.time - startTime;
+            Color col = Interpolation.Interpolate(from, to, t, mode);
+            text.color = col;
+            yield return null;
+        }
+
+        text.color = normalColor;
     }
 
-    private IEnumerator AddCardStatusEffectIcon(UnitCard c, StatusEffect statusEffect, int duration)
+    private IEnumerator AddCardStatusEffectIcon(UnitCard uc, StatusEffect statusEffect, int effectDuration, bool remove = false)
     {
-        if (c.UnitCardInteractableRef != null) { c.UnitCardInteractableRef.AddStatusEffectIcon(statusEffect, duration); }
+        if (uc.UnitCardInteractableRef != null) {
+            Color from, fromB, to, toB;
+            StatusIcon icon;
+            if (remove) {
+                icon = uc.UnitCardInteractableRef.icons.GetStatusIcon(statusEffect);
+                from = Color.white;
+                to = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                fromB = Color.black;
+                toB = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            }
+            else {
+                icon = uc.UnitCardInteractableRef.AddStatusEffectIcon(statusEffect, effectDuration);
+                from = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                to = Color.white;
+                fromB = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                toB = Color.black;
+            }
+
+            InterpolationMode mode = InterpolationMode.EaseOut;
+
+            float duration = 0.35f;
+            float startTime = Time.time;
+            float elapsedTime = Time.time - startTime;
+
+            if (icon != null) {
+                // fade in
+                while (elapsedTime < duration)
+                {
+                    float t = elapsedTime / duration;
+                    elapsedTime = Time.time - startTime;
+                    Color colWhite = Interpolation.Interpolate(from, to, t, mode);
+                    Color colBlack = Interpolation.Interpolate(fromB, toB, t, mode);
+                    icon.durationText.color = colWhite;
+                    icon.imageOutline.color = colBlack;
+                    icon.image.color = colWhite;
+                    icon.statusBackground.color = colWhite;
+                    yield return null;
+                }
+            }
+
+            if (remove) {
+                uc.UnitCardInteractableRef.RemoveStatusEffect(statusEffect);
+            }
+        }
+
         yield return null;
     }
 
@@ -611,6 +698,50 @@ public class AnimationManager : MonoBehaviour
         text.color = normalColor;
 
         FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/PlayerHurt"); // SFX for when Player gets hurt
+    }
+
+    private IEnumerator StatusEffectDurationFlash(UnitCard c, StatusEffect statusEffect, float duration, Color from, Color to, int points)
+    {
+        float changeTime = duration * 0.25f;
+        float restoreTime = duration * 0.75f;
+
+        InterpolationMode mode = InterpolationMode.Linear;
+        float startTime = Time.time;
+        float elapsedTime = Time.time - startTime;
+
+        if (c.UnitCardInteractableRef.icons.GetStatusIcon(statusEffect) != null) {
+            TMP_Text text = c.UnitCardInteractableRef.icons.GetStatusIcon(statusEffect).durationText;
+
+            while (elapsedTime < changeTime)
+            {
+                if (text == null) break;
+                float t = elapsedTime / changeTime;
+                elapsedTime = Time.time - startTime;
+                Color col = Interpolation.Interpolate(from, to, t, mode);
+                text.color = col;
+                yield return null;
+            }
+
+            yield return UpdateCardStatusEffectIcon(c, statusEffect, points);
+
+            startTime = Time.time;
+            elapsedTime = Time.time - startTime;
+            while (elapsedTime < restoreTime)
+            {
+                if (text == null) break;
+                float t = elapsedTime / restoreTime;
+                elapsedTime = Time.time - startTime;
+                Color col = Interpolation.Interpolate(to, from, t, mode);
+                text.color = col;
+                yield return null;
+            }
+
+            text.color = from;
+
+            if (text.text.Equals("") || int.Parse(text.text) <= 0) {
+                yield return AddCardStatusEffectIcon(c, statusEffect, 0, true);
+            }
+        }
     }
 
     private IEnumerator DrawArrows(UnitCardInteractable uci)
@@ -741,7 +872,7 @@ public class AnimationManager : MonoBehaviour
         yield return null;
     }
 
-    private IEnumerator ActivateAbility(UnitCard uc)
+    private IEnumerator ActivateAbility(UnitCard uc, bool audio = true)
     {
         InterpolationMode mode = InterpolationMode.Slerp;
         float duration = 0.25f; // * 2 since runs twice
@@ -761,7 +892,7 @@ public class AnimationManager : MonoBehaviour
         }
 
         uc.UnitCardInteractableRef.Glow.color = Color.white;
-        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardAbility");
+        if (audio) FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardAbility");
 
         // fade out
         startTime = Time.time;
@@ -819,7 +950,8 @@ public class AnimationManager : MonoBehaviour
         {
             shuffledCount = duel.GetStatus(team).Deck.DiscardPile().Count;
         }
-        float delay = (shuffledCount * 0.2f) + 0.4f; // 0.4 for organizing time ?
+        // float delay = (shuffledCount * 0.2f) + 0.4f; // 0.4 for organizing time ?
+        float delay = shuffledCount * 0.2f;
         QueueableAnimation qa = new QueueableAnimation(ie, delay);
         duel.Animations.Enqueue(qa);
     }
@@ -835,7 +967,7 @@ public class AnimationManager : MonoBehaviour
     // only the AI should use this
     public void PlaceSpellCardAnimationAI(DuelInstance duel, SpellCard c, BoardCoords pos)
     {
-        float speed = 1f; // time of animation in seconds
+        float speed = 0.7f; // time of animation in seconds
         IEnumerator ie = PlaceSpellCardEnemy(c, pos, speed);
         QueueableAnimation qa = new QueueableAnimation(ie, speed);
         duel.Animations.Enqueue(qa);
@@ -857,13 +989,15 @@ public class AnimationManager : MonoBehaviour
     }
 
     public void UpdateCardStatusEffectIconAnimation(DuelInstance duel, UnitCard uc, StatusEffect se, int amount) {
-        IEnumerator ie = UpdateCardStatusEffectIcon(uc, se, amount);
+        float duration = 0.75f;
+        IEnumerator ie = StatusEffectDurationFlash(uc, se, duration, Color.white, Color.gray, amount);
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
         duel.Animations.Enqueue(qa);
     }
 
     public void UpdateCardAttackAnimation(DuelInstance duel, UnitCard uc, int amount) {
-        IEnumerator ie = UpdateCardAttack(uc, amount);
+        float duration = 0.75f;
+        IEnumerator ie = CardAttackUpdateFlash(uc, duration, Color.green, amount);
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
         duel.Animations.Enqueue(qa);
     }
@@ -890,7 +1024,7 @@ public class AnimationManager : MonoBehaviour
         if (!col.Equals(Color.yellow))
         {
             foreach (UnitCard uc in cards) {
-                IEnumerator shake = ShakeCard(uc, 2.0f, 0.2f);
+                IEnumerator shake = ShakeCard(uc, 2.0f, 0.0f);
                 QueueableAnimation shakeAnim = new QueueableAnimation(shake, 0.0f);
                 duel.Animations.Enqueue(shakeAnim);
             }
@@ -984,7 +1118,7 @@ public class AnimationManager : MonoBehaviour
     public void AbilityActivateAnimation(DuelInstance duel, List<UnitCard> cards)
     {
         foreach (UnitCard uc in cards) {
-            IEnumerator ie = ActivateAbility(uc);
+            IEnumerator ie = ActivateAbility(uc, false);
             duel.Animations.Enqueue(new QueueableAnimation(ie, 0.0f));
         }
         duel.Animations.Enqueue(new QueueableAnimation(null, 0.5f));

@@ -88,12 +88,12 @@ public abstract class StatusEffect : Ability
 
     public virtual void RemoveEffect(UnitCard c, ActivationInfo info)
     {
+        AnimationManager.Instance.UpdateCardStatusEffectIconAnimation(info.Duel, c, this, -1);
+
         c.Abilities.Remove(this);
         c.StatusEffects.Remove(this);
 
         c.RecalculateStats(info);
-
-        AnimationManager.Instance.UpdateCardStatusEffectIconAnimation(info.Duel, c, this, -1);
     }
 
     public virtual void ReapplyEffect(UnitCard c, ActivationInfo info) {

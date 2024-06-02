@@ -27,8 +27,8 @@ MonoBehaviour:
       StartingHealth: 30
       MaxHealth: 30
       MaxHealthEnabled: 0
-      StartingMana: 50
-      MaxMana: 50
+      StartingMana: 5
+      MaxMana: 5
       MaxManaEnabled: 1
       StartingCards: 4
     BoardRows: 4
@@ -42,7 +42,7 @@ MonoBehaviour:
     DisableWinning: 1
   EnemyArt: {fileID: 21300000, guid: 0432293b91a0b994e8b6f7d5dbfee256, type: 3}
   EnemyDecks: []
-  EnemyDeck: {fileID: 11400000, guid: a35b0f36956907f408d448b195fac57f, type: 2}
+  EnemyDeck: {fileID: 11400000, guid: 8205a0479993b8f49a709d0d0c92917a, type: 2}
   RewardGold: 80
   CardOffers:
   - {fileID: 11400000, guid: b0588fcb2d650924aad9a7445cb13b24, type: 2}

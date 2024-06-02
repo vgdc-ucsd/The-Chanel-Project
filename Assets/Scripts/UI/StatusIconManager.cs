@@ -33,37 +33,45 @@ public class StatusIconManager : MonoBehaviour
         }
         icons.Clear();
     }
-    public void AddIcon(StatusEffect effect, int duration)
+    public StatusIcon AddIcon(StatusEffect effect, int duration)
     {
         StatusIcon icon = Instantiate(statusIconTemplate, transform);
         icon.gameObject.SetActive(true);
         icon.SetStatus(effect, icons.Count, duration);
         icons.Add(icon);
+        return icon;
     }
-    public void RemoveIcon(StatusIcon statusIcon)
+    public bool RemoveIcon(StatusEffect statusEffect)
     {
+        StatusIcon statusIcon = GetStatusIcon(statusEffect);
+        if (statusIcon == null) return false;
+
         int index = icons.IndexOf(statusIcon);
         icons.Remove(statusIcon);
         Destroy(statusIcon.gameObject);
         for (int i = index; i < icons.Count; ++i) {
             icons[i].ShiftStatus(-1);
         }
+        return true;
     }
     public void UpdateIcon(StatusEffect effect, int amount)
     {
-        int currentDuration = 0;
         foreach (StatusIcon statusIcon in icons) {
+            int currentDuration = 0;
             if (statusIcon.statusEffect.GetType() == effect.GetType()) {
                 if (!statusIcon.durationText.text.Equals("")) {
                     currentDuration = Math.Max(int.Parse(statusIcon.durationText.text) + amount, 0);
                     statusIcon.durationText.text = currentDuration.ToString();
-                    if (currentDuration > 0) {
-                        return;
-                    }
                 }
-                RemoveIcon(statusIcon);
-                return;
             }
         }
+    }
+    public StatusIcon GetStatusIcon(StatusEffect statusEffect) {
+        foreach (StatusIcon statusIcon in icons) {
+            if (statusIcon.statusEffect.GetType() == statusEffect.GetType()) {
+                return statusIcon;
+            }
+        }
+        return null;
     }
 }
