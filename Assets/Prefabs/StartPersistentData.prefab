@@ -55,7 +55,7 @@ PrefabInstance:
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: ImportDeck
       value: 
-      objectReference: {fileID: 11400000, guid: 8205a0479993b8f49a709d0d0c92917a, type: 2}
+      objectReference: {fileID: 11400000, guid: 766b3ba72fbf76a42b04cb81fdf4f880, type: 2}
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: PossibleEvents.Array.size
       value: 6
@@ -106,7 +106,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: Inventory.ActiveCards.Array.size
-      value: 12
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: possibleEncounters.Array.data[2]
@@ -180,6 +180,30 @@ PrefabInstance:
       propertyPath: Inventory.ActiveCards.Array.data[11]
       value: 
       objectReference: {fileID: 11400000, guid: c1af7b6de9f691a4ebd260c395c4f39f, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.InactiveCards.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 575c3927bbdd81043bedbd79b3f941b4, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.InactiveCards.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0e605c490a8d68f4b9fe05afbd2a4b61, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.InactiveCards.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: c39ab0e8a3dfc1742a87be83397d457c, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.InactiveCards.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7a5653329eba6434380b93bcb2540527, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.InactiveCards.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 2c284dc844ac6964da4c0d7527b24de9, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: Inventory.InactiveCards.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 2c284dc844ac6964da4c0d7527b24de9, type: 2}
     - target: {fileID: 8074719806751530725, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: m_Name
       value: StartPersistentData

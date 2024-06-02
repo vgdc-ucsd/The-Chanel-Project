@@ -16,13 +16,10 @@ public class HerculesAbility : Ability
             AnimationManager.Instance.UpdateCardAttackAnimation(Info.Duel, c, 1);
 
             c.baseStats.baseDamage++;
-            c.BaseDamage++;
             foreach(Attack atk in c.baseStats.attacks) {
                 atk.damage++;
             }
-            foreach(Attack atk in c.Attacks) {
-                atk.damage++;
-            }
+            c.RecalculateStats(Info);
 
             AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
 

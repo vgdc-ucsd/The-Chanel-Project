@@ -14,13 +14,10 @@ public class PoisonEffect : StatusEffect
         if (c.BaseDamage > 1) {
             AnimationManager.Instance.UpdateCardAttackAnimation(info.Duel, c, -1);
             c.baseStats.baseDamage--;
-            c.BaseDamage--;
             foreach(Attack atk in c.baseStats.attacks) {
                 atk.damage--;
             }
-            foreach(Attack atk in c.Attacks) {
-                atk.damage--;
-            }
+            c.RecalculateStats(info);
         }
         info.Duel.DealDamage(c, 1);
     }
