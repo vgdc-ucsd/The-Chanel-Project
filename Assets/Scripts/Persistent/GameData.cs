@@ -18,10 +18,10 @@ public class GameData : MonoBehaviour
 
     // type of card start appearing after how many duels played (0-indexed)
     public const int MED_CARDS_CUTOFF = 0;
-    public const int STRONG_CARDS_CUTOFF = 2;
+    public const int STRONG_CARDS_CUTOFF = 1;
 
     public const int CARD_REWARD_CHOICES = 3;
-    public const float SPELLCARD_REWARD_CHANCE = 0.1f; // (rough) chance of rewards containing 1 spellcard, actual chance
+    public const float SPELLCARD_REWARD_CHANCE = 0.2f; // (rough) chance of rewards containing 1 spellcard, actual chance
                                                        // is slightly less
 
     private void Awake()

@@ -32,7 +32,7 @@ public class MapGeneration : MonoBehaviour
     private const float branchChance = 0.6f;
 
 
-    const int MIN_SHOP_DIST = 5;
+    const int MIN_SHOP_DIST = 7;
     const int MAX_SHOP_DIST = 8;
 
     const int MIN_BRANCH_COUNT = 6;
@@ -40,7 +40,7 @@ public class MapGeneration : MonoBehaviour
     const int MIN_NODE_COUNT = 18;
     const int MAX_NODE_COUNT = 21;
 
-    const float SHOP_CHANCE = 0.3f;
+    const float SHOP_CHANCE = 1f;
 
     void Start()
     {
@@ -272,8 +272,27 @@ public class MapGeneration : MonoBehaviour
     private void PlaceEvents()
     {
         // cols 2-3, 5-6: force 3 events in 2 columns
-        PlaceEventWall(2, 3);
+        PlaceEventWallForced(2);
         PlaceEventWall(5, 6);
+    }
+
+    void PlaceEventWallForced(int col1)
+    {
+        List<MapNode> eventWall = new List<MapNode>();
+        eventWall.AddRange(mapNodes[col1]);
+        for (int i = eventWall.Count - 1; i >= 0; i--)
+        {
+            if (eventWall[i] == null) eventWall.Remove(eventWall[i]);
+        }
+        int eventCount = Mathf.Min(3, eventWall.Count);
+
+        for (int i = 0; i < eventCount; i++)
+        {
+            int idx = Random.Range(0, eventWall.Count);
+            MapNode eventNode = eventWall[idx];
+            eventWall.RemoveAt(idx);
+            eventNode.mapNodeType = MapNodeType.Event;
+        }
     }
 
     void PlaceEventWall(int col1, int col2)
