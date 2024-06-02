@@ -7,15 +7,15 @@ public class SpellFlameStrike : SpellCard , ISpellTypeTile
 {
     public bool CastSpell(DuelInstance duel, BoardCoords pos)
     {
-        Board board = duel.DuelBoard;
-        if (board.GetCardsInRow(pos.y).Count < 1) return false;
-        List<UnitCard> targets = new List<UnitCard>();
-        foreach (UnitCard uc in board.GetCardsInRow(pos.y)) {
-            if (uc.CurrentTeam != CurrentTeam) {
-                targets.Add(uc);
-            }
-        }
-        if (targets.Count < 1) return false;
+        // Board board = duel.DuelBoard;
+        // if (board.GetCardsInRow(pos.y).Count < 1) return false;
+        // List<UnitCard> targets = new List<UnitCard>();
+        // foreach (UnitCard uc in board.GetCardsInRow(pos.y)) {
+        //     if (uc.CurrentTeam != CurrentTeam) {
+        //         targets.Add(uc);
+        //     }
+        // }
+        // if (targets.Count < 1) return false;
 
         StartCast(duel, pos);
 

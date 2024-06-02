@@ -477,7 +477,7 @@ public class AnimationManager : MonoBehaviour
             Destroy(cardBack);
 
             // SFX
-            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardPlace", transform.position);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardAbility");
 
             // translation animation
             yield return SimpleTranslate(scRef.transform, tile.transform.position, speed, InterpolationMode.EaseOut);
@@ -747,6 +747,12 @@ public class AnimationManager : MonoBehaviour
     private IEnumerator DrawArrows(UnitCardInteractable uci)
     {
         uci.DrawArrows();
+        yield return null;
+    }
+
+    private IEnumerator DrawAllArrows(UnitCardInteractable uci)
+    {
+        uci.DrawAllArrows();
         yield return null;
     }
 
@@ -1067,6 +1073,16 @@ public class AnimationManager : MonoBehaviour
         {
             IEnumerator ie = DrawArrows(uc.UnitCardInteractableRef);
             QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+            duel.Animations.Enqueue(qa);
+        }
+    }
+
+    public void DrawAllArrowsAnimation(DuelInstance duel, UnitCard uc)
+    {
+        if (uc.UnitCardInteractableRef != null)
+        {
+            IEnumerator ie = DrawAllArrows(uc.UnitCardInteractableRef);
+            QueueableAnimation qa = new QueueableAnimation(ie, 0.5f);
             duel.Animations.Enqueue(qa);
         }
     }

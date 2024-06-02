@@ -53,6 +53,7 @@ public class SpellCardInteractable : CardInteractable
         if (!success) return;
         // destroy the card after successful cast
 
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardAbility");
         if (handInterface != null)
         {
             handInterface.cardObjects.Remove(this.gameObject);

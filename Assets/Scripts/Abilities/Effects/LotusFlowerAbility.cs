@@ -15,11 +15,11 @@ public class LotusFlowerAbility : StatusEffect
     public override void Activate(UnitCard c, ActivationInfo info)
     {
         RemoveEffect(c, info);
-        AnimationManager.Instance.DrawArrowsAnimation(info.Duel, c);
     }
 
     public override void AddEffect(UnitCard c, ActivationInfo info)
     {
+        AnimationManager.Instance.DrawAllArrowsAnimation(info.Duel, c);
         base.AddEffect(c, info);
         duration = -1;
         ReapplyEffect(c, info);
@@ -35,6 +35,5 @@ public class LotusFlowerAbility : StatusEffect
                 c.Attacks.Add(new Attack(dir, c.BaseDamage));
             }
         }
-        AnimationManager.Instance.DrawArrowsAnimation(info.Duel, c);
     }
 }

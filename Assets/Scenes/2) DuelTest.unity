@@ -1665,7 +1665,7 @@ MonoBehaviour:
   CurrentEncounter: {fileID: 11400000, guid: a92bed907e362f04f81c42e688defbb9, type: 2}
   DuelMusic: {fileID: 5458430580489171999, guid: d15cd42e7162b2647b492918868de3fd, type: 3}
   BossMusic: {fileID: 5458430580489171999, guid: d7949661fc83ab04fa0a4ec2f647162e, type: 3}
-  loadDeckFromInventory: 0
+  loadDeckFromInventory: 1
 --- !u!222 &1244177896668772318
 CanvasRenderer:
   m_ObjectHideFlags: 0

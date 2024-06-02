@@ -138,6 +138,34 @@ public class UnitCardInteractable : CardInteractable,
         }
     }
 
+    public void DrawAllArrows()
+    {
+        ResetArrows();
+        Mana.gameObject.SetActive(false);
+
+        Sprite ActiveArrowDiagonal;
+        Sprite ActiveArrowOrthogonal;
+        if (card.CurrentTeam == Team.Enemy)
+        {
+            ActiveArrowDiagonal = ActiveArrowDiagonalEnemy;
+            ActiveArrowOrthogonal = ActiveArrowOrthogonalEnemy;
+        }
+        else
+        {
+            ActiveArrowDiagonal = ActiveArrowDiagonalPlayer;
+            ActiveArrowOrthogonal = ActiveArrowOrthogonalPlayer;
+        }
+
+        Arrows[0].sprite = ActiveArrowDiagonal;
+        Arrows[1].sprite = ActiveArrowOrthogonal;
+        Arrows[2].sprite = ActiveArrowDiagonal;
+        Arrows[3].sprite = ActiveArrowOrthogonal;
+        Arrows[4].sprite = ActiveArrowOrthogonal;
+        Arrows[5].sprite = ActiveArrowDiagonal;
+        Arrows[6].sprite = ActiveArrowOrthogonal;
+        Arrows[7].sprite = ActiveArrowDiagonal;
+    }
+
     public void ResetArrows()
     {
         Mana.gameObject.SetActive(true);
