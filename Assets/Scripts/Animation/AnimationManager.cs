@@ -841,6 +841,7 @@ public class AnimationManager : MonoBehaviour
             CardInteractable ci = UIManager.Instance.GenerateCardInteractable(c);
             ci.CanInteract = false;
             ci.mode = CIMode.Display;
+            if (ci.GetComponent<StudioEventEmitter>() != null) Destroy(ci.GetComponent<StudioEventEmitter>());
             ci.transform.SetParent(center);
             ci.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             ci.transform.localPosition = Vector3.zero;

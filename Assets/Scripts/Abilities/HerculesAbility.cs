@@ -21,7 +21,6 @@ public class HerculesAbility : Ability
             }
 
             AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
-            c.RecalculateStats(Info);
 
             c.Abilities.Remove(this);
         }
