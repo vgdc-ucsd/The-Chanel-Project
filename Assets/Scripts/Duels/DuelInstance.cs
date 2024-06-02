@@ -170,7 +170,7 @@ public class DuelInstance
                     }
                     Team winner = GetStatus(CharStatus.OppositeTeam(team)).TakeDamage(maxDmgAtk.damage);
                     AnimationManager.Instance.AttackAnimation(this, card, maxDmgAtk);
-                    AnimationManager.Instance.DamagePlayerAnimation(this, GetStatus(CharStatus.OppositeTeam(team)));
+                    AnimationManager.Instance.DamagePlayerAnimation(this, GetStatus(CharStatus.OppositeTeam(team)), maxDmgAtk.damage);
                     if (winner != Team.Neutral)
                     {
                         interrupt = interrupt || TryWin(winner);

@@ -25,6 +25,7 @@ MonoBehaviour:
   Health: 12
   CanMove: 0
   CanAttack: 0
+  frozen: 0
   isSelected: 0
   BaseDamage: 1
   Processed: 0

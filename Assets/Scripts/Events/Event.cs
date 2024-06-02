@@ -17,8 +17,6 @@ public class Event : MonoBehaviour
     // The next time an encounter is loaded, player will fight this character
     public void FightCharacter() {
         pd.SetNextEncounter(encounter);
-        if (pd.possibleEncounters.Contains(encounter)) pd.possibleEncounters.Remove(encounter);
-        if (!pd.completedEncounters.Contains(encounter)) pd.completedEncounters.Add(encounter);
     }
 
     // Removes this character from current run, player should no longer encounter them

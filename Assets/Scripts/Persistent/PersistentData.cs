@@ -134,55 +134,7 @@ public class PersistentData : MonoBehaviour
                 CurrentEncounter = completedEncounters[UnityEngine.Random.Range(0, completedEncounters.Count - 1)];
             }
 
-            // Choose deck of strength 1 to 3 if not preset, difficulty depends on encounters finished
-            int deckIndex;
-            if (EncountersFinished < 1) deckIndex = 0;
-            else if (EncountersFinished < 3) deckIndex = 1;
-            else deckIndex = 2;
-            CurrentEncounter.EnemyDeck = CurrentEncounter.EnemyDecks[deckIndex];
-
-            // Randomize gold reward
-            CurrentEncounter.RewardGold = (int)((GameData.BASE_GOLD + EncountersFinished * GameData.GOLD_SCALING)
-                                            * UnityEngine.Random.Range(1 - GameData.GOLD_VARIANCE, 1 + GameData.GOLD_VARIANCE));
-
-            // Randomize card reward based on progression
-            List<Card> rewardPool;
-            if (EncountersFinished < GameData.MED_CARDS_CUTOFF)
-                rewardPool = GameData.Instance.GetCardsOfTypes(new List<CardType> { CardType.Weak });
-            else if (EncountersFinished < GameData.STRONG_CARDS_CUTOFF)
-                rewardPool = GameData.Instance.GetCardsOfTypes(new List<CardType> { CardType.Weak, CardType.Medium });
-            else
-                rewardPool = GameData.Instance.GetCardsOfTypes(new List<CardType> { CardType.Medium, CardType.Strong });
-
-            // randomly add spell cards to potential reward pool
-            if (UnityEngine.Random.value < GameData.SPELLCARD_REWARD_CHANCE)
-            {
-                rewardPool.AddRange(GameData.Instance.GetCardsOfType(CardType.Spell));
-            }
-
-            List<Card> rewardCards = new List<Card>();
-            int i = 0;
-            int iter = 0;
-            bool spellAdded = false;
-            while (i < GameData.CARD_REWARD_CHOICES)
-            {
-                Card cardToAdd = rewardPool[UnityEngine.Random.Range(0, rewardPool.Count)];
-                if (!rewardCards.Contains(cardToAdd) &&
-                    !(spellAdded && cardToAdd.cardType == CardType.Spell)) // prevent more than 1 spell card per reward
-                {
-                    if (cardToAdd.cardType == CardType.Spell) spellAdded = true;
-                    rewardCards.Add(cardToAdd);
-                    i++;
-                }
-                iter++;
-                if (iter > 100)
-                {
-                    Debug.LogError("Failed to generate rewards");
-                    break;
-                }
-            }
-
-            CurrentEncounter.CardOffers = rewardCards.ToArray();
+            RandomizeRewards();
         }
     }
 
@@ -199,10 +151,63 @@ public class PersistentData : MonoBehaviour
         }
     }
 
+    private void RandomizeRewards() {
+        // Choose deck of strength 1 to 3 if not preset, difficulty depends on encounters finished
+        int deckIndex;
+        if (EncountersFinished < 1) deckIndex = 0;
+        else if (EncountersFinished < 3) deckIndex = 1;
+        else deckIndex = 2;
+        CurrentEncounter.EnemyDeck = CurrentEncounter.EnemyDecks[deckIndex];
+
+        // Randomize gold reward
+        CurrentEncounter.RewardGold = (int)((GameData.BASE_GOLD + EncountersFinished * GameData.GOLD_SCALING)
+                                        * UnityEngine.Random.Range(1 - GameData.GOLD_VARIANCE, 1 + GameData.GOLD_VARIANCE));
+
+        // Randomize card reward based on progression
+        List<Card> rewardPool;
+        if (EncountersFinished < GameData.MED_CARDS_CUTOFF)
+            rewardPool = GameData.Instance.GetCardsOfTypes(new List<CardType> { CardType.Weak });
+        else if (EncountersFinished < GameData.STRONG_CARDS_CUTOFF)
+            rewardPool = GameData.Instance.GetCardsOfTypes(new List<CardType> { CardType.Weak, CardType.Medium });
+        else
+            rewardPool = GameData.Instance.GetCardsOfTypes(new List<CardType> { CardType.Medium, CardType.Strong });
+
+        // randomly add spell cards to potential reward pool
+        if (UnityEngine.Random.value < GameData.SPELLCARD_REWARD_CHANCE)
+        {
+            rewardPool.AddRange(GameData.Instance.GetCardsOfType(CardType.Spell));
+        }
+
+        List<Card> rewardCards = new List<Card>();
+        int i = 0;
+        int iter = 0;
+        bool spellAdded = false;
+        while (i < GameData.CARD_REWARD_CHOICES)
+        {
+            Card cardToAdd = rewardPool[UnityEngine.Random.Range(0, rewardPool.Count)];
+            if (!rewardCards.Contains(cardToAdd) &&
+                !(spellAdded && cardToAdd.cardType == CardType.Spell)) // prevent more than 1 spell card per reward
+            {
+                if (cardToAdd.cardType == CardType.Spell) spellAdded = true;
+                rewardCards.Add(cardToAdd);
+                i++;
+            }
+            iter++;
+            if (iter > 100)
+            {
+                Debug.LogError("Failed to generate rewards");
+                break;
+            }
+        }
+
+        CurrentEncounter.CardOffers = rewardCards.ToArray();
+    }
+
     public void SetNextEncounter(Encounter encounter)
     {
         CurrentEncounter = encounter;
-        // todo: track what encounters already completed
+        MeetCharacter(CurrentEncounter);
+        RandomizeRewards();
     }
 
     public void GenerateShopOffers()

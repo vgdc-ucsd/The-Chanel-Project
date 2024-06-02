@@ -12,25 +12,28 @@ public class LancelotAbility : Ability
     {
         if (Info.OverkillDamage > 0)
         {
-            AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
             BoardCoords backTile = Info.Duel.DuelBoard.GetFrontTile(Info.TargetCard.Pos, c.CurrentTeam);
             if (Info.Duel.DuelBoard.BeyondEnemyEdge(backTile) && c.CurrentTeam == Team.Player)
             {
-                Info.Duel.EnemyStatus.TakeDamage(Info.OverkillDamage);
+                AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
+                AnimationManager.Instance.DamagePlayerAnimation(Info.Duel, Info.Duel.EnemyStatus, Info.OverkillDamage);
+                Team winner = Info.Duel.EnemyStatus.TakeDamage(Info.OverkillDamage);
             }
             else if (Info.Duel.DuelBoard.BeyondPlayerEdge(backTile) && c.CurrentTeam == Team.Enemy)
             {
-                Info.Duel.PlayerStatus.TakeDamage(Info.OverkillDamage);
+                AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
+                AnimationManager.Instance.DamagePlayerAnimation(Info.Duel, Info.Duel.PlayerStatus, Info.OverkillDamage);
+                Team winner = Info.Duel.PlayerStatus.TakeDamage(Info.OverkillDamage);
             }
             else
             {
                 UnitCard backCard = Info.Duel.DuelBoard.GetFrontCard(Info.TargetCard.Pos, c.CurrentTeam);
                 if (backCard != null)
                 {
+                    AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
                     Info.Duel.DealDamage(backCard, Info.OverkillDamage);
                 }
             }
-            AnimationManager.Instance.UpdateUIAnimation(Info.Duel);
         }
 
     }

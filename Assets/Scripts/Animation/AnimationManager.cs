@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using FMODUnity;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class AnimationManager : MonoBehaviour
 {
@@ -477,7 +478,7 @@ public class AnimationManager : MonoBehaviour
             Destroy(cardBack);
 
             // SFX
-            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardPlace", transform.position);
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardAbility");
 
             // translation animation
             yield return SimpleTranslate(scRef.transform, tile.transform.position, speed, InterpolationMode.EaseOut);
@@ -652,7 +653,7 @@ public class AnimationManager : MonoBehaviour
         FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/PlayerHurt"); // SFX for when Player gets hurt
     }
 
-    private IEnumerator DamageFlashPlayer(PlayerUI status, int newHealth, float duration)
+    private IEnumerator DamageFlashPlayer(PlayerUI status, int amount, float duration)
     {
         Color normalColor = Color.black;
 
@@ -678,7 +679,7 @@ public class AnimationManager : MonoBehaviour
             yield return null;
         }
 
-        status.HealthText.text = newHealth.ToString();
+        status.HealthText.text = Math.Max(int.Parse(status.HealthText.text) - amount, 0).ToString();
 
         // red to black
         startTime = Time.time;
@@ -747,6 +748,12 @@ public class AnimationManager : MonoBehaviour
     private IEnumerator DrawArrows(UnitCardInteractable uci)
     {
         uci.DrawArrows();
+        yield return null;
+    }
+
+    private IEnumerator DrawAllArrows(UnitCardInteractable uci)
+    {
+        uci.DrawAllArrows();
         yield return null;
     }
 
@@ -835,6 +842,7 @@ public class AnimationManager : MonoBehaviour
             CardInteractable ci = UIManager.Instance.GenerateCardInteractable(c);
             ci.CanInteract = false;
             ci.mode = CIMode.Display;
+            if (ci.GetComponent<StudioEventEmitter>() != null) Destroy(ci.GetComponent<StudioEventEmitter>());
             ci.transform.SetParent(center);
             ci.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             ci.transform.localPosition = Vector3.zero;
@@ -1039,7 +1047,7 @@ public class AnimationManager : MonoBehaviour
         duel.Animations.Enqueue(new QueueableAnimation(null, duration));
     }
 
-    public void DamagePlayerAnimation(DuelInstance duel, CharStatus status)
+    public void DamagePlayerAnimation(DuelInstance duel, CharStatus status, int amount)
     {
         float duration = 0.75f;
         PlayerUI ui;
@@ -1056,7 +1064,7 @@ public class AnimationManager : MonoBehaviour
         QueueableAnimation shakeAnim = new QueueableAnimation(shake, 0.0f);
         duel.Animations.Enqueue(shakeAnim);
 
-        IEnumerator ie = DamageFlashPlayer(ui, status.Health, duration);
+        IEnumerator ie = DamageFlashPlayer(ui, amount, duration);
         QueueableAnimation qa = new QueueableAnimation(ie, duration);
         duel.Animations.Enqueue(qa);
     }
@@ -1067,6 +1075,16 @@ public class AnimationManager : MonoBehaviour
         {
             IEnumerator ie = DrawArrows(uc.UnitCardInteractableRef);
             QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+            duel.Animations.Enqueue(qa);
+        }
+    }
+
+    public void DrawAllArrowsAnimation(DuelInstance duel, UnitCard uc)
+    {
+        if (uc.UnitCardInteractableRef != null)
+        {
+            IEnumerator ie = DrawAllArrows(uc.UnitCardInteractableRef);
+            QueueableAnimation qa = new QueueableAnimation(ie, 0.5f);
             duel.Animations.Enqueue(qa);
         }
     }
