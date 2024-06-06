@@ -417,17 +417,25 @@ public class AnimationManager : MonoBehaviour
             unitRef.CardCost.enabled = false;
             unitRef.gameObject.SetActive(true);
 
-            if (health != 0) {
+            if (health != 0)
+            {
                 unitRef.CardHealth.text = health.ToString();
             }
             unitRef.icons.ClearIcons();
 
             // remove card from hand
             int randomIndex = Random.Range(0, UIManager.Instance.EnemyHand.cardObjects.Count);
-            GameObject cardBack = UIManager.Instance.EnemyHand.cardObjects[randomIndex];
-            UIManager.Instance.EnemyHand.cardObjects.Remove(cardBack);
-            unitRef.transform.position = cardBack.transform.position;
-            Destroy(cardBack);
+            if (UIManager.Instance.EnemyHand.cardObjects.Count > 0)
+            {
+                GameObject cardBack = UIManager.Instance.EnemyHand.cardObjects[randomIndex];
+                UIManager.Instance.EnemyHand.cardObjects.Remove(cardBack);
+                unitRef.transform.position = cardBack.transform.position;
+                Destroy(cardBack);
+            }
+            else
+            {
+                Debug.Log("Enemy hand is empty");
+            }
 
             // SFX
             FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardPlace", transform.position);
@@ -552,17 +560,20 @@ public class AnimationManager : MonoBehaviour
 
     private IEnumerator AddCardStatusEffectIcon(UnitCard uc, StatusEffect statusEffect, int effectDuration, bool remove = false)
     {
-        if (uc.UnitCardInteractableRef != null) {
+        if (uc.UnitCardInteractableRef != null)
+        {
             Color from, fromB, to, toB;
             StatusIcon icon;
-            if (remove) {
+            if (remove)
+            {
                 icon = uc.UnitCardInteractableRef.icons.GetStatusIcon(statusEffect);
                 from = Color.white;
                 to = new Color(1.0f, 1.0f, 1.0f, 0.0f);
                 fromB = Color.black;
                 toB = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             }
-            else {
+            else
+            {
                 icon = uc.UnitCardInteractableRef.AddStatusEffectIcon(statusEffect, effectDuration);
                 from = new Color(1.0f, 1.0f, 1.0f, 0.0f);
                 to = Color.white;
@@ -576,7 +587,8 @@ public class AnimationManager : MonoBehaviour
             float startTime = Time.time;
             float elapsedTime = Time.time - startTime;
 
-            if (icon != null) {
+            if (icon != null)
+            {
                 // fade in
                 while (elapsedTime < duration)
                 {
@@ -592,7 +604,8 @@ public class AnimationManager : MonoBehaviour
                 }
             }
 
-            if (remove) {
+            if (remove)
+            {
                 uc.UnitCardInteractableRef.RemoveStatusEffect(statusEffect);
             }
         }
@@ -710,7 +723,8 @@ public class AnimationManager : MonoBehaviour
         float startTime = Time.time;
         float elapsedTime = Time.time - startTime;
 
-        if (c.UnitCardInteractableRef.icons.GetStatusIcon(statusEffect) != null) {
+        if (c.UnitCardInteractableRef.icons.GetStatusIcon(statusEffect) != null)
+        {
             TMP_Text text = c.UnitCardInteractableRef.icons.GetStatusIcon(statusEffect).durationText;
 
             while (elapsedTime < changeTime)
@@ -739,7 +753,8 @@ public class AnimationManager : MonoBehaviour
 
             text.color = from;
 
-            if (text.text.Equals("") || int.Parse(text.text) <= 0) {
+            if (text.text.Equals("") || int.Parse(text.text) <= 0)
+            {
                 yield return AddCardStatusEffectIcon(c, statusEffect, 0, true);
             }
         }
@@ -990,20 +1005,23 @@ public class AnimationManager : MonoBehaviour
         duel.Animations.Enqueue(qa);
     }
 
-    public void AddCardStatusEffectIconAnimation(DuelInstance duel, UnitCard uc, StatusEffect se, int duration) {
+    public void AddCardStatusEffectIconAnimation(DuelInstance duel, UnitCard uc, StatusEffect se, int duration)
+    {
         IEnumerator ie = AddCardStatusEffectIcon(uc, se, duration);
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
         duel.Animations.Enqueue(qa);
     }
 
-    public void UpdateCardStatusEffectIconAnimation(DuelInstance duel, UnitCard uc, StatusEffect se, int amount) {
+    public void UpdateCardStatusEffectIconAnimation(DuelInstance duel, UnitCard uc, StatusEffect se, int amount)
+    {
         float duration = 0.75f;
         IEnumerator ie = StatusEffectDurationFlash(uc, se, duration, Color.white, Color.gray, amount);
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
         duel.Animations.Enqueue(qa);
     }
 
-    public void UpdateCardAttackAnimation(DuelInstance duel, UnitCard uc, int amount) {
+    public void UpdateCardAttackAnimation(DuelInstance duel, UnitCard uc, int amount)
+    {
         float duration = 0.75f;
         IEnumerator ie = CardAttackUpdateFlash(uc, duration, Color.green, amount);
         QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
@@ -1031,7 +1049,8 @@ public class AnimationManager : MonoBehaviour
         // Don't shake card when it's healed
         if (!col.Equals(Color.yellow))
         {
-            foreach (UnitCard uc in cards) {
+            foreach (UnitCard uc in cards)
+            {
                 IEnumerator shake = ShakeCard(uc, 2.0f, 0.0f);
                 QueueableAnimation shakeAnim = new QueueableAnimation(shake, 0.0f);
                 duel.Animations.Enqueue(shakeAnim);
@@ -1039,7 +1058,8 @@ public class AnimationManager : MonoBehaviour
         }
 
         float duration = 0.75f;
-        foreach (UnitCard uc in cards) {
+        foreach (UnitCard uc in cards)
+        {
             IEnumerator ie = DamageFlash(uc, duration, col, damage);
             QueueableAnimation qa = new QueueableAnimation(ie, 0);
             duel.Animations.Enqueue(qa);
@@ -1135,7 +1155,8 @@ public class AnimationManager : MonoBehaviour
 
     public void AbilityActivateAnimation(DuelInstance duel, List<UnitCard> cards)
     {
-        foreach (UnitCard uc in cards) {
+        foreach (UnitCard uc in cards)
+        {
             IEnumerator ie = ActivateAbility(uc, false);
             duel.Animations.Enqueue(new QueueableAnimation(ie, 0.0f));
         }
