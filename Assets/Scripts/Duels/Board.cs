@@ -96,6 +96,9 @@ public class Board
         if (!pushed)
         {
             card.CanMove = false;
+            IEnumerator ie = AnimationManager.Instance.CardCantMove(card);
+            QueueableAnimation qa = new QueueableAnimation(ie, 1.0f);
+            duel.Animations.Enqueue(qa);
             ActivationInfo info = new ActivationInfo(duel);
             foreach (Ability a in card.Abilities)
             {
@@ -118,16 +121,31 @@ public class Board
         AnimationManager.Instance.MoveCardAnimation(duel, card, pos);
     }
 
+<<<<<<< Updated upstream
     public void RenewMovement(Team t) {
         for(int i = 0; i < Cols; i++) {
             for(int j = 0; j < Rows; j++) {
                 BoardCoords pos = new BoardCoords(i,j);
                 if (IsOccupied(pos)) {
+=======
+    public void RenewMovement(Team t, DuelInstance duel)
+    {
+        for (int i = 0; i < Cols; i++)
+        {
+            for (int j = 0; j < Rows; j++)
+            {
+                BoardCoords pos = new BoardCoords(i, j);
+                if (IsOccupied(pos))
+                {
+>>>>>>> Stashed changes
                     UnitCard c = GetCard(pos);
                     if (c.CurrentTeam == t)
                     {
                         c.CanAttack = true;
                         c.CanMove = true;
+                        IEnumerator ie = AnimationManager.Instance.CardCanMove(c);
+                        QueueableAnimation qa = new QueueableAnimation(ie, 1.0f);
+                        duel.Animations.Enqueue(qa);
                     }
                 }
             }

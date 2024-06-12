@@ -635,6 +635,42 @@ public class AnimationManager : MonoBehaviour
         DuelManager.Instance.EnablePlayerControl(true);
         yield return null;
     }
+    public IEnumerator CardCanMove(UnitCard uc)
+    {
+        InterpolationMode mode = InterpolationMode.Slerp;
+        Color from = new Color(0, 0, 0, 0);
+        Color to = Color.green;
+        float duration = 1.0f; // 1 second
+        float startTime = Time.time;
+        float elapsedTime = 0;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime = Time.time - startTime;
+            float t = elapsedTime / duration;
+            Color col = Interpolation.Interpolate(from, to, t, mode);
+            uc.UnitCardInteractableRef.Glow.color = col;
+            yield return null;
+        }
+    }
+    public IEnumerator CardCantMove(UnitCard uc)
+    {
+        InterpolationMode mode = InterpolationMode.Slerp;
+        Color from = new Color(0, 0, 0, 0);
+        Color to = new Color(0, 0, 0, 0);
+        float duration = 1.0f; // 1 second
+        float startTime = Time.time;
+        float elapsedTime = 0;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime = Time.time - startTime;
+            float t = elapsedTime / duration;
+            Color col = Interpolation.Interpolate(from, to, t, mode);
+            uc.UnitCardInteractableRef.Glow.color = col;
+            yield return null;
+        }
+    }
 
     private IEnumerator ActivateAbility(UnitCard uc) {
         InterpolationMode mode = InterpolationMode.Slerp;

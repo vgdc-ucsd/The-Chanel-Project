@@ -1875,6 +1875,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+<<<<<<< Updated upstream
+=======
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: ImportDeck
+      value: 
+      objectReference: {fileID: 11400000, guid: f735866e9cc0fae44a4197275ae365de, type: 2}
+    - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
+      propertyPath: CurrentEncounter
+      value: 
+      objectReference: {fileID: 11400000, guid: a92bed907e362f04f81c42e688defbb9, type: 2}
+>>>>>>> Stashed changes
     - target: {fileID: 8074719806751530725, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: m_Name
       value: PersistentData
@@ -3585,6 +3596,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1868515363}
@@ -3598,6 +3610,69 @@ GameObject:
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!224 &1868515363
+=======
+  m_GameObject: {fileID: 7325662910133947416}
+  m_CullTransparentMesh: 1
+--- !u!114 &1140427509545177305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3899965410198266312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a2ff4bab6d28c640975ea9cc37965d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Effects:
+    FireEffectTemplate: {fileID: 11400000, guid: 162224b0944ce7c47a29789f46383e04, type: 2}
+    PoisonEffectTemplate: {fileID: 11400000, guid: dac4cb9396ed7874f81626acf05ade59, type: 2}
+    FrozenEffectTemplate: {fileID: 11400000, guid: 5552cc1104484994185fe7633a524a74, type: 2}
+  Settings:
+    SameSettingsForBothPlayers: 1
+    Player:
+      StartingHealth: 10
+      MaxHealth: 10
+      MaxHealthEnabled: 0
+      StartingMana: 1
+      MaxMana: 5
+      MaxManaEnabled: 1
+      StartingCards: 4
+    Enemy:
+      StartingHealth: 10
+      MaxHealth: 10
+      MaxHealthEnabled: 0
+      StartingMana: 0
+      MaxMana: 4
+      MaxManaEnabled: 1
+      StartingCards: 4
+    BoardRows: 4
+    BoardCols: 4
+    EnemyGoesFirst: 0
+    DrawCardManaCost: 2
+    EnablePVPMode: 0
+    RestrictPlacement: 1
+    UnlimitedMana: 0
+    ShowEnemyHand: 0
+    DisableWinning: 1
+  PlayerDeck: {fileID: 11400000, guid: bb0fd6f66e25e4549b5b3a6e285a9bdd, type: 2}
+  EnemyDeck: {fileID: 11400000, guid: 1ae85ab867b12cb458ccb53e082d8a90, type: 2}
+  currentTeam: 0
+  CurrentEncounter: {fileID: 11400000, guid: a92bed907e362f04f81c42e688defbb9, type: 2}
+  DuelMusic: {fileID: 5458430580489171999, guid: d15cd42e7162b2647b492918868de3fd, type: 3}
+  BossMusic: {fileID: 5458430580489171999, guid: d7949661fc83ab04fa0a4ec2f647162e, type: 3}
+  loadDeckFromInventory: 1
+--- !u!222 &1244177896668772318
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4246424149157932252}
+  m_CullTransparentMesh: 1
+--- !u!224 &1261236757127428557
+>>>>>>> Stashed changes
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

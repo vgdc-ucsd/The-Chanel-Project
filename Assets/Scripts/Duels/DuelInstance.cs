@@ -39,6 +39,7 @@ public class DuelInstance
     }
 
     public void ProcessBoard(Team team) {
+        ActivationInfo info = new ActivationInfo(this);
         // the team is whoever just activated end turn
 
         foreach (UnitCard c in DuelBoard.GetAllCards())
@@ -99,7 +100,7 @@ public class DuelInstance
             triggerNextStage = false;
         }
 
-        EndTurn(team);
+        EndTurn(team, info.Duel);
     }
 
     public Queue<QueueableAnimation> DrawStartingCards() {
@@ -333,10 +334,13 @@ public class DuelInstance
         return overkillDamage;
     }
 
-    private void EndTurn(Team team) {
+    private void EndTurn(Team team, DuelInstance duel) {
         ActivationInfo info = new ActivationInfo(this);
         foreach (UnitCard card in DuelBoard.GetCardsOfTeam(team))
         {
+            IEnumerator ie = AnimationManager.Instance.CardCantMove(card);
+            QueueableAnimation qa = new QueueableAnimation(ie, 1.0f);
+            duel.Animations.Enqueue(qa);
             for (int i = card.Abilities.Count - 1; i >= 0; i--)
             {
                 Ability ability = card.Abilities[i];
@@ -361,7 +365,7 @@ public class DuelInstance
 
         // gain 1 mana capacity every turn until it reaches the max then it caps out;
         oppositeStatus.GiveMana();
-        DuelBoard.RenewMovement(oppositeTeam);
+        DuelBoard.RenewMovement(oppositeTeam, info.Duel);
 
 
         foreach (UnitCard card in DuelBoard.GetCardsOfTeam(oppositeTeam))

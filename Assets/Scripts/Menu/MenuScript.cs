@@ -16,6 +16,22 @@ public class MenuScript : MonoBehaviour
     public const int VERSUS_INDEX = 7;
     public const int REWARD_INDEX = 8;
 
+<<<<<<< Updated upstream
+=======
+    public int PREV_INDEX;
+
+    public InventoryUI inventoryPrefab;
+
+    public PersistentData startDataTemplate;
+
+    private static List<int> allowedInventoryScenes = new List<int>
+    {
+        MAP_INDEX,
+        SHOP_INDEX,
+        // EVENT_INDEX, 
+    };
+
+>>>>>>> Stashed changes
     public void Awake()
     {
         if (Instance != this && Instance)
@@ -33,10 +49,39 @@ public class MenuScript : MonoBehaviour
     // For Debugging & Swapping Scenes Easily
     private void Update()
     {
+<<<<<<< Updated upstream
         if (Input.GetKeyDown(KeyCode.M))
+=======
+        /*       if (Input.GetKeyDown(KeyCode.M))
+              {
+                  LoadMap();
+              }
+              else if (Input.GetKeyDown(KeyCode.I))
+              {
+                  if (allowedInventoryScenes.Contains(SceneManager.GetActiveScene().buildIndex))
+                  {
+                      OpenInventory();
+                  }
+
+              }
+              if (Input.GetKeyDown(KeyCode.W))
+              {
+                  UIManager.Instance.PlayerWin();
+              }
+              if (Input.GetKeyDown(KeyCode.S))
+              {
+                  LoadShop();
+              }
+              if (Input.GetKeyDown(KeyCode.Backspace))
+              {
+                  LoadTitle();
+              } */
+        if (Input.GetKeyDown(KeyCode.Escape))
+>>>>>>> Stashed changes
         {
-            LoadMap();
+            QuitGame();
         }
+<<<<<<< Updated upstream
         else if (Input.GetKeyDown(KeyCode.I))
         {
             LoadInventory();
@@ -49,6 +94,9 @@ public class MenuScript : MonoBehaviour
         {
             LoadShop();
         }
+=======
+
+>>>>>>> Stashed changes
     }
 
     public void PlayGame()
