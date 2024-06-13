@@ -70,7 +70,30 @@ public class MenuScript : MonoBehaviour
               {
                   LoadTitle();
               } */
-        if (Input.GetKeyDown(KeyCode.Escape)) { QuitGame(); }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            QuitGame();
+        }
+        else if (Input.GetKeyDown(KeyCode.I))
+        {
+            if (allowedInventoryScenes.Contains(SceneManager.GetActiveScene().buildIndex))
+            {
+                OpenInventory();
+            }
+            
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            UIManager.Instance.PlayerWin();
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            LoadShop();
+        }
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            LoadTitle();
+        } 
     }
 
 
