@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RainEvent : MonoBehaviour
+public class RainEvent : Event
 {
-    public Transform center;
     public void Option1()
     {
         if (EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
+        AcknowledgeCharacter();
 
         List<Card> strongCards = GameData.Instance.GetCardsOfType(CardType.Strong);
 
@@ -22,6 +22,7 @@ public class RainEvent : MonoBehaviour
     {
         if (EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
+        AcknowledgeCharacter();
 
         List<Card> possibleCards = new List<Card>();
         possibleCards.AddRange(PersistentData.Instance.Inventory.ActiveCards);
@@ -35,7 +36,7 @@ public class RainEvent : MonoBehaviour
         {
             card2 = possibleCards[Random.Range(0, possibleCards.Count)];
             i++;
-            if (i > 100) 
+            if (i > 100)
             {
                 Debug.LogError("Failed to generate duplicates");
                 return;

@@ -8,7 +8,7 @@ public class RewardManager : MonoBehaviour
     public Transform CardContainer;
     public Canvas MainCanvas;
 
-    private float heightOffset = -80f;
+    private float heightOffset = -350f;
     private float duration = 0.6f;
     private float delay = 0.2f;
 
@@ -18,6 +18,10 @@ public class RewardManager : MonoBehaviour
 
     public TMP_Text goldText;
     public TMP_Text incText;
+    public TextMeshProUGUI ManaCostText;
+
+    public GameObject inspectScreen;
+    public CardInfoPanel infoPanel;
 
     void Awake() {
         // Singleton
@@ -45,7 +49,7 @@ public class RewardManager : MonoBehaviour
                 ((UnitCardInteractable)ci).DrawArrows();
             }
             ci.transform.SetParent(cardSlot.transform, false);
-            ci.transform.localPosition = new Vector3(0.0f, heightOffset*MainCanvas.scaleFactor, 0.0f);
+            ci.transform.localPosition = new Vector3(0.0f, heightOffset, 0.0f);
             ci.mode = CIMode.Reward;
             ci.CanInteract = true;
             cardInteractables.Add(ci);
@@ -54,6 +58,7 @@ public class RewardManager : MonoBehaviour
         PersistentData.Instance.Inventory.Gold += PersistentData.Instance.CurrentEncounter.RewardGold;
         StartCoroutine(CardAppearAnimation());
         StartCoroutine(IncrementGold());
+
     }
 
     public void SelectCard(CardInteractable selected) {
@@ -65,19 +70,22 @@ public class RewardManager : MonoBehaviour
             }
             else {
                 IEnumerator ie = AnimationManager.Instance.SimpleTranslate(
-                ci.transform,
-                new Vector3(ci.transform.position.x, heightOffset*MainCanvas.scaleFactor, 0.0f),
-                duration,
-                InterpolationMode.Slerp);
+                    ci.transform,
+                    new Vector3(ci.transform.position.x, heightOffset, 0.0f),
+                    duration,
+                    InterpolationMode.EaseIn);
                 QueueableAnimation qa = new QueueableAnimation(ie, delay);
                 AnimationManager.Instance.Enqueue(qa);
             }
         }
 
         StartCoroutine(ChangeScene());
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardReward");
     }
 
     private IEnumerator CardAppearAnimation() {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardShuffle");
+
         yield return null;
 
         foreach(CardInteractable ci in cardInteractables) {
@@ -85,9 +93,16 @@ public class RewardManager : MonoBehaviour
                 ci.transform,
                 ci.transform.parent.position,
                 duration,
-                InterpolationMode.Slerp);
+                InterpolationMode.EaseOut);
             QueueableAnimation qa = new QueueableAnimation(ie, delay);
             AnimationManager.Instance.Enqueue(qa);
+
+            // Mana cost
+            // TextMeshProUGUI manaCost = Instantiate(ManaCostText);
+            // manaCost.gameObject.SetActive(true);
+            // manaCost.transform.SetParent(ci.transform.parent);
+            // manaCost.text = "Mana Cost: " + ci.GetCard().ManaCost;
+            // manaCost.transform.localPosition = new Vector3(0.0f, 60f, 0.0f);
         }
     }
 
@@ -96,20 +111,26 @@ public class RewardManager : MonoBehaviour
         MenuScript.Instance.LoadMap();
     }
 
+    public void inspect(CardInteractable ci)
+    {
+        inspectScreen.SetActive(true);
+        infoPanel.InitializeCardInfoPanel(ci.GetCard());
+    }
+
     private IEnumerator IncrementGold()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         goldText.text = PersistentData.Instance.Inventory.Gold.ToString();
         incText.text = "+" + PersistentData.Instance.CurrentEncounter.RewardGold.ToString();
         incText.enabled = true;
-        incText.color = Color.yellow;
+        incText.color = Color.white;
         float elapsedTime = 0;
-        float endTime = 1;
+        float endTime = 5;
         float startTime = Time.time;
         while (elapsedTime < endTime)
         {
             elapsedTime = Time.time - startTime;
-            incText.color = Interpolation.Interpolate(Color.yellow, Color.clear,
+            incText.color = Interpolation.Interpolate(Color.white, Color.clear,
                     elapsedTime / endTime, InterpolationMode.Linear);
             yield return null;
         }

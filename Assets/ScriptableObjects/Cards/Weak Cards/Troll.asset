@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Troll
   ManaCost: 2
-  ShopCost: 0
+  ShopCost: 25
   Artwork: {fileID: 21300000, guid: a9b2d9f99213dce408d3b2272d25cdde, type: 3}
   drawStatus: 0
   id: 0
-  description: 
+  description: Large monster capable of taking lots of damage and dealing it out
+    as well.
   CurrentTeam: 2
   cardType: 0
   Health: 3
@@ -26,6 +27,7 @@ MonoBehaviour:
   CanAttack: 0
   isSelected: 0
   BaseDamage: 2
+  Processed: 0
   UnitCardInteractableRef: {fileID: 0}
   Attacks:
   - direction: {x: -1, y: 1}

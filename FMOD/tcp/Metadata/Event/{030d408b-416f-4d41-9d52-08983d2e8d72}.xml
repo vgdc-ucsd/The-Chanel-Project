@@ -2,13 +2,13 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{030d408b-416f-4d41-9d52-08983d2e8d72}">
 		<property name="name">
-			<value>DrawCard</value>
+			<value>CardDraw</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
 		</property>
 		<relationship name="folder">
-			<destination>{23cb34bb-ae0b-44d4-a565-565412ca372f}</destination>
+			<destination>{2009f075-aba2-43a8-ab1e-d2e913355582}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{73947af0-47bc-4861-ae40-f79489c43755}</destination>
@@ -53,7 +53,7 @@
 			<destination>{48578339-d5cf-49b4-a7a7-14217bbd6c78}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{45afd1f2-f1f4-477d-85f6-5fa0b4a22d8c}</destination>
+			<destination>{61efb9ca-0252-4ee9-adf9-303bfdf89b5c}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{ece7b8f7-9e8b-4c55-8a49-823efd60cc6b}" />

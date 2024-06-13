@@ -44,8 +44,10 @@ public class UIManager : MonoBehaviour
     public Canvas MainCanvas;
     public Image EndTurnButton;
     public Image EnemyArt;
-    public Sprite PlayerCardBorder;
-    public Sprite EnemyCardBorder;
+    public Sprite PlayerUnitCardBorder;
+    public Sprite PlayerSpellCardBorder;
+    public Sprite EnemyUnitCardBorder;
+    public Sprite EnemySpellCardBorder;
 
     public static UIManager Instance;
 
@@ -91,23 +93,28 @@ public class UIManager : MonoBehaviour
         Enemy.UpdateUI(state.EnemyStatus);
     }
 
+    /* !! README !!
+     * The GenerateCardInteractable method used in inventory screen has been moved
+     * to InventoryUI, please make changes there for inventory CardInteractables.
+     */
     public CardInteractable GenerateCardInteractable(Card c) {
         if(c is UnitCard) {
             UnitCardInteractable ci = Instantiate(TemplateUnitCard);
             ci.card = (UnitCard) c;
             ci.SetCardInfo();
             ci.mode = CIMode.Duel;
+            ci.ResetArrows();
 
             if (c.CurrentTeam == Team.Player) {
                 ci.handInterface = Hand;
-                ci.image.sprite = PlayerCardBorder;
+                ci.image.sprite = PlayerUnitCardBorder;
             }
             else if (c.CurrentTeam == Team.Enemy) {
                 ci.handInterface = EnemyHand;
-                ci.image.sprite = EnemyCardBorder;
+                ci.image.sprite = EnemyUnitCardBorder;
             }
             else {
-                ci.image.sprite = PlayerCardBorder;
+                ci.image.sprite = PlayerUnitCardBorder;
                 return ci;
             }
 
@@ -121,15 +128,15 @@ public class UIManager : MonoBehaviour
             ci.mode = CIMode.Duel;
 
             if(c.CurrentTeam == Team.Player) {
-                ci.image.sprite = PlayerCardBorder;
+                ci.image.sprite = PlayerSpellCardBorder;
                 ci.handInterface = Hand;
             }
             else if (c.CurrentTeam == Team.Enemy) {
-                ci.image.sprite = EnemyCardBorder;
+                ci.image.sprite = EnemySpellCardBorder;
                 ci.handInterface = EnemyHand;
             }
             else {
-                ci.image.sprite = PlayerCardBorder;
+                ci.image.sprite = PlayerSpellCardBorder;
                 return ci;
             }
 
@@ -213,9 +220,14 @@ public class UIManager : MonoBehaviour
     }
 
     public void PlayerWin() {
-        PersistentData.Instance.EncountersFinished++;
-        PersistentData.Instance.VsState = VsScreenState.Win;
-        SceneManager.LoadScene(MenuScript.VERSUS_INDEX);
+        if (PersistentData.Instance.CurrentEncounter.boss != null && PersistentData.Instance.CurrentEncounter.boss.finalBoss) {
+            SceneManager.LoadScene(5);
+        }
+        else {
+            PersistentData.Instance.EncountersFinished++;
+            PersistentData.Instance.VsState = VsScreenState.Win;
+            SceneManager.LoadScene(MenuScript.VERSUS_INDEX);
+        }
     }
 
     public void PlayerLose() {

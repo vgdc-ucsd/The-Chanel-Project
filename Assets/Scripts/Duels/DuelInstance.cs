@@ -1,9 +1,6 @@
 using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public enum Team
@@ -17,6 +14,7 @@ public class DuelInstance
     public CharStatus PlayerStatus, EnemyStatus;
     public Queue<QueueableAnimation> Animations;
     public Team Winner = Team.Neutral;
+    [HideInInspector] public bool iteration = true;
 
     BossData boss;
     public int currBossStage = -1;
@@ -71,7 +69,7 @@ public class DuelInstance
             {
                 EnemyStatus.Health = (int)(DuelManager.Instance.CurrentEncounter.Settings.Enemy.MaxHealth * 1.5);
             }
-            
+
             if (boss.clearBoard)
             {
                 foreach (UnitCard c in DuelBoard.GetCardsOfTeam(Team.Player))
@@ -173,12 +171,12 @@ public class DuelInstance
                     }
                     Team winner = GetStatus(CharStatus.OppositeTeam(team)).TakeDamage(maxDmgAtk.damage);
                     AnimationManager.Instance.AttackAnimation(this, card, maxDmgAtk);
-                    AnimationManager.Instance.DamagePlayerAnimation(this, GetStatus(CharStatus.OppositeTeam(team)));
+                    AnimationManager.Instance.DamagePlayerAnimation(this, GetStatus(CharStatus.OppositeTeam(team)), maxDmgAtk.damage);
                     if (winner != Team.Neutral)
                     {
                         interrupt = interrupt || TryWin(winner);
                     }
-                        
+
                 }
                 if (attackLanded)
                 {
@@ -192,7 +190,7 @@ public class DuelInstance
 
 
             }
-            
+
         }
     }
 
@@ -372,10 +370,12 @@ public class DuelInstance
         {
             for (int i = card.Abilities.Count - 1; i >= 0; i--)
             {
-                Ability ability = card.Abilities[i];
-                if (ability.Condition == ActivationCondition.OnBeginTurn)
-                {
-                    ability.Activate(card, info);
+                if (i < card.Abilities.Count) {
+                    Ability ability = card.Abilities[i];
+                    if (ability.Condition == ActivationCondition.OnBeginTurn)
+                    {
+                        ability.Activate(card, info);
+                    }
                 }
             }
         }

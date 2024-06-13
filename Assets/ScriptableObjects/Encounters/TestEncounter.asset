@@ -14,20 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EncounterName: Test
   Settings:
-    SameSettingsForBothPlayers: 1
+    SameSettingsForBothPlayers: 0
     Player:
-      StartingHealth: 10
-      MaxHealth: 10
+      StartingHealth: 999
+      MaxHealth: 999
       MaxHealthEnabled: 0
-      StartingMana: 1
-      MaxMana: 5
+      StartingMana: 100
+      MaxMana: 100
       MaxManaEnabled: 1
-      StartingCards: 4
+      StartingCards: 6
     Enemy:
-      StartingHealth: 10
-      MaxHealth: 10
+      StartingHealth: 30
+      MaxHealth: 30
       MaxHealthEnabled: 0
-      StartingMana: 1
+      StartingMana: 5
       MaxMana: 5
       MaxManaEnabled: 1
       StartingCards: 4
@@ -37,14 +37,20 @@ MonoBehaviour:
     DrawCardManaCost: 2
     EnablePVPMode: 0
     RestrictPlacement: 1
-    UnlimitedMana: 0
-    ShowEnemyHand: 0
-    DisableWinning: 0
-  EnemyArt: {fileID: 21300000, guid: 14d9a4dac9edcf74f8b1317180f22d17, type: 3}
-  EnemyDeck: {fileID: 11400000, guid: 7b0ecfb88ddcb604095a2aa25a38a6bc, type: 2}
+    UnlimitedMana: 1
+    ShowEnemyHand: 1
+    DisableWinning: 1
+  EnemyArt: {fileID: 21300000, guid: 0432293b91a0b994e8b6f7d5dbfee256, type: 3}
+  EnemyDecks: []
+  EnemyDeck: {fileID: 11400000, guid: eb069c562c0d6c344b7d45571433d516, type: 2}
   RewardGold: 80
   CardOffers:
   - {fileID: 11400000, guid: b0588fcb2d650924aad9a7445cb13b24, type: 2}
   - {fileID: 11400000, guid: 7a5653329eba6434380b93bcb2540527, type: 2}
   - {fileID: 11400000, guid: 7b426a659073e4043b5abdf92114df9a, type: 2}
   boss: {fileID: 0}
+  EncounterAudio: {fileID: 0}
+  WinAudio: {fileID: 0}
+  LoseAudio: {fileID: 0}
+  AIAggression: 0.7
+  AIDefense: 0.6

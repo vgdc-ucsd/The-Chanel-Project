@@ -13,7 +13,7 @@ public enum ActivationCondition {
     OnPlay,
     OnMove,
     OnReceiveDamage,
-    OnAttacksHitMe, // triggers when any Attacker hits you, gives Attacker reference
+    OnAttacksHitMe, // triggers when any Attacker hits you, gives Attacker reference, Defender reference is TargetCard
     OnAttack,       // triggers just before Attack hits
     OnDealDamage,   // triggers once after landing each separate attack
     OnFinishAttack, // triggers once per turn after landing at least one attack
@@ -46,6 +46,7 @@ public abstract class Ability : ScriptableObject
 
 public abstract class StatusEffect : Ability
 {
+    public int initialDuration;
     public int duration;
     public Sprite icon;
 
@@ -60,30 +61,43 @@ public abstract class StatusEffect : Ability
 
     protected virtual void CloneExtras(StatusEffect copy) { }
 
+    public override void Activate(UnitCard c, ActivationInfo info) {
+        if (--duration < 1) {
+            RemoveEffect(c, info);
+        }
+        else {
+            AnimationManager.Instance.UpdateCardStatusEffectIconAnimation(info.Duel, c, this, -1);
+        }
+    }
+
     public virtual void AddEffect(UnitCard c, ActivationInfo info)
     {
-        foreach (StatusEffect s in c.StatusEffects)
-        {
-            if (s.GetType() == this.GetType())
-            {
-                return;
-            }
+        StatusEffect cardStatus = c.GetStatusEffect(this);
+        if (cardStatus != null) {
+            cardStatus.duration += initialDuration;
+            AnimationManager.Instance.UpdateCardStatusEffectIconAnimation(info.Duel, c, this, initialDuration);
         }
-        c.Abilities.Add(this);
-        c.StatusEffects.Add(this);
-        AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
+        else {
+            duration = initialDuration;
+            c.Abilities.Add(this);
+            c.StatusEffects.Add(this);
+            AnimationManager.Instance.AddCardStatusEffectIconAnimation(info.Duel, c, this, initialDuration);
+        }
     }
 
 
-    public void RemoveEffect(UnitCard c, ActivationInfo info)
+    public virtual void RemoveEffect(UnitCard c, ActivationInfo info)
     {
+        AnimationManager.Instance.UpdateCardStatusEffectIconAnimation(info.Duel, c, this, -1);
+
         c.Abilities.Remove(this);
         c.StatusEffects.Remove(this);
 
-        AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
-        c.RecalculateStats(info); // very poorly optimized, consider recalculating stats once per turn
+        c.RecalculateStats(info);
     }
 
-    public abstract void ReapplyEffect(UnitCard c, ActivationInfo info);
+    public virtual void ReapplyEffect(UnitCard c, ActivationInfo info) {
+
+    }
 
 }

@@ -24,7 +24,7 @@ public class HandInterface : MonoBehaviour
     // Determines how tall the arch of the cards is in the player's hand
     private float arcIntensity = 0f;
 
-    private List<QueueableAnimation> cardAnimations = new List<QueueableAnimation>(); 
+    private List<QueueableAnimation> cardAnimations = new List<QueueableAnimation>();
 
     // Displays cards neatly in the UI
     public void OrganizeCards() {
@@ -39,7 +39,7 @@ public class HandInterface : MonoBehaviour
 
         for(int i = 0; i < cardObjects.Count; i++) {
             GameObject card = cardObjects[i].gameObject;
-            
+
             // Target Position
             float xVal = (float)(1+i)/(cardObjects.Count+1) * box.rect.width;
             if(myTeam == Team.Player) xVal -= box.rect.width/2f;
@@ -61,11 +61,13 @@ public class HandInterface : MonoBehaviour
                         card.transform,
                         targetPosition,
                         0.2f,
-                        InterpolationMode.EaseOut
+                        InterpolationMode.Slerp
                     );
                     QueueableAnimation qa = new QueueableAnimation(animation, 0.1f);
                     cardAnimations.Add(qa);
                     AnimationManager.Instance.Enqueue(qa);
+
+                    //FMODUnity.RuntimeManager.PlayOneShot("event:/CardShuffle", transform.position); // SFX
                 }
                 // old cards
                 else {
@@ -73,19 +75,19 @@ public class HandInterface : MonoBehaviour
                         card.transform,
                         targetPosition,
                         0.2f,
-                        InterpolationMode.Linear
+                        InterpolationMode.EaseOut
                     );
                     QueueableAnimation qa = new QueueableAnimation(animation, 0f);
                     cardAnimations.Add(qa);
                     AnimationManager.Instance.Play(qa.Animation); // enqueue?
                     //AnimationManager.Instance.Enqueue(qa); // enqueue?
-                }   
+                }
             }
 
             //card.transform.position = Vector3.zero;
 
             // Make sure they appear overlayed in the right order
-            card.transform.SetAsFirstSibling(); 
+            card.transform.SetAsFirstSibling();
         }
     }
 }

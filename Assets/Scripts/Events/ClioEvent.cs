@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClioEvent : MonoBehaviour
+public class ClioEvent : Event
 {
-    public Transform center;
-
     private List<Card> removedCards = new List<Card>();
     private float heightOffset = 300f;
     private float duration = 0.6f;
@@ -14,6 +12,14 @@ public class ClioEvent : MonoBehaviour
     {
         if (EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
+        AcknowledgeCharacter();
+
+        foreach (Encounter encounter in PersistentData.Instance.possibleEncounters) {
+            if (encounter.EncounterName.Equals("Clio")) {
+                PersistentData.Instance.possibleEncounters.Remove(encounter);
+                break;
+            }
+        }
 
         int cardCount = PersistentData.Instance.Inventory.InactiveCards.Count;
         if (cardCount > 3) cardCount = 3;
@@ -32,7 +38,14 @@ public class ClioEvent : MonoBehaviour
     {
         if (EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
+        KillCharacter();
 
+        foreach (Encounter encounter in PersistentData.Instance.possibleEncounters) {
+            if (encounter.EncounterName.Equals("Clio")) {
+                PersistentData.Instance.possibleEncounters.Remove(encounter);
+                break;
+            }
+        }
         PersistentData.Instance.HealthOverride = 7;
 
         EventManager.Instance.FinishEvent();

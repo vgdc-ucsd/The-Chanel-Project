@@ -1,16 +1,13 @@
-
-
-
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SpellCardInteractable : CardInteractable
 
 {
     public SpellCard card;
-
-
+    public Image CardArt;
 
     public override void SetCardInfo()
     {
@@ -20,6 +17,11 @@ public class SpellCardInteractable : CardInteractable
             return;
         }
         CardName.text = card.Name;
+        if (CardArt != null)
+        {
+            CardArt.sprite = card.Artwork;
+        }
+        card.CardInteractableRef = this;
         UpdateCardInfo();
     }
 
@@ -30,6 +32,8 @@ public class SpellCardInteractable : CardInteractable
         if (!DuelManager.Instance.MainDuel.GetStatus(Team.Player).CanUseMana(card.ManaCost))
         {
             Debug.Log("Not enough Mana"); //TODO: UI feedback
+            FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/NoMana"); // SFX
+
             return;
         }
 
@@ -49,6 +53,7 @@ public class SpellCardInteractable : CardInteractable
         if (!success) return;
         // destroy the card after successful cast
 
+        FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardAbility");
         if (handInterface != null)
         {
             handInterface.cardObjects.Remove(this.gameObject);
@@ -61,15 +66,24 @@ public class SpellCardInteractable : CardInteractable
         Destroy(gameObject); */
     }
 
-    public override void OnPointerEnter(PointerEventData eventData) {
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
         base.OnPointerEnter(eventData);
+        if (mode == CIMode.Display) return;
+        // Inventory stuff
+        if (mode == CIMode.Inventory)
+        {
+            InventoryUI.Instance.inventoryInfoPanel.UpdateInfoPanelSpellCard(this.card);
+        }
+
         if (mode != CIMode.Duel) return;
         UIManager.Instance.InfoPanel.UpdateInfoPanelSpellCard(this.card);
-        if(!CanInteract || !inHand) return;
+        if (!CanInteract || !inHand) return;
         AnimationManager.Instance.StartManaHover(card.ManaCost, card.CurrentTeam);
     }
 
-    public override void OnPointerExit(PointerEventData eventData) {
+    public override void OnPointerExit(PointerEventData eventData)
+    {
         base.OnPointerExit(eventData);
         if (mode != CIMode.Duel) return;
         AnimationManager.Instance.StopManaHover(card.CurrentTeam);
@@ -86,7 +100,7 @@ public class SpellCardInteractable : CardInteractable
 
     public override void UpdateCardInfo()
     {
-        CardCost.text = "Mana Cost: " + card.ManaCost;
+        CardCost.text = card.ManaCost.ToString();
     }
 
     public override Card GetCard()

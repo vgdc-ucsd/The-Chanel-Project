@@ -12,270 +12,202 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57a4a4c50422224c80e650540399fe4, type: 3}
   m_Name: MapInfo
   m_EditorClassIdentifier: 
-  nodeTypes: 04000000000000000000000000000000020000000100000000000000000000000100000000000000000000000300000000000000000000000000000002000000010000000100000000000000010000000100000000000000000000000000000004000000
+  nodeTypes: 040000000000000000000000010000000100000002000000010000000000000000000000000000000000000001000000010000000100000002000000000000000000000003000000
   nodePoints:
-  - col: 0
-    row: 0
-  - col: 0
-    row: 1
-  - col: 1
-    row: 1
-  - col: 1
-    row: 2
-  - col: 2
-    row: 2
-  - col: 3
-    row: 2
-  - col: 4
-    row: 2
-  - col: 5
-    row: 2
-  - col: 6
-    row: 2
-  - col: 7
-    row: 2
-  - col: 8
-    row: 2
-  - col: 9
-    row: 2
-  - col: 1
-    row: 0
-  - col: 2
-    row: 0
-  - col: 2
-    row: 1
-  - col: 3
-    row: 1
-  - col: 4
-    row: 1
-  - col: 5
-    row: 1
-  - col: 3
-    row: 0
-  - col: 4
-    row: 0
-  - col: 5
-    row: 0
-  - col: 6
-    row: 0
-  - col: 6
-    row: 1
-  - col: 0
-    row: 2
-  - col: 10
-    row: 2
+  - x: 0
+    y: 1
+  - x: 1
+    y: 0
+  - x: 1
+    y: 1
+  - x: 2
+    y: 1
+  - x: 2
+    y: 2
+  - x: 3
+    y: 0
+  - x: 3
+    y: 1
+  - x: 3
+    y: 2
+  - x: 4
+    y: 1
+  - x: 4
+    y: 2
+  - x: 5
+    y: 0
+  - x: 5
+    y: 1
+  - x: 5
+    y: 2
+  - x: 6
+    y: 1
+  - x: 6
+    y: 2
+  - x: 7
+    y: 1
+  - x: 7
+    y: 2
+  - x: 8
+    y: 2
   nodeConnections:
   - connections:
     - point1:
-        col: 0
-        row: 0
+        x: 0
+        y: 1
       point2:
-        col: 0
-        row: 1
+        x: 1
+        y: 1
     - point1:
-        col: 0
-        row: 0
+        x: 0
+        y: 1
       point2:
-        col: 1
-        row: 0
+        x: 1
+        y: 0
   - connections:
     - point1:
-        col: 0
-        row: 1
+        x: 1
+        y: 0
       point2:
-        col: 1
-        row: 1
-    - point1:
-        col: 0
-        row: 1
-      point2:
-        col: 0
-        row: 2
+        x: 2
+        y: 1
   - connections:
     - point1:
-        col: 1
-        row: 1
+        x: 1
+        y: 1
       point2:
-        col: 1
-        row: 2
-    - point1:
-        col: 1
-        row: 1
-      point2:
-        col: 2
-        row: 1
+        x: 2
+        y: 2
   - connections:
     - point1:
-        col: 1
-        row: 2
+        x: 2
+        y: 1
       point2:
-        col: 2
-        row: 2
+        x: 3
+        y: 1
+    - point1:
+        x: 2
+        y: 1
+      point2:
+        x: 3
+        y: 0
   - connections:
     - point1:
-        col: 2
-        row: 2
+        x: 2
+        y: 2
       point2:
-        col: 3
-        row: 2
+        x: 3
+        y: 2
+    - point1:
+        x: 2
+        y: 2
+      point2:
+        x: 3
+        y: 1
   - connections:
     - point1:
-        col: 3
-        row: 2
+        x: 3
+        y: 0
       point2:
-        col: 4
-        row: 2
+        x: 4
+        y: 1
   - connections:
     - point1:
-        col: 4
-        row: 2
+        x: 3
+        y: 1
       point2:
-        col: 5
-        row: 2
+        x: 4
+        y: 1
+    - point1:
+        x: 3
+        y: 1
+      point2:
+        x: 4
+        y: 2
   - connections:
     - point1:
-        col: 5
-        row: 2
+        x: 3
+        y: 2
       point2:
-        col: 6
-        row: 2
+        x: 4
+        y: 2
   - connections:
     - point1:
-        col: 6
-        row: 2
+        x: 4
+        y: 1
       point2:
-        col: 7
-        row: 2
+        x: 5
+        y: 1
+    - point1:
+        x: 4
+        y: 1
+      point2:
+        x: 5
+        y: 0
   - connections:
     - point1:
-        col: 7
-        row: 2
+        x: 4
+        y: 2
       point2:
-        col: 8
-        row: 2
+        x: 5
+        y: 2
+    - point1:
+        x: 4
+        y: 2
+      point2:
+        x: 5
+        y: 1
   - connections:
     - point1:
-        col: 8
-        row: 2
+        x: 5
+        y: 0
       point2:
-        col: 9
-        row: 2
+        x: 6
+        y: 1
   - connections:
     - point1:
-        col: 9
-        row: 2
+        x: 5
+        y: 1
       point2:
-        col: 10
-        row: 2
+        x: 6
+        y: 2
   - connections:
     - point1:
-        col: 1
-        row: 0
+        x: 5
+        y: 2
       point2:
-        col: 2
-        row: 0
-    - point1:
-        col: 1
-        row: 0
-      point2:
-        col: 1
-        row: 1
+        x: 6
+        y: 2
   - connections:
     - point1:
-        col: 2
-        row: 0
+        x: 6
+        y: 1
       point2:
-        col: 2
-        row: 1
-    - point1:
-        col: 2
-        row: 0
-      point2:
-        col: 3
-        row: 0
+        x: 7
+        y: 1
   - connections:
     - point1:
-        col: 2
-        row: 1
+        x: 6
+        y: 2
       point2:
-        col: 3
-        row: 1
+        x: 7
+        y: 2
   - connections:
     - point1:
-        col: 3
-        row: 1
+        x: 7
+        y: 1
       point2:
-        col: 4
-        row: 1
+        x: 8
+        y: 2
   - connections:
     - point1:
-        col: 4
-        row: 1
+        x: 7
+        y: 2
       point2:
-        col: 5
-        row: 1
-    - point1:
-        col: 4
-        row: 1
-      point2:
-        col: 4
-        row: 2
-  - connections:
-    - point1:
-        col: 5
-        row: 1
-      point2:
-        col: 5
-        row: 2
-  - connections:
-    - point1:
-        col: 3
-        row: 0
-      point2:
-        col: 4
-        row: 0
-    - point1:
-        col: 3
-        row: 0
-      point2:
-        col: 3
-        row: 1
-  - connections:
-    - point1:
-        col: 4
-        row: 0
-      point2:
-        col: 5
-        row: 0
-  - connections:
-    - point1:
-        col: 5
-        row: 0
-      point2:
-        col: 6
-        row: 0
-  - connections:
-    - point1:
-        col: 6
-        row: 0
-      point2:
-        col: 6
-        row: 1
-  - connections:
-    - point1:
-        col: 6
-        row: 1
-      point2:
-        col: 6
-        row: 2
-  - connections:
-    - point1:
-        col: 0
-        row: 2
-      point2:
-        col: 1
-        row: 2
+        x: 8
+        y: 2
   - connections: []
+  nodeVisited: 010100010001000001000001000001000101
   lastVisitedNode:
-    col: 0
-    row: 0
+    x: 8
+    y: 2

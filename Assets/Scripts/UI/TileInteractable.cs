@@ -11,13 +11,10 @@ public class TileInteractable : MonoBehaviour, IPointerDownHandler
     [HideInInspector] public Vector2Int locationRC; //DEPRECATED - DO NOT USE
     [HideInInspector] public BoardCoords location;
     [HideInInspector] public bool isHighlighted = false;
+    public Sprite HighlightedSprite;
+    public Sprite NormalSprite;
     [SerializeField] private Color defaultColor, highlightColor;
-    private Image image;
-
-    private void Awake()
-    {
-        image = GetComponent<Image>();
-    }
+    public Image image;
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -28,11 +25,11 @@ public class TileInteractable : MonoBehaviour, IPointerDownHandler
     {
         isHighlighted = highlight;
         if (isHighlighted) {
-            image.color = highlightColor;
+            image.sprite = HighlightedSprite;
         }
         else
         {
-            image.color = defaultColor;
+            image.sprite = NormalSprite;
         }
     }
 

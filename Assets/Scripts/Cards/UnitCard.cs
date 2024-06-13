@@ -27,6 +27,7 @@ public class UnitCard : Card
 
     [HideInInspector] public bool CanMove = false;
     [HideInInspector] public bool CanAttack = false;
+    [HideInInspector] public bool frozen = false;
     [HideInInspector] public BoardCoords Pos;
     [HideInInspector] public bool isSelected = false;
     [HideInInspector] public int BaseDamage = 1; // set in the custom card editor
@@ -59,6 +60,8 @@ public class UnitCard : Card
         copy.CurrentTeam = this.CurrentTeam;
         copy.UnitCardInteractableRef = this.UnitCardInteractableRef;
         copy.baseStats = this.baseStats;
+        copy.baseStats.attacks = new List<Attack>();
+        if (this.Attacks != null) copy.baseStats.attacks.AddRange(this.Attacks);
         copy.drawStatus = this.drawStatus;
         copy.id = this.id;
 
@@ -116,20 +119,29 @@ public class UnitCard : Card
         }
         // On death
         else {
-            foreach(Ability a in Abilities) {
-                if (a.Condition == ActivationCondition.OnDeath) a.Activate(this, info);
+            for (int i = 0; i < Abilities.Count; ++i) {
+                if (Abilities[i].Condition == ActivationCondition.OnDeath) Abilities[i].Activate(this, info);
             }
-            if (!isTemp){
+            if (Health <= 0 && !isTemp){
                 duel.GetStatus(CurrentTeam).Deck.Discard(this);
                 duel.GetStatus(CurrentTeam).discardPileCards = duel.GetStatus(CurrentTeam).Deck.DiscardPile();
             }
-
         }
     }
 
     public void ResetStats(){
+        Abilities.RemoveAll(ability => ability is StatusEffect && StatusEffects.Contains((StatusEffect)ability));
         StatusEffects.Clear();
+        frozen = false;
+
         Health = baseStats.health;
+
+        Attacks.Clear();
+        foreach (Attack atk in baseStats.attacks)
+        {
+            Attacks.Add(new Attack(atk.direction, atk.damage));
+        }
+        BaseDamage = baseStats.baseDamage;
     }
 
     public void Place(BoardCoords pos, DuelInstance duel)
@@ -148,7 +160,7 @@ public class UnitCard : Card
         baseStats.baseDamage = this.BaseDamage;
 
         if(CurrentTeam == Team.Enemy) {
-            AnimationManager.Instance.PlaceUnitCardAnimation(duel, this, pos);
+            AnimationManager.Instance.PlaceUnitCardAnimation(duel, this, pos, Health);
         }
     }
 
@@ -172,6 +184,18 @@ public class UnitCard : Card
             effect.ReapplyEffect(this, info);
         }
 
+    }
+
+    public StatusEffect GetStatusEffect(StatusEffect statusEffect)
+    {
+        foreach (StatusEffect s in StatusEffects)
+        {
+            if (s.GetType() == statusEffect.GetType())
+            {
+                return s;
+            }
+        }
+        return null;
     }
 
     // DO NOT USE THIS INSIDE DUELS, use this for visual card objects outside of duels only

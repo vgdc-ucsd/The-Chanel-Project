@@ -151,8 +151,28 @@ MonoBehaviour:
   mapInfo: {fileID: 11400000, guid: 63f54fb4a911fb647896b2ddea38335e, type: 2}
   ImportDeck: {fileID: 0}
   EncountersFinished: 0
+  possibleEncounters:
+  - {fileID: 11400000, guid: 147b637de0f6327479c22febc516e9b8, type: 2}
+  - {fileID: 11400000, guid: b1a9bde8e83068945bfe61e863dd133e, type: 2}
+  - {fileID: 11400000, guid: 36cb253a118ae5c4399172ee9d3952bd, type: 2}
+  - {fileID: 11400000, guid: 8f2f6be4fe8994947934ad3dd0a89365, type: 2}
+  - {fileID: 11400000, guid: e8838c3944b1cc34d86089e60b1a7e32, type: 2}
+  - {fileID: 11400000, guid: 238f92a85bf11dd498c29d617429abb7, type: 2}
+  - {fileID: 11400000, guid: 0bf78d829afae514c90ee22cb6debf39, type: 2}
+  completedEncounters: []
+  PossibleEvents:
+  - {fileID: 3759208247752327063, guid: 316a5535962910445838de71e66cc315, type: 3}
+  - {fileID: 3759208247752327063, guid: 15122422398b99840bd5b4fcd54c4e9e, type: 3}
+  - {fileID: 3759208247752327063, guid: 3d0efe83f332dc447b7fe90290f22631, type: 3}
+  - {fileID: 3759208247752327063, guid: 2a8d6bd5e93cb074d810f920580448d8, type: 3}
+  - {fileID: 3759208247752327063, guid: 4bf8fc3c837b91a4aae40eed91cc5c25, type: 3}
+  - {fileID: 3759208247752327063, guid: 28565dd499ab23f41803654915da7740, type: 3}
+  CompletedEvents: []
+  OutlawEvent: {fileID: 3759208247752327063, guid: 11e078d7c465408429cf65c1c6cf6e91, type: 3}
   HealthOverride: -1
+  VsState: 0
   ShopOffers: []
+  FirstEvent: 1
   CurrentEncounter: {fileID: 11400000, guid: a92bed907e362f04f81c42e688defbb9, type: 2}
 --- !u!114 &5186411577442620811
 MonoBehaviour:
@@ -166,3 +186,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6028c2346c136b4693468fffb7aa725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PREV_INDEX: 0
+  inventoryPrefab: {fileID: 3892158801743308258, guid: 1f1f343d8bb76404bb3590a658b0c9d7, type: 3}

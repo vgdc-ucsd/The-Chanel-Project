@@ -10,4 +10,9 @@ public class ChangeScene : MonoBehaviour
     {
         SceneManager.LoadScene(sceneID);
     }
+
+    public void ExitToMenu()
+    {
+        MenuScript.Instance.LoadTitle();
+    }
 }

@@ -2,13 +2,13 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{80031a9a-0cfa-430e-ad79-549d0e1839bb}">
 		<property name="name">
-			<value>Card Tick</value>
+			<value>CardTick</value>
 		</property>
 		<property name="outputFormat">
 			<value>0</value>
 		</property>
 		<relationship name="folder">
-			<destination>{23cb34bb-ae0b-44d4-a565-565412ca372f}</destination>
+			<destination>{2009f075-aba2-43a8-ab1e-d2e913355582}</destination>
 		</relationship>
 		<relationship name="mixer">
 			<destination>{bbc259da-d0d0-4bba-96b4-6f82bf0bacb9}</destination>
@@ -53,7 +53,7 @@
 			<destination>{821b7817-06b2-4421-a0fe-9510989dfa53}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{45afd1f2-f1f4-477d-85f6-5fa0b4a22d8c}</destination>
+			<destination>{61efb9ca-0252-4ee9-adf9-303bfdf89b5c}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{02258968-a410-4190-a108-668b6d76c554}" />

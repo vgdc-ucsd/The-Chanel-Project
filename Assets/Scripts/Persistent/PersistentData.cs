@@ -15,10 +15,15 @@ public class PersistentData : MonoBehaviour
     public int EncountersFinished = 0;
     public List<Encounter> possibleEncounters;
     public List<Encounter> completedEncounters;
+    public List<Encounter> bossEncounters;
+    public List<Event> PossibleEvents;
+    public List<Event> CompletedEvents;
+    public GameObject OutlawEvent;
     public int HealthOverride = -1;
     public VsScreenState VsState;
 
     public List<Card> ShopOffers = new List<Card>();
+    public bool FirstEvent = true;
 
     private void Awake()
     {
@@ -26,13 +31,14 @@ public class PersistentData : MonoBehaviour
         else
         {
             Destroy(gameObject);
+
             return;
         }
         DontDestroyOnLoad(gameObject);
 
 
         Init();
-        
+
     }
 
     public Encounter CurrentEncounter;
@@ -117,16 +123,41 @@ public class PersistentData : MonoBehaviour
      */
     public void SetEncounterStats()
     {
-        if (possibleEncounters.Count > 0)
-        {
-            CurrentEncounter = possibleEncounters[UnityEngine.Random.Range(0, possibleEncounters.Count - 1)];
-            possibleEncounters.Remove(CurrentEncounter);
-            completedEncounters.Add(CurrentEncounter);
+        if (!bossEncounters.Contains(CurrentEncounter)) {
+            if (possibleEncounters.Count > 0)
+            {
+                CurrentEncounter = possibleEncounters[UnityEngine.Random.Range(0, possibleEncounters.Count - 1)];
+                MeetCharacter(CurrentEncounter);
+            }
+            else if (completedEncounters.Count > 0)
+            {
+                CurrentEncounter = completedEncounters[UnityEngine.Random.Range(0, completedEncounters.Count - 1)];
+            }
+
+            RandomizeRewards();
         }
-        else if (completedEncounters.Count > 0)
-        {
-            CurrentEncounter = completedEncounters[UnityEngine.Random.Range(0, completedEncounters.Count - 1)];
+    }
+
+    private void MeetCharacter(Encounter encounter) {
+        possibleEncounters.Remove(encounter);
+        completedEncounters.Add(encounter);
+
+        foreach (Event e in PossibleEvents) {
+            if (e.encounter.Equals(encounter) && PossibleEvents.Contains(e)) {
+                PossibleEvents.Remove(e);
+                CompletedEvents.Add(e);
+                return;
+            }
         }
+    }
+
+    private void RandomizeRewards() {
+        // Choose deck of strength 1 to 3 if not preset, difficulty depends on encounters finished
+        int deckIndex;
+        if (EncountersFinished < 1) deckIndex = 0;
+        else if (EncountersFinished < 3) deckIndex = 1;
+        else deckIndex = 2;
+        CurrentEncounter.EnemyDeck = CurrentEncounter.EnemyDecks[deckIndex];
 
         // Randomize gold reward
         CurrentEncounter.RewardGold = (int)((GameData.BASE_GOLD + EncountersFinished * GameData.GOLD_SCALING)
@@ -175,7 +206,8 @@ public class PersistentData : MonoBehaviour
     public void SetNextEncounter(Encounter encounter)
     {
         CurrentEncounter = encounter;
-        // todo: track what encounters already completed
+        MeetCharacter(CurrentEncounter);
+        RandomizeRewards();
     }
 
     public void GenerateShopOffers()
@@ -195,7 +227,7 @@ public class PersistentData : MonoBehaviour
         int i = 0;
         int iter = 0;
         bool spellAdded = false;
-        while (i < 3)
+        while (i < 5)
         {
             Card cardToAdd = rewardPool[UnityEngine.Random.Range(0, rewardPool.Count)];
             if (!rewardCards.Contains(cardToAdd) &&

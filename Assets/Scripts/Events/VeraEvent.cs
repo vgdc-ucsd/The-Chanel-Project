@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VeraEvent : MonoBehaviour
+public class VeraEvent : Event
 {
-    public Transform center;
-
     private List<Card> removedCards = new List<Card>();
 
     public void Listen()
     {
         if (EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
+        AcknowledgeCharacter();
 
         List<int> cardsWithAbilities = new List<int>();
         for (int i = 0; i < PersistentData.Instance.Inventory.ActiveCards.Count; i++)
@@ -24,14 +23,14 @@ public class VeraEvent : MonoBehaviour
             }
         }
 
-        if (cardsWithAbilities.Count > 0)
+        if (cardsWithAbilities.Count > 0 && PersistentData.Instance.Inventory.InactiveCards.Count > 0)
         {
             List<Card> removedCards = new List<Card>();
             int randomIndex = Random.Range(0, cardsWithAbilities.Count);
             Card removed = PersistentData.Instance.Inventory.ActiveCards[cardsWithAbilities[randomIndex]];
             removedCards.Add(removed);
-            PersistentData.Instance.Inventory.ActiveCards.RemoveAt(cardsWithAbilities[randomIndex]);
-            StartCoroutine(AnimationManager.Instance.ShowChangedCards(removedCards, center, MenuScript.INVENTORY_INDEX));
+            PersistentData.Instance.Inventory.ActiveCards.Remove(removed);
+            StartCoroutine(AnimationManager.Instance.ShowChangedCards(removedCards, center, MenuScript.MAP_INDEX));
         }
         else
         {
@@ -43,6 +42,7 @@ public class VeraEvent : MonoBehaviour
     {
         if (EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
+        AcknowledgeCharacter();
 
         PersistentData.Instance.Inventory.Gold = 0;
         // TODO sound effect or animation

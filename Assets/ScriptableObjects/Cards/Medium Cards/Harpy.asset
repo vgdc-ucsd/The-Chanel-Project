@@ -18,21 +18,21 @@ MonoBehaviour:
   Artwork: {fileID: 21300000, guid: 38bcc03c5deefe345af4be118bbe90ab, type: 3}
   drawStatus: 0
   id: 0
-  description: 
+  description: Half human half bird with extremely versatile attack directions and
+    high health,
   CurrentTeam: 2
   cardType: 1
-  Health: 6
+  Health: 4
   CanMove: 1
   CanAttack: 0
   isSelected: 0
   BaseDamage: 1
+  Processed: 0
   UnitCardInteractableRef: {fileID: 0}
   Attacks:
   - direction: {x: -1, y: 0}
     damage: 1
   - direction: {x: -1, y: 1}
-    damage: 1
-  - direction: {x: 0, y: 1}
     damage: 1
   - direction: {x: 1, y: 1}
     damage: 1

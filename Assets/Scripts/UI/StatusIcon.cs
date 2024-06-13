@@ -1,24 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class StatusIcon : MonoBehaviour
 {
+    public StatusEffect statusEffect;
     public TMP_Text durationText;
     public Image image;
-    public static int spacing = 25;
+    public Image imageOutline;
+    public Image statusBackground;
 
-    public void SetStatus(StatusEffect effect, int position)
+    public static int spacing = 55;
+
+    public void SetStatus(StatusEffect se, int position, int duration)
     {
-        image.sprite = effect.icon;
-        if (effect.duration != -1)
-            durationText.text = effect.duration.ToString();
+        statusEffect = se;
+        image.sprite = statusEffect.icon;
+        imageOutline.sprite = image.sprite;
+        if (statusEffect.duration != -1)
+            durationText.text = duration.ToString();
         else
             durationText.text = "";
-        image.rectTransform.anchoredPosition = new Vector2(
-            image.rectTransform.anchoredPosition.x + position * spacing,
-            image.rectTransform.anchoredPosition.y);
+        RectTransform transform = GetComponent<RectTransform>();
+        transform.anchoredPosition = new Vector2(
+            transform.anchoredPosition.x + position * spacing,
+            transform.anchoredPosition.y);
+    }
+    public void ShiftStatus(int direction)
+    {
+        RectTransform transform = GetComponent<RectTransform>();
+        transform.anchoredPosition += new Vector2(direction * spacing, 0);
     }
 }

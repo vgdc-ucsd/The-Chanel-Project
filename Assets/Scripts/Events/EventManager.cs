@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
-    public GameObject[] Events;
     public bool OptionSelected = false;
 
     public static EventManager Instance;
@@ -23,8 +22,25 @@ public class EventManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int randomIndex = Random.Range(0, Events.Length);
-        GameObject selectedEvent = Instantiate(Events[randomIndex]);
+        if(PersistentData.Instance.PossibleEvents.Count == 0) {
+            Debug.LogWarning("No available events!");
+            FinishEvent();
+            return;
+        }
+
+        GameObject selectedEvent;
+
+        if(PersistentData.Instance.FirstEvent) {
+            PersistentData.Instance.FirstEvent = false;
+            selectedEvent = Instantiate(PersistentData.Instance.OutlawEvent);
+        }
+        else {
+            int randomIndex = Random.Range(0, PersistentData.Instance.PossibleEvents.Count);
+            selectedEvent = Instantiate(PersistentData.Instance.PossibleEvents[randomIndex].gameObject);
+            PersistentData.Instance.CompletedEvents.Add(PersistentData.Instance.PossibleEvents[randomIndex]);
+            PersistentData.Instance.PossibleEvents.RemoveAt(randomIndex);
+        }
+
         selectedEvent.transform.SetParent(this.transform);
     }
 

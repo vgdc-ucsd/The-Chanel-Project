@@ -14,12 +14,9 @@ public class PhoenixAbility : Ability
             if (cAdj.CurrentTeam != c.CurrentTeam) {
                 AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
                 FireEffect effect = ScriptableObject.Instantiate(DuelManager.Instance.Effects.FireEffectTemplate);
+                effect.initialDuration = 3;
                 effect.AddEffect(cAdj, Info);
-
-                AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, cAdj);
             }
         }
-
-        AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, c);
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Ability Description:
-// This card can only die if you hit it with the exact amount of damage as health. 
+// This card can only die if you hit it with the exact amount of damage as health.
 [CreateAssetMenu(menuName = "Abilites/SphinxAbility")]
 public class SphinxAbility : Ability
 {
@@ -15,9 +15,7 @@ public class SphinxAbility : Ability
         {
             AnimationManager.Instance.AbilityActivateAnimation(info.Duel, c);
             c.Health = 1;
+            AnimationManager.Instance.DamageCardAnimation(info.Duel, c, Color.yellow, -1);
         }
-
-        AnimationManager.Instance.UpdateCardInfoAnimation(info.Duel, c);
-
     }
 }

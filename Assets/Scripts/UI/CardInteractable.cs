@@ -5,10 +5,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public enum CIMode
 {
-    Duel, Inventory, Reward, Shop
+    Duel, Inventory, Reward, Shop, Display
 }
 
 // The MonoBehavior counterpart for a Card, this is what the user actually interacts with
@@ -29,6 +30,7 @@ public abstract class CardInteractable : MonoBehaviour,
     // Text fields on the card
     public TextMeshProUGUI CardName;
     public TextMeshProUGUI CardCost;
+    public Image Mana;
 
     //Image object of the card
     [SerializeField] public Image image;
@@ -48,7 +50,7 @@ public abstract class CardInteractable : MonoBehaviour,
     public CIMode mode = CIMode.Duel;
     protected virtual void Awake()
     {
-        if(DuelManager.Instance != null) raycaster = DuelManager.Instance.GetComponent<GraphicRaycaster>();
+        if (DuelManager.Instance != null) raycaster = DuelManager.Instance.GetComponent<GraphicRaycaster>();
     }
 
     // Updates the card's text fields with data from card
@@ -57,12 +59,12 @@ public abstract class CardInteractable : MonoBehaviour,
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        if (mode == CIMode.Inventory) return;
-        else if (mode == CIMode.Reward)
-        {
-            transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
-            return;
-        }
+        if (mode == CIMode.Inventory || mode == CIMode.Display) return;
+        // else if (mode == CIMode.Reward)
+        // {
+        //     transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
+        //     return;
+        // }
         else if (mode == CIMode.Duel)
         {
             if (inHand && CanInteract && transform.position.y < UIManager.Instance.PlayerDraw.position.y)
@@ -75,16 +77,20 @@ public abstract class CardInteractable : MonoBehaviour,
                 transform.localScale = new Vector3(scaleFactor, scaleFactor, 1f);
             }
         }
+        else if (mode == CIMode.Shop || (mode == CIMode.Reward && transform.position.y > transform.parent.position.y - 50))
+        {
+            transform.DOShakePosition(0.2f, 1f);
+        }
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        if (mode == CIMode.Inventory) return;
-        else if (mode == CIMode.Reward)
-        {
-            transform.localScale = Vector3.one;
-            return;
-        }
+        if (mode == CIMode.Inventory || mode == CIMode.Display || mode == CIMode.Reward) return;
+        // else if (mode == CIMode.Reward)
+        // {
+        //     transform.localScale = Vector3.one;
+        //     return;
+        // }
         else if (mode == CIMode.Duel)
         {
             if (inHand)
@@ -102,19 +108,39 @@ public abstract class CardInteractable : MonoBehaviour,
 
     public virtual void OnPointerDown(PointerEventData eventData)
     {
-        if(mode == CIMode.Reward && CanInteract) {
-            RewardManager.Instance.SelectCard(this);
-        }
-        else if (mode == CIMode.Shop && CanInteract)
+        if (!CanInteract) return;
+        else if (eventData.button == PointerEventData.InputButton.Left)
         {
-            ShopManager.Instance.purchase(this);
+            if (mode == CIMode.Shop)
+            {
+                if (!ShopManager.Instance.purchase(this))
+                {
+                    transform.DOShakePosition(0.5f, 1.3f);
+                }
+            }
+            else if (mode == CIMode.Reward)
+            {
+                RewardManager.Instance.SelectCard(this);
+            }
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            if (mode == CIMode.Shop)
+            {
+                ShopManager.Instance.inspect(this);
+            }
+            else if (mode == CIMode.Reward)
+            {
+                RewardManager.Instance.inspect(this);
+            }
         }
     }
 
     public virtual void OnDrag(PointerEventData eventData)
     {
         if (mode != CIMode.Duel) return;
-        if (inHand && CanInteract) {
+        if (inHand && CanInteract)
+        {
             transform.position = eventData.position;
         }
     }
@@ -122,7 +148,8 @@ public abstract class CardInteractable : MonoBehaviour,
     public virtual void OnBeginDrag(PointerEventData eventData)
     {
         if (mode != CIMode.Duel) return;
-        if (inHand && CanInteract) {
+        if (inHand && CanInteract)
+        {
             transform.localEulerAngles = Vector3.zero;
         }
     }
@@ -176,11 +203,12 @@ public abstract class CardInteractable : MonoBehaviour,
         }
     }
 
-    private Vector3 hoverPosition() {
+    private Vector3 hoverPosition()
+    {
         if (mode != CIMode.Duel) return Vector3.zero;
         return new Vector3(
             transform.position.x,
-            transform.position.y+(50f*UIManager.Instance.MainCanvas.scaleFactor),
+            transform.position.y + (50f * UIManager.Instance.MainCanvas.scaleFactor),
             transform.position.z
         );
     }

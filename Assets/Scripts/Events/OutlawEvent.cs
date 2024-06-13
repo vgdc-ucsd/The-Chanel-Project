@@ -2,16 +2,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OutlawEvent : MonoBehaviour
+public class OutlawEvent : Event
 {
-    public Transform Center;
-    public List<Encounter> OutlawEncounters;
-
-    private int encounterIndex;
-
     public void Reach() { // + 3 hp on random card
         if(EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
+
+        PersistentData.Instance.bossEncounters.Remove(PersistentData.Instance.bossEncounters[0]);
 
         List<UnitCard> UnitCards = new List<UnitCard>();
         foreach(Card c in PersistentData.Instance.Inventory.ActiveCards) {
@@ -26,7 +23,7 @@ public class OutlawEvent : MonoBehaviour
             UnitCard uc = UnitCards[randomIndex];
             uc.Health += 3;
             List<Card> changedCards = new List<Card>{uc};
-            StartCoroutine(AnimationManager.Instance.ShowChangedCards(changedCards, Center));
+            StartCoroutine(AnimationManager.Instance.ShowChangedCards(changedCards, center));
         }
         else {
             EventManager.Instance.FinishEvent();
@@ -37,10 +34,8 @@ public class OutlawEvent : MonoBehaviour
         if(EventManager.Instance.OptionSelected) return;
         else EventManager.Instance.OptionSelected = true;
 
-        int randomIndex = UnityEngine.Random.Range(0, OutlawEncounters.Count);
-        PersistentData.Instance.CurrentEncounter = OutlawEncounters[randomIndex];
-
-        PersistentData.Instance.CurrentEncounter = OutlawEncounters[Math.Min(OutlawEncounters.Count - 1, encounterIndex++)];
-        EventManager.Instance.FinishEvent(MenuScript.DUEL_INDEX);
+        PersistentData.Instance.CurrentEncounter = PersistentData.Instance.bossEncounters[0];
+        PersistentData.Instance.bossEncounters.Remove(PersistentData.Instance.CurrentEncounter);
+        EventManager.Instance.FinishEvent(MenuScript.VERSUS_INDEX);
     }
 }

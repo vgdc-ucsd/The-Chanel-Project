@@ -25,13 +25,12 @@ public class DragonAbility : Ability
                 }
             }
         }
-
-        AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, c);
     }
 
     private void ApplyFire(UnitCard card, ActivationInfo info)
     {
         FireEffect effect = ScriptableObject.Instantiate(DuelManager.Instance.Effects.FireEffectTemplate);
+        effect.initialDuration = 3;
         effect.AddEffect(card, info);
     }
 }

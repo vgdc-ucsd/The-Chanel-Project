@@ -13,7 +13,6 @@ public class SpellGuilltine : SpellCard , ISpellTypeEnemy
         StartCast(duel, card.Pos);
 
         duel.DealDamage(card, card.ManaCost, true);
-        AnimationManager.Instance.UpdateCardInfoAnimation(duel, card);
 
         FinishCast(duel);
         return true;

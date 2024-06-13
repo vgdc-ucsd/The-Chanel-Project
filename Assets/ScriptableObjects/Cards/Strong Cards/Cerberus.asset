@@ -14,27 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Cerberus
   ManaCost: 4
-  ShopCost: 4
+  ShopCost: 80
   Artwork: {fileID: 21300000, guid: ad86c94acdfb73e47a3247d6a1574972, type: 3}
   drawStatus: 0
   id: 0
-  description: 
+  description: Upon taking damage, attacker is applied Burning for 3 turns.
   CurrentTeam: 2
-  cardType: 0
+  cardType: 2
   Health: 5
   CanMove: 1
   CanAttack: 0
   isSelected: 0
-  BaseDamage: 1
+  BaseDamage: 2
+  Processed: 0
   UnitCardInteractableRef: {fileID: 0}
   Attacks:
   - direction: {x: -1, y: 1}
-    damage: 1
+    damage: 2
   - direction: {x: 1, y: 1}
-    damage: 1
+    damage: 2
   - direction: {x: 0, y: 1}
-    damage: 1
+    damage: 2
   Abilities:
-  - {fileID: 11400000, guid: d0ec9963d2becf3459919a5bae0d7723, type: 2}
+  - {fileID: 11400000, guid: e6b1246b5af9b294b9a47ca24e03c33c, type: 2}
   StatusEffects: []
   isTemp: 0

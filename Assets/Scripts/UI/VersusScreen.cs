@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public enum VsScreenState {
     Win,
@@ -25,27 +26,30 @@ public class VersusScreen : MonoBehaviour
 
     public GameObject enemyImageObject;
     public TextMeshProUGUI enemyName;
-    private Encounter currentEncounter;
+    public FMODUnity.StudioEventEmitter AudioPlayer;
+    public FMODUnity.StudioEventEmitter characterAudio;
 
     void Start()
     {
-        PersistentData.Instance.SetEncounterStats();
-        currentEncounter = PersistentData.Instance.CurrentEncounter;
-        enemyName.text = currentEncounter.EncounterName;
-        enemyImageObject.GetComponent<Image>().sprite = currentEncounter.EnemyArt;
-
         if(PersistentData.Instance.VsState == VsScreenState.Win) {
             Background.sprite = WinBG;
             Logo.sprite = WinLogo;
+            characterAudio = PersistentData.Instance.CurrentEncounter.WinAudio;
         }
         else if(PersistentData.Instance.VsState == VsScreenState.Lose) {
             Background.sprite = LoseBG;
             Logo.sprite = LoseLogo;
+            characterAudio = PersistentData.Instance.CurrentEncounter.LoseAudio;
         }
         else {
             Background.sprite = VsBG;
             Logo.sprite = VsLogo;
+            characterAudio = PersistentData.Instance.CurrentEncounter.EncounterAudio;
+
         }
+
+        enemyName.text = PersistentData.Instance.CurrentEncounter.EncounterName;
+        enemyImageObject.GetComponent<Image>().sprite = PersistentData.Instance.CurrentEncounter.EnemyArt;
 
         StartCoroutine(LoadSceneCoroutine(PersistentData.Instance.VsState));
     }
@@ -56,7 +60,7 @@ public class VersusScreen : MonoBehaviour
             SceneManager.LoadScene(MenuScript.REWARD_INDEX);
         }
         else if(state == VsScreenState.Lose) {
-            SceneManager.LoadScene(MenuScript.TITLE_INDEX);
+            MenuScript.Instance.LoadTitle();
         }
         else {
             SceneManager.LoadScene(MenuScript.DUEL_INDEX);
@@ -64,7 +68,17 @@ public class VersusScreen : MonoBehaviour
     }
 
     private IEnumerator LoadSceneCoroutine(VsScreenState state) {
-        yield return new WaitForSeconds(2f);
+        if(characterAudio != null) {
+            AudioPlayer = characterAudio;
+            AudioPlayer.Play();
+            AudioPlayer.EventDescription.getLength(out int audioLength);
+            float waitTime = audioLength/1000f; // milliseconds to seconds
+            yield return new WaitForSeconds(waitTime);
+        }
+        else {
+            Debug.LogWarning("Missing audio for this encounter");
+            yield return new WaitForSeconds(2f);
+        }
         LoadScene(state);
     }
 }

@@ -41,10 +41,19 @@ MonoBehaviour:
     ShowEnemyHand: 0
     DisableWinning: 0
   EnemyArt: {fileID: 21300000, guid: 14d9a4dac9edcf74f8b1317180f22d17, type: 3}
-  EnemyDeck: {fileID: 11400000, guid: a17c273dbdf655b4a9784cc269334c8c, type: 2}
-  RewardGold: 135
+  EnemyDecks:
+  - {fileID: 11400000, guid: ad257a601a0253443bb4b9a85a54af09, type: 2}
+  - {fileID: 11400000, guid: a17c273dbdf655b4a9784cc269334c8c, type: 2}
+  - {fileID: 11400000, guid: 63dc2d35eaf746848ae0bc833af7428e, type: 2}
+  EnemyDeck: {fileID: 11400000, guid: ad257a601a0253443bb4b9a85a54af09, type: 2}
+  RewardGold: 115
   CardOffers:
-  - {fileID: 11400000, guid: e68fa6cacd27d6d43a0edc774598ffbe, type: 2}
-  - {fileID: 11400000, guid: 7b426a659073e4043b5abdf92114df9a, type: 2}
-  - {fileID: 11400000, guid: e7bb028145f1efc45ae1da90255731d8, type: 2}
+  - {fileID: 11400000, guid: c39ab0e8a3dfc1742a87be83397d457c, type: 2}
+  - {fileID: 11400000, guid: a88c7d8913880fd4aa37c9ba6619601b, type: 2}
+  - {fileID: 11400000, guid: 3f0de661135cb474dba2ca0dda7d84c7, type: 2}
   boss: {fileID: 0}
+  EncounterAudio: {fileID: -7987570379772523157, guid: e651b3736450502469dc66672ab4b8f9, type: 3}
+  WinAudio: {fileID: -7987570379772523157, guid: 108e0d0445da15242b262791588098a5, type: 3}
+  LoseAudio: {fileID: -7987570379772523157, guid: b233226caf4347842b7f4fe7e1745a89, type: 3}
+  AIAggression: 0.65
+  AIDefense: 0.6

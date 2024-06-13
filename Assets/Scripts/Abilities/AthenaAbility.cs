@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // Abilty Description:
@@ -9,14 +10,19 @@ public class AthenaAbility : Ability
 
     public override void Activate(UnitCard c, ActivationInfo Info)
     {
+        List<UnitCard> targetCards = new List<UnitCard>();
+
         foreach (UnitCard cAdj in Info.Duel.DuelBoard.GetAdjacentCards(c.Pos)) {
             if (cAdj.CurrentTeam == c.CurrentTeam) {
-                AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
                 ++cAdj.Health;
-                AnimationManager.Instance.DamageCardAnimation(Info.Duel, cAdj, Color.yellow, -1);
+                targetCards.Add(cAdj);
             }
         }
 
-        AnimationManager.Instance.UpdateCardInfoAnimation(Info.Duel, c);
+        if (targetCards.Count > 0) {
+            AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
+            AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, targetCards);
+            AnimationManager.Instance.DamageCardAnimation(Info.Duel, targetCards, Color.yellow, -1);
+        }
     }
 }

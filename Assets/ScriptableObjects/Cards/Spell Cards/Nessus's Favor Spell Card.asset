@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Nessus's Favor
   ManaCost: 2
-  ShopCost: 0
+  ShopCost: 50
   Artwork: {fileID: 21300000, guid: afe8d325415e3bb44afa650f88189ffb, type: 3}
   drawStatus: 0
   id: 0
-  description: When cast on an ally, its next attack poisons all enemies damaged.
+  description: When cast on an ally, its next 3 attacks apply Poison.
   CurrentTeam: 2
   cardType: 3
   SpellCardInteractableRef: {fileID: 0}

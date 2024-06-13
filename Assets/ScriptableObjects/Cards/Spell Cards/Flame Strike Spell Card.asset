@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Flame Strike
   ManaCost: 3
-  ShopCost: 0
+  ShopCost: 50
   Artwork: {fileID: 21300000, guid: dbe3e6aaac2e60d4ca03eef077aa16f3, type: 3}
   drawStatus: 0
   id: 0
-  description: Applies Burning to all cards in a row.
+  description: Applies Burning to target row.
   CurrentTeam: 2
   cardType: 3
   SpellCardInteractableRef: {fileID: 0}

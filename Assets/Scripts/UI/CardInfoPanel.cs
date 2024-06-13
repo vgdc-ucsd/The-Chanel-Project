@@ -12,6 +12,8 @@ public class CardInfoPanel : MonoBehaviour
 
     private CardInteractable currentCard;
 
+    public Card blankCard; //temp fix for initialization
+
     // Leave blank if Combat
     [Header("Inventory")]
     [Space(10)]
@@ -19,38 +21,48 @@ public class CardInfoPanel : MonoBehaviour
     public TextMeshProUGUI Health;
     public TextMeshProUGUI Atk;
 
-    void Awake() {
-        InitializeCardInfoPanel(DuelManager.Instance.PlayerDeck.RandomAvailableCard());
+    void Awake()
+    {
+        if (InventoryUI.Instance != null) { }
+            InitializeCardInfoPanel(null);
     }
 
-    public void InitializeCardInfoPanel(Card c) {
-        if (c is UnitCard) {
+    public void InitializeCardInfoPanel(Card c)
+    {
+        if (c is UnitCard)
+        {
             UpdateInfoPanelUnitCard((UnitCard)c);
         }
-        else if (c is SpellCard) {
+        else if (c is SpellCard)
+        {
             UpdateInfoPanelSpellCard((SpellCard)c);
         }
-        else {
+        else
+        {
             CardName.text = "";
             Description.text = "";
-            Mana.text = "";
-            Health.text = "";
-            Atk.text = "";
+            if (Mana != null) Mana.text = "";
+            if (Health != null) Health.text = "";
+            if (Atk != null) Atk.text = "";
         }
     }
 
-    public void UpdateInfoPanelUnitCard(UnitCard uc) {
+    public void UpdateInfoPanelUnitCard(UnitCard uc)
+    {
+        EnablePanel();
         CardName.text = uc.Name;
-        Description.text = "Abilities:\n" + (uc.description.Equals("") ? "None" : uc.description);
-        if(currentCard != null) Destroy(currentCard.gameObject);
+        Description.text = "<B>Description:</B>\n" + (uc.description.Equals("") ? "None" : uc.description);
+        if (Mana != null) Mana.text = uc.ManaCost + "";
+        if (currentCard != null) Destroy(currentCard.gameObject);
         SetCardInteractable(uc);
         ((UnitCardInteractable)currentCard).DrawArrows();
     }
 
     public void UpdateInventoryInfoPanelUnitCard(UnitCard uc)
     {
+        EnablePanel();
         CardName.text = uc.Name;
-        Description.text = uc.description;
+        Description.text = "<B>Description:</B>\n" + (uc.description.Equals("") ? "None" : uc.description);
         Mana.text = uc.ManaCost + "";
         Health.text = uc.Health + "";
         Atk.text = uc.BaseDamage + "";
@@ -59,23 +71,74 @@ public class CardInfoPanel : MonoBehaviour
         if (currentCard != null) Destroy(currentCard.gameObject);
         SetCardInteractable(uc);
         ((UnitCardInteractable)currentCard).DrawArrows();
-
+        currentCard.CanInteract = false;
+        currentCard.mode = CIMode.Display;
     }
 
-    public void UpdateInfoPanelSpellCard(SpellCard sc) {
+    public void UpdateInfoPanelSpellCard(SpellCard sc)
+    {
+        EnablePanel();
         CardName.text = sc.Name;
-        Description.text = sc.description;
-        if(currentCard != null) Destroy(currentCard.gameObject);
+        Description.text = "<B>Description:</B>\n" + (sc.description.Equals("") ? "None" : sc.description);
+        if (Mana != null) Mana.text = sc.ManaCost + "";
+
+        // Shows spell card
+        if (currentCard != null) Destroy(currentCard.gameObject);
         SetCardInteractable(sc);
+
+        currentCard.CanInteract = false;
     }
 
-    public void SetCardInteractable(Card c) {
+    public void SetCardInteractable(Card c)
+    {
         // TODO use base stats
         Card card = c.Clone();
         card.CurrentTeam = Team.Neutral;
-        currentCard = UIManager.Instance.GenerateCardInteractable(card);
+        if (card.CardInteractableRef.mode == CIMode.Inventory)
+        {
+            currentCard = InventoryUI.Instance.GenerateCardInteractable(card);
+        }
+        else
+        {
+            currentCard = UIManager.Instance.GenerateCardInteractable(card);
+        }
+        currentCard.mode = CIMode.Display;
+
+        currentCard.GetComponent<GraphicRaycaster>().enabled = false;
+
         currentCard.transform.SetParent(CardHolder);
         currentCard.transform.localPosition = Vector3.zero;
         currentCard.transform.localScale = Vector3.one;
+        currentCard.CardCost.enabled = true;
+        currentCard.Mana.gameObject.SetActive(false);
+
+        if (UIManager.Instance == null && InventoryUI.Instance != null)
+        {
+            if (c is UnitCard)
+            {
+                currentCard.image.sprite = c.CurrentTeam == Team.Enemy ? InventoryUI.Instance.EnemyUnitCardBorder : InventoryUI.Instance.PlayerUnitCardBorder;
+            }
+            else
+            {
+                currentCard.image.sprite = c.CurrentTeam == Team.Enemy ? InventoryUI.Instance.EnemySpellCardBorder : InventoryUI.Instance.PlayerSpellCardBorder;
+            }
+        }
+        else
+        {
+            if (c is UnitCard)
+            {
+                currentCard.image.sprite = c.CurrentTeam == Team.Enemy ? UIManager.Instance.EnemyUnitCardBorder : UIManager.Instance.PlayerUnitCardBorder;
+            }
+            else
+            {
+                currentCard.image.sprite = c.CurrentTeam == Team.Enemy ? UIManager.Instance.EnemySpellCardBorder : UIManager.Instance.PlayerSpellCardBorder;
+            }
+        }
+    }
+
+    public void EnablePanel()
+    {
+        CardName.gameObject.SetActive(true);
+        Description.gameObject.SetActive(true);
     }
 }

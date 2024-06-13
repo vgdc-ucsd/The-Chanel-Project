@@ -2,18 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class InventoryUI : MonoBehaviour
 {
-    const int ROW_SIZE = 6;
+    const int INV_ROW_SIZE = 5;
 
 
     public static InventoryUI Instance;
     [SerializeField] InventoryManager inventoryManager;
     [SerializeField] Transform inventoryContainer;
-    public int invContainerSize = ROW_SIZE * 2;
+    public int invContainerSize = INV_ROW_SIZE * 2;
     [SerializeField] Transform deckContainer;
     [SerializeField] GameObject inventoryTemplateCardPrefab;
+    [SerializeField] GameObject slotPrefab;
 
     List<CardInteractable> ciList = new List<CardInteractable>();
 
@@ -28,31 +30,70 @@ public class InventoryUI : MonoBehaviour
     Coroutine deckSizeWarnCor;
     public TMP_Text deckSizeWarningText;
 
+    // mini UI manager
+    public UnitCardInteractable TemplateUnitCard;
+    public SpellCardInteractable TemplateSpellCard;
+    public Sprite PlayerUnitCardBorder;
+    public Sprite EnemyUnitCardBorder;
+    public Sprite PlayerSpellCardBorder;
+    public Sprite EnemySpellCardBorder;
+
     private void Awake()
     {
-        if (Instance == null) 
+        if (Instance == null)
             Instance = this;
         inventory = PersistentData.Instance.Inventory;
         InitCards();
         ArrangeCards();
+        invContainerSize = INV_ROW_SIZE * 2;
 
         goldCountText.text = PersistentData.Instance.Inventory.Gold.ToString();
 
+    }
+
+    // lobotomized version of UIManager.GenerateCardInteractable
+    public CardInteractable GenerateCardInteractable(Card c)
+    {
+        if (c is UnitCard)
+        {
+            UnitCardInteractable ci = Instantiate(TemplateUnitCard);
+            ci.card = (UnitCard)c;
+            ci.SetCardInfo();
+            ci.mode = CIMode.Inventory;
+            ci.ResetArrows();
+            ci.image.sprite = PlayerUnitCardBorder;
+            return ci;
+
+        }
+        else if (c is SpellCard)
+        {
+            SpellCardInteractable ci = Instantiate(TemplateSpellCard);
+            ci.card = (SpellCard)c;
+            ci.SetCardInfo();
+            ci.mode = CIMode.Inventory;
+
+            ci.image.sprite = PlayerSpellCardBorder;
+            return ci;
+
+        }
+        else
+        {
+            Debug.LogError("Unidentified card type");
+            return null;
+        }
     }
 
     public void InitCards()
     {
         foreach (Card card in inventory.InactiveCards)
         {
-            CardInteractable ci = UIManager.Instance.GenerateCardInteractable(card);
-            ci.mode = CIMode.Inventory;
+            CardInteractable ci = GenerateCardInteractable(card);
             ciList.Add(ci);
-         
+
         }
         foreach (Card card in inventory.ActiveCards)
         {
-            CardInteractable ci = UIManager.Instance.GenerateCardInteractable(card);
-            ci.mode = CIMode.Inventory;
+            CardInteractable ci = GenerateCardInteractable(card);
             ciList.Add(ci);
         }
     }
@@ -61,7 +102,7 @@ public class InventoryUI : MonoBehaviour
     {
         int i = 0;
         int invIndex = 0, deckIndex = 0;
-        while (i < inventory.CardCount()) 
+        while (i < inventory.CardCount())
         {
             CardInteractable ci = ciList[i];
             Card c = ci.GetCard();
@@ -75,20 +116,22 @@ public class InventoryUI : MonoBehaviour
             {
                 if (invIndex >= invContainerSize)
                 {
-                    for (int j = 0; j < ROW_SIZE; j++)
+                    for (int j = 0; j < INV_ROW_SIZE; j++)
                     {
-                        GameObject slot = new GameObject();
+                        GameObject slot = Instantiate(slotPrefab, inventoryContainer.transform);
                         slot.AddComponent<RectTransform>();
                         slot.transform.SetParent(inventoryContainer.transform);
+                        // slot.GetComponent<RectTransform>().localScale = Vector3.one;
+                        // slot.transform.localScale = Vector3.one;
                     }
-                    invContainerSize += ROW_SIZE;
+                    invContainerSize += INV_ROW_SIZE;
                 }
 
                 ci.transform.SetParent(inventoryContainer.transform.GetChild(invIndex));
                 invIndex++;
             }
-            
-            
+
+
             ci.transform.localScale = Vector3.one * 2;
             ci.transform.localPosition = Vector3.zero;
             i++;
@@ -108,7 +151,7 @@ public class InventoryUI : MonoBehaviour
         {
             Unequip(card);
         }
-        else 
+        else
         {
             if (inventory.ActiveCards.Count < GameData.DECK_SIZE)
                 Equip(card);
@@ -131,14 +174,16 @@ public class InventoryUI : MonoBehaviour
 
     public void TryExit()
     {
-        if (inventory.ActiveCards.Count != Deck.DECK_SIZE)
+        if (inventory.InactiveCards.Count > 0 && inventory.ActiveCards.Count != Deck.DECK_SIZE)
         {
             if (deckSizeWarnCor != null) StopCoroutine(deckSizeWarnCor);
             deckSizeWarnCor = StartCoroutine(DeckSizeWarn());
             return;
         }
-        MenuScript.Instance.LoadMap();
 
+        Destroy(gameObject);
+
+        //MenuScript.Instance.LoadPrevFromInventory();
     }
 
     IEnumerator DeckSizeWarn()
@@ -170,8 +215,8 @@ public class InventoryUI : MonoBehaviour
         //}
 
         // Add Instantiate all cards in inventory to the UI
-        
-        foreach (UnitCard card in PersistentData.Instance.Inventory.InactiveCards) 
+
+        foreach (UnitCard card in PersistentData.Instance.Inventory.InactiveCards)
         {
 
         }

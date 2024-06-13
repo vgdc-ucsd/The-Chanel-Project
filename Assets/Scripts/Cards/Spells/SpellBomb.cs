@@ -6,19 +6,21 @@ using UnityEngine;
 public class SpellBomb : SpellCard , ISpellTypeTile
 {
     int damage = 1;
-    int area = 2;
     public bool CastSpell(DuelInstance duel, BoardCoords pos)
     {
         StartCast(duel, pos);
 
-        List<UnitCard> damagedCards = duel.DuelBoard.GetCardsInSquare(pos, area);
+        List<UnitCard> damagedCards = new List<UnitCard>();
+        if (duel.DuelBoard.GetCard(pos) != null) damagedCards.Add(duel.DuelBoard.GetCard(pos));
+        damagedCards.AddRange(duel.DuelBoard.GetAdjacentCards(pos));
+
+        FinishCast(duel);
+
         foreach(UnitCard card in damagedCards)
         {
             duel.DealDamage(card, damage, true);
-            AnimationManager.Instance.UpdateCardInfoAnimation(duel, card);
         }
 
-        FinishCast(duel);
         return true;
 
     }

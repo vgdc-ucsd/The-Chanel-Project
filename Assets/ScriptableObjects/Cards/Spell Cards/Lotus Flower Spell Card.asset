@@ -14,11 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Lotus Flower
   ManaCost: 2
-  ShopCost: 0
-  Artwork: {fileID: 0}
+  ShopCost: 50
+  Artwork: {fileID: 21300000, guid: f3e90dbeea845b94188829fea068bc0f, type: 3}
   drawStatus: 0
   id: 0
-  description: When cast on an ally, its next attack is in all directions.
+  description: When cast on an ally, it will be able to attack in any direction next
+    turn.
   CurrentTeam: 2
   cardType: 3
   SpellCardInteractableRef: {fileID: 0}

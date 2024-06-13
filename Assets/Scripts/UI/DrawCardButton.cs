@@ -29,7 +29,9 @@ public class DrawCardButton : MonoBehaviour,
             Destroy(this);
         }
         else Instance = this;
+    }
 
+    void Start() {
         basePosition = UIManager.Instance.PlayerDraw.position;
     }
 
