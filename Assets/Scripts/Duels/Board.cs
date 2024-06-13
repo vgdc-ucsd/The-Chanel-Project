@@ -131,13 +131,6 @@ public class Board
         AnimationManager.Instance.MoveCardAnimation(duel, card, pos);
     }
 
-<<<<<<< Updated upstream
-    public void RenewMovement(Team t) {
-        for(int i = 0; i < Cols; i++) {
-            for(int j = 0; j < Rows; j++) {
-                BoardCoords pos = new BoardCoords(i,j);
-                if (IsOccupied(pos)) {
-=======
     public void RenewMovement(Team t, DuelInstance duel)
     {
         for (int i = 0; i < Cols; i++)
@@ -147,7 +140,6 @@ public class Board
                 BoardCoords pos = new BoardCoords(i, j);
                 if (IsOccupied(pos))
                 {
->>>>>>> Stashed changes
                     UnitCard c = GetCard(pos);
                     if (c.CurrentTeam == t && !c.frozen)
                     {
