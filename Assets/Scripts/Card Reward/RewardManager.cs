@@ -8,7 +8,7 @@ public class RewardManager : MonoBehaviour
     public Transform CardContainer;
     public Canvas MainCanvas;
 
-    private float heightOffset = -350f;
+    private float heightOffset = -600f;
     private float duration = 0.6f;
     private float delay = 0.2f;
 
@@ -50,6 +50,7 @@ public class RewardManager : MonoBehaviour
             }
             ci.transform.SetParent(cardSlot.transform, false);
             ci.transform.localPosition = new Vector3(0.0f, heightOffset, 0.0f);
+            ci.transform.localScale = Vector3.one * 2.5f;
             ci.mode = CIMode.Reward;
             ci.CanInteract = true;
             cardInteractables.Add(ci);
