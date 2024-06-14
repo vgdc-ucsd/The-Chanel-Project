@@ -938,6 +938,16 @@ public class AnimationManager : MonoBehaviour
         }
         */
     }
+    public IEnumerator SpellCardCanUse(SpellCard sc)
+    {
+        sc.SpellCardInteractableRef.Glow.color = Color.green;
+        yield return null;
+    }
+    public IEnumerator SpellCardCantUse(SpellCard sc)
+    {
+        sc.SpellCardInteractableRef.Glow.color = new Color(0, 0, 0, 0);
+        yield return null;
+    }
 
     private IEnumerator ActivateAbility(UnitCard uc, bool audio = true)
     {

@@ -98,27 +98,39 @@ public class HandInterface : MonoBehaviour
         }
         GlowCards();
     }
-    
+
     private void GlowCards()
     {
         foreach (GameObject card in cardObjects)
         {
-            UnitCard unitCard = card.GetComponent<UnitCard>();
-            if (unitCard != null && unitCard.ManaCost <= DuelManager.Instance.MainDuel.PlayerStatus.Mana)
+            UnitCardInteractable uci = card.GetComponent<UnitCardInteractable>();
+            SpellCardInteractable sci = card.GetComponent<SpellCardInteractable>();
+
+            if (uci != null)
             {
-                Debug.Log("can use " + unitCard); ;
-                IEnumerator ie = AnimationManager.Instance.CardCanMove(unitCard);
-                QueueableAnimation qa = new QueueableAnimation(ie, 0f);
-                DuelManager.Instance.MainDuel.Animations.Enqueue(qa);
+                CheckCard(uci.card, AnimationManager.Instance.CardCanMove, AnimationManager.Instance.CardCantMove);
             }
-            else
+            else if (sci != null)
             {
-                Debug.Log("can't use " + unitCard);
-                IEnumerator ie = AnimationManager.Instance.CardCantMove(unitCard);
-                QueueableAnimation qa = new QueueableAnimation(ie, 0f);
-                DuelManager.Instance.MainDuel.Animations.Enqueue(qa);
+                CheckCard(sci.card, AnimationManager.Instance.SpellCardCanUse, AnimationManager.Instance.SpellCardCantUse);
             }
         }
     }
-    
+
+    private void CheckCard<T>(T card, Func<T, IEnumerator> canUseAnimation, Func<T, IEnumerator> cantUseAnimation) where T : Card
+    {
+        if (card != null && card.ManaCost <= DuelManager.Instance.MainDuel.PlayerStatus.Mana)
+        {
+            Debug.Log("can use " + card);
+            QueueableAnimation qa = new QueueableAnimation(canUseAnimation(card), 0f);
+            DuelManager.Instance.MainDuel.Animations.Enqueue(qa);
+        }
+        else
+        {
+            Debug.Log("can't use " + card);
+            QueueableAnimation qa = new QueueableAnimation(cantUseAnimation(card), 0f);
+            DuelManager.Instance.MainDuel.Animations.Enqueue(qa);
+        }
+    }
+
 }

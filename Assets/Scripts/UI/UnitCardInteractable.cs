@@ -201,12 +201,18 @@ public class UnitCardInteractable : CardInteractable,
             DrawArrows();
             CardCost.enabled = false;
             gameObject.SetActive(true);
+            UnglowCards();
             //handInterface.OrganizeCards();
         }
 
         FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardPlace", transform.position);
     }
-
+    private void UnglowCards()
+    {
+        IEnumerator ie = AnimationManager.Instance.CardCantMove(card);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0f);
+        DuelManager.Instance.MainDuel.Animations.Enqueue(qa);
+    }
     public void UpdateCardPos()
     {
         TileInteractable tile = BoardInterface.Instance.GetTile(card.Pos);

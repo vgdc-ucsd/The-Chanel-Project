@@ -8,6 +8,7 @@ public class SpellCardInteractable : CardInteractable
 {
     public SpellCard card;
     public Image CardArt;
+    public Image Glow;
 
     public override void SetCardInfo()
     {
