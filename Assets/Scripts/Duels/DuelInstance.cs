@@ -337,7 +337,7 @@ public class DuelInstance
         foreach (UnitCard card in DuelBoard.GetCardsOfTeam(team))
         {
             IEnumerator ie = AnimationManager.Instance.CardCantMove(card);
-            QueueableAnimation qa = new QueueableAnimation(ie, 1.0f);
+            QueueableAnimation qa = new QueueableAnimation(ie, 0f);
             duel.Animations.Enqueue(qa);
             for (int i = card.Abilities.Count - 1; i >= 0; i--)
             {

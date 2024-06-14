@@ -107,7 +107,7 @@ public class Board
         {
             card.CanMove = false;
             IEnumerator ie = AnimationManager.Instance.CardCantMove(card);
-            QueueableAnimation qa = new QueueableAnimation(ie, 1.0f);
+            QueueableAnimation qa = new QueueableAnimation(ie, 0f);
             duel.Animations.Enqueue(qa);
             ActivationInfo info = new ActivationInfo(duel);
             foreach (Ability a in card.Abilities)
@@ -146,7 +146,7 @@ public class Board
                         c.CanAttack = true;
                         c.CanMove = true;
                         IEnumerator ie = AnimationManager.Instance.CardCanMove(c);
-                        QueueableAnimation qa = new QueueableAnimation(ie, 1.0f);
+                        QueueableAnimation qa = new QueueableAnimation(ie, 0f);
                         duel.Animations.Enqueue(qa);
                     }
                 }

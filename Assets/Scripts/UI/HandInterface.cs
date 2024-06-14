@@ -13,7 +13,8 @@ public class HandInterface : MonoBehaviour
     public Team myTeam;
     private RectTransform box;
 
-    void Start() {
+    void Start()
+    {
         box = GetComponent<RectTransform>();
     }
 
@@ -27,22 +28,25 @@ public class HandInterface : MonoBehaviour
     private List<QueueableAnimation> cardAnimations = new List<QueueableAnimation>();
 
     // Displays cards neatly in the UI
-    public void OrganizeCards() {
+    public void OrganizeCards()
+    {
         cardDistance = 20 * cardObjects.Count * UIManager.Instance.MainCanvas.scaleFactor;
 
         // clear old animations
-        foreach(QueueableAnimation qa in cardAnimations) {
+        foreach (QueueableAnimation qa in cardAnimations)
+        {
             AnimationManager.Instance.StopCoroutine(qa.Animation);
             qa.Animation = null;
         }
         cardAnimations.Clear();
 
-        for(int i = 0; i < cardObjects.Count; i++) {
+        for (int i = 0; i < cardObjects.Count; i++)
+        {
             GameObject card = cardObjects[i].gameObject;
 
             // Target Position
-            float xVal = (float)(1+i)/(cardObjects.Count+1) * box.rect.width;
-            if(myTeam == Team.Player) xVal -= box.rect.width/2f;
+            float xVal = (float)(1 + i) / (cardObjects.Count + 1) * box.rect.width;
+            if (myTeam == Team.Player) xVal -= box.rect.width / 2f;
             xVal *= UIManager.Instance.MainCanvas.scaleFactor;
 
             Vector3 targetPosition = new Vector3(xVal, 0, 0);
@@ -50,9 +54,11 @@ public class HandInterface : MonoBehaviour
             targetPosition += transform.position;
 
             // Animation
-            if(targetPosition != card.transform.position) {
+            if (targetPosition != card.transform.position)
+            {
                 // new cards
-                if(card.transform.parent != this.transform) {
+                if (card.transform.parent != this.transform)
+                {
                     card.transform.SetParent(this.transform);
                     card.transform.localScale = Vector3.one;
                     //card.transform.localEulerAngles = new Vector3(0, 0, normalizedIndex * maxRotationDegrees);
@@ -70,7 +76,8 @@ public class HandInterface : MonoBehaviour
                     //FMODUnity.RuntimeManager.PlayOneShot("event:/CardShuffle", transform.position); // SFX
                 }
                 // old cards
-                else {
+                else
+                {
                     IEnumerator animation = AnimationManager.Instance.SimpleTranslate(
                         card.transform,
                         targetPosition,
@@ -89,5 +96,29 @@ public class HandInterface : MonoBehaviour
             // Make sure they appear overlayed in the right order
             card.transform.SetAsFirstSibling();
         }
+        GlowCards();
     }
+    
+    private void GlowCards()
+    {
+        foreach (GameObject card in cardObjects)
+        {
+            UnitCard unitCard = card.GetComponent<UnitCard>();
+            if (unitCard != null && unitCard.ManaCost <= DuelManager.Instance.MainDuel.PlayerStatus.Mana)
+            {
+                Debug.Log("can use " + unitCard); ;
+                IEnumerator ie = AnimationManager.Instance.CardCanMove(unitCard);
+                QueueableAnimation qa = new QueueableAnimation(ie, 0f);
+                DuelManager.Instance.MainDuel.Animations.Enqueue(qa);
+            }
+            else
+            {
+                Debug.Log("can't use " + unitCard);
+                IEnumerator ie = AnimationManager.Instance.CardCantMove(unitCard);
+                QueueableAnimation qa = new QueueableAnimation(ie, 0f);
+                DuelManager.Instance.MainDuel.Animations.Enqueue(qa);
+            }
+        }
+    }
+    
 }
