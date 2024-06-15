@@ -1188,6 +1188,8 @@ MonoBehaviour:
   mode: 0
   card: {fileID: 0}
   CardArt: {fileID: 4305338717793736724}
+  Glow: {fileID: 3679936224612124911}
+  icons: {fileID: 0}
 --- !u!1 &7194088516080703837
 GameObject:
   m_ObjectHideFlags: 0
@@ -1205,7 +1207,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2452635179828467661
 RectTransform:
   m_ObjectHideFlags: 0

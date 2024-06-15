@@ -9,6 +9,7 @@ public class SpellCardInteractable : CardInteractable
     public SpellCard card;
     public Image CardArt;
     public Image Glow;
+    public StatusIconManager icons;
 
     public override void SetCardInfo()
     {
