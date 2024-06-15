@@ -36,9 +36,25 @@ public class PersistentData : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
 
-
         Init();
+    }
 
+    // https://qa.fmod.com/t/any-known-solution-for-quick-muting-pausing-webgl-audio-when-tab-switching/20113/2
+    private void OnApplicationFocus(bool focus)
+    {
+        if (FMODUnity.RuntimeManager.StudioSystem.isValid())
+        {
+            FMODUnity.RuntimeManager.PauseAllEvents(!focus);
+
+            if (!focus)
+            {
+                FMODUnity.RuntimeManager.CoreSystem.mixerSuspend();
+            }
+            else
+            {
+                FMODUnity.RuntimeManager.CoreSystem.mixerResume();
+            }
+        }
     }
 
     public Encounter CurrentEncounter;
