@@ -202,6 +202,7 @@ GameObject:
   - component: {fileID: 299009997}
   - component: {fileID: 299009996}
   - component: {fileID: 299009998}
+  - component: {fileID: 299009999}
   m_Layer: 0
   m_Name: Cutscene
   m_TagString: Untagged
@@ -226,8 +227,8 @@ VideoPlayer:
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 2
-  m_AspectRatio: 2
-  m_DataSource: 0
+  m_AspectRatio: 3
+  m_DataSource: 1
   m_TimeUpdateMode: 1
   m_PlaybackSpeed: 1
   m_AudioOutputMode: 0
@@ -235,7 +236,7 @@ VideoPlayer:
   - {fileID: 0}
   m_DirectAudioVolumes:
   - 1
-  m_Url: 
+  m_Url: Assets/StreamingAssets/EndingCutscene.mov
   m_EnabledAudioTracks: 01
   m_DirectAudioMutes: 00
   m_ControlledAudioTrackCount: 1
@@ -275,6 +276,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   videoPlayer: {fileID: 299009996}
   fmodAudio: {fileID: 1824420802}
+--- !u!114 &299009999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 299009995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73ac43f0d5035fb41979a63b9318d4bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FileName: EndingCutscene.mov
 --- !u!1 &312842461
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,8 +423,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1659808621}
   - {fileID: 664182578}
-  - {fileID: 1068068844}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -587,7 +601,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 664182577}
   m_CullTransparentMesh: 1
---- !u!1 &1068068843
+--- !u!1 &1659808620
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -595,66 +609,73 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1068068844}
-  - component: {fileID: 1068068846}
-  - component: {fileID: 1068068845}
-  m_Layer: 0
-  m_Name: EventSystem
+  - component: {fileID: 1659808621}
+  - component: {fileID: 1659808623}
+  - component: {fileID: 1659808622}
+  m_Layer: 5
+  m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1068068844
-Transform:
+--- !u!224 &1659808621
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1068068843}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -5400.0005}
-  m_LocalScale: {x: 60, y: 60, z: 60}
-  m_ConstrainProportionsScale: 0
+  m_GameObject: {fileID: 1659808620}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 312842468}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1068068845
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1659808622
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1068068843}
+  m_GameObject: {fileID: 1659808620}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
---- !u!114 &1068068846
-MonoBehaviour:
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1659808623
+CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1068068843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
-  m_sendNavigationEvents: 1
-  m_DragThreshold: 10
+  m_GameObject: {fileID: 1659808620}
+  m_CullTransparentMesh: 1
 --- !u!1001 &1824420800
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -681,23 +702,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7987570379772523157, guid: cfdd953b074a1c74fbc2fd98796dfb42, type: 3}
       propertyPath: EventReference.Path
-      value: event:/VA/Final Event/0 - Cutscene Full
+      value: event:/VA/Choose_your_own_path_dialogue
       objectReference: {fileID: 0}
     - target: {fileID: -7987570379772523157, guid: cfdd953b074a1c74fbc2fd98796dfb42, type: 3}
       propertyPath: EventReference.Guid.Data1
-      value: -1689457158
+      value: -2025686653
       objectReference: {fileID: 0}
     - target: {fileID: -7987570379772523157, guid: cfdd953b074a1c74fbc2fd98796dfb42, type: 3}
       propertyPath: EventReference.Guid.Data2
-      value: 1330427522
+      value: 1158472495
       objectReference: {fileID: 0}
     - target: {fileID: -7987570379772523157, guid: cfdd953b074a1c74fbc2fd98796dfb42, type: 3}
       propertyPath: EventReference.Guid.Data3
-      value: 841526687
+      value: 1091412415
       objectReference: {fileID: 0}
     - target: {fileID: -7987570379772523157, guid: cfdd953b074a1c74fbc2fd98796dfb42, type: 3}
       propertyPath: EventReference.Guid.Data4
-      value: 440589587
+      value: -181692017
       objectReference: {fileID: 0}
     - target: {fileID: 5458430580489171999, guid: cfdd953b074a1c74fbc2fd98796dfb42, type: 3}
       propertyPath: m_Name

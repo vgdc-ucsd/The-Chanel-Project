@@ -12,7 +12,8 @@ public class EndingCutscene : MonoBehaviour
     void Awake() {
         StartCoroutine(WaitForVideoStart());
         fmodAudio.SetActive(true);
-        StartCoroutine(WaitForVideoFinish(videoPlayer.clip.length));
+        //StartCoroutine(WaitForVideoFinish(videoPlayer.clip.length)); doesn't work for urls
+        StartCoroutine(WaitForVideoFinish(48-5));
     }
 
     IEnumerator WaitForVideoStart() {
