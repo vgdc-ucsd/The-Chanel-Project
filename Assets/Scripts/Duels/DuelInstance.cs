@@ -119,7 +119,10 @@ public class DuelInstance
     private void ProcessCard(UnitCard card, Team team) {
         if (card.Processed) return;
         card.Processed = true;
-
+        // Card glow off animation
+        IEnumerator ie = AnimationManager.Instance.CardCantMove(card);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0f);
+        Animations.Enqueue(qa);
         // Cards only take actions on their turn
         if (card.CurrentTeam == team) {
 
@@ -336,9 +339,11 @@ public class DuelInstance
         ActivationInfo info = new ActivationInfo(this);
         foreach (UnitCard card in DuelBoard.GetCardsOfTeam(team))
         {
+            /*
             IEnumerator ie = AnimationManager.Instance.CardCantMove(card);
             QueueableAnimation qa = new QueueableAnimation(ie, 0f);
             duel.Animations.Enqueue(qa);
+            */
             for (int i = card.Abilities.Count - 1; i >= 0; i--)
             {
                 Ability ability = card.Abilities[i];
