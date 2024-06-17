@@ -45,8 +45,8 @@ public class HandInterface : MonoBehaviour
             GameObject card = cardObjects[i].gameObject;
 
             // Target Position
-            float xVal = (float)(1 + i) / (cardObjects.Count + 1) * box.rect.width;
-            if (myTeam == Team.Player) xVal -= box.rect.width / 2f;
+            float xVal = (float)(1+i)/(cardObjects.Count+1) * box.rect.width * box.localScale.x;
+            if(myTeam == Team.Player) xVal -= (box.rect.width * box.localScale.x)/2f;
             xVal *= UIManager.Instance.MainCanvas.scaleFactor;
 
             Vector3 targetPosition = new Vector3(xVal, 0, 0);

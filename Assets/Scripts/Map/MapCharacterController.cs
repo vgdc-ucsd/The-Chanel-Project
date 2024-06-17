@@ -11,6 +11,8 @@ public class MapCharacterController : MonoBehaviour
     Vector2 endPos;
     MapNode callerNode;
     public Animator animations;
+    public Canvas MainCanvas;
+    public Camera OverlayCamera;
 
     void Start()
     {
@@ -47,12 +49,13 @@ public class MapCharacterController : MonoBehaviour
         startTime = Time.time;
         elapsedTime = 0f;
         initialPos = rt.localPosition;
-        this.endPos = endPos;
+        this.endPos = endPos*(300f/410f);
+        //this.endPos = new Vector2(endPos.x + OverlayCamera.pixelWidth/2f, endPos.y + OverlayCamera.pixelHeight/2f);
         callerNode = node;
     }
 
     public void SetPosition(Vector2 pos)
     {
-        GetComponent<RectTransform>().localPosition = pos;
+        GetComponent<RectTransform>().localPosition = pos*(300f/410f);
     }
 }
