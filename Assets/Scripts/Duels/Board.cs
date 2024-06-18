@@ -133,6 +133,25 @@ public class Board
 
     public void RenewMovement(Team t, DuelInstance duel)
     {
+        foreach (var pos in GetAllOccupiedPositions())
+        {
+            UnitCard c = GetCard(pos);
+
+            if (c.CurrentTeam == t && !c.frozen)
+            {
+                c.CanAttack = true;
+                c.CanMove = true;
+
+                if (c.CurrentTeam == Team.Player)
+                {
+                    AddGlow(c, duel);
+                }
+            }
+        }
+    }
+
+    private IEnumerable<BoardCoords> GetAllOccupiedPositions()
+    {
         for (int i = 0; i < Cols; i++)
         {
             for (int j = 0; j < Rows; j++)
@@ -140,18 +159,17 @@ public class Board
                 BoardCoords pos = new BoardCoords(i, j);
                 if (IsOccupied(pos))
                 {
-                    UnitCard c = GetCard(pos);
-                    if (c.CurrentTeam == t && !c.frozen)
-                    {
-                        c.CanAttack = true;
-                        c.CanMove = true;
-                        IEnumerator ie = AnimationManager.Instance.CardCanMove(c);
-                        QueueableAnimation qa = new QueueableAnimation(ie, 0f);
-                        duel.Animations.Enqueue(qa);
-                    }
+                    yield return pos;
                 }
             }
         }
+    }
+
+    private void AddGlow(UnitCard c, DuelInstance duel)
+    {
+        IEnumerator ie = AnimationManager.Instance.CardCanMove(c);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0f);
+        duel.Animations.Enqueue(qa);
     }
 
     public List<BoardCoords> GetAdjacentTiles(BoardCoords pos)

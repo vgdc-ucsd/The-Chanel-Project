@@ -19,6 +19,7 @@ public class DrawCardButton : MonoBehaviour,
     private Coroutine hoverCoroutine;
     private bool cardInUse = false;
     private bool direction = false; // true - up, false - down
+    //public Image Glow;
 
     public static DrawCardButton Instance;
 
@@ -33,13 +34,13 @@ public class DrawCardButton : MonoBehaviour,
 
     void Start() {
         basePosition = UIManager.Instance.PlayerDraw.position;
+        playerDrawPile = UIManager.Instance.PlayerDraw;
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
         if (!CanInteract || DuelManager.Instance.MainDuel.GetStatus(Team.Player).Deck.DrawPileIsEmpty()) return;
 
         AnimationManager.Instance.StartManaHover(DuelManager.Instance.Settings.DrawCardManaCost, Team.Player);
-
         Transform cardTransform = null;
         if(!cardInUse) {
             playerDrawPile = UIManager.Instance.PlayerDraw;
@@ -76,7 +77,7 @@ public class DrawCardButton : MonoBehaviour,
 
     public void StopCardHover() {
         cardInUse = false;
-        direction = false;
+        direction = false;  
         hoveredCard = null;
         if(hoverCoroutine != null) StopCoroutine(hoverCoroutine);
     }
@@ -100,5 +101,32 @@ public class DrawCardButton : MonoBehaviour,
 
         cardInUse = use;
         if(!use) hoveredCard = null;
+    }
+    /*
+    private void RemoveGlowFromDrawPile()
+    {
+        Transform playerDrawPile = UIManager.Instance.PlayerDraw;
+        Image cardBackImage = playerDrawPile.GetComponentInChildren<Image>();
+        cardBackImage.color = new Color(0, 0, 0, 0); 
+    }
+    */
+    public void UpdateDrawPileGlow()
+    {
+        Transform drawPile = UIManager.Instance.PlayerDraw; 
+        CharStatus playerStatus = DuelManager.Instance.MainDuel.GetStatus(Team.Player);
+
+        Color newColor = playerStatus.CanDrawCard() ? Color.green : new Color(0, 0, 0, 0);
+
+        Image glowImage = drawPile.GetComponentInChildren<Image>();
+
+        if (glowImage != null)
+        {
+            glowImage.color = newColor;
+            Debug.Log("Glow image color updated.");
+        }
+        else
+        {
+            Debug.LogWarning("Glow image not found under PlayerDraw.");
+        }
     }
 }

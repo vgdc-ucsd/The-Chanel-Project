@@ -898,45 +898,11 @@ public class AnimationManager : MonoBehaviour
     {
         uc.UnitCardInteractableRef.Glow.color = Color.green;
         yield return null;
-        /*
-        InterpolationMode mode = InterpolationMode.Slerp;
-        Color from = new Color(0, 0, 0, 0);
-        Color to = Color.green;
-        float duration = 0.01f; 
-        float startTime = Time.time;
-        float elapsedTime = 0;
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime = Time.time - startTime;
-            float t = elapsedTime / duration;
-            Color col = Interpolation.Interpolate(from, to, t, mode);
-            uc.UnitCardInteractableRef.Glow.color = col;
-            yield return null;
-        }
-        */
     }
     public IEnumerator CardCantMove(UnitCard uc)
     {
         uc.UnitCardInteractableRef.Glow.color = new Color(0, 0, 0, 0);
         yield return null;
-        /*
-        InterpolationMode mode = InterpolationMode.Slerp;
-        Color from = new Color(0, 0, 0, 0);
-        Color to = new Color(0, 0, 0, 0);
-        float duration = 0.01f; // 1 second
-        float startTime = Time.time;
-        float elapsedTime = 0;
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime = Time.time - startTime;
-            float t = elapsedTime / duration;
-            Color col = Interpolation.Interpolate(from, to, t, mode);
-            uc.UnitCardInteractableRef.Glow.color = col;
-            yield return null;
-        }
-        */
     }
     public IEnumerator SpellCardCanUse(SpellCard sc)
     {

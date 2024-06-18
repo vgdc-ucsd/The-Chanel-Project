@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Burst.Intrinsics;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class CharStatus
@@ -23,18 +24,22 @@ public class CharStatus
     PlayerSettings playerSettings;
     DuelSettings duelSettings;
 
-    public CharStatus(Team team, Deck deck) {
+    public CharStatus(Team team, Deck deck)
+    {
         duelSettings = DuelManager.Instance.Settings;
-        if(team == Team.Player || duelSettings.SameSettingsForBothPlayers) {
+        if (team == Team.Player || duelSettings.SameSettingsForBothPlayers)
+        {
             playerSettings = duelSettings.Player;
         }
-        else {
+        else
+        {
             playerSettings = duelSettings.Enemy;
         }
 
         Mana = playerSettings.StartingMana;
         Health = playerSettings.StartingHealth;
-        if(team == Team.Player && PersistentData.Instance.HealthOverride > 0) {
+        if (team == Team.Player && PersistentData.Instance.HealthOverride > 0)
+        {
             Health = PersistentData.Instance.HealthOverride;
             PersistentData.Instance.HealthOverride = -1;
         }
@@ -46,7 +51,8 @@ public class CharStatus
         Deck = deck;
         Cards = new List<Card>();
 
-        if (team == Team.Enemy) {
+        if (team == Team.Enemy)
+        {
             --Mana;
             --ManaCapacity;
         }
@@ -54,9 +60,10 @@ public class CharStatus
         drawPileCards = deck.DrawPile();
     }
 
-    private CharStatus() {}
+    private CharStatus() { }
 
-    public CharStatus Clone() {
+    public CharStatus Clone()
+    {
         CharStatus copy = new CharStatus();
         copy.Mana = this.Mana;
         copy.Health = this.Health;
@@ -69,9 +76,10 @@ public class CharStatus
         copy.Cards = new List<Card>();
         copy.drawPileCards = this.drawPileCards;
         copy.discardPileCards = this.discardPileCards;
-        foreach(Card c in this.Cards) {
+        foreach (Card c in this.Cards)
+        {
             Card cc = c.Clone();
-            if (cc ==  null)
+            if (cc == null)
             {
                 Debug.LogError("added null clone to CharStatus");
             }
@@ -83,12 +91,16 @@ public class CharStatus
         return copy;
     }
 
-    public void AddCard(Card c) {
+    public void AddCard(Card c)
+    {
         c.CurrentTeam = CharTeam;
-        if(c.CurrentTeam == Team.Enemy) {
-            if(c.GetType() == typeof(UnitCard)) {
-                UnitCard unitCard = (UnitCard) c;
-                foreach(Attack atk in unitCard.Attacks) {
+        if (c.CurrentTeam == Team.Enemy)
+        {
+            if (c.GetType() == typeof(UnitCard))
+            {
+                UnitCard unitCard = (UnitCard)c;
+                foreach (Attack atk in unitCard.Attacks)
+                {
                     atk.direction.y *= -1;
                 }
             }
@@ -191,8 +203,9 @@ public class CharStatus
         }
     }
 
-    public void updateShuffle(){
+    public void updateShuffle()
+    {
         drawPileCards = new List<Card>(Deck.DrawPile());
         discardPileCards.Clear();
     }
- }
+}

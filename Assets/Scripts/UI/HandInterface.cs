@@ -101,6 +101,7 @@ public class HandInterface : MonoBehaviour
 
     private void GlowCards()
     {
+        DrawCardButton.Instance.UpdateDrawPileGlow();
         foreach (GameObject card in cardObjects)
         {
             UnitCardInteractable uci = card.GetComponent<UnitCardInteractable>();
@@ -121,13 +122,11 @@ public class HandInterface : MonoBehaviour
     {
         if (card != null && card.ManaCost <= DuelManager.Instance.MainDuel.PlayerStatus.Mana)
         {
-            Debug.Log("can use " + card);
             QueueableAnimation qa = new QueueableAnimation(canUseAnimation(card), 0f);
             DuelManager.Instance.MainDuel.Animations.Enqueue(qa);
         }
         else
         {
-            Debug.Log("can't use " + card);
             QueueableAnimation qa = new QueueableAnimation(cantUseAnimation(card), 0f);
             DuelManager.Instance.MainDuel.Animations.Enqueue(qa);
         }
