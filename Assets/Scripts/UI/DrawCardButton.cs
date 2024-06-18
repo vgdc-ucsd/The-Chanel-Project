@@ -31,10 +31,6 @@ public class DrawCardButton : MonoBehaviour,
         else Instance = this;
     }
 
-    void Start() {
-        basePosition = UIManager.Instance.PlayerDraw.position;
-    }
-
     public void OnPointerEnter(PointerEventData eventData) {
         if (!CanInteract || DuelManager.Instance.MainDuel.GetStatus(Team.Player).Deck.DrawPileIsEmpty()) return;
 
@@ -70,6 +66,7 @@ public class DrawCardButton : MonoBehaviour,
         if(hoverCoroutine != null && direction == true) {
             StopCoroutine(hoverCoroutine);
             direction = false;
+            basePosition = UIManager.Instance.PlayerDraw.position;
             hoverCoroutine = StartCoroutine(HoverSlideCoroutine(hoveredCard.transform, basePosition, false));
         }
     }
@@ -84,7 +81,7 @@ public class DrawCardButton : MonoBehaviour,
     private Vector3 hoverPosition() {
         return new Vector3(
             hoveredCard.transform.position.x,
-            hoveredCard.transform.position.y + (15f*UIManager.Instance.MainCanvas.scaleFactor),
+            hoveredCard.transform.position.y + (20f*UIManager.Instance.MainCanvas.scaleFactor),
             hoveredCard.transform.position.z
         );
     }
