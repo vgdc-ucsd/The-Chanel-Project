@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.VisualScripting;
@@ -62,6 +63,9 @@ public class SpellCardInteractable : CardInteractable
         {
             handInterface.cardObjects.Remove(this.gameObject);
         }
+        IEnumerator ie = AnimationManager.Instance.SpellCardCantUse(card);
+        QueueableAnimation qa = new QueueableAnimation(ie, 0f);
+        DuelManager.Instance.MainDuel.Animations.Enqueue(qa);
         UIManager.Instance.UpdateStatus(DuelManager.Instance.MainDuel);
         UIManager.Instance.Player.UnhoverMana(DuelManager.Instance.MainDuel.PlayerStatus);
         inHand = false;
