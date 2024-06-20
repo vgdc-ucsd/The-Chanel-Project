@@ -201,13 +201,13 @@ public class UnitCardInteractable : CardInteractable,
             DrawArrows();
             CardCost.enabled = false;
             gameObject.SetActive(true);
-            UnglowCards();
+            UnglowPlacedCard();
             //handInterface.OrganizeCards();
         }
 
         FMODUnity.RuntimeManager.PlayOneShot("event:/SFX/CardPlace", transform.position);
     }
-    private void UnglowCards()
+    private void UnglowPlacedCard()
     {
         IEnumerator ie = AnimationManager.Instance.CardCantMove(card);
         QueueableAnimation qa = new QueueableAnimation(ie, 0f);

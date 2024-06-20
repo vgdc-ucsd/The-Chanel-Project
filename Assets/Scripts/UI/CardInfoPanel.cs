@@ -102,6 +102,7 @@ public class CardInfoPanel : MonoBehaviour
         {
             currentCard = UIManager.Instance.GenerateCardInteractable(card);
         }
+        card.CurrentTeam = c.CurrentTeam;
         currentCard.mode = CIMode.Display;
 
         currentCard.GetComponent<GraphicRaycaster>().enabled = false;
@@ -111,12 +112,13 @@ public class CardInfoPanel : MonoBehaviour
         currentCard.transform.localScale = Vector3.one;
         currentCard.CardCost.enabled = true;
         currentCard.Mana.gameObject.SetActive(false);
-
+        //card.CurrentTeam = c.CurrentTeam;
         if (UIManager.Instance == null && InventoryUI.Instance != null)
         {
             if (c is UnitCard)
             {
                 currentCard.image.sprite = c.CurrentTeam == Team.Enemy ? InventoryUI.Instance.EnemyUnitCardBorder : InventoryUI.Instance.PlayerUnitCardBorder;
+                
             }
             else
             {
@@ -133,6 +135,7 @@ public class CardInfoPanel : MonoBehaviour
             {
                 currentCard.image.sprite = c.CurrentTeam == Team.Enemy ? UIManager.Instance.EnemySpellCardBorder : UIManager.Instance.PlayerSpellCardBorder;
             }
+            
         }
     }
 

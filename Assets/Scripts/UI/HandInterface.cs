@@ -12,6 +12,11 @@ public class HandInterface : MonoBehaviour
     [HideInInspector] public List<GameObject> cardObjects = new List<GameObject>();
     public Team myTeam;
     private RectTransform box;
+    public static HandInterface Instance;
+    void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
@@ -45,8 +50,8 @@ public class HandInterface : MonoBehaviour
             GameObject card = cardObjects[i].gameObject;
 
             // Target Position
-            float xVal = (float)(1+i)/(cardObjects.Count+1) * box.rect.width * box.localScale.x;
-            if(myTeam == Team.Player) xVal -= (box.rect.width * box.localScale.x)/2f;
+            float xVal = (float)(1 + i) / (cardObjects.Count + 1) * box.rect.width * box.localScale.x;
+            if (myTeam == Team.Player) xVal -= (box.rect.width * box.localScale.x) / 2f;
             xVal *= UIManager.Instance.MainCanvas.scaleFactor;
 
             Vector3 targetPosition = new Vector3(xVal, 0, 0);
@@ -99,9 +104,12 @@ public class HandInterface : MonoBehaviour
         GlowCards();
     }
 
-    private void GlowCards()
+    public void GlowCards()
     {
-        DrawCardButton.Instance.UpdateDrawPileGlow();
+        if (myTeam == Team.Player)
+        {
+            AnimationManager.Instance.UpdateDrawPileGlowAnimation(DuelManager.Instance.MainDuel);
+        }
         foreach (GameObject card in cardObjects)
         {
             UnitCardInteractable uci = card.GetComponent<UnitCardInteractable>();
@@ -117,7 +125,30 @@ public class HandInterface : MonoBehaviour
             }
         }
     }
+    /*
+    public void EndTurnGlow()
+    {
+        AnimationManager.Instance.EndTurnUpdateDrawPileGlowAnimation(DuelManager.Instance.MainDuel);
+        
+        foreach (GameObject card in cardObjects)
+        {
+            UnitCardInteractable uci = card.GetComponent<UnitCardInteractable>();
+            SpellCardInteractable sci = card.GetComponent<SpellCardInteractable>();
 
+            if (uci != null)
+            {
+                Debug.Log("call1");
+                EndTurnCheckCard(uci.card, AnimationManager.Instance.CardCantMove);
+            }
+            else if (sci != null)
+            {
+                Debug.Log("call2");
+                EndTurnCheckCard(sci.card, AnimationManager.Instance.SpellCardCantUse);
+            }
+        }
+        
+    }
+    */
     private void CheckCard<T>(T card, Func<T, IEnumerator> canUseAnimation, Func<T, IEnumerator> cantUseAnimation) where T : Card
     {
         if (card != null && card.ManaCost <= DuelManager.Instance.MainDuel.PlayerStatus.Mana)
@@ -131,5 +162,10 @@ public class HandInterface : MonoBehaviour
             DuelManager.Instance.MainDuel.Animations.Enqueue(qa);
         }
     }
-
+    private void EndTurnCheckCard<T>(T card, Func<T, IEnumerator> cantUseAnimation) where T : Card
+    {
+        QueueableAnimation qa = new QueueableAnimation(cantUseAnimation(card), 0f);
+        DuelManager.Instance.MainDuel.Animations.Enqueue(qa);
+        Debug.Log($"EndTurnCheckCard: Enqueued animation for card {card.name}");
+    }
 }

@@ -1,4 +1,5 @@
 using FMODUnity;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,24 +33,27 @@ public class DuelInstance
         this.currBossStage = bossStage;
     }
 
-    public DuelInstance Clone() {
+    public DuelInstance Clone()
+    {
         return new DuelInstance(PlayerStatus.Clone(), EnemyStatus.Clone(), DuelBoard.Clone(), boss, currBossStage);
     }
 
-    public void ProcessBoard(Team team) {
+    public void ProcessBoard(Team team)
+    {
         ActivationInfo info = new ActivationInfo(this);
         // the team is whoever just activated end turn
-
         foreach (UnitCard c in DuelBoard.GetAllCards())
         {
             c.Processed = false;
         }
-
         // Process all cards
-        for(int i = 0; i < DuelBoard.Cols; i++) {
-            for(int j = 0; j < DuelBoard.Rows; j++) {
-                BoardCoords pos = new BoardCoords(i,j);
-                if (DuelBoard.IsOccupied(pos)) {
+        for (int i = 0; i < DuelBoard.Cols; i++)
+        {
+            for (int j = 0; j < DuelBoard.Rows; j++)
+            {
+                BoardCoords pos = new BoardCoords(i, j);
+                if (DuelBoard.IsOccupied(pos))
+                {
                     ProcessCard(DuelBoard.GetCard(pos), team);
                 }
                 if (interrupt) break;
@@ -58,7 +62,6 @@ public class DuelInstance
         }
 
         interrupt = false;
-
         if (triggerNextStage)
         {
             if (DuelManager.Instance.CurrentEncounter.Settings.SameSettingsForBothPlayers)
@@ -97,18 +100,19 @@ public class DuelInstance
 
             triggerNextStage = false;
         }
-
         EndTurn(team, info.Duel);
     }
 
-    public Queue<QueueableAnimation> DrawStartingCards() {
+    public Queue<QueueableAnimation> DrawStartingCards()
+    {
         Animations = new Queue<QueueableAnimation>();
 
         // Player cards
         DrawCards(Team.Player, DuelManager.Instance.Settings.Player.StartingCards);
 
         // Enemy Cards
-        if(DuelManager.Instance.Settings.SameSettingsForBothPlayers) {
+        if (DuelManager.Instance.Settings.SameSettingsForBothPlayers)
+        {
             DrawCards(Team.Enemy, DuelManager.Instance.Settings.Player.StartingCards);
         }
         else DrawCards(Team.Enemy, DuelManager.Instance.Settings.Enemy.StartingCards);
@@ -116,21 +120,26 @@ public class DuelInstance
         return Animations;
     }
 
-    private void ProcessCard(UnitCard card, Team team) {
+    private void ProcessCard(UnitCard card, Team team)
+    {
         if (card.Processed) return;
         card.Processed = true;
         // Card glow off animation
         IEnumerator ie = AnimationManager.Instance.CardCantMove(card);
         QueueableAnimation qa = new QueueableAnimation(ie, 0f);
         Animations.Enqueue(qa);
+
         // Cards only take actions on their turn
-        if (card.CurrentTeam == team) {
+        if (card.CurrentTeam == team)
+        {
 
             // Activate abilities
             ActivationInfo info = new ActivationInfo(this);
-            foreach(Ability a in card.Abilities) {
+            foreach (Ability a in card.Abilities)
+            {
                 // Only activate if the activation condition is OnProcess
-                if(a.Condition == ActivationCondition.OnProcess) {
+                if (a.Condition == ActivationCondition.OnProcess)
+                {
                     a.Activate(card, info);
                 }
             }
@@ -215,18 +224,20 @@ public class DuelInstance
         }
     }
 
-    private UnitCard ProcessAttack(UnitCard card, Attack atk) {
+    private UnitCard ProcessAttack(UnitCard card, Attack atk)
+    {
         BoardCoords atkDest = card.Pos + new BoardCoords(atk.direction);
 
         // Do nothing if attack is out of bounds
-        if(DuelBoard.IsOutOfBounds(atkDest)) return null;
+        if (DuelBoard.IsOutOfBounds(atkDest)) return null;
 
         // Do nothing if destination tile is empty
-        if(DuelBoard.GetCard(atkDest) == null) return null;
+        if (DuelBoard.GetCard(atkDest) == null) return null;
 
         // Deal damage
         UnitCard target = DuelBoard.GetCard(atkDest);
-        if(card.CurrentTeam != target.CurrentTeam) {
+        if (card.CurrentTeam != target.CurrentTeam)
+        {
             // Animation
             AnimationManager.Instance.AttackAnimation(this, card, atk);
 
@@ -241,11 +252,12 @@ public class DuelInstance
             }
 
             info.OverkillDamage = DealDamage(target, atk.damage);
-            for (int i = card.Abilities.Count - 1; i >= 0; i--) {
-                if(card.Abilities[i].Condition == ActivationCondition.OnDealDamage) card.Abilities[i].Activate(card, info);
+            for (int i = card.Abilities.Count - 1; i >= 0; i--)
+            {
+                if (card.Abilities[i].Condition == ActivationCondition.OnDealDamage) card.Abilities[i].Activate(card, info);
             }
 
-            for(int i = target.Abilities.Count - 1; i >= 0; i--)
+            for (int i = target.Abilities.Count - 1; i >= 0; i--)
             {
                 if (target.Abilities[i].Condition == ActivationCondition.OnAttacksHitMe) target.Abilities[i].Activate(card, info);
             }
@@ -276,7 +288,8 @@ public class DuelInstance
         DrawCards(team, 1, true);
     }
 
-    private void DrawCards(Team team, int count, bool immediate = false) {
+    private void DrawCards(Team team, int count, bool immediate = false)
+    {
         CharStatus status = GetStatus(team);
         Deck deck = status.Deck;
 
@@ -288,7 +301,8 @@ public class DuelInstance
             deck.Refresh();
         }
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             // pick a random card, TODO keep track of how many cards are left in deck
 
 
@@ -326,7 +340,7 @@ public class DuelInstance
         // On card death
         if (target.Health <= 0)
         {
-            overkillDamage = -1*target.Health;
+            overkillDamage = -1 * target.Health;
             target.Health = 0;
             DuelBoard.RemoveCard(target.Pos);
             AnimationManager.Instance.DeathAnimation(this, target);
@@ -335,8 +349,12 @@ public class DuelInstance
         return overkillDamage;
     }
 
-    private void EndTurn(Team team, DuelInstance duel) {
+    private void EndTurn(Team team, DuelInstance duel)
+    {
         ActivationInfo info = new ActivationInfo(this);
+        //Glow off
+        //HandInterface.Instance.EndTurnGlow();
+        AnimationManager.Instance.EndTurnUpdateDrawPileGlowAnimation(duel);
         foreach (UnitCard card in DuelBoard.GetCardsOfTeam(team))
         {
             for (int i = card.Abilities.Count - 1; i >= 0; i--)
@@ -352,15 +370,16 @@ public class DuelInstance
         // End turn
         Team oppositeTeam;
         CharStatus oppositeStatus;
-        if(team == Team.Player) {
+        if (team == Team.Player)
+        {
             oppositeTeam = Team.Enemy;
             oppositeStatus = EnemyStatus;
         }
-        else {
+        else
+        {
             oppositeTeam = Team.Player;
             oppositeStatus = PlayerStatus;
         }
-
         // gain 1 mana capacity every turn until it reaches the max then it caps out;
         oppositeStatus.GiveMana();
         DuelBoard.RenewMovement(oppositeTeam, info.Duel);
@@ -370,7 +389,8 @@ public class DuelInstance
         {
             for (int i = card.Abilities.Count - 1; i >= 0; i--)
             {
-                if (i < card.Abilities.Count) {
+                if (i < card.Abilities.Count)
+                {
                     Ability ability = card.Abilities[i];
                     if (ability.Condition == ActivationCondition.OnBeginTurn)
                     {
@@ -394,8 +414,9 @@ public class DuelInstance
         DrawCards(oppositeTeam, 1);
     }
 
-    public CharStatus GetStatus(Team team) {
-        if(team == Team.Player) return PlayerStatus;
+    public CharStatus GetStatus(Team team)
+    {
+        if (team == Team.Player) return PlayerStatus;
         else return EnemyStatus;
     }
 }

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using FMODUnity;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+
 using Random = UnityEngine.Random;
 
 public class AnimationManager : MonoBehaviour
@@ -911,7 +913,14 @@ public class AnimationManager : MonoBehaviour
     }
     public IEnumerator SpellCardCantUse(SpellCard sc)
     {
-        sc.SpellCardInteractableRef.Glow.color = new Color(0, 0, 0, 0);
+        sc.SpellCardInteractableRef.Glow.color = new Color(0, 0, 0, 0); 
+        yield return null;
+    }
+
+    private IEnumerator GlowImage(Image glowImage, Color targetColor)
+    {
+        Debug.Log("Glow image debug");
+        glowImage.color = targetColor;
         yield return null;
     }
 
@@ -953,6 +962,8 @@ public class AnimationManager : MonoBehaviour
 
         uc.UnitCardInteractableRef.Glow.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
     }
+
+
 
     // **************************************************************
     //              public animation methods (void)
@@ -1182,4 +1193,41 @@ public class AnimationManager : MonoBehaviour
         }
         duel.Animations.Enqueue(new QueueableAnimation(null, 0.5f));
     }
+
+    public void UpdateDrawPileGlowAnimation(DuelInstance duel)
+    {
+        Transform drawPile = UIManager.Instance.PlayerDraw;
+        CharStatus playerStatus = DuelManager.Instance.MainDuel.GetStatus(Team.Player);
+        Color newColor = playerStatus.CanDrawCard() ? Color.green : new Color(0, 0, 0, 0);
+        Image glowImage = drawPile.GetComponentInChildren<Image>();
+        if (glowImage != null)
+        {
+            IEnumerator ie = GlowImage(glowImage, newColor);
+            QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+            duel.Animations.Enqueue(qa);
+            Debug.Log("Glow image color updated.");
+        }
+        else
+        {
+            Debug.LogWarning("Glow image not found under PlayerDraw.");
+        }
+    }
+    public void EndTurnUpdateDrawPileGlowAnimation(DuelInstance duel)
+    {
+        Transform drawPile = UIManager.Instance.PlayerDraw;
+        Color newColor = new Color(0, 0, 0, 0);
+        Image glowImage = drawPile.GetComponentInChildren<Image>();
+        if (glowImage != null)
+        {
+            IEnumerator ie = GlowImage(glowImage, newColor);
+            QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+            duel.Animations.Enqueue(qa);
+            Debug.Log("End turn Glow image color updated.");
+        }
+        else
+        {
+            Debug.LogWarning("End Turn Glow image not found under PlayerDraw.");
+        }
+    }
+
 }
