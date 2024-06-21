@@ -162,6 +162,7 @@ public class DuelManager : MonoBehaviour
         if (!AnimationManager.Instance.DonePlaying()) return; // await animations
 
         PlayerInputController.Instance.SetAction(ControlAction.None);
+        AnimationManager.Instance.EndTurnUpdateDrawPileGlowAnimation(MainDuel);
         if (Settings.EnablePVPMode)
         {
             if (currentTeam == Team.Player)

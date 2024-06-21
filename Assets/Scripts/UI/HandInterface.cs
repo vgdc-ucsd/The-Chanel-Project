@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
-using UnityEngine.XR;
+using UnityEngine.UI;
 
 // Manages the player's and interactions with their hand
 public class HandInterface : MonoBehaviour
@@ -167,5 +166,15 @@ public class HandInterface : MonoBehaviour
         QueueableAnimation qa = new QueueableAnimation(cantUseAnimation(card), 0f);
         DuelManager.Instance.MainDuel.Animations.Enqueue(qa);
         Debug.Log($"EndTurnCheckCard: Enqueued animation for card {card.name}");
+    }
+
+    public void HideGlowForCardsInHand() {
+        foreach(GameObject cardObject in cardObjects) {
+            Transform glow = cardObject.transform.Find("BG/glow");
+            if(glow != null) {
+                glow.GetComponent<Image>().color = Color.clear;
+            }
+            else Debug.LogWarning("could not find card glow");
+        }
     }
 }

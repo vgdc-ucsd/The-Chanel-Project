@@ -1228,6 +1228,7 @@ public class AnimationManager : MonoBehaviour
         {
             Debug.LogWarning("End Turn Glow image not found under PlayerDraw.");
         }
+        UIManager.Instance.Hand.HideGlowForCardsInHand();
     }
 
 }

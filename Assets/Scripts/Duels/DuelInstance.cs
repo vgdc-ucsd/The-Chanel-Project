@@ -354,7 +354,6 @@ public class DuelInstance
         ActivationInfo info = new ActivationInfo(this);
         //Glow off
         //HandInterface.Instance.EndTurnGlow();
-        AnimationManager.Instance.EndTurnUpdateDrawPileGlowAnimation(duel);
         foreach (UnitCard card in DuelBoard.GetCardsOfTeam(team))
         {
             for (int i = card.Abilities.Count - 1; i >= 0; i--)
