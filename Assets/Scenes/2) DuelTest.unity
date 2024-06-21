@@ -551,7 +551,7 @@ PrefabInstance:
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: ImportDeck
       value: 
-      objectReference: {fileID: 11400000, guid: 8205a0479993b8f49a709d0d0c92917a, type: 2}
+      objectReference: {fileID: 11400000, guid: f735866e9cc0fae44a4197275ae365de, type: 2}
     - target: {fileID: 7286417334461869253, guid: 8e235be7f9c96534aad8745c36b3991a, type: 3}
       propertyPath: CurrentEncounter
       value: 
@@ -2835,7 +2835,7 @@ GameObject:
   - component: {fileID: 4460270933302661156}
   - component: {fileID: 5632827986446781652}
   m_Layer: 0
-  m_Name: View Deck (1)
+  m_Name: View Discard Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4155,7 +4155,7 @@ GameObject:
   - component: {fileID: 8173897749198865021}
   - component: {fileID: 3139601785631372469}
   m_Layer: 0
-  m_Name: View Deck (2)
+  m_Name: View Discard Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
