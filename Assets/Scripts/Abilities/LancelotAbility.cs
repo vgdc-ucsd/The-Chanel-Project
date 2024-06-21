@@ -28,7 +28,7 @@ public class LancelotAbility : Ability
             else
             {
                 UnitCard backCard = Info.Duel.DuelBoard.GetFrontCard(Info.TargetCard.Pos, c.CurrentTeam);
-                if (backCard != null)
+                if (backCard != null && backCard.CurrentTeam != c.CurrentTeam)
                 {
                     AnimationManager.Instance.AbilityActivateAnimation(Info.Duel, c);
                     Info.Duel.DealDamage(backCard, Info.OverkillDamage);
