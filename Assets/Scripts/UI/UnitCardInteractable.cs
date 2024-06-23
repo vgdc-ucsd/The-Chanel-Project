@@ -202,6 +202,10 @@ public class UnitCardInteractable : CardInteractable,
             CardCost.enabled = false;
             gameObject.SetActive(true);
             UnglowPlacedCard();
+            if (card.CurrentTeam == Team.Player)
+            {
+                HandInterface.Instance.GlowEndTurnButton();
+            }
             //handInterface.OrganizeCards();
         }
 
@@ -219,6 +223,7 @@ public class UnitCardInteractable : CardInteractable,
         transform.position = tile.transform.position;
         transform.SetParent(tile.transform);
         DrawArrows();
+        HandInterface.Instance.GlowEndTurnButton();
     }
 
     // attempts to play card at specified position, and calls Board to play card

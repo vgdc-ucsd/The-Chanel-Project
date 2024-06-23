@@ -74,6 +74,7 @@ public class MctsAI
     {
         aiPushChance = aggression;
         playerPushChance = defense;
+        Instance = this;    
     }
 
     public IEnumerator MCTS(DuelInstance state) {

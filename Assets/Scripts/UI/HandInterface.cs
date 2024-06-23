@@ -100,36 +100,21 @@ public class HandInterface : MonoBehaviour
             // Make sure they appear overlayed in the right order
             card.transform.SetAsFirstSibling();
         }
-        GlowCards();
+        if (myTeam == Team.Player)
+        {
+            GlowCards();
+        }
+
     }
 
     public void GlowCards()
     {
         Debug.Log("a1");
-        if (myTeam == Team.Player)
-        {
-            Debug.Log("a2");
-            DuelInstance duel = DuelManager.Instance.MainDuel;
-            CharStatus playerStatus = DuelManager.Instance.MainDuel.GetStatus(Team.Player);
-            Debug.Log("a3");
-            List<Card> playableCards = MctsAI.Instance.GetPlayableCards(duel, playerStatus);
-            Debug.Log("a4");
-            List<BoardCoords> legalTiles = MctsAI.Instance.GetLegalTiles(duel.DuelBoard);
-            Debug.Log("a5");
-            List<UnitCard> moveableCards = MctsAI.Instance.GetMovableCards(duel.DuelBoard, Team.Player);
-            Debug.Log("a6");
-            //bookmark  
-            UIManager.Instance.EndTurnButton.color = (playerStatus.CanDrawCard() ||
-                (playableCards.Count > 0 && legalTiles.Count > 0) || moveableCards.Count > 0) ? Color.white : Color.green;
-            Debug.Log($"Condition evaluated: " +
-          $"CanDrawCard: {playerStatus.CanDrawCard()}, " +
-          $"PlayableCardsCount: {playableCards.Count}, " +
-          $"LegalTilesCount: {legalTiles.Count}, " +
-          $"MoveableCardsCount: {moveableCards.Count}. " +
-          $"Resulting color: {UIManager.Instance.EndTurnButton.color}");
-            Debug.Log("hi");
-            AnimationManager.Instance.UpdateDrawPileGlowAnimation(DuelManager.Instance.MainDuel);
-        }
+
+        GlowEndTurnButton();
+        Debug.Log("hi");
+        AnimationManager.Instance.UpdateDrawPileGlowAnimation(DuelManager.Instance.MainDuel);
+
         foreach (GameObject card in cardObjects)
         {
             UnitCardInteractable uci = card.GetComponent<UnitCardInteractable>();
@@ -144,6 +129,27 @@ public class HandInterface : MonoBehaviour
                 CheckCard(sci.card, AnimationManager.Instance.SpellCardCanUse, AnimationManager.Instance.SpellCardCantUse);
             }
         }
+    }
+    public void GlowEndTurnButton()
+    {
+        Debug.Log("a2");
+        DuelInstance duel = DuelManager.Instance.MainDuel;
+        CharStatus playerStatus = DuelManager.Instance.MainDuel.GetStatus(Team.Player);
+        Debug.Log("a3");
+        List<Card> playableCards = MctsAI.Instance.GetPlayableCards(duel, playerStatus);
+        Debug.Log("a4");
+        List<BoardCoords> legalTiles = MctsAI.Instance.GetLegalTiles(duel.DuelBoard);
+        Debug.Log("a5");
+        List<UnitCard> moveableCards = MctsAI.Instance.GetMovableCards(duel.DuelBoard, Team.Player);
+        Debug.Log("a6");
+        UIManager.Instance.EndTurnButton.color = (playerStatus.CanDrawCard() ||
+            (playableCards.Count > 0 && legalTiles.Count > 0) || moveableCards.Count > 0) ? Color.white : Color.green;
+        Debug.Log($"Condition evaluated: " +
+      $"CanDrawCard: {playerStatus.CanDrawCard()}, " +
+      $"PlayableCardsCount: {playableCards.Count}, " +
+      $"LegalTilesCount: {legalTiles.Count}, " +
+      $"MoveableCardsCount: {moveableCards.Count}. " +
+      $"Resulting color: {UIManager.Instance.EndTurnButton.color}");
     }
     /*
     public void EndTurnGlow()
