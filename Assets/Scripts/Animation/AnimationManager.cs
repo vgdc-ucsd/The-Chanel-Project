@@ -903,7 +903,7 @@ public class AnimationManager : MonoBehaviour
     }
     public IEnumerator CardCantMove(UnitCard uc)
     {
-        uc.UnitCardInteractableRef.Glow.color = new Color(0, 0, 0, 0);
+        uc.UnitCardInteractableRef.Glow.color = Color.clear;
         yield return null;
     }
     public IEnumerator SpellCardCanUse(SpellCard sc)
@@ -913,7 +913,7 @@ public class AnimationManager : MonoBehaviour
     }
     public IEnumerator SpellCardCantUse(SpellCard sc)
     {
-        sc.SpellCardInteractableRef.Glow.color = new Color(0, 0, 0, 0); 
+        sc.SpellCardInteractableRef.Glow.color = Color.clear;
         yield return null;
     }
 
@@ -1198,7 +1198,7 @@ public class AnimationManager : MonoBehaviour
     {
         Transform drawPile = UIManager.Instance.PlayerDraw;
         CharStatus playerStatus = DuelManager.Instance.MainDuel.GetStatus(Team.Player);
-        Color newColor = playerStatus.CanDrawCard() ? Color.green : new Color(0, 0, 0, 0);
+        Color newColor = playerStatus.CanDrawCard() ? Color.green : Color.clear;
         Image glowImage = drawPile.GetComponentInChildren<Image>();
         if (glowImage != null)
         {
@@ -1207,6 +1207,7 @@ public class AnimationManager : MonoBehaviour
             duel.Animations.Enqueue(qa);
             Debug.Log("Glow image color updated.");
         }
+
         else
         {
             Debug.LogWarning("Glow image not found under PlayerDraw.");
@@ -1215,7 +1216,7 @@ public class AnimationManager : MonoBehaviour
     public void EndTurnUpdateDrawPileGlowAnimation(DuelInstance duel)
     {
         Transform drawPile = UIManager.Instance.PlayerDraw;
-        Color newColor = new Color(0, 0, 0, 0);
+        Color newColor = Color.clear;
         Image glowImage = drawPile.GetComponentInChildren<Image>();
         if (glowImage != null)
         {

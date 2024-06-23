@@ -105,8 +105,29 @@ public class HandInterface : MonoBehaviour
 
     public void GlowCards()
     {
+        Debug.Log("a1");
         if (myTeam == Team.Player)
         {
+            Debug.Log("a2");
+            DuelInstance duel = DuelManager.Instance.MainDuel;
+            CharStatus playerStatus = DuelManager.Instance.MainDuel.GetStatus(Team.Player);
+            Debug.Log("a3");
+            List<Card> playableCards = MctsAI.Instance.GetPlayableCards(duel, playerStatus);
+            Debug.Log("a4");
+            List<BoardCoords> legalTiles = MctsAI.Instance.GetLegalTiles(duel.DuelBoard);
+            Debug.Log("a5");
+            List<UnitCard> moveableCards = MctsAI.Instance.GetMovableCards(duel.DuelBoard, Team.Player);
+            Debug.Log("a6");
+            //bookmark  
+            UIManager.Instance.EndTurnButton.color = (playerStatus.CanDrawCard() ||
+                (playableCards.Count > 0 && legalTiles.Count > 0) || moveableCards.Count > 0) ? Color.white : Color.green;
+            Debug.Log($"Condition evaluated: " +
+          $"CanDrawCard: {playerStatus.CanDrawCard()}, " +
+          $"PlayableCardsCount: {playableCards.Count}, " +
+          $"LegalTilesCount: {legalTiles.Count}, " +
+          $"MoveableCardsCount: {moveableCards.Count}. " +
+          $"Resulting color: {UIManager.Instance.EndTurnButton.color}");
+            Debug.Log("hi");
             AnimationManager.Instance.UpdateDrawPileGlowAnimation(DuelManager.Instance.MainDuel);
         }
         foreach (GameObject card in cardObjects)
@@ -168,11 +189,15 @@ public class HandInterface : MonoBehaviour
         Debug.Log($"EndTurnCheckCard: Enqueued animation for card {card.name}");
     }
 
-    public void HideGlowForCardsInHand() {
-        foreach(GameObject cardObject in cardObjects) {
+    public void HideGlowForCardsInHand()
+    {
+        foreach (GameObject cardObject in cardObjects)
+        {
             Transform glow = cardObject.transform.Find("BG/glow");
-            if(glow != null) {
+            if (glow != null)
+            {
                 glow.GetComponent<Image>().color = Color.clear;
+
             }
             else Debug.LogWarning("could not find card glow");
         }

@@ -7,7 +7,7 @@ using Unity.VisualScripting; // for testing
 public class MctsAI
 {
 
-
+    public static MctsAI Instance;
     private class Node
     {
         public int NumWins = 0;
@@ -420,7 +420,7 @@ public class MctsAI
     }
 
     // Returns a list of spaces on the board that are unrestricted and not occupied by another card
-    private List<BoardCoords> GetLegalTiles(Board b) {
+    public List<BoardCoords> GetLegalTiles(Board b) {
         List<BoardCoords> legalTiles = new List<BoardCoords>();
 
         for(int i = 0; i < b.Rows; i++) {
@@ -438,7 +438,8 @@ public class MctsAI
         return legalTiles;
     }
 
-    private List<Card> GetPlayableCards(DuelInstance duel, CharStatus status) {
+    public List<Card> GetPlayableCards(DuelInstance duel, CharStatus status) {
+        UnityEngine.Debug.Log("b1");
         List<Card> results = new List<Card>();
         if(status.Mana == 0) return results;
         foreach(Card c in status.Cards) {
@@ -464,10 +465,11 @@ public class MctsAI
             if (c.ManaCost <= status.Mana) results.Add(c);
             
         }
+        UnityEngine.Debug.Log("b2");
         return results;
     }
 
-    private List<UnitCard> GetMovableCards(Board board, Team team) {
+    public List<UnitCard> GetMovableCards(Board board, Team team) {
         List<UnitCard> results = new List<UnitCard>();
         foreach(UnitCard uc in board.CardSlots) {
             if (uc != null) {

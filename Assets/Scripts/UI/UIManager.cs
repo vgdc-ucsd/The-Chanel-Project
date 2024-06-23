@@ -161,12 +161,26 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void EnablePlayerControlUI(bool enable) {
-        if(enable) {
+    public void EnablePlayerControlUI(bool enable)
+    {
+        if (enable)
+        {
+            /*
+            CharStatus playerStatus = duel.GetStatus(Team.Player);
+            CharStatus status = duel.GetStatus(team);
+            List<Card> playableCards = MctsAI.Instance.GetPlayableCards(duel, playerStatus);
+            List<BoardCoords> legalTiles = MctsAI.Instance.GetLegalTiles(duel.DuelBoard); 
+            List<UnitCard> moveableCards = MctsAI.Instance.GetMovableCards(duel.DuelBoard, Team.Player);
+            //bookmark
+            
+            EndTurnButton.color = (playerStatus.CanDrawCard() || (playableCards.Count > 0 && legalTiles.Count > 0) || moveableCards.Count > 0) ? Color.white: Color.green;
+            DrawCardButton.Instance.CanInteract = true;
+            */
             EndTurnButton.color = Color.white;
             DrawCardButton.Instance.CanInteract = true;
         }
-        else {
+        else
+        {
             EndTurnButton.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
             DrawCardButton.Instance.CanInteract = false;
             DrawCardButton.Instance.StopCardHover();

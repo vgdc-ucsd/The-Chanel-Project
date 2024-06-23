@@ -146,6 +146,7 @@ public class Board
                 {
                     AddGlow(c, duel);
                 }
+                
             }
         }
     }
