@@ -151,30 +151,7 @@ public class HandInterface : MonoBehaviour
       $"MoveableCardsCount: {moveableCards.Count}. " +
       $"Resulting color: {UIManager.Instance.EndTurnButton.color}");
     }
-    /*
-    public void EndTurnGlow()
-    {
-        AnimationManager.Instance.EndTurnUpdateDrawPileGlowAnimation(DuelManager.Instance.MainDuel);
-        
-        foreach (GameObject card in cardObjects)
-        {
-            UnitCardInteractable uci = card.GetComponent<UnitCardInteractable>();
-            SpellCardInteractable sci = card.GetComponent<SpellCardInteractable>();
 
-            if (uci != null)
-            {
-                Debug.Log("call1");
-                EndTurnCheckCard(uci.card, AnimationManager.Instance.CardCantMove);
-            }
-            else if (sci != null)
-            {
-                Debug.Log("call2");
-                EndTurnCheckCard(sci.card, AnimationManager.Instance.SpellCardCantUse);
-            }
-        }
-        
-    }
-    */
     private void CheckCard<T>(T card, Func<T, IEnumerator> canUseAnimation, Func<T, IEnumerator> cantUseAnimation) where T : Card
     {
         if (card != null && card.ManaCost <= DuelManager.Instance.MainDuel.PlayerStatus.Mana)

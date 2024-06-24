@@ -1213,23 +1213,29 @@ public class AnimationManager : MonoBehaviour
             Debug.LogWarning("Glow image not found under PlayerDraw.");
         }
     }
+
     public void EndTurnUpdateDrawPileGlowAnimation(DuelInstance duel)
     {
         Transform drawPile = UIManager.Instance.PlayerDraw;
-        Color newColor = Color.clear;
-        Image glowImage = drawPile.GetComponentInChildren<Image>();
-        if (glowImage != null)
+        Image[] glowImages = drawPile.GetComponentsInChildren<Image>();
+
+        foreach (Image glowImage in glowImages)
         {
-            IEnumerator ie = GlowImage(glowImage, newColor);
-            QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
-            duel.Animations.Enqueue(qa);
-            Debug.Log("End turn Glow image color updated.");
-        }
-        else
-        {
-            Debug.LogWarning("End Turn Glow image not found under PlayerDraw.");
+            if (glowImage.color == Color.green)
+            {
+                Color newColor = Color.clear;
+                IEnumerator ie = GlowImage(glowImage, newColor);
+                QueueableAnimation qa = new QueueableAnimation(ie, 0.0f);
+                duel.Animations.Enqueue(qa);
+                Debug.Log("End turn Glow image color updated.");
+            }
+            else
+            {
+                Debug.LogWarning("End Turn Glow image not found or not green under PlayerDraw.");
+            }
         }
         UIManager.Instance.Hand.HideGlowForCardsInHand();
     }
+
 
 }

@@ -440,7 +440,7 @@ public class MctsAI
     }
 
     public List<Card> GetPlayableCards(DuelInstance duel, CharStatus status) {
-        UnityEngine.Debug.Log("b1");
+        //UnityEngine.Debug.Log("b1");
         List<Card> results = new List<Card>();
         if(status.Mana == 0) return results;
         foreach(Card c in status.Cards) {
@@ -466,7 +466,7 @@ public class MctsAI
             if (c.ManaCost <= status.Mana) results.Add(c);
             
         }
-        UnityEngine.Debug.Log("b2");
+        //UnityEngine.Debug.Log("b2");
         return results;
     }
 

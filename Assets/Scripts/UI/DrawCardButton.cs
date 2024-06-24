@@ -102,40 +102,4 @@ public class DrawCardButton : MonoBehaviour,
         cardInUse = use;
         if(!use) hoveredCard = null;
     }
-    /*
-    public void UpdateDrawPileGlow()
-    {
-        Transform drawPile = UIManager.Instance.PlayerDraw; 
-        CharStatus playerStatus = DuelManager.Instance.MainDuel.GetStatus(Team.Player);
-        Color newColor = playerStatus.CanDrawCard() ? Color.green : new Color(0, 0, 0, 0);
-        Image glowImage = drawPile.GetComponentInChildren<Image>();
-        if (glowImage != null)
-        {
-            glowImage.color = newColor;
-            Debug.Log("Glow image color updated.");
-        }
-        else
-        {
-            Debug.LogWarning("Glow image not found under PlayerDraw.");
-        }
-    }
-    */
-
-    /*
-    public void EndTurnUpdateDrawPileGlow()
-    {
-        Transform drawPile = UIManager.Instance.PlayerDraw;
-        Color newColor = new Color(0, 0, 0, 0);
-        Image glowImage = drawPile.GetComponentInChildren<Image>();
-        if (glowImage != null)
-        {
-            glowImage.color = newColor;
-            Debug.Log("End Turn Glow image color updated.");
-        }
-        else
-        {
-            Debug.LogWarning("End Turn Glow image not found under PlayerDraw.");
-        }
-    }
-    */
 }
