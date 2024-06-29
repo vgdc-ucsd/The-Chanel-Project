@@ -25,4 +25,5 @@ public class DuelSettings
     public bool UnlimitedMana = false;
     public bool ShowEnemyHand = false;
     public bool DisableWinning = false;
+    public bool SummoningSickness = true;
 }

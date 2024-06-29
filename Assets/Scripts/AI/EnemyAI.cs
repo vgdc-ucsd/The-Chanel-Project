@@ -52,11 +52,24 @@ public class EnemyAI
         public UnitCard card;
     }
 
+    const int AI_HOME_ROW = 3;
+    const int PLAYER_HOME_ROW = 0;
 
-    const float MOVE_BASELINE_SCORE = 30;
+    const float AGGRESSION_BASELINE = 0.75f; // base chance for an action to be attacking
+    const float THREAT_DEFENSE_RESPONSE = 0.1f; // added chance for defensive move per pt of threat
+    // threat is calculated as: every enemy card on home row is worth 2 pts,
+    // every enemy card 1 row away from home row worth 1 pt
+
     // DEFENDING ACTIONS
+    const float D_STAY_SCORE = 30;
     const float D_ATTACKING_SCORE = 80; // score bonus for landing each attack 
     const float D_ATTACKED_SCORE = -40; // score malus for potentially taking each attack
+
+    // ATTACKING ACTIONS
+    const float A_STAY_SCORE = -10; // discourage staying in place
+    const float A_ATTACKING_SCORE = 20; // score bonus for landing each attack 
+    const float A_ATTACKED_SCORE = -20; // score malus for potentially taking each attack
+
 
 
     Team team = Team.Enemy;
@@ -72,9 +85,23 @@ public class EnemyAI
 
         foreach (AIAction action in possibleActions)
         {
+            int threat = duel.DuelBoard.GetCardsInRow(AI_HOME_ROW).Count * 2 
+                + duel.DuelBoard.GetCardsInRow(AI_HOME_ROW - 1).Count;
+
+            
+
+            float offenseChance = AGGRESSION_BASELINE - THREAT_DEFENSE_RESPONSE * threat;
+            if (action is MoveUnit mov && mov.card.Pos.y < AI_HOME_ROW - 1)
+            {
+                offenseChance += 0.5f; // high chance of attacking move if card is already near player home
+            }
+            offenseChance = Mathf.Clamp01(offenseChance);
+
             MoveType moveType = MoveType.Defending;
-            // TEMP, will randomly decide to whether make an offensive
-            // or defensive action for each action
+            if (Random.value < offenseChance)
+            {
+                moveType = MoveType.Attacking;
+            }
 
             if (action is MoveUnit m)
                 TryMove(m, moveType);
@@ -125,11 +152,11 @@ public class EnemyAI
         directions.Shuffle();
         foreach (MoveUnit.Direction dir in MoveUnit.dirVectors.Keys)
         {
-            moves[dir] = EvaluateCardPosition(move.card, move.card.Pos + MoveUnit.dirVectors[dir], moveType, dir == MoveUnit.Direction.None);
+            moves[dir] = EvaluateMovePosition(move.card, move.card.Pos + MoveUnit.dirVectors[dir], moveType, dir == MoveUnit.Direction.None);
         }
         if (moves.Count == 0) return; // should never happen
 
-        Debug.Log(move.card.Name + " possible moves");
+        Debug.Log(move.card.Name + " possible moves, " + moveType);
         Debug.Log(moves.ToLineSeparatedString());
         //Debug.Break();
 
@@ -154,11 +181,14 @@ public class EnemyAI
         legalTiles.Shuffle();
         foreach (BoardCoords tile in legalTiles)
         {
-            placements[tile] = EvaluateCardPosition(place.card, tile, moveType);
+            if (DuelManager.Instance.Settings.SummoningSickness)
+                placements[tile] = EvaluatePlacePosition(place.card, tile, moveType);
+            else
+                placements[tile] = EvaluateMovePosition(place.card, tile, moveType);
         }
         if (placements.Count == 0) return;
 
-        Debug.Log(place.card.Name + " possible placements");
+        Debug.Log(place.card.Name + " possible placements, " + moveType);
         Debug.Log(placements.ToLineSeparatedString()) ;
         //Debug.Break();
 
@@ -169,13 +199,13 @@ public class EnemyAI
             if (kvp.Value > placements[bestPlacement])
                 bestPlacement = kvp.Key;
         }
+        if (placements[bestPlacement] < 0) return;
         // make the move
         duel.DuelBoard.PlayCard(place.card, bestPlacement, duel.GetStatus(team), duel);
         predictedKilledCards.AddRange(GetKilledCards(place.card, place.card.Pos));
     }
 
-    // TODO split into move and place
-    private float EvaluateCardPosition(UnitCard card, BoardCoords pos, MoveType moveType, bool stay = false)
+    private float EvaluateMovePosition(UnitCard card, BoardCoords pos, MoveType moveType, bool stay = false)
     {
         // reject illegal moves; staying in place is never an illegal move
         if (!stay)
@@ -184,15 +214,21 @@ public class EnemyAI
                 return int.MinValue;
         }
         float score = 0;
-        if (stay) score += MOVE_BASELINE_SCORE; // default bias for staying in place
+        
 
         List<UnitCard> killedUnits = new List<UnitCard>();
 
         if (moveType == MoveType.Defending)
         {
+            if (stay) score += D_STAY_SCORE; // default bias for staying in place
             foreach (UnitCard atkTarget in GetOutgoingAttacks(card,pos))
             {
-                score += D_ATTACKING_SCORE;
+                // prioritize threatening targets
+                float multiplier = 1;
+                if (atkTarget.Pos.y == AI_HOME_ROW) multiplier = 2;
+                else if (atkTarget.Pos.y == AI_HOME_ROW - 1) multiplier = 1.5f;
+
+                score += D_ATTACKING_SCORE * multiplier;
                 if (atkTarget.Health <= card.BaseDamage) killedUnits.Add(atkTarget);
             }
 
@@ -201,8 +237,6 @@ public class EnemyAI
                 if (!killedUnits.Contains(attacker)) // nullify attacker score if it would be killed
                     score += D_ATTACKED_SCORE;
             }
-            // TODO
-            // prioritize targets that are close to home row
             
         }
         else if (moveType == MoveType.Attacking)
@@ -210,6 +244,87 @@ public class EnemyAI
             // TODO
             // bonus for forward movement and attacking player
             // less bonus for attacking cards, more focus on pushing forward
+
+            if (stay) score += A_STAY_SCORE;
+
+            // more score when the move ends up closer to the player
+            switch (pos.y)
+            {
+                case AI_HOME_ROW:
+                    score += -30;
+                    break;
+                case AI_HOME_ROW - 1:
+                    break;
+                case AI_HOME_ROW - 2:
+                    score += 30;
+                    break;
+                case AI_HOME_ROW - 3:
+                    score += 80;
+                    break;
+            }
+
+            foreach (UnitCard atkTarget in GetOutgoingAttacks(card, pos))
+            {
+                score += A_ATTACKING_SCORE;
+                if (atkTarget.Health <= card.BaseDamage) killedUnits.Add(atkTarget);
+            }
+
+            foreach (UnitCard attacker in GetIncomingAttacks(card, pos))
+            {
+                if (!killedUnits.Contains(attacker)) // nullify attacker score if it would be killed
+                    score += A_ATTACKED_SCORE;
+            }
+
+        }
+
+
+        return score;
+    }
+
+    // for summoning sickness testing only
+    private float EvaluatePlacePosition(UnitCard card, BoardCoords pos, MoveType moveType)
+    {
+        // reject illegal moves; staying in place is never an illegal move
+
+        if (duel.DuelBoard.IsOutOfBounds(pos) || duel.DuelBoard.IsOccupied(pos))
+            return int.MinValue;
+
+        float score = 0;
+        if (moveType == MoveType.Defending)
+        {
+            foreach (UnitCard attacker in GetIncomingAttacks(card, pos))
+            {
+                score += D_ATTACKED_SCORE;
+            }
+
+        }
+        else if (moveType == MoveType.Attacking)
+        {
+            // TODO
+            // bonus for forward movement and attacking player
+            // less bonus for attacking cards, more focus on pushing forward
+
+            // more score when the move ends up closer to the player
+            switch (pos.y)
+            {
+                case AI_HOME_ROW:
+                    score += -30;
+                    break;
+                case AI_HOME_ROW - 1:
+                    break;
+                case AI_HOME_ROW - 2:
+                    score += 30;
+                    break;
+                case AI_HOME_ROW - 3:
+                    score += 80;
+                    break;
+            }
+
+            foreach (UnitCard attacker in GetIncomingAttacks(card, pos))
+            {
+                score += A_ATTACKED_SCORE;
+            }
+
         }
 
 
@@ -300,6 +415,8 @@ public class EnemyAI
             }
         }
     }
+
+    
 }
 
 
