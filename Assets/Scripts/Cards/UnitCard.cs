@@ -149,7 +149,7 @@ public class UnitCard : Card
         this.Pos = pos;
         CanMove = false;
         CanAttack = !DuelManager.Instance.Settings.SummoningSickness;
-
+        
         baseStats.health = this.Health;
         List<Attack> atkList = new List<Attack>();
         foreach (Attack atk in Attacks)

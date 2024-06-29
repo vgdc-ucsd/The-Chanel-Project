@@ -57,7 +57,7 @@ public class EnemyAI
 
     const float AGGRESSION_BASELINE = 0.75f; // base chance for an action to be attacking
     const float THREAT_DEFENSE_RESPONSE = 0.1f; // added chance for defensive move per pt of threat
-    // threat is calculated as: every enemy card on home row is worth 2 pts,
+    // threat is calculated as: every enemy card on home row is worth 3 pts,
     // every enemy card 1 row away from home row worth 1 pt
 
     // DEFENDING ACTIONS
@@ -67,7 +67,7 @@ public class EnemyAI
 
     // ATTACKING ACTIONS
     const float A_STAY_SCORE = -10; // discourage staying in place
-    const float A_ATTACKING_SCORE = 20; // score bonus for landing each attack 
+    const float A_ATTACKING_SCORE = 25; // score bonus for landing each attack 
     const float A_ATTACKED_SCORE = -20; // score malus for potentially taking each attack
 
 
@@ -85,12 +85,18 @@ public class EnemyAI
 
         foreach (AIAction action in possibleActions)
         {
-            int threat = duel.DuelBoard.GetCardsInRow(AI_HOME_ROW).Count * 2 
-                + duel.DuelBoard.GetCardsInRow(AI_HOME_ROW - 1).Count;
-
-            
+            int threat = 0;
+            foreach (UnitCard uc in duel.DuelBoard.GetCardsInRow(AI_HOME_ROW))
+            {
+                if (uc.CurrentTeam == CharStatus.OppositeTeam(team)) threat += 3;
+            }
+            foreach (UnitCard uc in duel.DuelBoard.GetCardsInRow(AI_HOME_ROW - 1))
+            {
+                if (uc.CurrentTeam == CharStatus.OppositeTeam(team)) threat += 1;
+            }
 
             float offenseChance = AGGRESSION_BASELINE - THREAT_DEFENSE_RESPONSE * threat;
+            Debug.Log(offenseChance);
             if (action is MoveUnit mov && mov.card.Pos.y < AI_HOME_ROW - 1)
             {
                 offenseChance += 0.5f; // high chance of attacking move if card is already near player home
