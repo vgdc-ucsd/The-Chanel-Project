@@ -23,7 +23,7 @@ public class DuelManager : MonoBehaviour
 
     // Game Logic
     public DuelInstance MainDuel;
-    private MctsAI ai;
+    private EnemyAI ai;
     private bool awaitingAI;
     public Team currentTeam;
     public Encounter CurrentEncounter;
@@ -83,7 +83,8 @@ public class DuelManager : MonoBehaviour
         MainDuel.iteration = false;
 
         // AI setup
-        ai = new MctsAI(CurrentEncounter.AIAggression, CurrentEncounter.AIDefense);
+        //ai = new MctsAI(CurrentEncounter.AIAggression, CurrentEncounter.AIDefense);
+        ai = new EnemyAI();
         awaitingAI = false;
 
         // Set Starting Team
@@ -181,8 +182,8 @@ public class DuelManager : MonoBehaviour
             MainDuel.ProcessBoard(Team.Player);
             currentTeam = Team.Enemy;
             AnimationManager.Instance.UpdateUIAnimation(MainDuel);
-            StartCoroutine(ai.MCTS(MainDuel));
-            awaitingAI = true;
+            ai.PlayTurn(MainDuel);
+            //awaitingAI = true;
         }
     }
 
