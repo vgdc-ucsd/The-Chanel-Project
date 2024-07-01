@@ -26,4 +26,5 @@ public class DuelSettings
     public bool ShowEnemyHand = false;
     public bool DisableWinning = false;
     public bool SummoningSickness = true;
+    public bool DoubleHealth = false;
 }

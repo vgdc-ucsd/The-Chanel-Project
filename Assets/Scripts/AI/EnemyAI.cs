@@ -56,17 +56,19 @@ public class EnemyAI
     const int PLAYER_HOME_ROW = 0;
 
     const float AGGRESSION_BASELINE = 0.75f; // base chance for an action to be attacking
-    const float THREAT_DEFENSE_RESPONSE = 0.1f; // added chance for defensive move per pt of threat
+    const float THREAT_DEFENSE_RESPONSE = 0.15f; // added chance for defensive move per pt of threat
     // threat is calculated as: every enemy card on home row is worth 3 pts,
     // every enemy card 1 row away from home row worth 1 pt
 
     // DEFENDING ACTIONS
-    const float D_STAY_SCORE = 30;
+    const float D_STAY_SCORE = 0;
+    const float D_PUSH_SCORE = 5;       // score for moving forward
     const float D_ATTACKING_SCORE = 80; // score bonus for landing each attack 
     const float D_ATTACKED_SCORE = -40; // score malus for potentially taking each attack
 
     // ATTACKING ACTIONS
     const float A_STAY_SCORE = -10; // discourage staying in place
+    const float A_PUSH_SCORE = 30;       // score for moving forward
     const float A_ATTACKING_SCORE = 25; // score bonus for landing each attack 
     const float A_ATTACKED_SCORE = -20; // score malus for potentially taking each attack
 
@@ -97,10 +99,19 @@ public class EnemyAI
 
             float offenseChance = AGGRESSION_BASELINE - THREAT_DEFENSE_RESPONSE * threat;
             Debug.Log(offenseChance);
-            if (action is MoveUnit mov && mov.card.Pos.y < AI_HOME_ROW - 1)
+            if (action is MoveUnit mov)
             {
-                offenseChance += 0.5f; // high chance of attacking move if card is already near player home
+                if (mov.card.Pos.y < AI_HOME_ROW - 1)
+                {
+                    offenseChance += 0.5f; // high chance of attacking move if card is already near player home
+                }
+                if (mov.card.Pos.y == AI_HOME_ROW && threat >= 3)
+                {
+                    offenseChance -= 0.5f; // high chance of defending if already near home and there are threatening cards
+                }
             }
+            
+
             offenseChance = Mathf.Clamp01(offenseChance);
 
             MoveType moveType = MoveType.Defending;
@@ -227,12 +238,30 @@ public class EnemyAI
         if (moveType == MoveType.Defending)
         {
             if (stay) score += D_STAY_SCORE; // default bias for staying in place
+
+            switch (pos.y)                  // slight bias for forward movement, if all else are equal
+            {
+                case AI_HOME_ROW:
+                    score += 0;
+                    break;
+                case AI_HOME_ROW - 1:
+                    score += D_PUSH_SCORE;
+                    break;
+                case AI_HOME_ROW - 2:
+                    score += D_PUSH_SCORE * 2;
+                    break;
+                case AI_HOME_ROW - 3:
+                    score += D_PUSH_SCORE * 3;
+                    break;
+                // I SWEAR THIS IS NOT BAD CODE, this is made to be adjustable
+            }
+
             foreach (UnitCard atkTarget in GetOutgoingAttacks(card,pos))
             {
                 // prioritize threatening targets
                 float multiplier = 1;
-                if (atkTarget.Pos.y == AI_HOME_ROW) multiplier = 2;
-                else if (atkTarget.Pos.y == AI_HOME_ROW - 1) multiplier = 1.5f;
+                if (atkTarget.Pos.y == AI_HOME_ROW) multiplier = 3;
+                else if (atkTarget.Pos.y == AI_HOME_ROW - 1) multiplier = 1.8f;
 
                 score += D_ATTACKING_SCORE * multiplier;
                 if (atkTarget.Health <= card.BaseDamage) killedUnits.Add(atkTarget);
@@ -257,15 +286,16 @@ public class EnemyAI
             switch (pos.y)
             {
                 case AI_HOME_ROW:
-                    score += -30;
+                    score += A_PUSH_SCORE * -1;
                     break;
                 case AI_HOME_ROW - 1:
+                    score += A_PUSH_SCORE * 0;
                     break;
                 case AI_HOME_ROW - 2:
-                    score += 30;
+                    score += A_PUSH_SCORE * 1;
                     break;
                 case AI_HOME_ROW - 3:
-                    score += 80;
+                    score += A_PUSH_SCORE * 2 + 20;
                     break;
             }
 
