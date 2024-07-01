@@ -3103,6 +3103,7 @@ MonoBehaviour:
     UnlimitedMana: 0
     ShowEnemyHand: 0
     DisableWinning: 1
+    SummoningSickness: 1
   PlayerDeck: {fileID: 11400000, guid: 663cced3f96326d46bd018db69c90e14, type: 2}
   EnemyDeck: {fileID: 11400000, guid: 1ae85ab867b12cb458ccb53e082d8a90, type: 2}
   currentTeam: 0

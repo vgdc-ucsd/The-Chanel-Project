@@ -78,6 +78,7 @@ public class DuelManager : MonoBehaviour
         CharStatus EnemyStatus = new CharStatus(Team.Enemy, EnemyDeck);
         PlayerStatus.Deck.Init();
         EnemyStatus.Deck.Init();
+        /*
         foreach (Card c in PlayerStatus.Deck.CardList)
         {
             if (c is UnitCard uc) uc.Health *= 2;
@@ -86,6 +87,7 @@ public class DuelManager : MonoBehaviour
         {
             if (c is UnitCard uc) uc.Health *= 2;
         }
+        */
         Board board = new Board(Settings.BoardRows, Settings.BoardCols);
         MainDuel = new DuelInstance(PlayerStatus, EnemyStatus, board, CurrentEncounter.boss, 1);
         MainDuel.iteration = false;
