@@ -19,7 +19,7 @@ MonoBehaviour:
       StartingHealth: 10
       MaxHealth: 10
       MaxHealthEnabled: 0
-      StartingMana: 1
+      StartingMana: 5
       MaxMana: 5
       MaxManaEnabled: 1
       StartingCards: 4
@@ -34,13 +34,14 @@ MonoBehaviour:
     BoardRows: 4
     BoardCols: 4
     EnemyGoesFirst: 0
-    DrawCardManaCost: 2
+    DrawCardManaCost: 1
     EnablePVPMode: 0
     RestrictPlacement: 1
     UnlimitedMana: 1
     ShowEnemyHand: 1
     DisableWinning: 1
     SummoningSickness: 0
+    DoubleHealth: 1
   EnemyArt: {fileID: 21300000, guid: 0432293b91a0b994e8b6f7d5dbfee256, type: 3}
   EnemyDecks: []
   EnemyDeck: {fileID: 11400000, guid: e2df9e45f383f114e81cdecefed2b6a4, type: 2}

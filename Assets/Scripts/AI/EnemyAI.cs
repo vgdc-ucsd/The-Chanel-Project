@@ -72,6 +72,7 @@ public class EnemyAI
     const float A_ATTACKING_SCORE = 25; // score bonus for landing each attack 
     const float A_ATTACKED_SCORE = -20; // score malus for potentially taking each attack
 
+    const float BASE_DRAW_CARD_CHANCE = 0.3f;
 
 
     Team team = Team.Enemy;
@@ -127,9 +128,17 @@ public class EnemyAI
         }
 
         // use up remaining mana to draw cards
-        while (duel.GetStatus(team).CanDrawCard())
+        if (duel.GetStatus(team).CanDrawCard())
         {
-            duel.DrawCardWithMana(team);
+            if (duel.GetStatus(team).Cards.Count <= 3) {
+                duel.DrawCardWithMana(team); // always draw 1 card when able if low
+            }
+            while (duel.GetStatus(team).CanDrawCard() && Random.value < BASE_DRAW_CARD_CHANCE)
+            {
+                duel.DrawCardWithMana(team); // repeatedly roll for drawing
+            }
+
+
         }
 
 

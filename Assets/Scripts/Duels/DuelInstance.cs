@@ -168,9 +168,9 @@ public class DuelInstance
                     {
                         if (atk.damage > maxDmgAtk.damage) maxDmgAtk = atk;
                     }
-                    Team winner = GetStatus(CharStatus.OppositeTeam(team)).TakeDamage(maxDmgAtk.damage);
+                    Team winner = GetStatus(CharStatus.OppositeTeam(team)).TakeDamage(1);
                     AnimationManager.Instance.AttackAnimation(this, card, maxDmgAtk);
-                    AnimationManager.Instance.DamagePlayerAnimation(this, GetStatus(CharStatus.OppositeTeam(team)), maxDmgAtk.damage);
+                    AnimationManager.Instance.DamagePlayerAnimation(this, GetStatus(CharStatus.OppositeTeam(team)), 1);
                     if (winner != Team.Neutral)
                     {
                         interrupt = interrupt || TryWin(winner);
@@ -358,7 +358,7 @@ public class DuelInstance
         }
 
         // gain 1 mana capacity every turn until it reaches the max then it caps out;
-        oppositeStatus.GiveMana();
+        oppositeStatus.GiveMana(this);
         DuelBoard.RenewMovement(oppositeTeam);
 
 
@@ -387,7 +387,7 @@ public class DuelInstance
             }
         }
 
-        DrawCards(oppositeTeam, 1);
+        //DrawCards(oppositeTeam, 1);
     }
 
     public CharStatus GetStatus(Team team) {

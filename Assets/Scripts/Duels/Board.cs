@@ -322,4 +322,14 @@ public class Board
         if (cards.Count == 0) return null;
         return cards[Random.Range(0, cards.Count)];
     }
+
+    public int GetTotalManaCost(Team team)
+    {
+        int total = 0;
+        foreach (UnitCard card in GetCardsOfTeam(team))
+        {
+            total += card.ManaCost;
+        }
+        return total;
+    }
 }

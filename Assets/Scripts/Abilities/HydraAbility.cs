@@ -13,6 +13,7 @@ public class HydraAbility : Ability
 
     public override void Activate(UnitCard c, ActivationInfo Info)
     {
+        if (c.BaseDamage > 3) return; // temp nerf for balance testing
         AnimationManager.Instance.UpdateCardAttackAnimation(Info.Duel, c, 1);
 
         c.baseStats.baseDamage++;

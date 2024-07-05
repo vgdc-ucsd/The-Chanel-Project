@@ -24,6 +24,10 @@ public class PlayerUI : MonoBehaviour
     private List<Image> flickerSprites;
     private List<Color> originalColors;
 
+    public TMP_Text ManaCapacityText;
+    public TMP_Text TotalManaCostText;
+    public TMP_Text ManaRegenText;
+
     void Start() {
         shakeTransforms = new List<Transform>();
         originalPositions = new List<Vector3>();
@@ -103,7 +107,7 @@ public class PlayerUI : MonoBehaviour
 
     private void UpdateMana(CharStatus status) {
         for(int i = 0; i < ManaSprites.Length; i++) {
-            if(i < status.ManaCapacity) {
+            if(i < status.CurrentMaxMana) {
                 ManaSprites[i].sprite = ManaBlue;
                 if(i < status.Mana) {
                     ManaSprites[i].color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -117,6 +121,14 @@ public class PlayerUI : MonoBehaviour
                 ManaSprites[i].color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
             }
         }
+        if (status.CharTeam == Team.Player)
+        {
+            TotalManaCostText.text = DuelManager.Instance.MainDuel.DuelBoard.GetTotalManaCost(status.CharTeam).ToString();
+            ManaCapacityText.text = status.ManaCapacity.ToString();
+            ManaRegenText.text = status.GetManaRegen(DuelManager.Instance.MainDuel).ToString();
+        }
+
+
     }
     public void decreaseMana(int amount) {
         int used = 0;

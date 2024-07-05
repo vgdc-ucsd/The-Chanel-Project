@@ -13,12 +13,15 @@ public class CharStatus
     public bool IsAlive = true;
     public int MaxHealth;
     public int MaxMana;
-    public int ManaCapacity;
+    public int CurrentMaxMana;
     public Team CharTeam;
     public Deck Deck;
     public List<Card> Cards = new List<Card>();
     public List<Card> drawPileCards = new List<Card>();
     public List<Card> discardPileCards = new List<Card>();
+
+    public int ManaCapacity = 6;
+    public int BaseManaRegen = 4;
 
     PlayerSettings playerSettings;
     DuelSettings duelSettings;
@@ -41,14 +44,14 @@ public class CharStatus
         IsAlive = true;
         MaxHealth = playerSettings.MaxHealth;
         MaxMana = playerSettings.MaxMana;
-        ManaCapacity = playerSettings.StartingMana;
+        CurrentMaxMana = playerSettings.StartingMana;
         this.CharTeam = team;
         Deck = deck;
         Cards = new List<Card>();
 
         if (team == Team.Enemy) {
             --Mana;
-            --ManaCapacity;
+            --CurrentMaxMana;
         }
 
         drawPileCards = deck.DrawPile();
@@ -63,7 +66,7 @@ public class CharStatus
         copy.IsAlive = this.IsAlive;
         copy.MaxHealth = this.MaxHealth;
         copy.MaxMana = this.MaxMana;
-        copy.ManaCapacity = this.ManaCapacity;
+        copy.CurrentMaxMana = this.CurrentMaxMana;
         copy.CharTeam = this.CharTeam;
         copy.Deck = this.Deck.Clone();
         copy.Cards = new List<Card>();
@@ -158,13 +161,23 @@ public class CharStatus
         }
     }
 
-    public void GiveMana()
+    // if mana capacity is not exceeded, regenerate base amount (3) of mana per turn
+    // otherwise, mana regen is reduced by 1 for each point of manacost exceeded
+    public void GiveMana(DuelInstance duel) // duel should be tied to class instead
     {
-        if (ManaCapacity < MaxMana)
+        AddMana(GetManaRegen(duel));
+    }
+
+    public int GetManaRegen(DuelInstance duel)
+    {
+        int manaRegen = BaseManaRegen;
+        int totalManaCost = duel.DuelBoard.GetTotalManaCost(CharTeam);
+        if (totalManaCost > ManaCapacity)
         {
-            ManaCapacity++;
+            manaRegen -= totalManaCost - ManaCapacity;
+            if (manaRegen < 0) manaRegen = 0;
         }
-        Mana = ManaCapacity;
+        return manaRegen;
     }
 
     public bool CanUseMana(int manaUsed)
